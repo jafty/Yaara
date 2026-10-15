@@ -1,0 +1,247 @@
+{% if not view.finished and not view.eliminated and not game.paused %}
+    <div class="decree-layout">
+        <div class="decree-main">
+            <section class="panel padded">
+                <div class="section-heading">
+                    <div>
+                        <span class="eyebrow">01 · LES OUVRAGES</span>
+                        <h2>Faire prospérer vos terres</h2>
+                    </div>
+                </div>
+                <p class="muted">
+                    Un chantier par cité. Choisissez plusieurs destinations pour un même décret ; tout le lot sera confirmé ensemble.
+                </p>
+                <div class="works-grid">
+                    {% for action in view.work_actions %}
+                        <form method="post" action="{% url 'preview' game.id %}" class="work-form">
+                            {% csrf_token %}
+                            <input type="hidden" name="kind" value="{{ action.kind }}">
+                            <div class="action-icon" aria-hidden="true">
+                                {% if action.kind == 'irrigation' %}
+                                    ≋
+                                {% elif action.kind == 'storage' %}
+                                    ▥
+                                {% elif action.kind == 'walls' %}
+                                    ♜
+                                {% else %}
+                                    ⌁
+                                {% endif %}
+                            </div>
+                            <h3>{{ action.label }}</h3>
+                            {% for city in action.cities %}
+                                <label class="city-choice {% if city.busy %}disabled{% endif %}">
+                                    <input type="checkbox"
+                                           name="cities"
+                                           value="{{ city.id }}"
+                                           {% if city.busy %}disabled{% endif %}>
+                                    <span><strong>{{ city.name }} <small>· niveau {{ city.level }}</small></strong><small>
+                                        {% if city.busy %}
+                                            Équipes déjà engagées
+                                        {% else %}
+                                            {{ city.cost }} Mesures · {{ city.duration }} mois
+                                        {% endif %}
+                                    </small></span>
+                                </label>
+                            {% empty %}
+                                <p class="empty-inline">Aucune cité éligible pour le moment.</p>
+                            {% endfor %}
+                            <button class="button secondary full-width"
+                                    type="submit"
+                                    {% if not action.cities %}disabled{% endif %}>
+                                Préparer le décret <span aria-hidden="true">→</span>
+                            </button>
+                        </form>
+                    {% endfor %}
+                </div>
+            </section>
+            <section class="panel padded">
+                <span class="eyebrow">02 · LES CAMPAGNES</span>
+                <h2>Porter votre volonté au-delà des frontières</h2>
+                <p class="muted">Les hommes de toutes vos cités reliées à cette frontière peuvent rejoindre une seule armée.</p>
+                <form method="post"
+                      action="{% url 'preview' game.id %}"
+                      class="stack-form expedition-form">
+                    {% csrf_token %}
+                    <div class="form-two">
+                        <p>
+                            <label for="mission-kind">Mission</label>
+                            <select name="kind" id="mission-kind">
+                                <option value="raid">Piller les villages · dès 20 hommes</option>
+                                <option value="capture">Capturer une cité · dès 80 hommes</option>
+                            </select>
+                        </p>
+                        <p>
+                            <label for="mission-target">Cible</label>
+                            <select name="target" id="mission-target" required>
+                                <option value="">Choisir une cité accessible</option>
+                                {% for target in view.attack_targets %}
+                                    <option value="{{ target.id }}" {% if target.engaged %}disabled{% endif %}>
+                                        {{ target.name }} ·
+                                        {% if target.engaged %}
+                                            cible déjà engagée
+                                        {% else %}
+                                            {{ target.owner_name }}
+                                        {% endif %}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </p>
+                    </div>
+                    <fieldset class="contributions">
+                        <legend>Les contributions de vos cités</legend>
+                        {% for city in view.owned_cities %}
+                            <label class="contribution" data-origin="{{ city.id }}">
+                                <span><strong>{{ city.name }}</strong><small>{{ city.available_fideles }} disponibles</small><small class="origin-note"></small></span>
+                                <input type="number"
+                                       name="men_{{ city.id }}"
+                                       value="0"
+                                       min="0"
+                                       max="{{ city.available_fideles }}"
+                                       inputmode="numeric"
+                                       aria-label="Fidèles de {{ city.name }}">
+                            </label>
+                        {% endfor %}
+                    </fieldset>
+                    <div class="expedition-summary">
+                        <span><strong id="army-total">0</strong> Fidèles réunis</span><span>Coût estimé : <strong id="army-cost">20 000</strong> Mesures</span>
+                    </div>
+                    <p class="field-help" id="mission-help">
+                        Le pillage vise les réserves des villages. Départ au prochain mois, combat un mois après, retour le mois suivant. Le butin ne sera disponible qu’au retour.
+                    </p>
+                    <button class="button primary" type="submit">
+                        Examiner l’expédition <span aria-hidden="true">→</span>
+                    </button>
+                </form>
+            </section>
+            {% if view.rules == 'V1' %}
+                <section class="panel padded">
+                    <span class="eyebrow">03 · LA FORGE</span>
+                    <h2>Organiser les moyens de la guerre</h2>
+                    <p>{{ view.equipment }}. La forge équipe aussi les populations nouvellement rattachées à votre domaine.</p>
+                    {% for work in view.equipment_work %}
+                        <p class="tag">Projet en cours · achèvement au mois {{ work.finish_month }}</p>
+                    {% endfor %}
+                    {% if view.equipment_available %}
+                        <p class="muted">
+                            Le prix dépend de la population actuelle de vos possessions. Il est fixé au moment de la confirmation.
+                        </p>
+                        <form method="post" action="{% url 'preview' game.id %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="kind" value="equipment">
+                            <button class="button secondary" type="submit">
+                                Examiner le prochain projet <span aria-hidden="true">→</span>
+                            </button>
+                        </form>
+                    {% endif %}
+                </section>
+            {% endif %}
+        </div>
+        <aside class="decree-aside">
+            <div class="scribe-note">
+                <span class="eyebrow">AVANT D’APPOSER LE SCEAU</span>
+                <h2>Promettre, puis agir.</h2>
+                <p>
+                    Le récapitulatif ne réserve rien. Votre confirmation engage les fonds, les hommes et les emplacements jusqu’au départ.
+                </p>
+                <p>
+                    {% if view.cancellable %}
+                        En V1, vous pouvez annuler un ordre avant la clôture. Une nouvelle confirmation reçoit une nouvelle priorité.
+                    {% else %}
+                        En V0, votre confirmation est définitive. Vérifiez les moyens et les destinations avant de sceller le décret.
+                    {% endif %}
+                </p>
+                <div class="signature">Votre scribe</div>
+            </div>
+            {% if view.missions %}
+                <section class="panel padded">
+                    <span class="eyebrow">AU-DELÀ DES PORTES</span>
+                    <h2>Armées en route</h2>
+                    {% for mission in view.missions %}
+                        <div class="mission-card">
+                            <h3>{{ mission.target }}</h3>
+                            <p>{{ mission.kind }} · {{ mission.men }} hommes</p>
+                            <small>
+                                {% if mission.returning %}
+                                    Retour au mois {{ mission.return_month }}
+                                {% else %}
+                                    Combat au mois {{ mission.combat_month }}
+                                    <br>
+                                    Retour au mois {{ mission.return_month }}
+                                {% endif %}
+                            </small>
+                            {% if mission.loot %}<p>Butin en route : {{ mission.loot }} Mesures</p>{% endif %}
+                        </div>
+                    {% endfor %}
+                </section>
+            {% endif %}
+        </aside>
+    </div>
+{% else %}
+    <div class="panel empty-state">
+        <h2>
+            {% if game.paused %}
+                Les sceaux attendent la reprise.
+            {% else %}
+                Les décrets appartiennent aux chroniques.
+            {% endif %}
+        </h2>
+        <p>
+            {% if game.paused %}
+                Reprenez le calendrier pour engager de nouveaux ordres.
+            {% else %}
+                Aucun nouvel ordre ne peut être donné dans cette partie.
+            {% endif %}
+        </p>
+    </div>
+{% endif %}
+<section class="panel orders-panel">
+    <div class="panel-heading">
+        <h2>Vos décrets</h2>
+        <span class="muted">Confirmations et historique</span>
+    </div>
+    <div class="table-scroll">
+        <table>
+            <thead>
+                <tr>
+                    <th>Ordre</th>
+                    <th>Destination</th>
+                    <th>Coût</th>
+                    <th>Départ</th>
+                    <th>État</th>
+                    <th>
+                        <span class="sr-only">Action</span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in view.orders %}
+                    <tr>
+                        <td>
+                            <strong>{{ order.label }}</strong>
+                            {% if order.men %}<small>{{ order.men }} Fidèles</small>{% endif %}
+                        </td>
+                        <td>{{ order.destination }}</td>
+                        <td>{{ order.cost }}</td>
+                        <td>Mois {{ order.execute_month }}</td>
+                        <td>
+                            <span class="tag status-{{ order.status }}">{{ order.status_label }}</span>
+                        </td>
+                        <td>
+                            {% if order.can_cancel and not game.paused %}
+                                <form method="post" action="{% url 'cancel' game.id order.id %}">
+                                    {% csrf_token %}
+                                    <button class="text-button danger-text" type="submit">Annuler</button>
+                                </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="6" class="empty-inline">Aucun décret scellé. Préparez votre premier ordre ci-dessus.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{{ attack_origins|json_script:'attack-origins' }}

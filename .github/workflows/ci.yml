@@ -1,0 +1,45 @@
+name: Verify Yaara
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: yaara
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres -d yaara"
+          --health-interval 5s --health-timeout 3s --health-retries 10
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/yaara
+      DEBUG: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.13"
+          enable-cache: true
+      - run: uv sync --frozen
+      - run: uv run ruff check .
+      - run: uv run ruff format --check .
+      - run: uv run python manage.py makemigrations --check --dry-run
+      - run: uv run python manage.py migrate --noinput
+      - run: uv run python manage.py collectstatic --noinput
+      - run: uv run pytest -q
+      - name: Verify production dependency export
+        run: |
+          uv export --frozen --no-dev --format requirements-txt --no-header --output-file /tmp/requirements.txt
+          diff -u requirements.txt /tmp/requirements.txt
+      - run: uv run playwright install --with-deps chromium
+      - name: Browser smoke
+        run: |
+          uv run python manage.py runserver 127.0.0.1:8000 --noreload > /tmp/yaara-server.log 2>&1 &
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:8000/health/; then break; fi
+            sleep 1
+          done
+          uv run python scripts/browser_smoke.py

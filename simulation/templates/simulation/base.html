@@ -1,0 +1,88 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#25382f">
+        <title>
+            {% block title %}Yaara · Les cités du désert{% endblock %}
+        </title>
+        <link rel="stylesheet" href="{% static 'simulation/style.css' %}">
+        <script defer src="{% static 'simulation/app.js' %}"></script>
+    </head>
+    <body>
+        <a class="skip-link" href="#main">Aller au contenu</a>
+        <aside class="sidebar">
+            <a class="brand" href="{% url 'home' %}" aria-label="Yaara, accueil"><span class="brand-mark" aria-hidden="true">✺</span><span>YAARA<small>LES CITÉS DU DÉSERT</small></span></a>
+            {% if game %}
+                <div class="sidebar-label">LE BUREAU DU PRÉTENDANT</div>
+                <nav aria-label="Navigation principale">
+                    <a class="nav-item {% if tab == 'domain' %}active{% endif %}"
+                       href="{% url 'game' game.id %}"><span aria-hidden="true">◇</span> Domaine</a>
+                    <a class="nav-item {% if tab == 'decrees' %}active{% endif %}"
+                       href="{% url 'game' game.id %}?tab=decrees"><span aria-hidden="true">⌁</span> Décrets</a>
+                    <a class="nav-item {% if tab == 'letters' %}active{% endif %}"
+                       href="{% url 'game' game.id %}?tab=letters"><span aria-hidden="true">▤</span> Correspondance</a>
+                </nav>
+                <div class="sidebar-rule"></div>
+                <a class="nav-item subtle" href="{% url 'home' %}"><span aria-hidden="true">↗</span> Mes règnes</a>
+            {% else %}
+                <p class="sidebar-verse">
+                    Dans les terres de Yaara,
+                    <br>
+                    le pouvoir se cultive
+                    <br>
+                    avant de se conquérir.
+                </p>
+                {% if user.is_authenticated %}
+                    <nav aria-label="Navigation principale">
+                        <a class="nav-item active" href="{% url 'home' %}"><span aria-hidden="true">◇</span> Mes règnes</a><a class="nav-item" href="{% url 'new_game' %}"><span aria-hidden="true">＋</span> Nouveau règne</a>
+                    </nav>
+                {% endif %}
+            {% endif %}
+            <div class="sidebar-bottom">
+                <div class="seal" aria-hidden="true">Y</div>
+                <p>
+                    Neuf cités.
+                    <br>
+                    Un seul trône.
+                </p>
+                <small>CHRONIQUES DES OASIS</small>
+            </div>
+        </aside>
+        <div class="page-shell">
+            <header class="topbar">
+                <span class="breadcrumb">YAARA <span>/</span>
+                {% if game %}
+                    {{ game.title }}
+                {% else %}
+                    Le livre des règnes
+                {% endif %}
+            </span>
+            <div class="account">
+                {% if user.is_authenticated %}
+                    <span class="account-name">{{ user.username }}</span>
+                    <form method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button class="text-button" type="submit">Quitter</button>
+                    </form>
+                {% else %}
+                    <span>UN JEU DE STRATÉGIE ET DE PATIENCE</span>
+                {% endif %}
+            </div>
+        </header>
+        <main id="main" class="main-content">
+            {% if messages %}
+                <div class="notices" aria-live="polite">
+                    {% for message in messages %}<div class="notice {{ message.tags }}">{{ message }}</div>{% endfor %}
+                </div>
+            {% endif %}
+            {% block content %}{% endblock %}
+        </main>
+        <footer class="footer">
+            <span>YAARA <span class="dot">·</span> Votre histoire s’écrit dans le sable.</span><span>PREMIÈRES CHRONIQUES</span>
+        </footer>
+    </div>
+</body>
+</html>

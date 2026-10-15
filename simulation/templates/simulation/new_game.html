@@ -1,0 +1,51 @@
+{% extends 'simulation/base.html' %}
+{% block title %}Un nouveau règne · Yaara{% endblock %}
+{% block content %}
+    <div class="page-heading">
+        <div>
+            <span class="eyebrow">OUVRIR LES CHRONIQUES</span>
+            <h1>Un nouveau règne.</h1>
+            <p>Choisissez le rythme de votre histoire. Ces règles resteront celles de votre partie.</p>
+        </div>
+    </div>
+    <div class="setup-grid">
+        <section class="panel padded">
+            <h2>Le nom et le calendrier</h2>
+            <form method="post" class="stack-form game-setup">
+                {% csrf_token %}{{ form.as_p }}
+                <button class="button primary" type="submit">
+                    Apposer mon sceau <span aria-hidden="true">→</span>
+                </button>
+            </form>
+        </section>
+        <aside class="setup-aside">
+            <section class="panel padded">
+                <span class="eyebrow">VOTRE POINT DE DÉPART</span>
+                <h2>Trois cités, un avenir.</h2>
+                <ul class="plain-list">
+                    <li>
+                        <strong>3 000 habitants</strong><span>dont 300 Fidèles mobilisables</span>
+                    </li>
+                    <li>
+                        <strong>1 800 000 Mesures</strong><span>600 000 dans chaque cité</span>
+                    </li>
+                    <li>
+                        <strong>Une récolte annuelle</strong><span>Premier versement au mois 12</span>
+                    </li>
+                </ul>
+                <p class="muted">
+                    La capture est volontairement hors de portée des réserves initiales. Préparez votre économie avant de lancer de grandes campagnes.
+                </p>
+            </section>
+            <div class="scribe-note">
+                <span class="eyebrow">LE CONSEIL DU SCRIBE</span>
+                <p>
+                    Pour une première partie, choisissez les règles V1 et le calendrier manuel. Vous pourrez lire chaque nouvelle avant de passer au mois suivant.
+                </p>
+                <p>
+                    Avec le calendrier automatique, les rivaux avancent même lorsque vous êtes absent. La pause suspend toute la partie.
+                </p>
+            </div>
+        </aside>
+    </div>
+{% endblock %}
