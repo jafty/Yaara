@@ -1,72 +1,73 @@
 {% extends 'simulation/manuscript.html' %}
-{% block title %}Le décret à sceller · Yaara{% endblock %}
+{% load i18n %}
+{% block title %}{% blocktranslate %}Le décret à sceller · Yaara{% endblocktranslate %}{% endblock %}
 {% block content %}
     <header class="chapter-heading">
-        <p class="dateline">Relu par votre scribe, avant l’apposition du sceau</p>
+        <p class="dateline">{% blocktranslate %}Relu par votre scribe, avant l’apposition du sceau{% endblocktranslate %}</p>
         <h1>{{ label }}</h1>
     </header>
     <section class="decree-reading">
-        <p class="salutation">Monseigneur, voici les termes que j’ai couchés pour vous.</p>
+        <p class="salutation">{% blocktranslate %}Monseigneur, voici les termes que j’ai couchés pour vous.{% endblocktranslate %}</p>
         <p>
-            Que l’on consacre à cet ordre <strong>{{ order.cost }} Mesures</strong>. Les fonds seront engagés lorsque vous scellerez ce décret, puis dépensés à son entrée en vigueur, au mois <strong>{{ order.execute_month }}</strong>.
+            {% blocktranslate %}Que l’on consacre à cet ordre{% endblocktranslate %} <strong>{% blocktranslate with p0=order.cost %}{{ p0 }} Mesures{% endblocktranslate %}</strong>{% blocktranslate %}. Les fonds seront engagés lorsque vous scellerez ce décret, puis dépensés à son entrée en vigueur, au mois{% endblocktranslate %} <strong>{{ order.execute_month }}</strong>.
         </p>
         {% if target %}
             <p>
-                Que nos hommes se portent vers <strong>{{ target }}</strong>, avec pour mission de <em>{{ label|lower }}</em>. Qu’ils partent au mois <strong>{{ order.execute_month }}</strong>, livrent combat au mois <strong>{{ combat_month }}</strong>, et que les survivants regagnent leurs origines au mois <strong>{{ return_month }}</strong>.
+                {% blocktranslate %}Que nos hommes se portent vers{% endblocktranslate %} <strong>{{ target }}</strong>{% blocktranslate %}, avec pour mission de{% endblocktranslate %} <em>{{ label|lower }}</em>{% blocktranslate %}. Qu’ils partent au mois{% endblocktranslate %} <strong>{{ order.execute_month }}</strong>{% blocktranslate %}, livrent combat au mois{% endblocktranslate %} <strong>{{ combat_month }}</strong>{% blocktranslate %}, et que les survivants regagnent leurs origines au mois{% endblocktranslate %} <strong>{{ return_month }}</strong>.
             </p>
-            <h2>Les hommes engagés</h2>
+            <h2>{% blocktranslate %}Les hommes engagés{% endblocktranslate %}</h2>
             {% for item in contributions %}
                 <p class="decree-clause">
-                    Que <strong>{{ item.name }}</strong> fournisse <strong>{{ item.count }} Fidèles</strong> à cette expédition.
+                    {% blocktranslate %}Que{% endblocktranslate %} <strong>{{ item.name }}</strong> {% blocktranslate %}fournisse{% endblocktranslate %} <strong>{% blocktranslate with p0=item.count %}{{ p0 }} Fidèles{% endblocktranslate %}</strong> {% blocktranslate %}à cette expédition.{% endblocktranslate %}
                 </p>
             {% endfor %}
         {% elif tasks %}
-            <h2>Les ouvrages confiés à nos cités</h2>
+            <h2>{% blocktranslate %}Les ouvrages confiés à nos cités{% endblocktranslate %}</h2>
             {% for item in tasks %}
                 <p class="decree-clause">
-                    À <strong>{{ item.name }}</strong>, que l’on entreprenne les travaux suivants : <em>{{ item.description|lower }}</em>. L’ouvrage sera achevé au mois <strong>{{ item.finish_month }}</strong>.
+                    {% blocktranslate %}À{% endblocktranslate %} <strong>{{ item.name }}</strong>{% blocktranslate %}, que l’on entreprenne les travaux suivants :{% endblocktranslate %} <em>{{ item.description|lower }}</em>{% blocktranslate %}. L’ouvrage sera achevé au mois{% endblocktranslate %} <strong>{{ item.finish_month }}</strong>.
                 </p>
             {% endfor %}
         {% else %}
             <p>
-                Que les maîtres de la forge entreprennent leur projet pour toutes nos possessions. Qu’ils en rendent compte au mois <strong>{{ finish_month }}</strong>, date de son achèvement.
+                {% blocktranslate %}Que les maîtres de la forge entreprennent leur projet pour toutes nos possessions. Qu’ils en rendent compte au mois{% endblocktranslate %} <strong>{{ finish_month }}</strong>{% blocktranslate %}, date de son achèvement.{% endblocktranslate %}
             </p>
         {% endif %}
-        <h2>La part demandée aux greniers</h2>
+        <h2>{% blocktranslate %}La part demandée aux greniers{% endblocktranslate %}</h2>
         <p>
-            Chaque cité contribuera selon ses réserves libres. Je garderai ce partage avec le décret ; au départ, les fonds seront prélevés dans ces mêmes greniers.
+            {% blocktranslate %}Chaque cité contribuera selon ses réserves libres. Je garderai ce partage avec le décret ; au départ, les fonds seront prélevés dans ces mêmes greniers.{% endblocktranslate %}
         </p>
         {% for item in funding %}
             <p class="decree-clause">
-                Du grenier de <strong>{{ item.name }}</strong>, <strong>{{ item.amount }} Mesures</strong>.
+                {% blocktranslate %}Du grenier de{% endblocktranslate %} <strong>{{ item.name }}</strong>, <strong>{% blocktranslate with p0=item.amount %}{{ p0 }} Mesures{% endblocktranslate %}</strong>.
             </p>
         {% endfor %}
         <p class="marginal-note">
             {% if cancellable %}
-                Tant que le mois n’est pas clos, vous pourrez retirer ce décret et libérer les moyens promis. Après le départ, les frais seront définitivement dépensés.
+                {% blocktranslate %}Tant que le mois n’est pas clos, vous pourrez retirer ce décret et libérer les moyens promis. Après le départ, les frais seront définitivement dépensés.{% endblocktranslate %}
             {% else %}
-                Votre sceau rendra cet ordre définitif. Aucune annulation ne sera possible.
+                {% blocktranslate %}Votre sceau rendra cet ordre définitif. Aucune annulation ne sera possible.{% endblocktranslate %}
             {% endif %}
         </p>
         {% if target %}
             <p class="aside-text">
-                Le premier sceau accepté engage la cible jusqu’à la résolution du combat. Nos hommes défendront encore leurs foyers tant qu’ils n’auront pas pris la route.
+                {% blocktranslate %}Le premier sceau accepté engage la cible jusqu’à la résolution du combat. Nos hommes défendront encore leurs foyers tant qu’ils n’auront pas pris la route.{% endblocktranslate %}
             </p>
         {% else %}
-            <p class="aside-text">Les ouvrages actuels resteront en service jusqu’à l’achèvement du chantier.</p>
+            <p class="aside-text">{% blocktranslate %}Les ouvrages actuels resteront en service jusqu’à l’achèvement du chantier.{% endblocktranslate %}</p>
         {% endif %}
         <p class="signature">
-            J’attends votre sceau.
+            {% blocktranslate %}J’attends votre sceau.{% endblocktranslate %}
             <br>
-            Votre scribe
+            {% blocktranslate %}Votre scribe{% endblocktranslate %}
         </p>
         <form method="post" action="{% url 'confirm' game.id %}" data-busy-form>
             {% csrf_token %}
             <input type="hidden" name="payload" value="{{ payload }}">
-            <button class="primary-action" type="submit">Sceller ce décret</button>
+            <button class="primary-action" type="submit">{% blocktranslate %}Sceller ce décret{% endblocktranslate %}</button>
         </form>
         <p class="reading-links">
-            <a href="{% url 'game' game.id %}?tab=decrees">Reprendre la plume sans rien engager.</a>
+            <a href="{% url 'game' game.id %}?tab=decrees">{% blocktranslate %}Reprendre la plume sans rien engager.{% endblocktranslate %}</a>
         </p>
     </section>
 {% endblock %}

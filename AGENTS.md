@@ -1,7 +1,9 @@
 # Working on Yaara
 
+- By default, commit and push completed changes directly to `origin/yaara-deployment` after the full push checkpoint passes. Do not create a pull request unless the owner explicitly requests one. Preserve existing deployment-branch changes; never force-push. Report push and deployment verification separately.
+
 - Read `docs/design-source.fr.md` for game rules and `docs/decisions.md` for explicit implementation choices. Do not silently rebalance existing games.
-- Conversation and code (including identifiers, tests and comments) are English. All player-visible copy is French.
+- Conversation and code (including identifiers, tests and comments) are English. Player-visible copy supports French (the default) and English; keep the pure engine’s canonical French strings independent of request language. See `docs/localization.md`.
 - In-game screens are a plain, image-free manuscript: a single reading column, restrained typography, and scribe narration. Use prose and accessible disclosures for accounts, letters and decrees; keep exact costs and consequences clear. The pre-game interface can retain its conventional web layout.
 - Work in the existing checkout. Cloud tasks are already isolated; do not create worktrees unless requested.
 - Keep the Python simulation independent of Django, storage, HTTP and clocks. Application services own authorization, per-game transactions, idempotency and persistence.

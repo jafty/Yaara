@@ -27,6 +27,10 @@ pytestmark = pytest.mark.logic
     ],
 )
 def test_allocation(total, weights, priority, expected):
+    """Given a total of {total}, weights {weights} and priority {priority}.
+    When the total is apportioned by largest remainder.
+    Then the allocation is {expected}, including tie and empty-input boundaries.
+    """
     assert allocate(total, weights, priority) == expected
 
 
@@ -39,6 +43,10 @@ def test_allocation(total, weights, priority, expected):
     ],
 )
 def test_negative_allocation(total, weights):
+    """Given allocation inputs {total} and {weights} containing a negative value.
+    When allocation is requested.
+    Then the invalid input is rejected.
+    """
     with pytest.raises(ValueError):
         allocate(total, weights)
 
@@ -56,6 +64,10 @@ def test_negative_allocation(total, weights):
     ],
 )
 def test_casualties(count, rate, expected):
+    """Given a cohort of {count} and casualty rate {rate}.
+    When casualties are calculated.
+    Then half-up rounding and cohort bounds give {expected} deaths.
+    """
     assert losses(count, rate) == expected
 
 
@@ -73,6 +85,10 @@ def test_casualties(count, rate, expected):
     ],
 )
 def test_v0_capture_strict_boundaries(strength, outcome):
+    """Given V0 defenders with field strength 14000 and fortified strength 20000.
+    When an army with strength {strength} attacks.
+    Then the strict comparison gives outcome {outcome}.
+    """
     assert (
         capture_result(rule_family("V0"), strength, 14000, 20000, 1200000, 1000).outcome == outcome
     )
@@ -81,6 +97,10 @@ def test_v0_capture_strict_boundaries(strength, outcome):
 @case("capture-invalid", "A capture requires a positive attacking force")
 @pytest.mark.parametrize("strength", [pytest.param(0, id="zero"), pytest.param(-1, id="negative")])
 def test_capture_requires_attackers(strength):
+    """Given an attacking strength of {strength}.
+    When capture is calculated.
+    Then a nonpositive army is rejected.
+    """
     with pytest.raises(ValueError):
         capture_result(rule_family("V0"), strength, 14000, 20000, 1200000, 1000)
 
@@ -96,6 +116,10 @@ def test_capture_requires_attackers(strength):
     ],
 )
 def test_siege(attack, field, wall, stock, expected):
+    """Given V1 field strength {field}, wall strength {wall} and local food {stock}.
+    When strength {attack} attacks.
+    Then outcome, food consumed and ownership change are {expected}.
+    """
     result = capture_result(rule_family("V1"), attack, field, wall, stock, 1000)
     assert (result.outcome, result.food_used, result.captured) == expected
 
@@ -115,6 +139,10 @@ def test_siege(attack, field, wall, stock, expected):
     ],
 )
 def test_raid(attackers, defenders, stock, expected):
+    """Given {attackers} attackers, {defenders} defenders and {stock} local Measures.
+    When equally equipped forces resolve a raid.
+    Then outcome, losses, stolen and destroyed food are {expected}.
+    """
     result = raid_result(attackers, 100, defenders, 100, stock)
     assert (
         result.outcome,
@@ -127,5 +155,9 @@ def test_raid(attackers, defenders, stock, expected):
 
 @case("raid-margin", "Design raid example: 180000 stolen less 132500 expedition price = 47500")
 def test_documented_raid_margin():
+    """Given the dossier raid of 45 attackers against 40 defenders and 1200000 Measures.
+    When loot is reduced by the expedition cost.
+    Then the net gain is 47500 Measures.
+    """
     result = raid_result(45, 100, 40, 100, 1200000)
     assert result.stolen - 132500 == 47500

@@ -1,6 +1,6 @@
 # Test-first development policy
 
-The owner's policy is a standing requirement. Its basis is the design dossier, §26, plus the explicit requirement for one logical test per use-case variation. Conversation and test code are English; player-facing copy is French.
+The owner's policy is a standing requirement. Its basis is the design dossier, §26, plus the explicit requirement for one logical test per use-case variation. Conversation and test code are English; player-facing copy supports French and English, with canonical French engine messages preserved.
 
 ## Working sequence
 
@@ -38,6 +38,43 @@ To refresh the catalog after reviewing new or intentionally changed variations:
 uv run pytest --collect-only -q --case-report=/tmp/yaara-cases.json
 uv run python -c 'import json; from pathlib import Path; rows=json.loads(Path("/tmp/yaara-cases.json").read_text()); Path("tests/case_ids.txt").write_text("\n".join(sorted(row["id"] for row in rows))+"\n")'
 ```
+
+## Natural-language scenarios
+
+Keep pytest and the existing one-case-per-variation mapping. Use the
+Given/When/Then scenario convention from behaviour-driven development as strict
+English docstrings for every `logic` test method. A separate Gherkin runner would
+duplicate the current parameterized cases and their traceability without adding
+a useful execution boundary. This is scenario documentation within the existing
+test-first policy, not a claim that prose proves exhaustive coverage.
+
+Each docstring has exactly three nonempty lines in this order:
+
+```python
+@case("cancellation-releases-reservations", "Design §26.2: V1 cancellation releases reservations")
+def test_cancellation_releases_reservations(reserved_raid):
+    """Given a confirmed V1 raid.
+    When the player cancels it before departure.
+    Then the target, funds and people are all released.
+    """
+    ...
+```
+
+State the starting facts, the action and the observable outcome. Explain the
+rule rather than narrating Python statements. Parameterized methods may name
+row inputs in braces, such as `{month}` or `{expected}`. Collection expands these
+using that row's explicit inputs and includes the resulting `scenario` in the
+JSON case report. Each row retains its own stable case ID, requirement, layer
+and outcome. The docstring does not replace assertions or the source requirement.
+Collection rejects missing or malformed logic scenarios, so new methods cannot
+silently omit their description. Journeys and integration cases retain their
+existing metadata; the strict docstring contract applies to the logic layer.
+
+Language selection is a presentation concern. Keep French rule/report assertions
+where they establish a French narration or disclosure requirement. Assert
+structured facts and stable identifiers for rule outcomes; add explicit
+translation tests instead of loosening old expectations or making core tests
+depend on the active browser language.
 
 ## Every push
 

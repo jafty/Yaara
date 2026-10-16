@@ -15,7 +15,7 @@ if (targetSelect) {
   );
   const kind = document.querySelector("#mission-kind");
   const rows = [...document.querySelectorAll(".contribution")];
-  const format = new Intl.NumberFormat("fr-FR");
+  const format = new Intl.NumberFormat(document.documentElement.lang);
   const updateTotals = () => {
     const total = rows.reduce(
       (sum, row) => sum + Number(row.querySelector("input").value || 0),
@@ -27,8 +27,8 @@ if (targetSelect) {
       (capture ? 900000 : 20000) + total * (capture ? 18000 : 2500),
     );
     document.querySelector("#mission-help").textContent = capture
-      ? "Il leur faudra affronter les hommes de la cité, ses murs et les secours du domaine. S’ils l’emportent, la cité vous reviendra et nos survivants rentreront à leurs origines. Ils partiront au prochain mois, combattront un mois après et reviendront le mois suivant."
-      : "Nos hommes tenteront d’emporter les réserves des villages. Ils partiront au prochain mois, combattront un mois après et reviendront le mois suivant. Leur butin ne sera à notre disposition qu’à leur retour.";
+      ? gettext("Il leur faudra affronter les hommes de la cité, ses murs et les secours du domaine. S’ils l’emportent, la cité vous reviendra et nos survivants rentreront à leurs origines. Ils partiront au prochain mois, combattront un mois après et reviendront le mois suivant.")
+      : gettext("Nos hommes tenteront d’emporter les réserves des villages. Ils partiront au prochain mois, combattront un mois après et reviendront le mois suivant. Leur butin ne sera à notre disposition qu’à leur retour.");
   };
   const updateOrigins = () => {
     const eligible = origins[targetSelect.value] || [];
@@ -39,7 +39,7 @@ if (targetSelect) {
       if (input.disabled) input.value = "0";
       row.querySelector(".origin-note").textContent =
         input.disabled && targetSelect.value
-          ? "Ces hommes ne peuvent rejoindre cette frontière par nos terres."
+          ? gettext("Ces hommes ne peuvent rejoindre cette frontière par nos terres.")
           : "";
     });
     updateTotals();
@@ -60,8 +60,8 @@ document.querySelectorAll("[data-deadline]").forEach((element) => {
     );
     element.textContent =
       remaining > 0
-        ? `Ce mois sera clos dans ${Math.floor(remaining / 60)} min ${String(remaining % 60).padStart(2, "0")} s.`
-        : "Le mois est clos. Nous attendons les nouvelles.";
+        ? interpolate(gettext("Ce mois sera clos dans %(minutes)s min %(seconds)s s."), {minutes: Math.floor(remaining / 60), seconds: String(remaining % 60).padStart(2, "0")}, true)
+        : gettext("Le mois est clos. Nous attendons les nouvelles.");
   };
   update();
   window.setInterval(update, 1000);
@@ -90,7 +90,7 @@ if (document.querySelector("[data-deadline]")) {
         const link = document.createElement("a");
         link.href = initialUrl.href;
         link.textContent =
-          "De nouvelles lettres nous sont parvenues. Reprendre le livre à ce jour.";
+          gettext("De nouvelles lettres nous sont parvenues. Reprendre le livre à ce jour.");
         notice.append(link);
         document.querySelector("#main").prepend(notice);
       }

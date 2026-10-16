@@ -1,63 +1,66 @@
+{% load i18n %}
 {% load static %}
 <!DOCTYPE html>
-<html lang="fr">
+{% get_current_language as LANGUAGE_CODE %}
+<html lang="{{ LANGUAGE_CODE }}">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#25382f">
         <title>
-            {% block title %}Yaara · Les cités du désert{% endblock %}
+            {% block title %}{% blocktranslate %}Yaara · Les cités du désert{% endblocktranslate %}{% endblock %}
         </title>
         <link rel="stylesheet" href="{% static 'simulation/style.css' %}">
+        <script src="{% url 'javascript-catalog' %}"></script>
         <script defer src="{% static 'simulation/app.js' %}"></script>
     </head>
     <body>
-        <a class="skip-link" href="#main">Aller au contenu</a>
+        <a class="skip-link" href="#main">{% blocktranslate %}Aller au contenu{% endblocktranslate %}</a>
         <aside class="sidebar">
-            <a class="brand" href="{% url 'home' %}" aria-label="Yaara, accueil"><span class="brand-mark" aria-hidden="true">✺</span><span>YAARA<small>LES CITÉS DU DÉSERT</small></span></a>
+            <a class="brand" href="{% url 'home' %}" aria-label="{% translate 'Yaara, accueil' %}"><span class="brand-mark" aria-hidden="true">✺</span><span>{% blocktranslate %}YAARA{% endblocktranslate %}<small>{% blocktranslate %}LES CITÉS DU DÉSERT{% endblocktranslate %}</small></span></a>
             {% if game %}
-                <div class="sidebar-label">LE BUREAU DU PRÉTENDANT</div>
-                <nav aria-label="Navigation principale">
+                <div class="sidebar-label">{% blocktranslate %}LE BUREAU DU PRÉTENDANT{% endblocktranslate %}</div>
+                <nav aria-label="{% translate 'Navigation principale' %}">
                     <a class="nav-item {% if tab == 'domain' %}active{% endif %}"
-                       href="{% url 'game' game.id %}"><span aria-hidden="true">◇</span> Domaine</a>
+                       href="{% url 'game' game.id %}"><span aria-hidden="true">◇</span> {% blocktranslate %}Domaine{% endblocktranslate %}</a>
                     <a class="nav-item {% if tab == 'decrees' %}active{% endif %}"
-                       href="{% url 'game' game.id %}?tab=decrees"><span aria-hidden="true">⌁</span> Décrets</a>
+                       href="{% url 'game' game.id %}?tab=decrees"><span aria-hidden="true">⌁</span> {% blocktranslate %}Décrets{% endblocktranslate %}</a>
                     <a class="nav-item {% if tab == 'letters' %}active{% endif %}"
-                       href="{% url 'game' game.id %}?tab=letters"><span aria-hidden="true">▤</span> Correspondance</a>
+                       href="{% url 'game' game.id %}?tab=letters"><span aria-hidden="true">▤</span> {% blocktranslate %}Correspondance{% endblocktranslate %}</a>
                 </nav>
                 <div class="sidebar-rule"></div>
-                <a class="nav-item subtle" href="{% url 'home' %}"><span aria-hidden="true">↗</span> Mes règnes</a>
+                <a class="nav-item subtle" href="{% url 'home' %}"><span aria-hidden="true">↗</span> {% blocktranslate %}Mes règnes{% endblocktranslate %}</a>
             {% else %}
                 <p class="sidebar-verse">
-                    Dans les terres de Yaara,
+                    {% blocktranslate %}Dans les terres de Yaara,{% endblocktranslate %}
                     <br>
-                    le pouvoir se cultive
+                    {% blocktranslate %}le pouvoir se cultive{% endblocktranslate %}
                     <br>
-                    avant de se conquérir.
+                    {% blocktranslate %}avant de se conquérir.{% endblocktranslate %}
                 </p>
                 {% if user.is_authenticated %}
-                    <nav aria-label="Navigation principale">
-                        <a class="nav-item active" href="{% url 'home' %}"><span aria-hidden="true">◇</span> Mes règnes</a><a class="nav-item" href="{% url 'new_game' %}"><span aria-hidden="true">＋</span> Nouveau règne</a>
+                    <nav aria-label="{% translate 'Navigation principale' %}">
+                        <a class="nav-item active" href="{% url 'home' %}"><span aria-hidden="true">◇</span> {% blocktranslate %}Mes règnes{% endblocktranslate %}</a><a class="nav-item" href="{% url 'new_game' %}"><span aria-hidden="true">＋</span> {% blocktranslate %}Nouveau règne{% endblocktranslate %}</a>
                     </nav>
                 {% endif %}
             {% endif %}
             <div class="sidebar-bottom">
-                <div class="seal" aria-hidden="true">Y</div>
+                <div class="seal" aria-hidden="true">{% blocktranslate %}Y{% endblocktranslate %}</div>
                 <p>
-                    Neuf cités.
+                    {% blocktranslate %}Neuf cités.{% endblocktranslate %}
                     <br>
-                    Un seul trône.
+                    {% blocktranslate %}Un seul trône.{% endblocktranslate %}
                 </p>
-                <small>CHRONIQUES DES OASIS</small>
+                <small>{% blocktranslate %}CHRONIQUES DES OASIS{% endblocktranslate %}</small>
             </div>
         </aside>
         <div class="page-shell">
             <header class="topbar">
-                <span class="breadcrumb">YAARA <span>/</span>
+                <span class="breadcrumb">{% blocktranslate %}YAARA{% endblocktranslate %} <span>/</span>
                 {% if game %}
                     {{ game.title }}
                 {% else %}
-                    Le livre des règnes
+                    {% blocktranslate %}Le livre des règnes{% endblocktranslate %}
                 {% endif %}
             </span>
             <div class="account">
@@ -65,13 +68,14 @@
                     <span class="account-name">{{ user.username }}</span>
                     <form method="post" action="{% url 'logout' %}">
                         {% csrf_token %}
-                        <button class="text-button" type="submit">Quitter</button>
+                        <button class="text-button" type="submit">{% blocktranslate %}Quitter{% endblocktranslate %}</button>
                     </form>
                 {% else %}
-                    <span>UN JEU DE STRATÉGIE ET DE PATIENCE</span>
+                    <span>{% blocktranslate %}UN JEU DE STRATÉGIE ET DE PATIENCE{% endblocktranslate %}</span>
                 {% endif %}
             </div>
-        </header>
+        {% include "simulation/language_switch.html" %}
+</header>
         <main id="main" class="main-content">
             {% if messages %}
                 <div class="notices" aria-live="polite">
@@ -81,7 +85,7 @@
             {% block content %}{% endblock %}
         </main>
         <footer class="footer">
-            <span>YAARA <span class="dot">·</span> Votre histoire s’écrit dans le sable.</span><span>PREMIÈRES CHRONIQUES</span>
+            <span>{% blocktranslate %}YAARA{% endblocktranslate %} <span class="dot">·</span> {% blocktranslate %}Votre histoire s’écrit dans le sable.{% endblocktranslate %}</span><span>{% blocktranslate %}PREMIÈRES CHRONIQUES{% endblocktranslate %}</span>
         </footer>
     </div>
 </body>

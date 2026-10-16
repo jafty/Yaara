@@ -20,7 +20,9 @@ password = secrets.token_urlsafe(24)
 with sync_playwright() as playwright:
     executable = os.getenv("CHROMIUM_PATH") or shutil.which("chromium")
     browser = playwright.chromium.launch(executable_path=executable, headless=True)
-    page = browser.new_page(viewport={"width": 1440, "height": 1100}, device_scale_factor=1)
+    page = browser.new_page(
+        viewport={"width": 1440, "height": 1100}, device_scale_factor=1, locale="fr-FR"
+    )
     errors = []
     page.on("pageerror", lambda error: errors.append(str(error)))
     page.goto(base_url + "/accounts/signup/")
@@ -103,6 +105,37 @@ with sync_playwright() as playwright:
     expect(page.locator(".orders-register")).to_contain_text("Achevé")
     page.set_viewport_size({"width": 320, "height": 700})
     assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth")
+    # Language selection persists across requests; translated reports keep the same facts.
+    page.locator("#language").select_option("en")
+    page.get_by_role("button", name="Choisir", exact=True).click()
+    expect(page.locator("html")).to_have_attribute("lang", "en")
+    expect(page.get_by_role("heading", name="What you will dictate")).to_be_visible()
+    expect(page.locator(".orders-register")).to_contain_text("Completed")
+    page.locator("#expedition > summary").click()
+    page.locator("#mission-target").select_option("c4")
+    expect(page.locator("#mission-help")).to_contain_text("Our people will try to take")
+    page.get_by_role("link", name="Letters", exact=True).click()
+    expect(page.locator(".correspondence")).to_contain_text(
+        "Our survivors say they encountered between"
+    )
+    page.get_by_role("link", name="Decrees", exact=True).click()
+    work = page.locator(".decree-choice").filter(has=page.locator('input[value="storage"]'))
+    work.locator("summary").click()
+    work.locator('input[type="checkbox"][value="c2"]').check()
+    work.get_by_role("button", name="Have this decree read back").click()
+    expect(
+        page.get_by_role("heading", name="The share requested from the granaries")
+    ).to_be_visible()
+    page.get_by_role("button", name="Seal this decree").click()
+    for month in range(4, 9):
+        page.get_by_role("button", name=f"Close month {month}", exact=True).click()
+    page.get_by_role("link", name="Letters", exact=True).click()
+    expect(page.locator(".correspondence")).to_contain_text("have enlarged the granary")
+    assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth")
+    page.locator("#language").select_option("fr")
+    page.get_by_role("button", name="Choose", exact=True).click()
+    expect(page.locator("html")).to_have_attribute("lang", "fr")
+    expect(page.locator(".correspondence")).to_contain_text("ont agrandi le grenier")
     page.get_by_role("button", name="Quitter", exact=True).click()
     expect(page.get_by_role("heading", name="Entrer dans Yaara")).to_be_visible()
     page.locator("#id_username").fill(username)
@@ -112,5 +145,5 @@ with sync_playwright() as playwright:
     assert not errors, errors
     browser.close()
 print(
-    "Browser smoke passed: signup, persistence, build preview/cancel, raid/return, privacy, desktop/mobile, logout/login."
+    "Browser smoke passed: signup, persistence, build preview/cancel, raid/return, privacy, desktop/mobile, French/English selection and reports, completed-work tense, logout/login."
 )

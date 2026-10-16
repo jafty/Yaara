@@ -1,42 +1,46 @@
+{% load i18n %}
 {% load static %}
 <!DOCTYPE html>
-<html lang="fr">
+{% get_current_language as LANGUAGE_CODE %}
+<html lang="{{ LANGUAGE_CODE }}">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
         <title>
-            {% block title %}{{ game.title }} · Yaara{% endblock %}
+            {% block title %}{% blocktranslate with p0=game.title %}{{ p0 }} · Yaara{% endblocktranslate %}{% endblock %}
         </title>
         <link rel="stylesheet" href="{% static 'simulation/manuscript.css' %}">
+        <script src="{% url 'javascript-catalog' %}"></script>
         <script defer src="{% static 'simulation/app.js' %}"></script>
     </head>
     <body class="manuscript">
-        <a class="skip-link" href="#main">Aller au récit</a>
+        <a class="skip-link" href="#main">{% blocktranslate %}Aller au récit{% endblocktranslate %}</a>
         <div class="book">
             <header class="book-heading">
-                <a class="book-world" href="{% url 'home' %}">Yaara</a>
+                <a class="book-world" href="{% url 'home' %}">{% blocktranslate %}Yaara{% endblocktranslate %}</a>
                 <p class="book-title">{{ game.title }}</p>
-                <nav class="bookmarks" aria-label="Les feuillets de votre règne">
+                <nav class="bookmarks" aria-label="{% translate 'Les feuillets de votre règne' %}">
                     <a href="{% url 'game' game.id %}"
-                       {% if tab == 'domain' %}aria-current="page"{% endif %}>Domaine</a>
+                       {% if tab == 'domain' %}aria-current="page"{% endif %}>{% blocktranslate %}Domaine{% endblocktranslate %}</a>
                     <a href="{% url 'game' game.id %}?tab=decrees"
-                       {% if tab == 'decrees' %}aria-current="page"{% endif %}>Décrets</a>
+                       {% if tab == 'decrees' %}aria-current="page"{% endif %}>{% blocktranslate %}Décrets{% endblocktranslate %}</a>
                     <a href="{% url 'game' game.id %}?tab=letters"
-                       {% if tab == 'letters' %}aria-current="page"{% endif %}>Correspondance</a>
+                       {% if tab == 'letters' %}aria-current="page"{% endif %}>{% blocktranslate %}Correspondance{% endblocktranslate %}</a>
                 </nav>
                 {% if view and not view.finished %}
                     <p class="running-note">
                         {% if game.mode == 'manual' %}
-                            <a href="#turn-page">Aller à la fin du mois</a>
+                            <a href="#turn-page">{% blocktranslate %}Aller à la fin du mois{% endblocktranslate %}</a>
                         {% elif game.deadline %}
-                            <span data-deadline="{{ game.deadline|date:'c' }}">Le prochain mois sera clos à {{ game.deadline|date:'H:i' }} UTC.</span>
+                            <span data-deadline="{{ game.deadline|date:'c' }}">{% blocktranslate with p0=game.deadline|date:'H:i' %}Le prochain mois sera clos à {{ p0 }} UTC.{% endblocktranslate %}</span>
                         {% else %}
-                            Le cours des chroniques est suspendu.
+                            {% blocktranslate %}Le cours des chroniques est suspendu.{% endblocktranslate %}
                         {% endif %}
                     </p>
                 {% endif %}
-            </header>
+            {% include "simulation/language_switch.html" %}
+</header>
             <main id="main">
                 {% if messages %}
                     <div class="notices" aria-live="polite">
@@ -47,12 +51,12 @@
             </main>
             <footer class="book-footer">
                 <p>
-                    <a href="{% url 'home' %}">Refermer ce livre</a>
-                    {% if view %}<span class="edition">Règles {{ view.rules }}</span>{% endif %}
+                    <a href="{% url 'home' %}">{% blocktranslate %}Refermer ce livre{% endblocktranslate %}</a>
+                    {% if view %}<span class="edition">{% blocktranslate with p0=view.rules %}Règles {{ p0 }}{% endblocktranslate %}</span>{% endif %}
                 </p>
                 <form method="post" action="{% url 'logout' %}">
                     {% csrf_token %}
-                    <button type="submit">Quitter</button>
+                    <button type="submit">{% blocktranslate %}Quitter{% endblocktranslate %}</button>
                 </form>
             </footer>
         </div>

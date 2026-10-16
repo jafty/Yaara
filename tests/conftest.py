@@ -1,3 +1,4 @@
+import inspect
 import json
 import re
 from pathlib import Path
@@ -63,6 +64,19 @@ def pytest_collection_modifyitems(config, items):
             raise pytest.UsageError(
                 f"{item.nodeid}: require case('stable-id', 'source requirement')"
             )
+        scenario = inspect.getdoc(item.obj) or ""
+        if layers == ["logic"] and not re.fullmatch(
+            r"Given [^\n]+\nWhen [^\n]+\nThen [^\n]+", scenario
+        ):
+            raise pytest.UsageError(
+                f"{item.nodeid}: logic tests require a Given/When/Then docstring"
+            )
+        if hasattr(item, "callspec"):
+            scenario = re.sub(
+                r"\{([a-z_]+)\}",
+                lambda match: str(item.callspec.params.get(match[1], match[0])),
+                scenario,
+            )
         identifier, requirement = marker.args
         if hasattr(item, "callspec"):
             # Explicit row IDs identify independently collected variations.
@@ -75,6 +89,7 @@ def pytest_collection_modifyitems(config, items):
             "requirement": requirement,
             "layer": layers[0],
             "nodeid": item.nodeid,
+            "scenario": scenario,
             "phases": {},
         }
     if config.getoption("--check-case-catalog"):

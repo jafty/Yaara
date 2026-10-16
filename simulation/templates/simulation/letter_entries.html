@@ -1,14 +1,15 @@
+{% load i18n %}
 {% for report in reports %}
     <details class="letter-entry" {% if forloop.first %}open{% endif %}>
         <summary>
-            <span class="letter-date">Mois {{ report.month }}</span><span>{{ report.title }}</span>
+            <span class="letter-date">{% blocktranslate with p0=report.month %}Mois {{ p0 }}{% endblocktranslate %}</span><span>{{ report.title }}</span>
         </summary>
         <div class="letter-text">
-            <p class="salutation">Monseigneur,</p>
+            <p class="salutation">{% blocktranslate %}Monseigneur,{% endblocktranslate %}</p>
             <p>{{ report.body }}</p>
-            <p class="signature">Consigné par votre scribe, au mois {{ report.month }}.</p>
+            <p class="signature">{% blocktranslate with p0=report.month %}Consigné par votre scribe, au mois {{ p0 }}.{% endblocktranslate %}</p>
         </div>
     </details>
 {% empty %}
-    <p>Le scribe n’a rien de nouveau à consigner. Un mois paisible n’exige pas de lettre.</p>
+    <p>{% blocktranslate %}Le scribe n’a rien de nouveau à consigner. Un mois paisible n’exige pas de lettre.{% endblocktranslate %}</p>
 {% endfor %}

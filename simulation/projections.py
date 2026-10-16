@@ -3,15 +3,16 @@
 import math
 
 from . import engine
+from .messages import message
 from .rules import ACTION_LABELS, EQUIPMENT_LABELS, RuleError, rule_family
 
 STATUS_LABELS = {
-    "confirmed": "Confirmé",
-    "active": "En cours",
-    "returning": "Au retour",
-    "completed": "Achevé",
-    "cancelled": "Annulé",
-    "invalidated": "Invalidé",
+    "confirmed": message("Confirmé"),
+    "active": message("En cours"),
+    "returning": message("Au retour"),
+    "completed": message("Achevé"),
+    "cancelled": message("Annulé"),
+    "invalidated": message("Invalidé"),
 }
 
 
@@ -29,7 +30,11 @@ def player_view(state, actor):
             "owner_name": state["players"][city["owner"]]["name"],
             "owned": city["owner"] == actor,
             "walls": city["walls"],
-            "wall_label": ["Sans enceinte", "Enceinte de terre", "Grande enceinte"][city["walls"]],
+            "wall_label": [
+                message("Sans enceinte"),
+                message("Enceinte de terre"),
+                message("Grande enceinte"),
+            ][city["walls"]],
             "damaged": city["damaged"],
             "engaged": city["id"] in targets,
             "x": round(340 + 244 * math.cos(angle), 1),
@@ -94,7 +99,7 @@ def player_view(state, actor):
                 "destination": by_id[order["target"]]["name"]
                 if order.get("target")
                 else ", ".join(by_id[task["city"]]["name"] for task in order["tasks"])
-                or "Toutes vos possessions",
+                or message("Toutes vos possessions"),
                 "men": sum(order.get("contributions", {}).values()),
             }
         )

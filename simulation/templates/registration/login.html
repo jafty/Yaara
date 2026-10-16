@@ -1,16 +1,17 @@
 {% extends 'simulation/base.html' %}
-{% block title %}Reprendre votre règne · Yaara{% endblock %}
+{% load i18n %}
+{% block title %}{% blocktranslate %}Reprendre votre règne · Yaara{% endblocktranslate %}{% endblock %}
 {% block content %}
     <div class="auth-layout">
         <div class="auth-intro">
-            <span class="eyebrow">LE SABLE GARDE LA MÉMOIRE</span>
+            <span class="eyebrow">{% blocktranslate %}LE SABLE GARDE LA MÉMOIRE{% endblocktranslate %}</span>
             <h1>
-                Votre règne
+                {% blocktranslate %}Votre règne{% endblocktranslate %}
                 <br>
-                vous attend.
+                {% blocktranslate %}vous attend.{% endblocktranslate %}
             </h1>
             <p>
-                Des canaux à creuser, des frontières à défendre, des cités à rallier. Retrouvez votre place à la table du pouvoir.
+                {% blocktranslate %}Des canaux à creuser, des frontières à défendre, des cités à rallier. Retrouvez votre place à la table du pouvoir.{% endblocktranslate %}
             </p>
             <div class="auth-art" aria-hidden="true">
                 <div class="sun"></div>
@@ -20,17 +21,17 @@
             </div>
         </div>
         <section class="panel auth-panel">
-            <span class="eyebrow">LE BUREAU DU PRÉTENDANT</span>
-            <h2>Entrer dans Yaara</h2>
+            <span class="eyebrow">{% blocktranslate %}LE BUREAU DU PRÉTENDANT{% endblocktranslate %}</span>
+            <h2>{% blocktranslate %}Entrer dans Yaara{% endblocktranslate %}</h2>
             <form method="post" class="stack-form">
                 {% csrf_token %}{{ form.as_p }}
                 <input type="hidden" name="next" value="{{ next }}">
                 <button class="button primary" type="submit">
-                    Reprendre mon règne <span aria-hidden="true">→</span>
+                    {% blocktranslate %}Reprendre mon règne{% endblocktranslate %} <span aria-hidden="true">→</span>
                 </button>
             </form>
             <p class="form-foot">
-                Première visite ? <a href="{% url 'signup' %}">Créer mon compte</a>
+                {% blocktranslate %}Première visite ?{% endblocktranslate %} <a href="{% url 'signup' %}">{% blocktranslate %}Créer mon compte{% endblocktranslate %}</a>
             </p>
         </section>
     </div>

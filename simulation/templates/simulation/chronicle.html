@@ -1,85 +1,86 @@
 {% extends 'simulation/manuscript.html' %}
-{% block title %}{{ view.realm }} · Yaara{% endblock %}
+{% load i18n %}
+{% block title %}{% blocktranslate with p0=view.realm %}{{ p0 }} · Yaara{% endblocktranslate %}{% endblock %}
 {% block content %}
     <header class="chapter-heading">
         <p class="dateline">
             {% if view.month == 0 %}
-                Au seuil du règne
+                {% blocktranslate %}Au seuil du règne{% endblocktranslate %}
             {% else %}
-                Au terme du mois {{ view.month }}
+                {% blocktranslate with p0=view.month %}Au terme du mois {{ p0 }}{% endblocktranslate %}
             {% endif %}
-            — année {{ view.year }}
+            {% blocktranslate with p0=view.year %}— année {{ p0 }}{% endblocktranslate %}
         </p>
         <h1>
             {% if tab == 'domain' %}
-                Les terres sous votre sceau
+                {% blocktranslate %}Les terres sous votre sceau{% endblocktranslate %}
             {% elif tab == 'decrees' %}
-                Ce que vous dicterez
+                {% blocktranslate %}Ce que vous dicterez{% endblocktranslate %}
             {% else %}
-                Les lettres qui vous parviennent
+                {% blocktranslate %}Les lettres qui vous parviennent{% endblocktranslate %}
             {% endif %}
         </h1>
-        <p class="dedication">Au service de {{ view.realm }}.</p>
+        <p class="dedication">{% blocktranslate with p0=view.realm %}Au service de {{ p0 }}.{% endblocktranslate %}</p>
     </header>
     {% if view.finished %}
-        <section class="epilogue" aria-label="Épilogue du règne">
-            <h2>La dernière page du règne</h2>
+        <section class="epilogue" aria-label="{% translate 'Épilogue du règne' %}">
+            <h2>{% blocktranslate %}La dernière page du règne{% endblocktranslate %}</h2>
             <p>
-                Monseigneur, j’arrête ici ces chroniques. Au mois {{ view.month }},
+                {% blocktranslate with p0=view.month %}Monseigneur, j’arrête ici ces chroniques. Au mois {{ p0 }},{% endblocktranslate %}
                 {% for rank in view.ranking %}
-                    {% if rank.rank == 1 %}<strong>{{ rank.name }}</strong> figure au premier rang.{% endif %}
+                    {% if rank.rank == 1 %}<strong>{{ rank.name }}</strong> {% blocktranslate %}figure au premier rang.{% endblocktranslate %}{% endif %}
                 {% endfor %}
             </p>
             <p>
-                {{ view.epilogue_missions }} expédition{{ view.epilogue_missions|pluralize }} demeure{{ view.epilogue_missions|pluralize:'nt' }} encore en route. Leur histoire appartient à l’épilogue ; elle ne changera plus l’issue de votre règne.
+                {% blocktranslate count count=view.epilogue_missions %}{{ count }} expédition demeure encore en route. Son histoire appartient à l’épilogue ; elle ne changera plus l’issue de votre règne.{% plural %}{{ count }} expéditions demeurent encore en route. Leur histoire appartient à l’épilogue ; elle ne changera plus l’issue de votre règne.{% endblocktranslate %}
             </p>
         </section>
     {% elif view.eliminated %}
         <p class="marginal-note">
-            Monseigneur, aucune cité ne reconnaît plus votre autorité. Je continuerai pourtant de tenir ce livre jusqu’à la fin du règne.
+            {% blocktranslate %}Monseigneur, aucune cité ne reconnaît plus votre autorité. Je continuerai pourtant de tenir ce livre jusqu’à la fin du règne.{% endblocktranslate %}
         </p>
     {% elif game.paused %}
         <p class="marginal-note">
-            Nous avons suspendu le cours des chroniques. Aucun nouveau décret ne sera reçu avant la reprise du calendrier.
+            {% blocktranslate %}Nous avons suspendu le cours des chroniques. Aucun nouveau décret ne sera reçu avant la reprise du calendrier.{% endblocktranslate %}
         </p>
     {% endif %}
     {% if tab == 'domain' %}
-        <section class="opening-letter" aria-label="Les nouvelles de votre domaine">
-            <p class="salutation">Monseigneur,</p>
+        <section class="opening-letter" aria-label="{% translate 'Les nouvelles de votre domaine' %}">
+            <p class="salutation">{% blocktranslate %}Monseigneur,{% endblocktranslate %}</p>
             {% if view.month == 0 %}
                 <p>
-                    J’ouvre ce livre au premier jour de votre règne. Vos décisions y laisseront leur trace ; j’y consignerai les travaux achevés, les hommes qui reviennent et les cités qui changent de maître.
+                    {% blocktranslate %}J’ouvre ce livre au premier jour de votre règne. Vos décisions y laisseront leur trace ; j’y consignerai les travaux achevés, les hommes qui reviennent et les cités qui changent de maître.{% endblocktranslate %}
                 </p>
             {% else %}
                 <p>
-                    Voici ce que je peux vous dire de nos terres au terme du mois écoulé. Ces comptes sont ceux de votre maison ; au-delà de ses frontières, nos connaissances demeurent incertaines.
+                    {% blocktranslate %}Voici ce que je peux vous dire de nos terres au terme du mois écoulé. Ces comptes sont ceux de votre maison ; au-delà de ses frontières, nos connaissances demeurent incertaines.{% endblocktranslate %}
                 </p>
             {% endif %}
             <p>
-                <strong>{{ view.owned_cities|length }} cité{{ view.owned_cities|length|pluralize }}</strong> relève{{ view.owned_cities|length|pluralize:'nt' }} de votre autorité, avec <strong>{{ view.population }} habitants</strong> rattachés à leurs foyers. Parmi eux, <strong>{{ view.available_fideles }} Fidèles</strong> peuvent encore recevoir vos ordres.
+                <strong>{% blocktranslate count count=view.owned_cities|length %}{{ count }} cité{% plural %}{{ count }} cités{% endblocktranslate %}</strong> {% blocktranslate count count=view.owned_cities|length %}relève de votre autorité, avec{% plural %}relèvent de votre autorité, avec{% endblocktranslate %} <strong>{% blocktranslate with p0=view.population %}{{ p0 }} habitants{% endblocktranslate %}</strong> {% blocktranslate %}rattachés à leurs foyers. Parmi eux,{% endblocktranslate %} <strong>{% blocktranslate with p0=view.available_fideles %}{{ p0 }} Fidèles{% endblocktranslate %}</strong> {% blocktranslate %}peuvent encore recevoir vos ordres.{% endblocktranslate %}
                 {% if view.absent %}
-                    {{ view.absent }} autres sont en expédition ; leur place demeure vide dans les garnisons.
+                    {% blocktranslate with p0=view.absent %}{{ p0 }} autres sont en expédition ; leur place demeure vide dans les garnisons.{% endblocktranslate %}
                 {% endif %}
             </p>
             <p>
-                Les greniers renferment <strong>{{ view.stock }} Mesures</strong>. Nous pouvons encore engager <strong>{{ view.available_stock }} Mesures</strong>.
-                {% if view.reserved_stock %}Les {{ view.reserved_stock }} autres sont déjà promises à vos décrets.{% endif %}
+                {% blocktranslate %}Les greniers renferment{% endblocktranslate %} <strong>{% blocktranslate with p0=view.stock %}{{ p0 }} Mesures{% endblocktranslate %}</strong>{% blocktranslate %}. Nous pouvons encore engager{% endblocktranslate %} <strong>{% blocktranslate with p0=view.available_stock %}{{ p0 }} Mesures{% endblocktranslate %}</strong>.
+                {% if view.reserved_stock %}{% blocktranslate with p0=view.reserved_stock %}Les {{ p0 }} autres sont déjà promises à vos décrets.{% endblocktranslate %}{% endif %}
             </p>
             {% if not view.finished %}
                 <p>
-                    La prochaine récolte sera versée dans <strong>{{ view.harvest_in }} mois</strong>. J’ai comptabilisé jusqu’ici {{ view.tax }} Mesures de prélèvement à venir. Ce montant n’est pas encore entre nos mains.
+                    {% blocktranslate %}La prochaine récolte sera versée dans{% endblocktranslate %} <strong>{% blocktranslate with p0=view.harvest_in %}{{ p0 }} mois{% endblocktranslate %}</strong>{% blocktranslate with p0=view.tax %}. J’ai comptabilisé jusqu’ici {{ p0 }} Mesures de prélèvement à venir. Ce montant n’est pas encore entre nos mains.{% endblocktranslate %}
                 </p>
             {% endif %}
             {% if not view.finished and not view.eliminated %}
                 <p class="reading-links">
-                    <a href="?tab=decrees">Faire venir le scribe pour dicter vos ordres.</a>
+                    <a href="?tab=decrees">{% blocktranslate %}Faire venir le scribe pour dicter vos ordres.{% endblocktranslate %}</a>
                 </p>
             {% endif %}
-            <p class="signature">Votre scribe</p>
+            <p class="signature">{% blocktranslate %}Votre scribe{% endblocktranslate %}</p>
         </section>
         <section class="chapter-section" aria-labelledby="city-ledgers">
-            <h2 id="city-ledgers">Les feuillets des cités</h2>
-            <p class="aside-text">J’ai laissé un feuillet pour chacune de vos cités. Vous pouvez les ouvrir à votre gré.</p>
+            <h2 id="city-ledgers">{% blocktranslate %}Les feuillets des cités{% endblocktranslate %}</h2>
+            <p class="aside-text">{% blocktranslate %}J’ai laissé un feuillet pour chacune de vos cités. Vous pouvez les ouvrir à votre gré.{% endblocktranslate %}</p>
             {% for city in view.owned_cities %}
                 <details class="city-entry"
                          id="city-{{ city.id }}"
@@ -87,184 +88,184 @@
                     <summary>{{ city.name }}</summary>
                     <div class="unfolded">
                         <p>
-                            {{ city.name }} compte <strong>{{ city.population }} habitants</strong> rattachés à ses foyers, dont {{ city.present_population }} sont présents. De ses Fidèles, <strong>{{ city.available_fideles }}</strong> sont encore libres de partir.
-                            {% if city.reserved_fideles %}Nous en avons déjà promis {{ city.reserved_fideles }} à une expédition.{% endif %}
-                            {% if city.absent %}Nous attendons le retour de {{ city.absent }} autres à leur origine.{% endif %}
+                            {% blocktranslate with p0=city.name %}{{ p0 }} compte{% endblocktranslate %} <strong>{% blocktranslate with p0=city.population %}{{ p0 }} habitants{% endblocktranslate %}</strong> {% blocktranslate with p0=city.present_population %}rattachés à ses foyers, dont {{ p0 }} sont présents. De ses Fidèles,{% endblocktranslate %} <strong>{{ city.available_fideles }}</strong> {% blocktranslate %}sont encore libres de partir.{% endblocktranslate %}
+                            {% if city.reserved_fideles %}{% blocktranslate with p0=city.reserved_fideles %}Nous en avons déjà promis {{ p0 }} à une expédition.{% endblocktranslate %}{% endif %}
+                            {% if city.absent %}{% blocktranslate with p0=city.absent %}Nous attendons le retour de {{ p0 }} autres à leur origine.{% endblocktranslate %}{% endif %}
                         </p>
                         <p>
-                            Le grenier conserve <strong>{{ city.stock }} Mesures</strong> sur les {{ city.capacity }} qu’il peut abriter.
+                            {% blocktranslate %}Le grenier conserve{% endblocktranslate %} <strong>{% blocktranslate with p0=city.stock %}{{ p0 }} Mesures{% endblocktranslate %}</strong> {% blocktranslate with p0=city.capacity %}sur les {{ p0 }} qu’il peut abriter.{% endblocktranslate %}
                             {% if city.reserved_stock %}
-                                {{ city.reserved_stock }} sont réservées ; il en reste {{ city.available_stock }} de libres.
+                                {% blocktranslate with p0=city.reserved_stock p1=city.available_stock %}{{ p0 }} sont réservées ; il en reste {{ p1 }} de libres.{% endblocktranslate %}
                             {% endif %}
-                            Chaque habitant présent rapporte {{ city.yield }} Mesures par mois. Le prélèvement en préparation s’élève à {{ city.tax }} Mesures.
+                            {% blocktranslate with p0=city.yield p1=city.tax %}Chaque habitant présent rapporte {{ p0 }} Mesures par mois. Le prélèvement en préparation s’élève à {{ p1 }} Mesures.{% endblocktranslate %}
                         </p>
                         <p>
                             {% if city.walls %}
-                                Une {{ city.wall_label|lower }} protège le centre.
-                                {% if city.damaged %}Elle porte encore les dommages de l’assaut et doit être réparée.{% endif %}
+                                {% blocktranslate with p0=city.wall_label|lower %}Une {{ p0 }} protège le centre.{% endblocktranslate %}
+                                {% if city.damaged %}{% blocktranslate %}Elle porte encore les dommages de l’assaut et doit être réparée.{% endblocktranslate %}{% endif %}
                             {% else %}
-                                Le centre ne possède pas encore d’enceinte.
+                                {% blocktranslate %}Le centre ne possède pas encore d’enceinte.{% endblocktranslate %}
                             {% endif %}
                         </p>
                         {% for work in city.works %}
                             <p>
-                                Vos équipes poursuivent leur ouvrage : <em>{{ work.label|lower }}</em>. Elles en annoncent l’achèvement au mois <strong>{{ work.finish_month }}</strong>.
+                                {% blocktranslate %}Vos équipes poursuivent leur ouvrage :{% endblocktranslate %} <em>{{ work.label|lower }}</em>{% blocktranslate %}. Elles en annoncent l’achèvement au mois{% endblocktranslate %} <strong>{{ work.finish_month }}</strong>.
                             </p>
                         {% empty %}
                             {% if city.busy %}
-                                <p>Les équipes attendent le départ d’un chantier déjà confirmé.</p>
+                                <p>{% blocktranslate %}Les équipes attendent le départ d’un chantier déjà confirmé.{% endblocktranslate %}</p>
                             {% else %}
-                                <p>Les équipes de cette cité sont libres de recevoir un chantier.</p>
+                                <p>{% blocktranslate %}Les équipes de cette cité sont libres de recevoir un chantier.{% endblocktranslate %}</p>
                             {% endif %}
                         {% endfor %}
                         {% if city.deaths %}
                             <p class="aside-text">
-                                Depuis l’ouverture de ces chroniques, {{ city.deaths }} habitants de cette cité ont perdu la vie.
+                                {% blocktranslate with p0=city.deaths %}Depuis l’ouverture de ces chroniques, {{ p0 }} habitants de cette cité ont perdu la vie.{% endblocktranslate %}
                             </p>
                         {% endif %}
                         {% if not view.finished and not view.eliminated %}
-                            <a href="?tab=decrees">Dicter un décret pour nos terres.</a>
+                            <a href="?tab=decrees">{% blocktranslate %}Dicter un décret pour nos terres.{% endblocktranslate %}</a>
                         {% endif %}
                     </div>
                 </details>
             {% empty %}
-                <p>Il ne reste aucun feuillet de cité à placer sous votre sceau.</p>
+                <p>{% blocktranslate %}Il ne reste aucun feuillet de cité à placer sous votre sceau.{% endblocktranslate %}</p>
             {% endfor %}
         </section>
         <section class="chapter-section" aria-labelledby="frontier-notes">
-            <h2 id="frontier-notes">Ce que nous savons de Yaara</h2>
+            <h2 id="frontier-notes">{% blocktranslate %}Ce que nous savons de Yaara{% endblocktranslate %}</h2>
             <details class="plain-disclosure"
                      id="foreign-cities"
                      {% if not selected.owned %}open{% endif %}>
-                <summary>Consulter les noms, les routes et les souverains</summary>
+                <summary>{% blocktranslate %}Consulter les noms, les routes et les souverains{% endblocktranslate %}</summary>
                 <div class="unfolded">
                     <p>
-                        Les noms des souverains et les ouvrages visibles sont connus. Les réserves et les hommes des autres maisons nous échappent ; je n’inscrirai ici aucune certitude que nous n’ayons acquise.
+                        {% blocktranslate %}Les noms des souverains et les ouvrages visibles sont connus. Les réserves et les hommes des autres maisons nous échappent ; je n’inscrirai ici aucune certitude que nous n’ayons acquise.{% endblocktranslate %}
                     </p>
                     {% for city in view.cities %}
                         <p class="geography-entry"
                            {% if not city.owned %}data-foreign-city="{{ city.id }}"{% endif %}>
-                            <a href="?city={{ city.id }}#{% if city.owned %}city-{{ city.id }}{% else %}foreign-cities{% endif %}">{{ city.name }}</a> relève de {{ city.owner_name }}. {{ city.wall_label }}
-                            {% if city.damaged %}, endommagée{% endif %}
+                            <a href="?city={{ city.id }}#{% if city.owned %}city-{{ city.id }}{% else %}foreign-cities{% endif %}">{{ city.name }}</a> {% blocktranslate with p0=city.owner_name p1=city.wall_label %}relève de {{ p0 }}. {{ p1 }}{% endblocktranslate %}
+                            {% if city.damaged %}{% blocktranslate %}, endommagée{% endblocktranslate %}{% endif %}
                             .
-                            {% if city.engaged %}Une expédition est déjà engagée vers cette cité.{% endif %}
+                            {% if city.engaged %}{% blocktranslate %}Une expédition est déjà engagée vers cette cité.{% endblocktranslate %}{% endif %}
                         </p>
                     {% endfor %}
-                    <h3>Les routes entre les oasis</h3>
+                    <h3>{% blocktranslate %}Les routes entre les oasis{% endblocktranslate %}</h3>
                     <ul class="route-list">
                         {% for link in view.links %}<li>{{ link.first.name }} — {{ link.second.name }}</li>{% endfor %}
                     </ul>
                     <p class="aside-text">
-                        Pour porter une armée sur une frontière, ses origines doivent y être reliées par nos possessions. Chaque ensemble de terres touchant la même cible peut y envoyer ses hommes.
+                        {% blocktranslate %}Pour porter une armée sur une frontière, ses origines doivent y être reliées par nos possessions. Chaque ensemble de terres touchant la même cible peut y envoyer ses hommes.{% endblocktranslate %}
                     </p>
                 </div>
             </details>
             <details class="plain-disclosure">
-                <summary>Relire les prétentions au trône</summary>
+                <summary>{% blocktranslate %}Relire les prétentions au trône{% endblocktranslate %}</summary>
                 <div class="unfolded">
                     {% for rank in view.ranking %}
                         <p>
-                            {{ rank.name }} gouverne <strong>{{ rank.cities }} cité{{ rank.cities|pluralize }}</strong> et figure au rang {{ rank.rank }} des Prétendants
-                            {% if rank.own %}; c’est votre maison{% endif %}
+                            {% blocktranslate with p0=rank.name %}{{ p0 }} gouverne{% endblocktranslate %} <strong>{% blocktranslate count count=rank.cities %}{{ count }} cité{% plural %}{{ count }} cités{% endblocktranslate %}</strong> {% blocktranslate with p0=rank.rank %}et figure au rang {{ p0 }} des Prétendants{% endblocktranslate %}
+                            {% if rank.own %}{% blocktranslate %}; c’est votre maison{% endblocktranslate %}{% endif %}
                             .
                         </p>
                     {% endfor %}
                     <p class="aside-text">
-                        À la fin du règne, le nombre de cités primera ; la population départagera les égalités. Les comptes exacts des maisons rivales ne nous sont pas révélés.
+                        {% blocktranslate %}À la fin du règne, le nombre de cités primera ; la population départagera les égalités. Les comptes exacts des maisons rivales ne nous sont pas révélés.{% endblocktranslate %}
                     </p>
                 </div>
             </details>
         </section>
         <section class="chapter-section" aria-labelledby="recent-letters">
-            <h2 id="recent-letters">Les dernières nouvelles</h2>
+            <h2 id="recent-letters">{% blocktranslate %}Les dernières nouvelles{% endblocktranslate %}</h2>
             {% include 'simulation/letter_entries.html' %}
             <p class="reading-links">
-                <a href="?tab=letters">Reprendre toute la correspondance.</a>
+                <a href="?tab=letters">{% blocktranslate %}Reprendre toute la correspondance.{% endblocktranslate %}</a>
             </p>
         </section>
     {% elif tab == 'decrees' %}
         {% include 'simulation/chronicle_decrees.html' %}
     {% else %}
-        <p class="salutation">Monseigneur,</p>
+        <p class="salutation">{% blocktranslate %}Monseigneur,{% endblocktranslate %}</p>
         <p>
-            J’ai réuni ici les lettres et les récits qui vous sont destinés. Chaque feuillet garde sa date : ce qu’un homme a vu hier n’est pas nécessairement ce qu’il verrait aujourd’hui.
+            {% blocktranslate %}J’ai réuni ici les lettres et les récits qui vous sont destinés. Chaque feuillet garde sa date : ce qu’un homme a vu hier n’est pas nécessairement ce qu’il verrait aujourd’hui.{% endblocktranslate %}
         </p>
         <p class="aside-text">
-            Les pertes et les recettes de notre maison sont comptées avec exactitude. Les forces adverses ne sont décrites qu’à travers ce que nos hommes ont réellement rencontré.
+            {% blocktranslate %}Les pertes et les recettes de notre maison sont comptées avec exactitude. Les forces adverses ne sont décrites qu’à travers ce que nos hommes ont réellement rencontré.{% endblocktranslate %}
         </p>
-        <section class="correspondence" aria-label="Les lettres de votre maison">
+        <section class="correspondence" aria-label="{% translate 'Les lettres de votre maison' %}">
             {% include 'simulation/letter_entries.html' %}
         </section>
         <p class="aside-text">
-            Je garde ici les cent dernières nouvelles. Les comptes présents de vos cités sont consignés au domaine.
+            {% blocktranslate %}Je garde ici les cent dernières nouvelles. Les comptes présents de vos cités sont consignés au domaine.{% endblocktranslate %}
         </p>
     {% endif %}
     {% if view.missions %}
         <details class="plain-disclosure campaign-notes">
-            <summary>Demander des nouvelles de nos hommes en route</summary>
+            <summary>{% blocktranslate %}Demander des nouvelles de nos hommes en route{% endblocktranslate %}</summary>
             <div class="unfolded">
                 {% for mission in view.missions %}
                     <p>
-                        Vers <strong>{{ mission.target }}</strong>, {{ mission.men }} de nos hommes poursuivent une mission : <em>{{ mission.kind|lower }}</em>.
+                        {% blocktranslate %}Vers{% endblocktranslate %} <strong>{{ mission.target }}</strong>{% blocktranslate with p0=mission.men %}, {{ p0 }} de nos hommes poursuivent une mission :{% endblocktranslate %} <em>{{ mission.kind|lower }}</em>.
                         {% if mission.returning %}
-                            Ils ont repris le chemin de leurs origines ; le retour est attendu au mois <strong>{{ mission.return_month }}</strong>.
+                            {% blocktranslate %}Ils ont repris le chemin de leurs origines ; le retour est attendu au mois{% endblocktranslate %} <strong>{{ mission.return_month }}</strong>.
                         {% else %}
-                            Le combat est prévu au mois <strong>{{ mission.combat_month }}</strong>, et leur retour au mois <strong>{{ mission.return_month }}</strong>.
+                            {% blocktranslate %}Le combat est prévu au mois{% endblocktranslate %} <strong>{{ mission.combat_month }}</strong>{% blocktranslate %}, et leur retour au mois{% endblocktranslate %} <strong>{{ mission.return_month }}</strong>.
                         {% endif %}
                         {% if mission.loot %}
-                            Ils transportent {{ mission.loot }} Mesures qui ne seront disponibles qu’à leur arrivée.
+                            {% blocktranslate with p0=mission.loot %}Ils transportent {{ p0 }} Mesures qui ne seront disponibles qu’à leur arrivée.{% endblocktranslate %}
                         {% endif %}
                     </p>
                 {% endfor %}
             </div>
         </details>
     {% endif %}
-    <section class="chapter-closing" id="turn-page" aria-label="Le cours du règne">
+    <section class="chapter-closing" id="turn-page" aria-label="{% translate 'Le cours du règne' %}">
         {% if not view.finished %}
             {% if game.mode == 'manual' %}
                 <p>
-                    Lorsque vous aurez donné vos ordres et lu ces feuillets, je pourrai clore ce mois. Les décrets confirmés prendront leur cours, les travaux avanceront, puis nous attendrons les nouvelles.
+                    {% blocktranslate %}Lorsque vous aurez donné vos ordres et lu ces feuillets, je pourrai clore ce mois. Les décrets confirmés prendront leur cours, les travaux avanceront, puis nous attendrons les nouvelles.{% endblocktranslate %}
                 </p>
                 <form method="post" action="{% url 'advance' game.id %}" data-busy-form>
                     {% csrf_token %}
                     <input type="hidden" name="month" value="{{ view.month|add:'1' }}">
-                    <button type="submit" class="primary-action">Clore le mois {{ view.month|add:'1' }}</button>
+                    <button type="submit" class="primary-action">{% blocktranslate with p0=view.month|add:'1' %}Clore le mois {{ p0 }}{% endblocktranslate %}</button>
                 </form>
             {% else %}
                 <p class="deadline"
                    {% if game.deadline %}data-deadline="{{ game.deadline|date:'c' }}"{% endif %}>
                     {% if game.paused %}
-                        Le cours des chroniques est suspendu.
+                        {% blocktranslate %}Le cours des chroniques est suspendu.{% endblocktranslate %}
                     {% else %}
-                        Le prochain mois sera clos à {{ game.deadline|date:'H:i' }} UTC.
+                        {% blocktranslate with p0=game.deadline|date:'H:i' %}Le prochain mois sera clos à {{ p0 }} UTC.{% endblocktranslate %}
                     {% endif %}
                 </p>
                 <form method="post" action="{% url 'pause' game.id %}">
                     {% csrf_token %}
                     <button type="submit">
                         {% if game.paused %}
-                            Reprendre le cours des chroniques
+                            {% blocktranslate %}Reprendre le cours des chroniques{% endblocktranslate %}
                         {% else %}
-                            Suspendre le cours des chroniques
+                            {% blocktranslate %}Suspendre le cours des chroniques{% endblocktranslate %}
                         {% endif %}
                     </button>
                 </form>
             {% endif %}
         {% else %}
-            <p>Ce livre est achevé. Vous pouvez en relire les feuillets ou commencer un autre règne.</p>
+            <p>{% blocktranslate %}Ce livre est achevé. Vous pouvez en relire les feuillets ou commencer un autre règne.{% endblocktranslate %}</p>
         {% endif %}
     </section>
     <details class="plain-disclosure rules-help">
-        <summary>Demander au scribe de rappeler les usages du règne</summary>
+        <summary>{% blocktranslate %}Demander au scribe de rappeler les usages du règne{% endblocktranslate %}</summary>
         <div class="unfolded">
             <p>
-                L’impôt s’accumule chaque mois, mais n’entre dans les greniers que tous les douze mois. Chaque cité conserve ses réserves ; les dépenses de votre maison sont réparties entre leurs fonds libres. Les ouvrages ne portent leur fruit qu’une fois achevés.
+                {% blocktranslate %}L’impôt s’accumule chaque mois, mais n’entre dans les greniers que tous les douze mois. Chaque cité conserve ses réserves ; les dépenses de votre maison sont réparties entre leurs fonds libres. Les ouvrages ne portent leur fruit qu’une fois achevés.{% endblocktranslate %}
             </p>
             <p>
-                Les Fidèles sont des habitants de vos cités, non des hommes ajoutés à leur population. Ceux qui partent ne défendent plus leur origine. Les secours protègent nos places contre les captures ; les murs ne protègent pas les villages contre le pillage.
+                {% blocktranslate %}Les Fidèles sont des habitants de vos cités, non des hommes ajoutés à leur population. Ceux qui partent ne défendent plus leur origine. Les secours protègent nos places contre les captures ; les murs ne protègent pas les villages contre le pillage.{% endblocktranslate %}
             </p>
             <p>
-                Une seule attaque peut être engagée vers une cité. À la fin des {{ view.reign_months }} mois du règne, celui qui en possède le plus l’emporte ; celui qui les réunit toutes gagne aussitôt.
+                {% blocktranslate with p0=view.reign_months %}Une seule attaque peut être engagée vers une cité. À la fin des {{ p0 }} mois du règne, celui qui en possède le plus l’emporte ; celui qui les réunit toutes gagne aussitôt.{% endblocktranslate %}
             </p>
         </div>
     </details>

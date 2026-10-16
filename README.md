@@ -54,3 +54,5 @@ Set `DATABASE_URL` to a disposable PostgreSQL database for real concurrency test
 Production dependencies are locked in `uv.lock` and exported with hashes to `requirements.txt`. After dependency changes, run `uv lock` and `uv export --frozen --no-dev --format requirements-txt --no-header --output-file requirements.txt`.
 
 No external game assets or paid APIs are required. Human multiplayer and competitive rankings remain future work.
+
+French and English are available from the language selector. See [language and report conventions](docs/localization.md) and [natural-language test scenarios](docs/testing.md#natural-language-scenarios).

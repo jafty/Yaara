@@ -9,7 +9,7 @@ One Python/Django application, one PostgreSQL database, and an optional calendar
 - `simulation/services.py`: authorization, deadlines, transactions, request idempotency, persistence and tick audit.
 - `simulation/models.py`: canonical `Game.state` snapshot; relational memberships, receipts, target engagements, tick executions and recipient reports.
 - `simulation/projections.py`: explicit player-facing allowlist. Enemy figures and numerical combativity never leave the server. Ranking reveals rank, not enemy population.
-- Django templates, local CSS and progressive JavaScript: French UI. JavaScript estimates costs; the server independently validates every request.
+- Django templates, local CSS and progressive JavaScript: French/English UI with gettext. The pure core emits canonical French messages with serializable presentation descriptions; only the application boundary chooses the display language. See [localization](localization.md). JavaScript estimates costs; the server independently validates every request.
 
 ## Mutation protocol
 

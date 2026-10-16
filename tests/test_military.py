@@ -38,6 +38,10 @@ def raid(fixed_random):
     ],
 )
 def test_raid_timeline(raid, month, present, away, population, tax, status):
+    """Given a confirmed forty-five-person raid with a prescribed defense draw.
+    When month {month} is reached.
+    Then present {present}, absent {away}, population {population}, tax {tax} and mission status {status} reconcile.
+    """
     for _ in range(month):
         engine.advance_month(raid, "stubbed")
     city = raid["cities"]["c3"]
@@ -60,6 +64,10 @@ def test_raid_timeline(raid, month, present, away, population, tax, status):
     ],
 )
 def test_prescribed_raid_defense(percentage, remaining, monkeypatch):
+    """Given a raid and a prescribed local defense percentage of {percentage}.
+    When combat resolves.
+    Then the target retains {remaining} Faithful.
+    """
     monkeypatch.setattr(engine, "random_stream", FixedRandom(percentage))
     state = engine.new_state(opponents="passive")
     engine.confirm_order(
@@ -83,6 +91,10 @@ def test_prescribed_raid_defense(percentage, remaining, monkeypatch):
     ],
 )
 def test_raid_protection(raid, month, protected):
+    """Given a completed raid whose protection expires at month fourteen.
+    When a new raid is requested in month {month}.
+    Then the target engagement is released and protection is {protected}.
+    """
     for _ in range(month):
         engine.advance_month(raid, "stubbed")
     assert engine.active_targets(raid) == {}
@@ -110,6 +122,10 @@ def test_raid_protection(raid, month, protected):
     ],
 )
 def test_raid_stock_accounting(raid, month, total, loot):
+    """Given a raid against a city holding 1200000 Measures.
+    When month {month} is reached.
+    Then total city stock is {total} and loot in transit is {loot}.
+    """
     for _ in range(month):
         engine.advance_month(raid, "stubbed")
     assert sum(city["stock"] for city in raid["cities"].values()) == total
@@ -124,6 +140,10 @@ def test_raid_stock_accounting(raid, month, total, loot):
     "variation", ["local-survivors", "attacker-survivors", "tax", "walls-damaged", "work-continues"]
 )
 def test_capture_transfer(variation, fixed_random):
+    """Given a fortified enemy city with an active granary project and a sufficient attacking army.
+    When capture resolves for variation {variation}.
+    Then ownership changes while the specified survivor, tax, damage or continuing-work consequence is preserved.
+    """
     state = rich_state()
     state["cities"]["c4"]["walls"] = 1
     engine.confirm_order(state, "p2", {"kind": "storage", "cities": ["c4"]}, "store")
@@ -161,6 +181,10 @@ def test_capture_transfer(variation, fixed_random):
     ],
 )
 def test_wall_damage(repair, fixed_random):
+    """Given a wall upgrade damaged after its departure.
+    When the upgrade completes and repair is {repair}.
+    Then wall level remains two and damage is cleared only by a completed repair.
+    """
     state = rich_state()
     state["cities"]["c1"].update(walls=1, storage=2, stock=6000000)
     engine.confirm_order(state, "p1", {"kind": "walls", "cities": ["c1"]}, "wall")
