@@ -1,0 +1,57 @@
+{% extends 'simulation/base.html' %}
+{% block content %}
+    <div class="page-heading">
+        <div>
+            <span class="eyebrow">LE LIVRE DES RÈGNES</span>
+            <h1>Chaque règne, une histoire.</h1>
+            <p>Retrouvez vos possessions ou inscrivez une nouvelle maison dans les chroniques.</p>
+        </div>
+        <a href="{% url 'new_game' %}" class="button primary">Nouveau règne <span aria-hidden="true">＋</span></a>
+    </div>
+    <div class="home-banner">
+        <div>
+            <span class="eyebrow">TERRE CRUE · OASIS · RIVALITÉS</span>
+            <h2>
+                Le désert n’offre pas de couronne.
+                <br>
+                Il faut la gagner.
+            </h2>
+            <p>
+                Gouvernez trois cités. Faites prospérer vos terres.
+                <br>
+                Étendez votre autorité, un mois après l’autre.
+            </p>
+        </div>
+        <div class="banner-emblem" aria-hidden="true">✺</div>
+    </div>
+    <div class="section-heading">
+        <h2>Vos chroniques</h2>
+        <span class="muted">{{ games|length }} règne{{ games|length|pluralize }}</span>
+    </div>
+    <div class="game-grid">
+        {% for item in games %}
+            <a class="panel game-card" href="{% url 'game' item.id %}">
+                <div class="card-top">
+                    <span class="tag">{{ item.rules }}</span><span class="status-dot {% if item.finished %}finished{% endif %}">
+                    {% if item.finished %}
+                        Règne achevé
+                    {% else %}
+                        En cours
+                    {% endif %}
+                </span>
+            </div>
+            <h3>{{ item.title }}</h3>
+            <p>{{ item.cities }} cité{{ item.cities|pluralize }} sous votre autorité</p>
+            <div class="card-bottom">
+                <span>Mois {{ item.month }} / {{ item.reign_months }}</span><span aria-hidden="true">↗</span>
+            </div>
+        </a>{% empty %}
+        <div class="panel empty-state">
+            <span class="large-symbol" aria-hidden="true">◇</span>
+            <h3>La première page est encore blanche.</h3>
+            <p>Créez votre règne. Le mode manuel vous laisse tout le temps de découvrir Yaara.</p>
+            <a href="{% url 'new_game' %}" class="button primary">Fonder ma maison</a>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
