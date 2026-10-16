@@ -25,7 +25,7 @@ Production requires PostgreSQL. SQLite is a local solo fallback with immediate t
 
 ## Development method
 
-Read the dossier section and decision record, write a meaningful example/boundary test, implement the pure behavior, then test the application boundary when persistence or permissions change. Preserve existing rules for in-progress games. Use new rule versions for incompatible changes.
+Follow the standing [pseudo-TDD policy](testing.md): identify use-case variations, write one independent logical test per variation first, use native stubs or direct pure-function inputs, then implement and refactor. PostgreSQL and browser checks supplement those logical tests and run with the full suite on every push. Preserve existing rules for in-progress games. Use new rule versions for incompatible changes.
 
 `AGENTS.md` contains stable commands and constraints. An ordinary focused coding conversation is enough; additional agent orchestration is unnecessary. Keep each change playable and report assumptions, deviations and evidence.
 

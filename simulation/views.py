@@ -14,6 +14,7 @@ from django.views.decorators.http import require_GET, require_POST
 from . import services
 from .forms import GameForm, SignupForm
 from .models import Game, Report
+from .narration import work_phrase
 from .projections import player_view
 from .rules import ACTION_LABELS, RuleError
 
@@ -108,7 +109,7 @@ def desk(request, game_id):
     reports = Report.objects.filter(game=game, recipient=actor)[: 100 if tab == "letters" else 4]
     return render(
         request,
-        "simulation/desk.html",
+        "simulation/chronicle.html",
         {
             "game": metadata(game),
             "view": view,
@@ -179,13 +180,14 @@ def preview_order(request, game_id):
         {
             "name": city_names[task["city"]],
             "level": task["level"],
+            "description": work_phrase(task["kind"], task["level"]),
             "finish_month": order["execute_month"] + task["duration"],
         }
         for task in order["tasks"]
     ]
     return render(
         request,
-        "simulation/preview.html",
+        "simulation/decree_letter.html",
         {
             "game": metadata(game),
             "label": ACTION_LABELS[kind],
@@ -219,7 +221,10 @@ def confirm_order(request, game_id):
             data["month"],
             data["revision"],
         )
-        messages.success(request, "Votre décret est scellé. Les moyens nécessaires sont réservés.")
+        messages.success(
+            request,
+            "J’ai reçu votre sceau. Les moyens promis attendent l’entrée en vigueur de votre décret.",
+        )
     except (signing.BadSignature, KeyError, ValueError) as error:
         messages.error(
             request,
@@ -236,7 +241,10 @@ def cancel_order(request, game_id, order_id):
     authorized_game(request, game_id)
     try:
         services.cancel(request.user, game_id, str(order_id))
-        messages.success(request, "Le décret est annulé. Vos moyens sont libérés.")
+        messages.success(
+            request,
+            "J’ai retiré ce décret de nos engagements. Les moyens qu’il promettait sont de nouveau libres.",
+        )
     except RuleError as error:
         messages.error(request, str(error))
     return redirect(f"/games/{game_id}/?tab=decrees")
@@ -251,10 +259,14 @@ def advance(request, game_id):
         _, executed = services.tick(game_id, target, request.user)
         if executed:
             messages.success(
-                request, f"Le mois {target} est résolu. Votre scribe a consigné les nouvelles."
+                request,
+                f"Le mois {target} est désormais consigné dans ces chroniques. Voici les nouvelles qui nous sont parvenues.",
             )
         else:
-            messages.info(request, "Ce mois a déjà été résolu. Aucun effet n’a été répété.")
+            messages.info(
+                request,
+                "Ce mois figure déjà dans nos chroniques. Je n’en ai pas répété les événements.",
+            )
     except (ValueError, RuleError) as error:
         messages.error(
             request, str(error) if isinstance(error, RuleError) else "Le mois demandé est invalide."

@@ -1,0 +1,14 @@
+{% for report in reports %}
+    <details class="letter-entry" {% if forloop.first %}open{% endif %}>
+        <summary>
+            <span class="letter-date">Mois {{ report.month }}</span><span>{{ report.title }}</span>
+        </summary>
+        <div class="letter-text">
+            <p class="salutation">Monseigneur,</p>
+            <p>{{ report.body }}</p>
+            <p class="signature">Consigné par votre scribe, au mois {{ report.month }}.</p>
+        </div>
+    </details>
+{% empty %}
+    <p>Le scribe n’a rien de nouveau à consigner. Un mois paisible n’exige pas de lettre.</p>
+{% endfor %}

@@ -27,8 +27,8 @@ if (targetSelect) {
       (capture ? 900000 : 20000) + total * (capture ? 18000 : 2500),
     );
     document.querySelector("#mission-help").textContent = capture
-      ? "La capture affronte la garnison, les murs et les secours automatiques. La victoire transfère la cité ; vos survivants rentrent à leurs origines. Départ au prochain mois, combat un mois après, retour le mois suivant."
-      : "Le pillage vise les réserves des villages. Départ au prochain mois, combat un mois après, retour le mois suivant. Le butin ne sera disponible qu’au retour.";
+      ? "Il leur faudra affronter les hommes de la cité, ses murs et les secours du domaine. S’ils l’emportent, la cité vous reviendra et nos survivants rentreront à leurs origines. Ils partiront au prochain mois, combattront un mois après et reviendront le mois suivant."
+      : "Nos hommes tenteront d’emporter les réserves des villages. Ils partiront au prochain mois, combattront un mois après et reviendront le mois suivant. Leur butin ne sera à notre disposition qu’à leur retour.";
   };
   const updateOrigins = () => {
     const eligible = origins[targetSelect.value] || [];
@@ -39,7 +39,7 @@ if (targetSelect) {
       if (input.disabled) input.value = "0";
       row.querySelector(".origin-note").textContent =
         input.disabled && targetSelect.value
-          ? "Non reliée à cette frontière"
+          ? "Ces hommes ne peuvent rejoindre cette frontière par nos terres."
           : "";
     });
     updateTotals();
@@ -60,8 +60,8 @@ document.querySelectorAll("[data-deadline]").forEach((element) => {
     );
     element.textContent =
       remaining > 0
-        ? `Clôture dans ${Math.floor(remaining / 60)} min ${String(remaining % 60).padStart(2, "0")} s`
-        : "Mois clos · résolution en attente";
+        ? `Ce mois sera clos dans ${Math.floor(remaining / 60)} min ${String(remaining % 60).padStart(2, "0")} s.`
+        : "Le mois est clos. Nous attendons les nouvelles.";
   };
   update();
   window.setInterval(update, 1000);
@@ -90,7 +90,7 @@ if (document.querySelector("[data-deadline]")) {
         const link = document.createElement("a");
         link.href = initialUrl.href;
         link.textContent =
-          "De nouvelles chroniques sont disponibles. Actualiser la page.";
+          "De nouvelles lettres nous sont parvenues. Reprendre le livre à ce jour.";
         notice.append(link);
         document.querySelector("#main").prepend(notice);
       }

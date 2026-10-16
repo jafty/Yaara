@@ -1,11 +1,10 @@
-import json
 import threading
 import time
 import uuid
 from concurrent.futures import ThreadPoolExecutor
 from copy import deepcopy
-from datetime import timedelta
-from unittest.mock import patch
+from datetime import datetime, timedelta
+from datetime import timezone as datetime_timezone
 
 import pytest
 from django.contrib.auth import get_user_model
@@ -25,36 +24,85 @@ from simulation.models import (
     TargetEngagement,
     TickExecution,
 )
-from simulation.projections import player_view
 from simulation.rules import RuleError
+from tests.cases import case
+from tests.stubs import FailingBoundary, FixedClock
+
+pytestmark = [pytest.mark.integration, pytest.mark.usefixtures("test_static_storage")]
 
 
-@pytest.mark.django_db
-def test_confirmation_idempotency_and_target_constraint(user, game):
+@pytest.fixture
+def clock(monkeypatch):
+    clock = FixedClock(datetime(2030, 1, 1, tzinfo=datetime_timezone.utc))
+    monkeypatch.setattr(services.timezone, "now", clock)
+    return clock
+
+
+@pytest.fixture
+def confirmed_raid(user, game):
     spec = {"kind": "raid", "target": "c4", "contributions": {"c3": 45}}
     request_id = uuid.uuid4()
     first = services.confirm(user, game.id, spec, request_id, 0)
-    again = services.confirm(user, game.id, spec, request_id, 0)
-    assert first == again
+    return spec, request_id, first
+
+
+@case(
+    "confirmation-retry-is-idempotent",
+    "Design §26.2 Panne: retry after commit returns one receipt and target claim",
+)
+@pytest.mark.django_db
+def test_confirmation_retry_is_idempotent(user, game, confirmed_raid):
+    spec, request_id, first = confirmed_raid
+    assert services.confirm(user, game.id, spec, request_id, 0) == first
     assert CommandReceipt.objects.count() == 1
     assert TargetEngagement.objects.count() == 1
+
+
+@case(
+    "cancellation-releases-database-target",
+    "Design §26.2 Cible exclusive: cancellation removes the persisted target engagement",
+)
+@pytest.mark.django_db
+def test_cancellation_releases_database_target(user, game, confirmed_raid):
+    _, _, first = confirmed_raid
     services.cancel(user, game.id, first["id"])
-    assert TargetEngagement.objects.count() == 0
+    assert not TargetEngagement.objects.exists()
+
+
+@case(
+    "cancelled-receipt-retry-is-idempotent",
+    "Design §26.2 Panne: cancelled receipt replay cannot reacquire a target",
+)
+@pytest.mark.django_db
+def test_cancelled_receipt_retry_is_idempotent(user, game, confirmed_raid):
+    spec, request_id, first = confirmed_raid
+    services.cancel(user, game.id, first["id"])
     assert services.confirm(user, game.id, spec, request_id, 0)["status"] == "cancelled"
     assert CommandReceipt.objects.count() == 1
+    assert not TargetEngagement.objects.exists()
 
 
+@case(
+    "tick-transaction-rolls-back",
+    "Design §26.2 Panne: failed persistence rolls back state and tick execution",
+)
 @pytest.mark.django_db
-def test_tick_retry_and_complete_transaction_rollback(user, game):
+def test_tick_transaction_rolls_back(user, game, monkeypatch):
     before = deepcopy(game.state)
-    with patch(
-        "simulation.services.persist", side_effect=RuntimeError("simulated storage failure")
-    ):
-        with pytest.raises(RuntimeError):
-            services.tick(game.id, 1, user)
+    monkeypatch.setattr(services, "persist", FailingBoundary("simulated storage failure"))
+    with pytest.raises(RuntimeError, match="storage failure"):
+        services.tick(game.id, 1, user)
     game.refresh_from_db()
     assert game.state == before
     assert TickExecution.objects.count() == 0
+
+
+@case(
+    "tick-retry-does-not-resolve-twice",
+    "Design §26.2 Deux ticks: retry after commit does not tax twice",
+)
+@pytest.mark.django_db
+def test_tick_retry_does_not_resolve_twice(user, game):
     first, executed = services.tick(game.id, 1, user)
     assert executed
     second, executed = services.tick(game.id, 1, user)
@@ -64,31 +112,60 @@ def test_tick_retry_and_complete_transaction_rollback(user, game):
     assert game.state["cities"]["c1"]["tax"] == 100000
 
 
+@case(
+    "command-rolls-back-after-save-if-reporting-fails",
+    "Design §26.2 Panne: failed report write rolls back saved state and receipt",
+)
 @pytest.mark.django_db
-def test_command_rolls_back_after_save_if_reporting_fails(user, game):
-    with patch(
-        "simulation.services.Report.objects.bulk_create", side_effect=RuntimeError("disk full")
-    ):
-        with pytest.raises(RuntimeError):
-            services.confirm(user, game.id, {"kind": "walls", "cities": ["c1"]}, uuid.uuid4(), 0)
+def test_command_rolls_back_after_save_if_reporting_fails(user, game, monkeypatch):
+    monkeypatch.setattr(services.Report.objects, "bulk_create", FailingBoundary("disk full"))
+    with pytest.raises(RuntimeError, match="disk full"):
+        services.confirm(user, game.id, {"kind": "walls", "cities": ["c1"]}, uuid.uuid4(), 0)
     game.refresh_from_db()
     assert game.state["orders"] == []
     assert game.revision == 0
     assert not CommandReceipt.objects.exists()
 
 
+@case(
+    "stranger-cannot-command-game",
+    "Design §26.2 Plusieurs parties: only members may command or tick their game",
+)
 @pytest.mark.django_db
-def test_authorization_across_games_and_reports(user, game):
+@pytest.mark.parametrize("command", ["confirm", "tick"])
+def test_stranger_cannot_command_game(user, game, command):
+    stranger = get_user_model().objects.create_user("stranger")
+    with pytest.raises(PermissionDenied):
+        if command == "confirm":
+            services.confirm(
+                stranger, game.id, {"kind": "walls", "cities": ["c1"]}, uuid.uuid4(), 0
+            )
+        else:
+            services.tick(game.id, 1, stranger)
+    game.refresh_from_db()
+    assert game.state["month"] == 0 and not game.state["orders"]
+
+
+@case(
+    "other-game-is-private",
+    "Design §26.2 Plusieurs parties: cross-game identifiers cannot expose private state",
+)
+@pytest.mark.django_db
+@pytest.mark.parametrize("route", ["game", "state"])
+def test_other_game_is_private(user, route):
     stranger = get_user_model().objects.create_user("stranger")
     other = services.create_game(stranger, "Private")
-    with pytest.raises(PermissionDenied):
-        services.confirm(stranger, game.id, {"kind": "walls", "cities": ["c1"]}, uuid.uuid4(), 0)
-    with pytest.raises(PermissionDenied):
-        services.tick(game.id, 1, stranger)
     client = Client()
     client.force_login(user)
-    assert client.get(reverse("game", args=[other.id])).status_code == 403
-    assert client.get(reverse("state", args=[other.id])).status_code == 403
+    assert client.get(reverse(route, args=[other.id])).status_code == 403
+
+
+@case(
+    "rival-reports-are-private",
+    "Design §26.2 Information: letters are recipient-specific immutable projections",
+)
+@pytest.mark.django_db
+def test_rival_reports_are_private(user, game):
     Report.objects.create(
         game=game,
         recipient="p2",
@@ -97,59 +174,80 @@ def test_authorization_across_games_and_reports(user, game):
         title="Hidden rival report",
         body="Secret military plan",
     )
+    client = Client()
+    client.force_login(user)
     response = client.get(reverse("game", args=[game.id]) + "?tab=letters")
     assert response.status_code == 200
     assert b"Hidden rival report" not in response.content
     assert b"Secret military plan" not in response.content
 
 
-def test_projection_has_no_enemy_stats_seed_or_combativity():
-    state = engine.new_state()
-    engine.confirm_order(
-        state, "p2", {"kind": "raid", "target": "c3", "contributions": {"c4": 45}}, "secret-order"
-    )
-    projection = player_view(state, "p1")
-    enemy = next(city for city in projection["cities"] if city["id"] == "c4")
-    assert not set(enemy) & {
-        "population",
-        "fideles",
-        "stock",
-        "tax",
-        "irrigation",
-        "storage",
-        "works",
-    }
-    assert all("population" not in rank for rank in projection["ranking"])
-    serialized = json.dumps(projection)
-    assert "combativity" not in serialized
-    assert "secret-order" not in serialized
-    assert "cohorts" not in serialized
-
-
+@case(
+    "reading-or-preview-does-not-mutate",
+    "Design commands: reading and quoting never mutate authoritative state",
+)
 @pytest.mark.django_db
-def test_preview_confirm_csrf_and_unchanged_gets(user, game):
+@pytest.mark.parametrize("route", ["game", "state", "preview"])
+def test_reading_or_preview_does_not_mutate(user, game, route):
     client = Client()
     client.force_login(user)
     before = deepcopy(game.state)
-    for url in [reverse("game", args=[game.id]), reverse("state", args=[game.id])]:
-        assert client.get(url).status_code == 200
-    game.refresh_from_db()
-    assert game.state == before
-    response = client.post(reverse("preview", args=[game.id]), {"kind": "walls", "cities": ["c1"]})
+    url = reverse(route, args=[game.id])
+    response = (
+        client.post(url, {"kind": "walls", "cities": ["c1"]})
+        if route == "preview"
+        else client.get(url)
+    )
     assert response.status_code == 200
-    assert Game.objects.get(pk=game.pk).state == before
+    game.refresh_from_db()
+    assert game.state == before and game.revision == 0
+    assert not CommandReceipt.objects.exists()
+
+
+@case(
+    "signed-preview-confirmation",
+    "Design commands: a signed preview creates one command despite duplicate HTTP delivery",
+)
+@pytest.mark.django_db
+@pytest.mark.parametrize("deliveries", [pytest.param(1, id="initial"), pytest.param(2, id="retry")])
+def test_signed_preview_confirmation(user, game, deliveries):
+    client = Client()
+    client.force_login(user)
+    response = client.post(reverse("preview", args=[game.id]), {"kind": "walls", "cities": ["c1"]})
     payload = response.context["payload"]
-    assert client.post(reverse("confirm", args=[game.id]), {"payload": payload}).status_code == 302
+    for _ in range(deliveries):
+        assert (
+            client.post(reverse("confirm", args=[game.id]), {"payload": payload}).status_code == 302
+        )
     game.refresh_from_db()
     assert len(game.state["orders"]) == 1
-    assert client.post(reverse("confirm", args=[game.id]), {"payload": payload}).status_code == 302
     assert CommandReceipt.objects.count() == 1
+
+
+@case("get-cannot-advance", "HTTP command boundary: GET requests cannot advance a game")
+@pytest.mark.django_db
+def test_get_cannot_advance(user, game):
+    client = Client()
+    client.force_login(user)
     assert client.get(reverse("advance", args=[game.id])).status_code == 405
-    secure_client = Client(enforce_csrf_checks=True)
-    secure_client.force_login(user)
-    assert secure_client.post(reverse("advance", args=[game.id]), {"month": 1}).status_code == 403
+    game.refresh_from_db()
+    assert game.state["month"] == 0
 
 
+@case("advance-requires-csrf", "HTTP command boundary: a tick POST requires a CSRF token")
+@pytest.mark.django_db
+def test_advance_requires_csrf(user, game):
+    client = Client(enforce_csrf_checks=True)
+    client.force_login(user)
+    assert client.post(reverse("advance", args=[game.id]), {"month": 1}).status_code == 403
+    game.refresh_from_db()
+    assert game.state["month"] == 0
+
+
+@case(
+    "stale-preview-rejects-without-extra-reservation",
+    "Design §26.2 Cible exclusive: a stale preview is rejected without new receipt",
+)
 @pytest.mark.django_db
 def test_stale_preview_rejects_without_extra_reservation(user, game):
     services.confirm(user, game.id, {"kind": "storage", "cities": ["c2"]}, uuid.uuid4(), 0, 0)
@@ -158,47 +256,75 @@ def test_stale_preview_rejects_without_extra_reservation(user, game):
     assert CommandReceipt.objects.count() == 1
 
 
+@case(
+    "scheduled-calendar",
+    "Design scheduled games: server-controlled deadlines, pause/resume, bounded lateness",
+)
 @pytest.mark.django_db
-def test_scheduled_deadline_lateness_pause_and_resume(user):
-    game = services.create_game(user, "Timed", mode="scheduled")
-    with pytest.raises(PermissionDenied):
-        services.tick(game.id, 1, user)
-    with pytest.raises(RuleError, match="pas encore"):
-        services.tick(game.id, 1)
-    services.toggle_pause(user, game.id)
-    game.refresh_from_db()
-    assert game.paused and game.deadline is None
-    with pytest.raises(RuleError, match="pause"):
-        services.confirm(user, game.id, {"kind": "walls", "cities": ["c1"]}, uuid.uuid4(), 0)
-    services.toggle_pause(user, game.id)
-    game.refresh_from_db()
-    assert not game.paused and game.deadline > timezone.now()
-    original_deadline = timezone.now() - timedelta(seconds=5)
-    Game.objects.filter(pk=game.pk).update(deadline=original_deadline)
-    services.tick(game.id, 1)
-    game.refresh_from_db()
-    assert game.deadline == original_deadline + timedelta(minutes=10)
-    Game.objects.filter(pk=game.pk).update(deadline=timezone.now() - timedelta(minutes=11))
-    execution, executed = services.tick(game.id, 2)
-    assert execution is None and not executed
-    game.refresh_from_db()
-    assert game.paused and game.state["month"] == 1
+@pytest.mark.parametrize(
+    "scenario",
+    ["manual-forbidden", "early", "paused", "resume", "on-time", "deadline-equality", "late-pause"],
+)
+def test_scheduled_calendar(user, clock, scenario):
+    game = services.create_game(user, "Timed", mode="scheduled", opponents="passive")
+    if scenario == "manual-forbidden":
+        with pytest.raises(PermissionDenied):
+            services.tick(game.id, 1, user)
+    elif scenario == "early":
+        with pytest.raises(RuleError, match="pas encore"):
+            services.tick(game.id, 1)
+    elif scenario in ("paused", "resume"):
+        services.toggle_pause(user, game.id)
+        game.refresh_from_db()
+        assert game.paused and game.deadline is None
+        if scenario == "paused":
+            with pytest.raises(RuleError, match="pause"):
+                services.confirm(
+                    user, game.id, {"kind": "walls", "cities": ["c1"]}, uuid.uuid4(), 0
+                )
+        else:
+            services.toggle_pause(user, game.id)
+            game.refresh_from_db()
+            assert not game.paused and game.deadline == clock() + timedelta(minutes=10)
+    else:
+        delay = {
+            "on-time": timedelta(seconds=5),
+            "deadline-equality": timedelta(0),
+            "late-pause": timedelta(minutes=11),
+        }[scenario]
+        original_deadline = clock() - delay
+        Game.objects.filter(pk=game.pk).update(deadline=original_deadline)
+        execution, executed = services.tick(game.id, 1)
+        game.refresh_from_db()
+        if scenario == "late-pause":
+            assert execution is None and not executed
+            assert game.paused and game.deadline is None and game.state["month"] == 0
+        else:
+            assert executed and game.state["month"] == 1
+            assert game.deadline == original_deadline + timedelta(minutes=10)
 
 
+@case(
+    "calendar-command-resolves-only-due-games",
+    "Design calendar: repeated tick_due resolves only due scheduled games",
+)
 @pytest.mark.django_db
-def test_calendar_command_resolves_only_due_games(user):
-    due = services.create_game(user, "Due", mode="scheduled", opponents="passive")
-    manual = services.create_game(user, "Manual", opponents="passive")
-    future = services.create_game(user, "Future", mode="scheduled", opponents="passive")
-    Game.objects.filter(pk=due.pk).update(deadline=timezone.now() - timedelta(seconds=2))
+@pytest.mark.parametrize("scenario", ["due", "manual", "future"])
+def test_calendar_command_resolves_only_due_games(user, clock, scenario):
+    game = services.create_game(
+        user,
+        "Calendar",
+        mode="manual" if scenario == "manual" else "scheduled",
+        opponents="passive",
+    )
+    if scenario == "due":
+        Game.objects.filter(pk=game.pk).update(deadline=clock() - timedelta(seconds=2))
     call_command("tick_due")
     call_command("tick_due")
-    due.refresh_from_db()
-    manual.refresh_from_db()
-    future.refresh_from_db()
-    assert due.state["month"] == 1
-    assert manual.state["month"] == future.state["month"] == 0
-    assert TickExecution.objects.filter(game=due).count() == 1
+    game.refresh_from_db()
+    expected = int(scenario == "due")
+    assert game.state["month"] == expected
+    assert TickExecution.objects.filter(game=game).count() == expected
 
 
 def concurrent_calls(callables):
@@ -218,6 +344,10 @@ def concurrent_calls(callables):
         return list(executor.map(invoke, callables))
 
 
+@case(
+    "postgres-competing-confirmations",
+    "Design §26.2 Double dépense, double chantier, cible exclusive: real simultaneous confirmations",
+)
 @pytest.mark.django_db(transaction=True)
 @pytest.mark.parametrize("scenario", ["spend", "slot", "target"])
 def test_postgres_competing_confirmations(user, scenario):
@@ -256,6 +386,10 @@ def test_postgres_competing_confirmations(user, scenario):
         assert TargetEngagement.objects.filter(game=game).count() == 1
 
 
+@case(
+    "postgres-two-ticks-pay-harvest-once",
+    "Design §26.2 Deux ticks: real simultaneous year-end ticks produce one harvest",
+)
 @pytest.mark.django_db(transaction=True)
 def test_postgres_two_ticks_pay_harvest_once(user):
     if connection.vendor != "postgresql":
@@ -272,6 +406,10 @@ def test_postgres_two_ticks_pay_harvest_once(user):
     assert TickExecution.objects.filter(game=game, month=12).count() == 1
 
 
+@case(
+    "deadline-is-checked-after-waiting-for-postgres-lock",
+    "Design §26.2 Clôture: deadline is rechecked after actual PostgreSQL lock wait",
+)
 @pytest.mark.django_db(transaction=True)
 def test_deadline_is_checked_after_waiting_for_postgres_lock(user):
     if connection.vendor != "postgresql":

@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+        <title>
+            {% block title %}{{ game.title }} · Yaara{% endblock %}
+        </title>
+        <link rel="stylesheet" href="{% static 'simulation/manuscript.css' %}">
+        <script defer src="{% static 'simulation/app.js' %}"></script>
+    </head>
+    <body class="manuscript">
+        <a class="skip-link" href="#main">Aller au récit</a>
+        <div class="book">
+            <header class="book-heading">
+                <a class="book-world" href="{% url 'home' %}">Yaara</a>
+                <p class="book-title">{{ game.title }}</p>
+                <nav class="bookmarks" aria-label="Les feuillets de votre règne">
+                    <a href="{% url 'game' game.id %}"
+                       {% if tab == 'domain' %}aria-current="page"{% endif %}>Domaine</a>
+                    <a href="{% url 'game' game.id %}?tab=decrees"
+                       {% if tab == 'decrees' %}aria-current="page"{% endif %}>Décrets</a>
+                    <a href="{% url 'game' game.id %}?tab=letters"
+                       {% if tab == 'letters' %}aria-current="page"{% endif %}>Correspondance</a>
+                </nav>
+                {% if view and not view.finished %}
+                    <p class="running-note">
+                        {% if game.mode == 'manual' %}
+                            <a href="#turn-page">Aller à la fin du mois</a>
+                        {% elif game.deadline %}
+                            <span data-deadline="{{ game.deadline|date:'c' }}">Le prochain mois sera clos à {{ game.deadline|date:'H:i' }} UTC.</span>
+                        {% else %}
+                            Le cours des chroniques est suspendu.
+                        {% endif %}
+                    </p>
+                {% endif %}
+            </header>
+            <main id="main">
+                {% if messages %}
+                    <div class="notices" aria-live="polite">
+                        {% for message in messages %}<p class="notice {{ message.tags }}">{{ message }}</p>{% endfor %}
+                    </div>
+                {% endif %}
+                {% block content %}{% endblock %}
+            </main>
+            <footer class="book-footer">
+                <p>
+                    <a href="{% url 'home' %}">Refermer ce livre</a>
+                    {% if view %}<span class="edition">Règles {{ view.rules }}</span>{% endif %}
+                </p>
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit">Quitter</button>
+                </form>
+            </footer>
+        </div>
+    </body>
+</html>

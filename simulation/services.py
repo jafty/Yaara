@@ -11,6 +11,7 @@ from django.utils import timezone
 
 from . import engine
 from .models import CommandReceipt, Game, Participant, Report, TargetEngagement, TickExecution
+from .narration import number
 from .rules import ACTION_LABELS, RuleError
 
 
@@ -90,7 +91,7 @@ def create_game(
         month=0,
         kind="welcome",
         title="Le sceau vous appartient",
-        body="Trois cités reconnaissent votre autorité. Préservez vos Fidèles, préparez la récolte et étendez votre domaine. Les réserves sont locales ; vos dépenses sont financées par l’ensemble de vos cités. La première récolte sera versée au mois 12.",
+        body="J’ai fait ouvrir les registres de vos trois cités. Leurs habitants reconnaissent votre autorité, mais il nous appartient encore de préparer les années qui viennent. Chaque cité gardera ses réserves ; pour vos dépenses, je demanderai à tous les greniers de contribuer selon leurs moyens. La première récolte nous sera versée au mois 12. D’ici là, je tiendrai compte des hommes partis et des ouvrages que vous aurez ordonnés.",
     )
     return game
 
@@ -116,7 +117,7 @@ def confirm(user, game_id, spec, request_id, expected_month, expected_revision=N
                 "recipient": actor,
                 "kind": "order",
                 "title": "Décret scellé",
-                "body": f"{ACTION_LABELS[order['kind']]} : {order['cost']:,} Mesures réservées. Départ au mois {order['execute_month']}.",
+                "body": f"J’ai placé sous votre sceau cet ordre : {ACTION_LABELS[order['kind']].lower()}. Les greniers promettent {number(order['cost'])} Mesures, qui ne seront dépensées qu’au départ, au mois {order['execute_month']}. Les hommes et les emplacements nécessaires vous sont désormais réservés.",
             }
         ],
     )
@@ -136,7 +137,12 @@ def cancel(user, game_id, order_id):
                 "recipient": actor,
                 "kind": "order",
                 "title": "Décret retiré",
-                "body": f"{ACTION_LABELS[order['kind']]} : hommes, fonds et emplacements sont libérés.",
+                "body": f"Selon votre volonté, j’ai retiré ce décret : {ACTION_LABELS[order['kind']].lower()}. Les moyens qu’il engageait sont de nouveau libres."
+                + (
+                    " Une autre expédition pourra désormais engager la cible."
+                    if order["kind"] in ("raid", "capture")
+                    else ""
+                ),
             }
         ],
     )

@@ -8,6 +8,7 @@ import hashlib
 import random
 from copy import deepcopy
 
+from .narration import military_losses, number, returned_loot, work_phrase
 from .rules import (
     ACTION_LABELS,
     CAPACITIES,
@@ -349,9 +350,9 @@ def annual_economy(state, events):
             city["owner"],
             "harvest",
             f"La récolte de {city['name']}",
-            f"{added:,} Mesures versées ; {overflow:,} perdues faute de place. "
-            f"{growth} nouveaux habitants et {renewed} nouveaux Fidèles. "
-            f"Population : {city['population']:,}. Décès cumulés : {city['military_deaths'] + city['civilian_deaths']}.",
+            f"Les comptes de {city['name']} sont arrêtés pour cette année. Le prélèvement a fait entrer {number(added)} Mesures dans son grenier ; {number(overflow)} autres n’ont pu y trouver place. "
+            f"J’ai inscrit {growth} nouveaux habitants et {renewed} habitants rejoignant les Fidèles. "
+            f"La cité compte à présent {number(city['population'])} habitants. Depuis le début du règne, {city['military_deaths'] + city['civilian_deaths']} de ses habitants ont perdu la vie.",
         )
 
 
@@ -442,7 +443,7 @@ def depart_orders(state, events):
             actor,
             "order",
             "Votre décret entre en vigueur",
-            f"{ACTION_LABELS[order['kind']]} : {order['cost']:,} Mesures dépensées.",
+            f"Votre ordre a pris son cours : {ACTION_LABELS[order['kind']].lower()}. J’ai fait prélever {number(order['cost'])} Mesures dans les greniers qui les avaient promises. Les nouvelles vous seront rapportées à leur échéance.",
         )
 
 
@@ -456,8 +457,9 @@ def finish_works(state, events):
             recipient = work["actor"]
             title = "La forge a achevé son œuvre"
             body = (
-                EQUIPMENT_LABELS[work["level"]]
-                + ". Les nouvelles populations seront équipées elles aussi."
+                "Les maîtres de la forge ont achevé ce que vous leur aviez confié. "
+                + EQUIPMENT_LABELS[work["level"]]
+                + " : tel est désormais l’état de nos hommes. Leur organisation équipera aussi les populations qui rejoindront votre maison."
             )
         else:
             city = state["cities"][work["city"]]
@@ -467,7 +469,7 @@ def finish_works(state, events):
                 city[work["kind"]] = work["level"]
             recipient = city["owner"]
             title = f"Travaux achevés à {city['name']}"
-            body = ACTION_LABELS[work["kind"]] + ". Le nouvel ouvrage est désormais en service."
+            body = f"Les équipes de {city['name']} ont mené leur tâche à son terme : {work_phrase(work['kind'], work['level']).lower()}. L’ouvrage est désormais en service ; j’en tiendrai compte dans les registres à venir."
         report(events, recipient, "work", title, body)
     active = {work["order_id"] for work in state["works"] if work["status"] == "active"}
     for order in state["orders"]:
@@ -540,8 +542,10 @@ def observation(enemy_count, own_survivors, equipment):
         return "Aucun survivant ne peut décrire les forces adverses."
     if own_survivors < 10:
         return "Les rares survivants ne livrent que des observations incertaines."
+    if enemy_count == 0:
+        return "Nos survivants n’ont rencontré aucun défenseur."
     lower = enemy_count // 20 * 20
-    return f"Forces adverses rencontrées : de {lower} à {lower + 19} hommes ; {EQUIPMENT_LABELS[equipment].lower()}. Ce renseignement est daté et ne décrit pas tout leur domaine."
+    return f"Nos survivants disent avoir rencontré entre {lower} et {lower + 19} hommes, avec un {EQUIPMENT_LABELS[equipment].lower()}. Je rapporte ce qu’ils ont vu à la date de cette lettre ; leur récit ne révèle pas les forces de tout le domaine adverse."
 
 
 def resolve_combats(state, seed, events):
@@ -613,7 +617,12 @@ def resolve_combats(state, seed, events):
                 actor,
                 "battle",
                 f"{OUTCOME_LABELS[result.outcome]} à {target['name']}",
-                f"Nos pertes : {result.attacker_losses} Fidèles. Butin en route : {result.stolen:,} Mesures. "
+                f"La nouvelle de cette expédition nous est parvenue. {military_losses(result.attacker_losses)} "
+                + (
+                    f"Les survivants transportent {number(result.stolen)} Mesures vers leurs origines ; nous ne pourrons les engager avant leur retour. "
+                    if result.stolen
+                    else "Les survivants rentreront sans butin. "
+                )
                 + observation(encountered, attackers - result.attacker_losses, defender_equipment),
             )
             report(
@@ -621,7 +630,7 @@ def resolve_combats(state, seed, events):
                 defender,
                 "battle",
                 f"Les villages de {target['name']} ont été attaqués",
-                f"Nos pertes : {result.defender_losses} Fidèles. Réserves emportées : {result.stolen:,} ; détruites : {result.destroyed:,} Mesures. "
+                f"Le raid sur nos villages a coûté la vie à {result.defender_losses} de nos Fidèles. Les assaillants ont emporté {number(result.stolen)} Mesures et en ont détruit {number(result.destroyed)} autres. Ces pertes sont inscrites dans le grenier de la cité. "
                 + observation(attackers, encountered - result.defender_losses, attacker_equipment),
             )
             continue
@@ -681,14 +690,14 @@ def resolve_combats(state, seed, events):
                     recipient,
                     "sovereignty",
                     f"{target['name']} change de souverain",
-                    f"{state['players'][actor]['name']} gouverne désormais cette cité.",
+                    f"Le nom du souverain a changé dans les registres de {target['name']}. La cité relève désormais de {state['players'][actor]['name']} ; c’est tout ce que cette nouvelle publique nous apprend.",
                 )
         report(
             events,
             actor,
             "battle",
             f"{OUTCOME_LABELS[result.outcome]} à {target['name']}",
-            f"Nos pertes : {attacker_dead} Fidèles. Les survivants repartent vers leurs origines. "
+            f"{military_losses(attacker_dead)} Les survivants repartent vers leurs origines ; ils y rejoindront les présents à la date annoncée. "
             + observation(local + reinforcement, attackers - attacker_dead, defender_equipment),
         )
         report(
@@ -696,8 +705,12 @@ def resolve_combats(state, seed, events):
             defender,
             "battle",
             f"La bataille de {target['name']}",
-            f"{OUTCOME_LABELS[result.outcome]}. Nos pertes : {defender_dead} Fidèles, dont {split[target['id']]} locaux ; {civilian_dead} civils. "
-            f"Vivres consommés : {result.food_used:,} Mesures. "
+            f"Voici l’issue que l’on nous rapporte : {OUTCOME_LABELS[result.outcome].lower()}. Nous avons perdu {defender_dead} Fidèles engagés, dont {split[target['id']]} de la garnison locale, ainsi que {civilian_dead} civils. "
+            + (
+                f"Le siège a consommé {number(result.food_used)} Mesures prises dans le grenier de cette cité. "
+                if result.outcome in ("held", "shortage")
+                else ""
+            )
             + observation(attackers, local + reinforcement - defender_dead, attacker_equipment),
         )
     # Relief stays away throughout the whole phase, even after its battle.
@@ -721,7 +734,7 @@ def return_expeditions(state, events):
                 city["owner"],
                 "return",
                 f"Retour à {city['name']}",
-                f"{survivors} Fidèles rejoignent la cité. {deposited:,} Mesures déposées ; {shares[city_id] - deposited:,} perdues faute de place.",
+                f"J’ai fait inscrire le retour de {survivors} Fidèles à {city['name']}. Ils rejoignent les présents de leur cité d’origine. {returned_loot(deposited, shares[city_id] - deposited)}",
             )
         if not sum(mission["cohorts"].values()):
             report(
