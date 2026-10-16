@@ -1,10 +1,10 @@
 # Railway deployment
 
-This repository contains the Railway build and deployment configuration. A Git push triggers deployment when the Railway service is connected to `jafty/Yaara`, watches `yaara-deployment`, and has automatic deployments enabled. Repository configuration alone does not prove that a deployment is live.
+This repository contains the Railway build and deployment configuration. A Git push triggers deployment when the Railway service is connected to `jafty/Yaara`, watches `codex/yaara-deployment`, and has automatic deployments enabled. Repository configuration alone does not prove that a deployment is live.
 
 ## Web and PostgreSQL
 
-1. Connect the Railway service to `jafty/Yaara`, select the `yaara-deployment` branch and enable automatic deployments, using the repository root. `railway.toml` selects the Dockerfile. If Railway waits for CI, deployment starts only after the checks succeed.
+1. Connect the Railway service to `jafty/Yaara`, select the `codex/yaara-deployment` branch and enable automatic deployments, using the repository root. `railway.toml` selects the Dockerfile. If Railway waits for CI, deployment starts only after the checks succeed.
 2. Add PostgreSQL 17. Set the web service's `DATABASE_URL` to its Railway reference, for example `${{Postgres.DATABASE_URL}}` (adapt the service name).
 3. Configure these variables:
 

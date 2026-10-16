@@ -1,6 +1,6 @@
 # Working on Yaara
 
-- By default, commit and push completed changes directly to `origin/yaara-deployment` after the full push checkpoint passes. Do not create a pull request unless the owner explicitly requests one. Preserve existing deployment-branch changes; never force-push. Report push and deployment verification separately.
+- By default, commit and push completed changes directly to `origin/codex/yaara-deployment` after the full push checkpoint passes. Do not create a pull request unless the owner explicitly requests one. Preserve existing deployment-branch changes; never force-push. Report push and deployment verification separately.
 
 - Read `docs/design-source.fr.md` for game rules and `docs/decisions.md` for explicit implementation choices. Do not silently rebalance existing games.
 - Conversation and code (including identifiers, tests and comments) are English. Player-visible copy supports French (the default) and English; keep the pure engine’s canonical French strings independent of request language. See `docs/localization.md`.
