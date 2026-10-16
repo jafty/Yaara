@@ -5,7 +5,8 @@
 - In-game screens are a plain, image-free manuscript: a single reading column, restrained typography, and scribe narration. Use prose and accessible disclosures for accounts, letters and decrees; keep exact costs and consequences clear. The pre-game interface can retain its conventional web layout.
 - Work in the existing checkout. Cloud tasks are already isolated; do not create worktrees unless requested.
 - Keep the Python simulation independent of Django, storage, HTTP and clocks. Application services own authorization, per-game transactions, idempotency and persistence.
-- For rule changes, write a meaningful example/boundary test first, implement the behavior, then run the relevant tests. Test concurrency against PostgreSQL, not a mock or SQLite.
+- Follow the established pseudo-TDD policy in `docs/testing.md`: define each logical use-case variation and its independent test before implementing it; use native Python stubs for external dependencies, or explicit inputs for pure functions. Preserve a one-to-one relationship between a specified variation and a logical test case. Parameterized rows count as separate cases; multiple assertions may verify one case.
+- Run the entire existing suite, including real PostgreSQL integration tests and the browser smoke, for every push. CI must keep running all layers on pushes and PRs. A skip or a stubbed database is not evidence that a PostgreSQL requirement passed.
 - Never send hidden opponent state or numerical combativity to the browser. Reports are immutable recipient-specific projections.
 - Commands: `uv sync --frozen`, `uv run python manage.py migrate`, `uv run pytest`, `uv run ruff check .`, `uv run python manage.py runserver`.
 - Run PostgreSQL tests with `DATABASE_URL` pointing to a disposable database whose user can create test databases. Browser smoke: `uv run python scripts/browser_smoke.py` against a local running server.
