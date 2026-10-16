@@ -1,5 +1,7 @@
 # Working on Yaara
 
+- By default, commit and push all changes directly to `yaara-deployment`. Do not create a pull request unless the owner explicitly requests one.
+
 - Read `docs/design-source.fr.md` for game rules and `docs/decisions.md` for explicit implementation choices. Do not silently rebalance existing games.
 - Conversation and code (including identifiers, tests and comments) are English. All player-visible copy is French.
 - In-game screens are a plain, image-free manuscript: a single reading column, restrained typography, and scribe narration. Use prose and accessible disclosures for accounts, letters and decrees; keep exact costs and consequences clear. The pre-game interface can retain its conventional web layout.

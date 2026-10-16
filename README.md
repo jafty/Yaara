@@ -35,6 +35,8 @@ The default reign lasts ten years. The first harvest arrives at month 12; initia
 
 ## Deployment and development
 
+By default, commit and push all changes directly to `yaara-deployment`. No pull request is needed for now; create one only when explicitly requested by the owner.
+
 - [Railway setup, variables, scheduler and backups](docs/railway.md)
 - [Original design dossier](docs/design-source.fr.md)
 - [Implemented rules and quick start](docs/rules.md)

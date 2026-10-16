@@ -11,7 +11,7 @@
         <link rel="stylesheet" href="{% static 'simulation/manuscript.css' %}">
         <script defer src="{% static 'simulation/app.js' %}"></script>
     </head>
-    <body class="manuscript">
+    <body class="manuscript" data-game-revision="{{ game.revision }}">
         <a class="skip-link" href="#main">Aller au récit</a>
         <div class="book">
             <header class="book-heading">

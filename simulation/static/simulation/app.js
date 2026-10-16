@@ -71,7 +71,7 @@ document.querySelectorAll("[data-deadline]").forEach((element) => {
 // affordance when the server's revision changes, preserving any unsubmitted form.
 if (document.querySelector("[data-deadline]")) {
   const initialUrl = new URL(window.location.href);
-  let revision;
+  const revision = Number(document.querySelector("[data-game-revision]").dataset.gameRevision);
   window.setInterval(async () => {
     try {
       const response = await fetch(`${initialUrl.pathname}state/`, {
@@ -79,8 +79,7 @@ if (document.querySelector("[data-deadline]")) {
       });
       if (!response.ok) return;
       const payload = await response.json();
-      if (revision === undefined) revision = payload.game.revision;
-      else if (
+      if (
         payload.game.revision !== revision &&
         !document.querySelector("#refresh-notice")
       ) {

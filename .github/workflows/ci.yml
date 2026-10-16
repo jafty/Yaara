@@ -32,6 +32,7 @@ jobs:
       - run: uv run python manage.py makemigrations --check --dry-run
       - run: uv run python manage.py migrate --noinput
       - run: uv run python manage.py collectstatic --noinput
+      - run: uv run playwright install --with-deps chromium
       - run: uv run pytest -q --require-postgresql --fail-on-skip --check-case-catalog --case-report=artifacts/test-cases.json
       - uses: actions/upload-artifact@v4
         if: always()
@@ -43,7 +44,6 @@ jobs:
         run: |
           uv export --frozen --no-dev --format requirements-txt --no-header --output-file /tmp/requirements.txt
           diff -u requirements.txt /tmp/requirements.txt
-      - run: uv run playwright install --with-deps chromium
       - name: Browser smoke
         run: |
           .venv/bin/python manage.py runserver 127.0.0.1:8000 --noreload > /tmp/yaara-server.log 2>&1 &
