@@ -1,271 +1,56 @@
-{% extends 'simulation/manuscript.html' %}
+{% extends 'simulation/manuscript.html' %}{% load i18n %}
 {% block title %}{{ view.realm }} · Yaara{% endblock %}
 {% block content %}
     <header class="chapter-heading">
         <p class="dateline">
-            {% if view.month == 0 %}
-                Au seuil du règne
-            {% else %}
-                Au terme du mois {{ view.month }}
-            {% endif %}
-            — année {{ view.year }}
+            {% if view.finished %}{% blocktranslate with v0=view.closed_moon %}Au terme de la lune {{ v0 }}{% endblocktranslate %}
+            {% else %}{% blocktranslate with v0=view.open_moon v1=view.year %}Lune {{ v0 }}, année {{ v1 }}{% endblocktranslate %}<br><span>{% translate "Ouverte à vos ordres" %}{% if view.closed_moon %} · {% blocktranslate with v0=view.closed_moon %}Comptes arrêtés à la lune {{ v0 }}{% endblocktranslate %}{% endif %}</span>{% endif %}
         </p>
-        <h1>
-            {% if tab == 'domain' %}
-                Les terres sous votre sceau
-            {% elif tab == 'decrees' %}
-                Ce que vous dicterez
-            {% else %}
-                Les lettres qui vous parviennent
-            {% endif %}
-        </h1>
-        <p class="dedication">Au service de {{ view.realm }}.</p>
+        <h1>{% if tab == 'domain' %}{% translate "Les terres sous votre sceau" %}{% elif tab == 'city' %}{% blocktranslate with v0=selected.name %}Le feuillet de {{ v0 }}{% endblocktranslate %}{% elif tab == 'decrees' %}{% translate "Ce que vous dicterez" %}{% else %}{% translate "Les lettres qui vous parviennent" %}{% endif %}</h1>
+        <p class="dedication">{% blocktranslate with v0=view.realm %}Au service de {{ v0 }}.{% endblocktranslate %}</p>
     </header>
     {% if view.finished %}
-        <section class="epilogue" aria-label="Épilogue du règne">
-            <h2>La dernière page du règne</h2>
-            <p>
-                Monseigneur, j’arrête ici ces chroniques. Au mois {{ view.month }},
-                {% for rank in view.ranking %}
-                    {% if rank.rank == 1 %}<strong>{{ rank.name }}</strong> figure au premier rang.{% endif %}
-                {% endfor %}
-            </p>
-            <p>
-                {{ view.epilogue_missions }} expédition{{ view.epilogue_missions|pluralize }} demeure{{ view.epilogue_missions|pluralize:'nt' }} encore en route. Leur histoire appartient à l’épilogue ; elle ne changera plus l’issue de votre règne.
-            </p>
+        <section class="epilogue"><h2>{% translate "La dernière page du règne" %}</h2>
+            {% for rank in view.ranking %}{% if rank.rank == 1 %}<p>{% blocktranslate with v0=rank.name %}<strong>{{ v0 }}</strong> figure au premier rang.{% endblocktranslate %}</p>{% endif %}{% endfor %}
+            <p>{% blocktranslate with v0=view.epilogue_missions %}Expéditions encore en route : <strong>{{ v0 }}</strong>. Leur retour ne changera plus le résultat du règne.{% endblocktranslate %}</p>
         </section>
-    {% elif view.eliminated %}
-        <p class="marginal-note">
-            Monseigneur, aucune cité ne reconnaît plus votre autorité. Je continuerai pourtant de tenir ce livre jusqu’à la fin du règne.
-        </p>
-    {% elif game.paused %}
-        <p class="marginal-note">
-            Nous avons suspendu le cours des chroniques. Aucun nouveau décret ne sera reçu avant la reprise du calendrier.
-        </p>
-    {% endif %}
+    {% elif view.eliminated %}<p class="marginal-note">{% translate "Aucune cité ne reconnaît plus votre autorité. Je continuerai pourtant de tenir ce livre jusqu’à la fin du règne." %}</p>
+    {% elif game.paused %}<p class="marginal-note">{% translate "Le calendrier est suspendu. Reprenez-le avant de dicter de nouveaux ordres." %}</p>{% endif %}
     {% if tab == 'domain' %}
-        <section class="opening-letter" aria-label="Les nouvelles de votre domaine">
-            <p class="salutation">Monseigneur,</p>
-            {% if view.month == 0 %}
-                <p>
-                    J’ouvre ce livre au premier jour de votre règne. Vos décisions y laisseront leur trace ; j’y consignerai les travaux achevés, les hommes qui reviennent et les cités qui changent de maître.
-                </p>
-            {% else %}
-                <p>
-                    Voici ce que je peux vous dire de nos terres au terme du mois écoulé. Ces comptes sont ceux de votre maison ; au-delà de ses frontières, nos connaissances demeurent incertaines.
-                </p>
-            {% endif %}
-            <p>
-                <strong>{{ view.owned_cities|length }} cité{{ view.owned_cities|length|pluralize }}</strong> relève{{ view.owned_cities|length|pluralize:'nt' }} de votre autorité, avec <strong>{{ view.population }} habitants</strong> rattachés à leurs foyers. Parmi eux, <strong>{{ view.available_fideles }} Fidèles</strong> peuvent encore recevoir vos ordres.
-                {% if view.absent %}
-                    {{ view.absent }} autres sont en expédition ; leur place demeure vide dans les garnisons.
-                {% endif %}
-            </p>
-            <p>
-                Les greniers renferment <strong>{{ view.stock }} Mesures</strong>. Nous pouvons encore engager <strong>{{ view.available_stock }} Mesures</strong>.
-                {% if view.reserved_stock %}Les {{ view.reserved_stock }} autres sont déjà promises à vos décrets.{% endif %}
-            </p>
-            {% if not view.finished %}
-                <p>
-                    La prochaine récolte sera versée dans <strong>{{ view.harvest_in }} mois</strong>. J’ai comptabilisé jusqu’ici {{ view.tax }} Mesures de prélèvement à venir. Ce montant n’est pas encore entre nos mains.
-                </p>
-            {% endif %}
-            {% if not view.finished and not view.eliminated %}
-                <p class="reading-links">
-                    <a href="?tab=decrees">Faire venir le scribe pour dicter vos ordres.</a>
-                </p>
-            {% endif %}
-            <p class="signature">Votre scribe</p>
+        <section class="house-accounts" aria-labelledby="accounts-heading">
+            <p class="salutation">{% translate "Monseigneur," %}</p>
+            <p>{% if not view.closed_moon %}{% translate "J’ouvre ce livre au premier jour de votre règne. Voici les terres et les moyens que vous confiez à ma plume." %}{% else %}{% translate "Voici les comptes de votre maison. Au-delà de nos frontières, les hommes et les réserves des autres maisons nous demeurent inconnus." %}{% endif %}</p>
+            <h2 id="accounts-heading">{% translate "Les comptes de votre maison" %}</h2>
+            <h3>{% translate "Les terres et les hommes" %}</h3>
+            <p>{% blocktranslate with v0=view.owned_cities|length v1=view.population v2=view.available_fideles %}Votre autorité s’étend sur <strong>{{ v0 }} cités</strong>, où <strong>{{ v1 }} habitants</strong> sont rattachés à leurs foyers.<br>Parmi eux, <strong>{{ v2 }} Fidèles</strong> peuvent encore recevoir vos ordres.{% endblocktranslate %}
+                {% if view.absent %}<br>{% blocktranslate with v0=view.absent %}Nous attendons le retour de <strong>{{ v0 }} Fidèles</strong> partis en expédition.{% endblocktranslate %}{% endif %}</p>
+            <h3>{% translate "Les réserves et la récolte" %}</h3>
+            <p>{% blocktranslate with v0=view.stock v1=view.available_stock %}Nos greniers conservent <strong>{{ v0 }} Mesures</strong>.<br>Vous pouvez encore engager <strong>{{ v1 }} Mesures</strong>.{% endblocktranslate %}{% if view.reserved_stock %}<br>{% blocktranslate with v0=view.reserved_stock %}Vos décrets ont déjà réservé <strong>{{ v0 }} Mesures</strong>.{% endblocktranslate %}{% endif %}</p>
+            {% if not view.finished %}<p>{% blocktranslate with v0=view.harvest_moon v1=view.harvest_in v2=view.tax %}Le prochain prélèvement sera versé à la clôture de la <strong>lune {{ v0 }}</strong>, dans <strong>{{ v1 }} lunes</strong>.<br>J’ai inscrit <strong>{{ v2 }} Mesures</strong> de prélèvement en préparation ; elles ne peuvent pas encore être dépensées.{% endblocktranslate %}</p>{% endif %}
+            <p>{% translate "Chaque cité garde ses propres réserves. Les frais de vos décrets sont répartis entre nos greniers selon leurs fonds libres ; une place vide ailleurs ne préserve pas le surplus d’un grenier plein." %}</p>
+            {% if not view.finished and not view.eliminated %}<p class="reading-links"><a href="?tab=decrees">{% translate "Faire venir le scribe pour dicter vos ordres" %} →</a></p>{% endif %}
         </section>
         <section class="chapter-section" aria-labelledby="city-ledgers">
-            <h2 id="city-ledgers">Les feuillets des cités</h2>
-            <p class="aside-text">J’ai laissé un feuillet pour chacune de vos cités. Vous pouvez les ouvrir à votre gré.</p>
+            <h2 id="city-ledgers">{% translate "Les feuillets des cités" %}</h2>
             {% for city in view.owned_cities %}
-                <details class="city-entry"
-                         id="city-{{ city.id }}"
-                         {% if selected.id == city.id %}open{% endif %}>
-                    <summary>{{ city.name }}</summary>
-                    <div class="unfolded">
-                        <p>
-                            {{ city.name }} compte <strong>{{ city.population }} habitants</strong> rattachés à ses foyers, dont {{ city.present_population }} sont présents. De ses Fidèles, <strong>{{ city.available_fideles }}</strong> sont encore libres de partir.
-                            {% if city.reserved_fideles %}Nous en avons déjà promis {{ city.reserved_fideles }} à une expédition.{% endif %}
-                            {% if city.absent %}Nous attendons le retour de {{ city.absent }} autres à leur origine.{% endif %}
-                        </p>
-                        <p>
-                            Le grenier conserve <strong>{{ city.stock }} Mesures</strong> sur les {{ city.capacity }} qu’il peut abriter.
-                            {% if city.reserved_stock %}
-                                {{ city.reserved_stock }} sont réservées ; il en reste {{ city.available_stock }} de libres.
-                            {% endif %}
-                            Chaque habitant présent rapporte {{ city.yield }} Mesures par mois. Le prélèvement en préparation s’élève à {{ city.tax }} Mesures.
-                        </p>
-                        <p>
-                            {% if city.walls %}
-                                Une {{ city.wall_label|lower }} protège le centre.
-                                {% if city.damaged %}Elle porte encore les dommages de l’assaut et doit être réparée.{% endif %}
-                            {% else %}
-                                Le centre ne possède pas encore d’enceinte.
-                            {% endif %}
-                        </p>
-                        {% for work in city.works %}
-                            <p>
-                                Vos équipes poursuivent leur ouvrage : <em>{{ work.label|lower }}</em>. Elles en annoncent l’achèvement au mois <strong>{{ work.finish_month }}</strong>.
-                            </p>
-                        {% empty %}
-                            {% if city.busy %}
-                                <p>Les équipes attendent le départ d’un chantier déjà confirmé.</p>
-                            {% else %}
-                                <p>Les équipes de cette cité sont libres de recevoir un chantier.</p>
-                            {% endif %}
-                        {% endfor %}
-                        {% if city.deaths %}
-                            <p class="aside-text">
-                                Depuis l’ouverture de ces chroniques, {{ city.deaths }} habitants de cette cité ont perdu la vie.
-                            </p>
-                        {% endif %}
-                        {% if not view.finished and not view.eliminated %}
-                            <a href="?tab=decrees">Dicter un décret pour nos terres.</a>
-                        {% endif %}
-                    </div>
-                </details>
-            {% empty %}
-                <p>Il ne reste aucun feuillet de cité à placer sous votre sceau.</p>
-            {% endfor %}
+                <article class="city-entry" id="city-{{ city.id }}">
+                    <h3><a href="?tab=city&city={{ city.id }}">{{ city.name }} <span aria-hidden="true">→</span></a></h3>
+                    <p>{% blocktranslate with v0=city.population v1=city.available_fideles v2=city.stock v3=city.capacity %}<strong>{{ v0 }} habitants</strong> ; <strong>{{ v1 }} Fidèles</strong> libres.<br>Le grenier abrite <strong>{{ v2 }}</strong> Mesures sur <strong>{{ v3 }}</strong>.{% endblocktranslate %}<br>
+                        {% if city.busy %}{% translate "Les équipes sont engagées." %}{% else %}{% translate "Les équipes sont libres." %}{% endif %} {{ city.wall_label }}{% if city.damaged %}, {% translate "endommagée" %}{% endif %}.</p>
+                </article>
+            {% empty %}<p>{% translate "Aucune cité ne demeure sous votre sceau." %}</p>{% endfor %}
         </section>
-        <section class="chapter-section" aria-labelledby="frontier-notes">
-            <h2 id="frontier-notes">Ce que nous savons de Yaara</h2>
-            <details class="plain-disclosure"
-                     id="foreign-cities"
-                     {% if not selected.owned %}open{% endif %}>
-                <summary>Consulter les noms, les routes et les souverains</summary>
-                <div class="unfolded">
-                    <p>
-                        Les noms des souverains et les ouvrages visibles sont connus. Les réserves et les hommes des autres maisons nous échappent ; je n’inscrirai ici aucune certitude que nous n’ayons acquise.
-                    </p>
-                    {% for city in view.cities %}
-                        <p class="geography-entry"
-                           {% if not city.owned %}data-foreign-city="{{ city.id }}"{% endif %}>
-                            <a href="?city={{ city.id }}#{% if city.owned %}city-{{ city.id }}{% else %}foreign-cities{% endif %}">{{ city.name }}</a> relève de {{ city.owner_name }}. {{ city.wall_label }}
-                            {% if city.damaged %}, endommagée{% endif %}
-                            .
-                            {% if city.engaged %}Une expédition est déjà engagée vers cette cité.{% endif %}
-                        </p>
-                    {% endfor %}
-                    <h3>Les routes entre les oasis</h3>
-                    <ul class="route-list">
-                        {% for link in view.links %}<li>{{ link.first.name }} — {{ link.second.name }}</li>{% endfor %}
-                    </ul>
-                    <p class="aside-text">
-                        Pour porter une armée sur une frontière, ses origines doivent y être reliées par nos possessions. Chaque ensemble de terres touchant la même cible peut y envoyer ses hommes.
-                    </p>
-                </div>
-            </details>
-            <details class="plain-disclosure">
-                <summary>Relire les prétentions au trône</summary>
-                <div class="unfolded">
-                    {% for rank in view.ranking %}
-                        <p>
-                            {{ rank.name }} gouverne <strong>{{ rank.cities }} cité{{ rank.cities|pluralize }}</strong> et figure au rang {{ rank.rank }} des Prétendants
-                            {% if rank.own %}; c’est votre maison{% endif %}
-                            .
-                        </p>
-                    {% endfor %}
-                    <p class="aside-text">
-                        À la fin du règne, le nombre de cités primera ; la population départagera les égalités. Les comptes exacts des maisons rivales ne nous sont pas révélés.
-                    </p>
-                </div>
-            </details>
-        </section>
-        <section class="chapter-section" aria-labelledby="recent-letters">
-            <h2 id="recent-letters">Les dernières nouvelles</h2>
+        {% include 'simulation/world_notes.html' %}
+        <section class="chapter-section" aria-labelledby="recent-letters"><h2 id="recent-letters">{% translate "Les dernières nouvelles" %}</h2>
             {% include 'simulation/letter_entries.html' %}
-            <p class="reading-links">
-                <a href="?tab=letters">Reprendre toute la correspondance.</a>
-            </p>
+            <p class="reading-links"><a href="?tab=letters">{% translate "Reprendre toute la correspondance" %} →</a></p>
         </section>
-    {% elif tab == 'decrees' %}
-        {% include 'simulation/chronicle_decrees.html' %}
+    {% elif tab == 'city' %}{% include 'simulation/city_folio.html' %}
+    {% elif tab == 'decrees' %}{% include 'simulation/chronicle_decrees.html' %}
     {% else %}
-        <p class="salutation">Monseigneur,</p>
-        <p>
-            J’ai réuni ici les lettres et les récits qui vous sont destinés. Chaque feuillet garde sa date : ce qu’un homme a vu hier n’est pas nécessairement ce qu’il verrait aujourd’hui.
-        </p>
-        <p class="aside-text">
-            Les pertes et les recettes de notre maison sont comptées avec exactitude. Les forces adverses ne sont décrites qu’à travers ce que nos hommes ont réellement rencontré.
-        </p>
-        <section class="correspondence" aria-label="Les lettres de votre maison">
-            {% include 'simulation/letter_entries.html' %}
-        </section>
-        <p class="aside-text">
-            Je garde ici les cent dernières nouvelles. Les comptes présents de vos cités sont consignés au domaine.
-        </p>
+        <p class="salutation">{% translate "Monseigneur," %}</p>
+        <p>{% translate "J’ai réuni les cent dernières lettres qui vous sont destinées. Chacune garde sa date ; les observations d’hier ne décrivent pas nécessairement les forces d’aujourd’hui." %}</p>
+        <section class="correspondence" aria-label="{% translate "Les lettres de votre maison" %}">{% include 'simulation/letter_entries.html' %}</section>
     {% endif %}
-    {% if view.missions %}
-        <details class="plain-disclosure campaign-notes">
-            <summary>Demander des nouvelles de nos hommes en route</summary>
-            <div class="unfolded">
-                {% for mission in view.missions %}
-                    <p>
-                        Vers <strong>{{ mission.target }}</strong>, {{ mission.men }} de nos hommes poursuivent une mission : <em>{{ mission.kind|lower }}</em>.
-                        {% if mission.returning %}
-                            Ils ont repris le chemin de leurs origines ; le retour est attendu au mois <strong>{{ mission.return_month }}</strong>.
-                        {% else %}
-                            Le combat est prévu au mois <strong>{{ mission.combat_month }}</strong>, et leur retour au mois <strong>{{ mission.return_month }}</strong>.
-                        {% endif %}
-                        {% if mission.loot %}
-                            Ils transportent {{ mission.loot }} Mesures qui ne seront disponibles qu’à leur arrivée.
-                        {% endif %}
-                    </p>
-                {% endfor %}
-            </div>
-        </details>
-    {% endif %}
-    <section class="chapter-closing" id="turn-page" aria-label="Le cours du règne">
-        {% if not view.finished %}
-            {% if game.mode == 'manual' %}
-                <p>
-                    Lorsque vous aurez donné vos ordres et lu ces feuillets, je pourrai clore ce mois. Les décrets confirmés prendront leur cours, les travaux avanceront, puis nous attendrons les nouvelles.
-                </p>
-                <form method="post" action="{% url 'advance' game.id %}" data-busy-form>
-                    {% csrf_token %}
-                    <input type="hidden" name="month" value="{{ view.month|add:'1' }}">
-                    <button type="submit" class="primary-action">Clore le mois {{ view.month|add:'1' }}</button>
-                </form>
-            {% else %}
-                <p class="deadline"
-                   {% if game.deadline %}data-deadline="{{ game.deadline|date:'c' }}"{% endif %}>
-                    {% if game.paused %}
-                        Le cours des chroniques est suspendu.
-                    {% else %}
-                        Le prochain mois sera clos à {{ game.deadline|date:'H:i' }} UTC.
-                    {% endif %}
-                </p>
-                <form method="post" action="{% url 'pause' game.id %}">
-                    {% csrf_token %}
-                    <button type="submit">
-                        {% if game.paused %}
-                            Reprendre le cours des chroniques
-                        {% else %}
-                            Suspendre le cours des chroniques
-                        {% endif %}
-                    </button>
-                </form>
-            {% endif %}
-        {% else %}
-            <p>Ce livre est achevé. Vous pouvez en relire les feuillets ou commencer un autre règne.</p>
-        {% endif %}
-    </section>
-    <details class="plain-disclosure rules-help">
-        <summary>Demander au scribe de rappeler les usages du règne</summary>
-        <div class="unfolded">
-            <p>
-                L’impôt s’accumule chaque mois, mais n’entre dans les greniers que tous les douze mois. Chaque cité conserve ses réserves ; les dépenses de votre maison sont réparties entre leurs fonds libres. Les ouvrages ne portent leur fruit qu’une fois achevés.
-            </p>
-            <p>
-                Les Fidèles sont des habitants de vos cités, non des hommes ajoutés à leur population. Ceux qui partent ne défendent plus leur origine. Les secours protègent nos places contre les captures ; les murs ne protègent pas les villages contre le pillage.
-            </p>
-            <p>
-                Une seule attaque peut être engagée vers une cité. À la fin des {{ view.reign_months }} mois du règne, celui qui en possède le plus l’emporte ; celui qui les réunit toutes gagne aussitôt.
-            </p>
-        </div>
-    </details>
+    {% include 'simulation/turn_closing.html' %}
 {% endblock %}

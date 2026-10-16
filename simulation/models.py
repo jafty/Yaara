@@ -79,6 +79,7 @@ class Report(models.Model):
     kind = models.CharField(max_length=20)
     title = models.CharField(max_length=180)
     body = models.TextField()
+    content = models.JSONField(default=dict, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

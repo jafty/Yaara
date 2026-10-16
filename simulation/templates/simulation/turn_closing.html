@@ -1,0 +1,23 @@
+{% load i18n %}
+{% if view.missions %}<section class="chapter-section"><h2>{% translate "Nos hommes en route" %}</h2>
+    {% for mission in view.missions %}<p>{% blocktranslate with v0=mission.target v1=mission.men v2=mission.kind|lower %}Vers <strong>{{ v0 }}</strong>, <strong>{{ v1 }} Fidèles</strong> poursuivent leur mission : <em>{{ v2 }}</em>.{% endblocktranslate %}
+        {% if not mission.returning %}{% blocktranslate with v0=mission.combat_month %}Le combat est prévu à la lune <strong>{{ v0 }}</strong>.{% endblocktranslate %}{% endif %}
+        {% blocktranslate with v0=mission.return_month %}Le retour est attendu à la lune <strong>{{ v0 }}</strong>.{% endblocktranslate %}
+        {% if mission.loot %}{% blocktranslate with v0=mission.loot %}Ils transportent <strong>{{ v0 }} Mesures</strong>, disponibles seulement à leur retour.{% endblocktranslate %}{% endif %}</p>{% endfor %}</section>{% endif %}
+<section class="chapter-closing" id="turn-page" aria-label="{% translate "Le cours du règne" %}">
+    {% if not view.finished %}
+        <p class="sealed-summary">{% blocktranslate with v0=view.open_moon v1=view.sealed_count %}Décrets scellés pour la lune {{ v0 }} : <strong>{{ v1 }}</strong>.{% endblocktranslate %}</p>
+        {% if game.mode == 'manual' %}
+            <p>{% translate "La clôture fait entrer les décrets scellés en vigueur et avance les ouvrages et les expéditions. Un brouillon sans sceau n’engage rien." %}</p>
+            <form method="post" action="{% url 'advance' game.id %}" data-busy-form>{% csrf_token %}<input type="hidden" name="month" value="{{ view.open_moon }}"><button type="submit" class="primary-action" {% if game.paused %}disabled{% endif %}>{% blocktranslate with v0=view.open_moon %}Clore la lune {{ v0 }}{% endblocktranslate %}</button></form>
+        {% else %}
+            <p class="deadline" {% if game.deadline %}data-deadline="{{ game.deadline|date:'c' }}"{% endif %}>{% if game.paused %}{% translate "Le cours des chroniques est suspendu." %}{% else %}{% blocktranslate with v0=game.deadline|date:'H:i' %}La prochaine lune sera close à {{ v0 }} UTC.{% endblocktranslate %}{% endif %}</p>
+            <form method="post" action="{% url 'pause' game.id %}">{% csrf_token %}<button type="submit">{% if game.paused %}{% translate "Reprendre le cours des chroniques" %}{% else %}{% translate "Suspendre le cours des chroniques" %}{% endif %}</button></form>
+        {% endif %}
+    {% else %}<p>{% translate "Ce livre est achevé. Vous pouvez le relire ou commencer un autre règne." %}</p>{% endif %}
+</section>
+<details class="plain-disclosure rules-help"><summary>{% translate "Demander au scribe de rappeler les usages du règne" %}</summary><div class="unfolded">
+    <p>{% translate "L’impôt s’accumule à chaque lune et entre dans les greniers toutes les douze lunes. Les dépenses sont réparties entre leurs fonds libres. Les ouvrages portent leur fruit à leur achèvement." %}</p>
+    <p>{% translate "Les Fidèles font partie des habitants. Ceux qui partent cessent de défendre leur origine et de produire de l’impôt jusqu’à leur retour. Une seule attaque peut être engagée vers une cité." %}</p>
+    <p>{% blocktranslate with v0=view.reign_months %}Le règne dure {{ v0 }} lunes. Posséder toutes les cités donne une victoire immédiate.{% endblocktranslate %}</p>
+</div></details>

@@ -1,0 +1,1287 @@
+# Yaara player interface and immutable report narration.
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8\nLanguage: fr\nPlural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid " : tel est désormais l’état de nos hommes. Leur organisation équipera aussi les populations qui rejoindront votre maison."
+msgstr " : tel est désormais l’état de nos hommes. Leur organisation équipera aussi les populations qui rejoindront votre maison."
+
+msgid " Faute de place, {value0} autres n’ont pu être conservées."
+msgstr " Faute de place, {value0} autres n’ont pu être conservées."
+
+msgid " Toutes les réservations sont libérées."
+msgstr " Toutes les réservations sont libérées."
+
+msgid " Une autre expédition pourra désormais engager la cible."
+msgstr " Une autre expédition pourra désormais engager la cible."
+
+msgid "%(v0)s Fidèles libres de partir."
+msgstr "%(v0)s Fidèles libres de partir."
+
+msgid "%(v0)s Mesures et %(v1)s lunes de travaux"
+msgstr "%(v0)s Mesures et %(v1)s lunes de travaux"
+
+msgid "%(v0)s relève de <strong>%(v1)s</strong>."
+msgstr "%(v0)s relève de <strong>%(v1)s</strong>."
+
+msgid "%(v0)s règne%(v1)s"
+msgstr "%(v0)s règne%(v1)s"
+
+msgid "1 800 000 Mesures"
+msgstr "1 800 000 Mesures"
+
+msgid "1. Dicter · 2. Relire et sceller · 3. Clore la lune"
+msgstr "1. Dicter · 2. Relire et sceller · 3. Clore la lune"
+
+msgid "10 ans · 120 mois"
+msgstr "10 ans · 120 lunes"
+
+msgid "2 ans · 24 mois"
+msgstr "2 ans · 24 lunes"
+
+msgid "20 ans · 240 mois"
+msgstr "20 ans · 240 lunes"
+
+msgid "3 000 habitants"
+msgstr "3 000 habitants"
+
+msgid "5 ans · 60 mois"
+msgstr "5 ans · 60 lunes"
+
+msgid "600 000 dans chaque cité"
+msgstr "600 000 dans chaque cité"
+
+msgid "<strong>%(v0)s Fidèles</strong> libres"
+msgstr "<strong>%(v0)s Fidèles</strong> libres"
+
+msgid "<strong>%(v0)s Mesures</strong> ; <strong>%(v1)s lunes</strong>, selon notre population actuelle."
+msgstr "<strong>%(v0)s Mesures</strong> ; <strong>%(v1)s lunes</strong>, selon notre population actuelle."
+
+msgid "<strong>%(v0)s Mesures</strong> ; <strong>%(v1)s lunes</strong>."
+msgstr "<strong>%(v0)s Mesures</strong> ; <strong>%(v1)s lunes</strong>."
+
+msgid "<strong>%(v0)s Mesures</strong> libres"
+msgstr "<strong>%(v0)s Mesures</strong> libres"
+
+msgid "<strong>%(v0)s Mesures</strong>. Entrée en vigueur prévue à la lune <strong>%(v2)s</strong>."
+msgstr "<strong>%(v0)s Mesures</strong>. Entrée en vigueur prévue à la lune <strong>%(v2)s</strong>."
+
+msgid "<strong>%(v0)s habitants</strong> ; <strong>%(v1)s Fidèles</strong> libres.<br>Le grenier abrite <strong>%(v2)s</strong> Mesures sur <strong>%(v3)s</strong>."
+msgstr "<strong>%(v0)s habitants</strong> ; <strong>%(v1)s Fidèles</strong> libres.<br>Le grenier abrite <strong>%(v2)s</strong> Mesures sur <strong>%(v3)s</strong>."
+
+msgid "<strong>%(v0)s</strong> figure au premier rang."
+msgstr "<strong>%(v0)s</strong> figure au premier rang."
+
+msgid "<strong>%(v0)s</strong> gouverne <strong>%(v1)s cités</strong> et figure au <strong>rang %(v2)s</strong>."
+msgstr "<strong>%(v0)s</strong> gouverne <strong>%(v1)s cités</strong> et figure au <strong>rang %(v2)s</strong>."
+
+msgid "Achevé"
+msgstr "Achevé"
+
+msgid "Agrandir le grenier"
+msgstr "Agrandir le grenier"
+
+msgid "Agrandir le stockage"
+msgstr "Agrandir le stockage"
+
+msgid "Aller au contenu"
+msgstr "Aller au contenu"
+
+msgid "Aller au récit"
+msgstr "Aller au récit"
+
+msgid "Aménager les canaux"
+msgstr "Aménager les canaux"
+
+msgid "Aménager les premiers canaux"
+msgstr "Aménager les premiers canaux"
+
+msgid "Annulé"
+msgstr "Annulé"
+
+msgid "Apposer mon sceau"
+msgstr "Apposer mon sceau"
+
+msgid "Après le départ, ni rappel ni remboursement ne sont possibles."
+msgstr "Après le départ, ni rappel ni remboursement ne sont possibles."
+
+msgid "Archive originale en français"
+msgstr "Archive originale en français"
+
+msgid "Assaut victorieux"
+msgstr "Assaut victorieux"
+
+msgid "Attaque repoussée"
+msgstr "Attaque repoussée"
+
+msgid "Au premier rang : {value0}. Les opérations encore en route ne modifieront plus ce résultat."
+msgstr "Au premier rang : {value0}. Les opérations encore en route ne modifieront plus ce résultat."
+
+msgid "Au retour"
+msgstr "Au retour"
+
+msgid "Au service de %(v0)s."
+msgstr "Au service de %(v0)s."
+
+msgid "Au terme de la lune %(v0)s"
+msgstr "Au terme de la lune %(v0)s"
+
+msgid "Aucun de nos Fidèles n’a perdu la vie dans cette expédition."
+msgstr "Aucun de nos Fidèles n’a perdu la vie dans cette expédition."
+
+msgid "Aucun fonds, homme ou chantier n’est encore réservé. Relisez les termes, puis apposez votre sceau pour engager <strong>%(v0)s Mesures</strong>."
+msgstr "Aucun fonds, homme ou chantier n’est encore réservé. Relisez les termes, puis apposez votre sceau pour engager <strong>%(v0)s Mesures</strong>."
+
+msgid "Aucun homme n’a survécu. Aucun butin n’est déposé."
+msgstr "Aucun homme n’a survécu. Aucun butin n’est déposé."
+
+msgid "Aucun survivant ne peut décrire les forces adverses."
+msgstr "Aucun survivant ne peut décrire les forces adverses."
+
+msgid "Aucune cité ne demeure sous votre sceau."
+msgstr "Aucune cité ne demeure sous votre sceau."
+
+msgid "Aucune cité ne reconnaît plus votre autorité. Je continuerai pourtant de tenir ce livre jusqu’à la fin du règne."
+msgstr "Aucune cité ne reconnaît plus votre autorité. Je continuerai pourtant de tenir ce livre jusqu’à la fin du règne."
+
+msgid "Aucune équipe ne peut recevoir cet ouvrage pour le moment."
+msgstr "Aucune équipe ne peut recevoir cet ouvrage pour le moment."
+
+msgid "Automatique · le monde avance à échéance"
+msgstr "Automatique · le monde avance à échéance"
+
+msgid "Avant la clôture, un décret peut être retiré. Pour le modifier, il faut le rédiger de nouveau ; sa priorité sur la cible sera perdue."
+msgstr "Avant la clôture, un décret peut être retiré. Pour le modifier, il faut le rédiger de nouveau ; sa priorité sur la cible sera perdue."
+
+msgid "Avant la clôture, vous pourrez retirer le décret et libérer les moyens promis. Après le départ, les frais seront définitivement dépensés."
+msgstr "Avant la clôture, vous pourrez retirer le décret et libérer les moyens promis. Après le départ, les frais seront définitivement dépensés."
+
+msgid "Avec le calendrier automatique, les rivaux avancent même lorsque vous êtes absent. La pause suspend toute la partie."
+msgstr "Avec le calendrier automatique, les rivaux avancent même lorsque vous êtes absent. La pause suspend toute la partie."
+
+msgid "Brouillon sans sceau"
+msgstr "Brouillon sans sceau"
+
+msgid "CHRONIQUES DES OASIS"
+msgstr "CHRONIQUES DES OASIS"
+
+msgid "Cadence du calendrier automatique"
+msgstr "Cadence du calendrier automatique"
+
+msgid "Calendrier"
+msgstr "Calendrier"
+
+msgid "Capitulation par pénurie"
+msgstr "Capitulation par pénurie"
+
+msgid "Capturer la cité"
+msgstr "Capturer la cité"
+
+msgid "Capturer une cité"
+msgstr "Capturer une cité"
+
+msgid "Ce Prétendant ne peut plus donner d’ordres."
+msgstr "Ce Prétendant ne peut plus donner d’ordres."
+
+msgid "Ce calendrier n’est pas disponible."
+msgstr "Ce calendrier n’est pas disponible."
+
+msgid "Ce chantier n’existe pas."
+msgstr "Ce chantier n’existe pas."
+
+msgid "Ce devis n’est plus valable. Préparez à nouveau votre décret."
+msgstr "Ce devis n’est plus valable. Préparez à nouveau votre décret."
+
+msgid "Ce livre est achevé. Vous pouvez le relire ou commencer un autre règne."
+msgstr "Ce livre est achevé. Vous pouvez le relire ou commencer un autre règne."
+
+msgid "Ce mois figure déjà dans nos chroniques. Je n’en ai pas répété les événements."
+msgstr "Cette lune figure déjà dans nos chroniques. Je n’en ai pas répété les événements."
+
+msgid "Ce mois ne peut pas être résolu. Actualisez la page."
+msgstr "Cette lune ne peut pas être résolue. Actualisez la page."
+
+msgid "Ce que nous savons de Yaara"
+msgstr "Ce que nous savons de Yaara"
+
+msgid "Ce que porte déjà votre sceau"
+msgstr "Ce que porte déjà votre sceau"
+
+msgid "Ce que vous dicterez"
+msgstr "Ce que vous dicterez"
+
+msgid "Ce règne est déjà terminé."
+msgstr "Ce règne est déjà terminé."
+
+msgid "Ce règne est terminé."
+msgstr "Ce règne est terminé."
+
+msgid "Certains de ces hommes sont déjà promis à une autre expédition."
+msgstr "Certains de ces hommes sont déjà promis à une autre expédition."
+
+msgid "Cet identifiant de confirmation est déjà utilisé."
+msgstr "Cet identifiant de confirmation est déjà utilisé."
+
+msgid "Cet ordre ne peut plus être annulé."
+msgstr "Cet ordre ne peut plus être annulé."
+
+msgid "Cet ordre n’est pas reconnu."
+msgstr "Cet ordre n’est pas reconnu."
+
+msgid "Cette action appartient aux règles V1."
+msgstr "Cette action appartient aux règles V1."
+
+msgid "Cette cité ne relève pas de votre autorité."
+msgstr "Cette cité ne relève pas de votre autorité."
+
+msgid "Cette communauté ne peut rejoindre cette frontière par nos possessions."
+msgstr "Cette communauté ne peut rejoindre cette frontière par nos possessions."
+
+msgid "Cette dépense dépasserait les moyens non engagés."
+msgstr "Cette dépense dépasserait les moyens non engagés."
+
+msgid "Cette enceinte ne nécessite aucune réparation."
+msgstr "Cette enceinte ne nécessite aucune réparation."
+
+msgid "Cette expédition demande au moins {value0} Fidèles au total."
+msgstr "Cette expédition demande au moins {value0} Fidèles au total."
+
+msgid "Cette page ne figure pas dans nos registres."
+msgstr "Cette page ne figure pas dans nos registres."
+
+msgid "Cette page ne relève pas de votre autorité. Reconnectez-vous si votre session a expiré."
+msgstr "Cette page ne relève pas de votre autorité. Reconnectez-vous si votre session a expiré."
+
+msgid "Cette partie ne peut pas être suspendue."
+msgstr "Cette partie ne peut pas être suspendue."
+
+msgid "Cette version des règles n’est pas disponible."
+msgstr "Cette version des règles n’est pas disponible."
+
+msgid "Chaque cité garde ses propres réserves. Les frais de vos décrets sont répartis entre nos greniers selon leurs fonds libres ; une place vide ailleurs ne préserve pas le surplus d’un grenier plein."
+msgstr "Chaque cité garde ses propres réserves. Les frais de vos décrets sont répartis entre nos greniers selon leurs fonds libres ; une place vide ailleurs ne préserve pas le surplus d’un grenier plein."
+
+msgid "Chaque habitant présent produira {yield_per_moon} Mesures d’impôt par lune."
+msgstr "Chaque habitant présent produira {yield_per_moon} Mesures d’impôt par lune."
+
+msgid "Chaque règne, une histoire."
+msgstr "Chaque règne, une histoire."
+
+msgid "Choisir"
+msgstr "Choisir"
+
+msgid "Choisir les cités pour cet ouvrage"
+msgstr "Choisir les cités pour cet ouvrage"
+
+msgid "Choisir toutes les cités disponibles"
+msgstr "Choisir toutes les cités disponibles"
+
+msgid "Choisissez au moins une cité, une seule fois chacune."
+msgstr "Choisissez au moins une cité, une seule fois chacune."
+
+msgid "Choisissez le rythme de votre histoire. Ces règles resteront celles de votre partie."
+msgstr "Choisissez le rythme de votre histoire. Ces règles resteront celles de votre partie."
+
+msgid "Choisissez une cité ennemie de cette partie."
+msgstr "Choisissez une cité ennemie de cette partie."
+
+msgid "Cités retenues :"
+msgstr "Cités retenues :"
+
+msgid "Cités sous votre autorité : %(v0)s"
+msgstr "Cités sous votre autorité : %(v0)s"
+
+msgid "Clore la lune"
+msgstr "Clore la lune"
+
+msgid "Clore la lune %(v0)s"
+msgstr "Clore la lune %(v0)s"
+
+msgid "Comptes arrêtés à la lune %(v0)s"
+msgstr "Comptes arrêtés à la lune %(v0)s"
+
+msgid "Confirmé"
+msgstr "Confirmé"
+
+msgid "Consigné par votre scribe à la lune %(v0)s."
+msgstr "Consigné par votre scribe à la lune %(v0)s."
+
+msgid "Consulter les cités, les routes et les souverains"
+msgstr "Consulter les cités, les routes et les souverains"
+
+msgid "Correspondance"
+msgstr "Correspondance"
+
+msgid "Créer mon compte"
+msgstr "Créer mon compte"
+
+msgid "Créez votre règne. Le mode manuel vous laisse tout le temps de découvrir Yaara."
+msgstr "Créez votre règne. Le mode manuel vous laisse tout le temps de découvrir Yaara."
+
+msgid "Dans les terres de Yaara,"
+msgstr "Dans les terres de Yaara,"
+
+msgid "De la terre et des ouvrages"
+msgstr "De la terre et des ouvrages"
+
+msgid "Demander au scribe de rappeler les usages du règne"
+msgstr "Demander au scribe de rappeler les usages du règne"
+
+msgid "Depuis le début du règne, <strong>%(v0)s habitants</strong> ont perdu la vie."
+msgstr "Depuis le début du règne, <strong>%(v0)s habitants</strong> ont perdu la vie."
+
+msgid "Des canaux à creuser, des frontières à défendre, des cités à rallier. Retrouvez votre place à la table du pouvoir."
+msgstr "Des canaux à creuser, des frontières à défendre, des cités à rallier. Retrouvez votre place à la table du pouvoir."
+
+msgid "Des hommes que l’on envoie"
+msgstr "Des hommes que l’on envoie"
+
+msgid "Deux Prétendants contrôlés par l’ordinateur"
+msgstr "Deux Prétendants contrôlés par l’ordinateur"
+
+msgid "Devenir Prétendant"
+msgstr "Devenir Prétendant"
+
+msgid "Devenir Prétendant · Yaara"
+msgstr "Devenir Prétendant · Yaara"
+
+msgid "Dicter"
+msgstr "Dicter"
+
+msgid "Dicter le projet d’armement"
+msgstr "Dicter le projet d’armement"
+
+msgid "Dicter l’ordre d’une expédition"
+msgstr "Dicter l’ordre d’une expédition"
+
+msgid "Dicter un décret pour %(v0)s"
+msgstr "Dicter un décret pour %(v0)s"
+
+msgid "Dictez votre intention, puis relisez le brouillon. Seul votre sceau réserve les fonds, les hommes et les équipes. La clôture de la lune mettra les décrets scellés en mouvement."
+msgstr "Dictez votre intention, puis relisez le brouillon. Seul votre sceau réserve les fonds, les hommes et les équipes. La clôture de la lune mettra les décrets scellés en mouvement."
+
+msgid "Domaine"
+msgstr "Domaine"
+
+msgid "Du grenier de <strong>%(v0)s</strong>, <strong>%(v1)s Mesures</strong>."
+msgstr "Du grenier de <strong>%(v0)s</strong>, <strong>%(v1)s Mesures</strong>."
+
+msgid "Du travail de la forge"
+msgstr "Du travail de la forge"
+
+msgid "Durée du règne"
+msgstr "Durée du règne"
+
+msgid "Décret retiré"
+msgstr "Décret retiré"
+
+msgid "Décret scellé"
+msgstr "Décret scellé"
+
+msgid "Décrets"
+msgstr "Décrets"
+
+msgid "Décrets scellés pour la lune %(v0)s : <strong>%(v1)s</strong>."
+msgstr "Décrets scellés pour la lune %(v0)s : <strong>%(v1)s</strong>."
+
+msgid "Défaite sévère"
+msgstr "Défaite sévère"
+
+msgid "Déjà Prétendant ?"
+msgstr "Déjà Prétendant ?"
+
+msgid "Désigner une cité à notre portée"
+msgstr "Désigner une cité à notre portée"
+
+msgid "Effacer ce choix"
+msgstr "Effacer ce choix"
+
+msgid "Effectif réuni :"
+msgstr "Effectif réuni :"
+
+msgid "En V0, le sceau rend cet ordre définitif. Aucune annulation ne sera possible."
+msgstr "En V0, le sceau rend cet ordre définitif. Aucune annulation ne sera possible."
+
+msgid "En V0, un sceau est définitif. Aucun décret confirmé ne peut être annulé."
+msgstr "En V0, un sceau est définitif. Aucun décret confirmé ne peut être annulé."
+
+msgid "En V0, une confirmation est définitive."
+msgstr "En V0, une confirmation est définitive."
+
+msgid "En cours"
+msgstr "En cours"
+
+msgid "Enceinte de terre"
+msgstr "Enceinte de terre"
+
+msgid "Entrer dans Yaara"
+msgstr "Entrer dans Yaara"
+
+msgid "Expéditions encore en route : <strong>%(v0)s</strong>. Leur retour ne changera plus le résultat du règne."
+msgstr "Expéditions encore en route : <strong>%(v0)s</strong>. Leur retour ne changera plus le résultat du règne."
+
+msgid "Faire relire ce décret"
+msgstr "Faire relire ce décret"
+
+msgid "Faire relire l’ordre d’expédition"
+msgstr "Faire relire l’ordre d’expédition"
+
+msgid "Faire venir le scribe pour dicter vos ordres"
+msgstr "Faire venir le scribe pour dicter vos ordres"
+
+msgid "Faites vivre"
+msgstr "Faites vivre"
+
+msgid "Fidèles"
+msgstr "Fidèles"
+
+msgid "Fidèles de %(v0)s"
+msgstr "Fidèles de %(v0)s"
+
+msgid "Fidèles engagés : <strong>%(count)s</strong>."
+msgstr "Fidèles engagés : <strong>%(count)s</strong>."
+
+msgid "Fonder ma maison"
+msgstr "Fonder ma maison"
+
+msgid "Gouvernez trois cités. Faites prospérer vos terres."
+msgstr "Gouvernez trois cités. Faites prospérer vos terres."
+
+msgid "Grande enceinte"
+msgstr "Grande enceinte"
+
+msgid "Il faut la gagner."
+msgstr "Il faut la gagner."
+
+msgid "Il faut réparer l’enceinte avant de la renforcer."
+msgstr "Il faut réparer l’enceinte avant de la renforcer."
+
+msgid "Ils ne rapportent pas de butin."
+msgstr "Ils ne rapportent pas de butin."
+
+msgid "Ils transportent <strong>%(v0)s Mesures</strong>, disponibles seulement à leur retour."
+msgstr "Ils transportent <strong>%(v0)s Mesures</strong>, disponibles seulement à leur retour."
+
+msgid "Invalidé"
+msgstr "Invalidé"
+
+msgid "Je ne peux recevoir de nouveaux décrets tant que le calendrier est suspendu ou le règne achevé."
+msgstr "Je ne peux recevoir de nouveaux décrets tant que le calendrier est suspendu ou le règne achevé."
+
+msgid "J’ai fait inscrire le retour de {value0} Fidèles à {value1}. Ils rejoignent les présents de leur cité d’origine. {value2}"
+msgstr "J’ai fait inscrire le retour de {value0} Fidèles à {value1}. Ils rejoignent les présents de leur cité d’origine. {value2}"
+
+msgid "J’ai fait ouvrir les registres de vos trois cités. Leurs habitants reconnaissent votre autorité, mais il nous appartient encore de préparer les années qui viennent. Chaque cité gardera ses réserves ; pour vos dépenses, je demanderai à tous les greniers de contribuer selon leurs moyens. La première récolte nous sera versée au mois 12. D’ici là, je tiendrai compte des hommes partis et des ouvrages que vous aurez ordonnés."
+msgstr "J’ai fait ouvrir les registres de vos trois cités. Leurs habitants reconnaissent votre autorité, mais il nous appartient encore de préparer les années qui viennent. Chaque cité gardera ses réserves ; pour vos dépenses, je demanderai à tous les greniers de contribuer selon leurs moyens. La première récolte nous sera versée à la lune 12. D’ici là, je tiendrai compte des hommes partis et des ouvrages que vous aurez ordonnés."
+
+msgid "J’ai placé sous votre sceau cet ordre : {value0}. Les greniers promettent {value1} Mesures, qui ne seront dépensées qu’au départ, au mois {value2}. Les hommes et les emplacements nécessaires vous sont désormais réservés."
+msgstr "J’ai placé sous votre sceau cet ordre : {value0}. Les greniers promettent {value1} Mesures, qui ne seront dépensées qu’au départ, à la lune {value2}. Les hommes et les emplacements nécessaires vous sont désormais réservés."
+
+msgid "J’ai retiré ce décret de nos engagements. Les moyens qu’il promettait sont de nouveau libres."
+msgstr "J’ai retiré ce décret de nos engagements. Les moyens qu’il promettait sont de nouveau libres."
+
+msgid "J’ai reçu votre sceau. Les moyens promis attendent l’entrée en vigueur de votre décret."
+msgstr "J’ai reçu votre sceau. Les moyens promis attendent l’entrée en vigueur de votre décret."
+
+msgid "J’ai réuni les cent dernières lettres qui vous sont destinées. Chacune garde sa date ; les observations d’hier ne décrivent pas nécessairement les forces d’aujourd’hui."
+msgstr "J’ai réuni les cent dernières lettres qui vous sont destinées. Chacune garde sa date ; les observations d’hier ne décrivent pas nécessairement les forces d’aujourd’hui."
+
+msgid "J’ouvre ce livre au premier jour de votre règne. Voici les terres et les moyens que vous confiez à ma plume."
+msgstr "J’ouvre ce livre au premier jour de votre règne. Voici les terres et les moyens que vous confiez à ma plume."
+
+msgid "LE BUREAU DU PRÉTENDANT"
+msgstr "LE BUREAU DU PRÉTENDANT"
+
+msgid "LE CONSEIL DU SCRIBE"
+msgstr "LE CONSEIL DU SCRIBE"
+
+msgid "LE LIVRE DES RÈGNES"
+msgstr "LE LIVRE DES RÈGNES"
+
+msgid "LE SABLE GARDE LA MÉMOIRE"
+msgstr "LE SABLE GARDE LA MÉMOIRE"
+
+msgid "LES CITÉS DU DÉSERT"
+msgstr "LES CITÉS DU DÉSERT"
+
+msgid "La bataille de {value0}"
+msgstr "La bataille de {value0}"
+
+msgid "La capacité de ce grenier passera à {capacity} Mesures."
+msgstr "La capacité de ce grenier passera à {capacity} Mesures."
+
+msgid "La capture est volontairement hors de portée des réserves initiales. Préparez votre économie avant de lancer de grandes campagnes."
+msgstr "La capture est volontairement hors de portée des réserves initiales. Préparez votre économie avant de lancer de grandes campagnes."
+
+msgid "La cité compte <strong>%(v0)s habitants</strong>, dont <strong>%(v1)s</strong> sont présents.<br><strong>%(v2)s Fidèles</strong> sont libres de recevoir un ordre ; <strong>%(v3)s</strong> sont promis à une expédition et <strong>%(v4)s</strong> sont en route."
+msgstr "La cité compte <strong>%(v0)s habitants</strong>, dont <strong>%(v1)s</strong> sont présents.<br><strong>%(v2)s Fidèles</strong> sont libres de recevoir un ordre ; <strong>%(v3)s</strong> sont promis à une expédition et <strong>%(v4)s</strong> sont en route."
+
+msgid "La cité ou l’état de l’enceinte ne permet plus ces travaux."
+msgstr "La cité ou l’état de l’enceinte ne permet plus ces travaux."
+
+msgid "La cité tient le siège"
+msgstr "La cité tient le siège"
+
+msgid "La clôture est déjà atteinte ; attendez son traitement avant de suspendre la partie."
+msgstr "La clôture est déjà atteinte ; attendez son traitement avant de suspendre la partie."
+
+msgid "La clôture fait entrer les décrets scellés en vigueur et avance les ouvrages et les expéditions. Un brouillon sans sceau n’engage rien."
+msgstr "La clôture fait entrer les décrets scellés en vigueur et avance les ouvrages et les expéditions. Un brouillon sans sceau n’engage rien."
+
+msgid "La configuration de cette partie est invalide."
+msgstr "La configuration de cette partie est invalide."
+
+msgid "La création de comptes est actuellement fermée."
+msgstr "La création de comptes est actuellement fermée."
+
+msgid "La dernière page du règne"
+msgstr "La dernière page du règne"
+
+msgid "La forge a achevé son œuvre"
+msgstr "La forge a achevé son œuvre"
+
+msgid "La forge équipera aussi les populations qui rejoindront votre maison. Le devis fixe le prix selon la population actuelle."
+msgstr "La forge équipera aussi les populations qui rejoindront votre maison. Le devis fixe le prix selon la population actuelle."
+
+msgid "La garnison locale sera mieux protégée contre les captures."
+msgstr "La garnison locale sera mieux protégée contre les captures."
+
+msgid "La ligue d’Azal"
+msgstr "La ligue d’Azal"
+
+msgid "La lune {moon} est désormais consignée dans ces chroniques. Voici les nouvelles qui nous sont parvenues."
+msgstr "La lune {moon} est désormais consignée dans ces chroniques. Voici les nouvelles qui nous sont parvenues."
+
+msgid "La maison d’Ambre"
+msgstr "La maison d’Ambre"
+
+msgid "La nouvelle de cette expédition nous est parvenue. {value0} "
+msgstr "La nouvelle de cette expédition nous est parvenue. {value0} "
+
+msgid "La part demandée aux greniers"
+msgstr "La part demandée aux greniers"
+
+msgid "La partie est en pause. Reprenez le calendrier pour donner un ordre."
+msgstr "La partie est en pause. Reprenez le calendrier pour donner un ordre."
+
+msgid "La première page est encore blanche."
+msgstr "La première page est encore blanche."
+
+msgid "La prochaine clôture n’est pas encore atteinte."
+msgstr "La prochaine clôture n’est pas encore atteinte."
+
+msgid "La prochaine lune sera close à %(v0)s UTC."
+msgstr "La prochaine lune sera close à %(v0)s UTC."
+
+msgid "La protection contre le pillage est encore active."
+msgstr "La protection contre le pillage est encore active."
+
+msgid "La récolte de {value0}"
+msgstr "La récolte de {value0}"
+
+msgid "La réparation rend à une enceinte endommagée sa protection."
+msgstr "La réparation rend à une enceinte endommagée sa protection."
+
+msgid "La situation a changé depuis ce devis. Vérifiez à nouveau vos moyens."
+msgstr "La situation a changé depuis ce devis. Vérifiez à nouveau vos moyens."
+
+msgid "Langue"
+msgstr "Langue"
+
+msgid "Le calendrier a changé. Préparez à nouveau votre décret."
+msgstr "Le calendrier a changé. Préparez à nouveau votre décret."
+
+msgid "Le calendrier de cette partie est arrêté."
+msgstr "Le calendrier de cette partie est arrêté."
+
+msgid "Le calendrier de cette partie ne peut pas être avancé manuellement."
+msgstr "Le calendrier de cette partie ne peut pas être avancé manuellement."
+
+msgid "Le calendrier est suspendu"
+msgstr "Le calendrier est suspendu"
+
+msgid "Le calendrier est suspendu. Reprenez-le avant de dicter de nouveaux ordres."
+msgstr "Le calendrier est suspendu. Reprenez-le avant de dicter de nouveaux ordres."
+
+msgid "Le chemin s’interrompt · Yaara"
+msgstr "Le chemin s’interrompt · Yaara"
+
+msgid "Le chemin s’interrompt."
+msgstr "Le chemin s’interrompt."
+
+msgid "Le combat est prévu à la lune <strong>%(v0)s</strong>."
+msgstr "Le combat est prévu à la lune <strong>%(v0)s</strong>."
+
+msgid "Le combat n’a plus lieu d’être. Les hommes rentrent selon le calendrier prévu, sans remboursement."
+msgstr "Le combat n’a plus lieu d’être. Les hommes rentrent selon le calendrier prévu, sans remboursement."
+
+msgid "Le cours des chroniques est suspendu."
+msgstr "Le cours des chroniques est suspendu."
+
+msgid "Le cours du règne"
+msgstr "Le cours du règne"
+
+msgid "Le décret à sceller · Yaara"
+msgstr "Le décret à sceller · Yaara"
+
+msgid "Le désert n’offre pas de couronne."
+msgstr "Le désert n’offre pas de couronne."
+
+msgid "Le feuillet de %(v0)s"
+msgstr "Le feuillet de %(v0)s"
+
+msgid "Le financement réservé n’est plus disponible."
+msgstr "Le financement réservé n’est plus disponible."
+
+msgid "Le grenier conserve <strong>%(v0)s Mesures</strong> sur <strong>%(v1)s</strong>.<br><strong>%(v2)s Mesures</strong> sont libres, et <strong>%(v3)s</strong> sont réservées.<br>Le prélèvement en préparation atteint <strong>%(v4)s Mesures</strong>. Chaque habitant présent y ajoute <strong>%(v5)s Mesures par lune</strong>."
+msgstr "Le grenier conserve <strong>%(v0)s Mesures</strong> sur <strong>%(v1)s</strong>.<br><strong>%(v2)s Mesures</strong> sont libres, et <strong>%(v3)s</strong> sont réservées.<br>Le prélèvement en préparation atteint <strong>%(v4)s Mesures</strong>. Chaque habitant présent y ajoute <strong>%(v5)s Mesures par lune</strong>."
+
+msgid "Le grenier et le prélèvement"
+msgstr "Le grenier et le prélèvement"
+
+msgid "Le grenier reçoit {value0} Mesures de leur butin."
+msgstr "Le grenier reçoit {value0} Mesures de leur butin."
+
+msgid "Le livre des règnes"
+msgstr "Le livre des règnes"
+
+msgid "Le mois demandé est invalide."
+msgstr "La lune demandée est invalide."
+
+msgid "Le mois est clos. Vérifiez le départ et le devis du mois suivant."
+msgstr "La lune est close. Vérifiez le départ et le devis de la lune suivantee."
+
+msgid "Le niveau maximal de cet ouvrage est déjà atteint."
+msgstr "Le niveau maximal de cet ouvrage est déjà atteint."
+
+msgid "Le nom du souverain a changé dans les registres de {value0}. La cité relève désormais de {value1} ; c’est tout ce que cette nouvelle publique nous apprend."
+msgstr "Le nom du souverain a changé dans les registres de {value0}. La cité relève désormais de {value1} ; c’est tout ce que cette nouvelle publique nous apprend."
+
+msgid "Le nom et le calendrier"
+msgstr "Le nom et le calendrier"
+
+msgid "Le prix est partagé selon les fonds libres de chaque cité. Ce partage sera conservé avec le décret."
+msgstr "Le prix est partagé selon les fonds libres de chaque cité. Ce partage sera conservé avec le décret."
+
+msgid "Le prochain prélèvement sera versé à la clôture de la <strong>lune %(v0)s</strong>, dans <strong>%(v1)s lunes</strong>.<br>J’ai inscrit <strong>%(v2)s Mesures</strong> de prélèvement en préparation ; elles ne peuvent pas encore être dépensées."
+msgstr "Le prochain prélèvement sera versé à la clôture de la <strong>lune %(v0)s</strong>, dans <strong>%(v1)s lunes</strong>.<br>J’ai inscrit <strong>%(v2)s Mesures</strong> de prélèvement en préparation ; elles ne peuvent pas encore être dépensées."
+
+msgid "Le projet doit s’achever à la lune <strong>%(v0)s</strong>."
+msgstr "Le projet doit s’achever à la lune <strong>%(v0)s</strong>."
+
+msgid "Le raid sur nos villages a coûté la vie à {value0} de nos Fidèles. Les assaillants ont emporté {value1} Mesures et en ont détruit {value2} autres. Ces pertes sont inscrites dans le grenier de la cité. "
+msgstr "Le raid sur nos villages a coûté la vie à {value0} de nos Fidèles. Les assaillants ont emporté {value1} Mesures et en ont détruit {value2} autres. Ces pertes sont inscrites dans le grenier de la cité. "
+
+msgid "Le retour est attendu à la lune <strong>%(v0)s</strong>."
+msgstr "Le retour est attendu à la lune <strong>%(v0)s</strong>."
+
+msgid "Le règne dure %(v0)s lunes. Posséder toutes les cités donne une victoire immédiate."
+msgstr "Le règne dure %(v0)s lunes. Posséder toutes les cités donne une victoire immédiate."
+
+msgid "Le règne est achevé"
+msgstr "Le règne est achevé"
+
+msgid "Le règne est terminé. Son résultat est désormais scellé."
+msgstr "Le règne est terminé. Son résultat est désormais scellé."
+
+msgid "Le sceau vous appartient"
+msgstr "Le sceau vous appartient"
+
+msgid "Le scribe ne peut pas répondre pour le moment. Votre dernier mois confirmé reste enregistré."
+msgstr "Le scribe ne peut pas répondre pour le moment. Votre dernière lune confirmée reste enregistré."
+
+msgid "Le scribe n’a rien de nouveau à consigner."
+msgstr "Le scribe n’a rien de nouveau à consigner."
+
+msgid "Le siège a consommé {value0} Mesures prises dans le grenier de cette cité. "
+msgstr "Le siège a consommé {value0} Mesures prises dans le grenier de cette cité. "
+
+msgid "Le traitement a pris du retard. Reprenez la partie pour ouvrir une nouvelle fenêtre de décision complète."
+msgstr "Le traitement a pris du retard. Reprenez la partie pour ouvrir une nouvelle fenêtre de décision complète."
+
+msgid "Les Fidèles font partie des habitants. Ceux qui partent cessent de défendre leur origine et de produire de l’impôt jusqu’à leur retour. Une seule attaque peut être engagée vers une cité."
+msgstr "Les Fidèles font partie des habitants. Ceux qui partent cessent de défendre leur origine et de produire de l’impôt jusqu’à leur retour. Une seule attaque peut être engagée vers une cité."
+
+msgid "Les Fidèles partis ne défendent plus leur origine et ne contribuent plus à l’impôt jusqu’à leur retour. Le butin n’est utilisable qu’au retour."
+msgstr "Les Fidèles partis ne défendent plus leur origine et ne contribuent plus à l’impôt jusqu’à leur retour. Le butin n’est utilisable qu’au retour."
+
+msgid "Les Fidèles restent des habitants de leur cité. Une fois partis, ils cessent de défendre leur origine et de contribuer à l’impôt jusqu’à leur retour."
+msgstr "Les Fidèles restent des habitants de leur cité. Une fois partis, ils cessent de défendre leur origine et de contribuer à l’impôt jusqu’à leur retour."
+
+msgid "Les canaux augmentent l’impôt produit par les habitants présents, une fois achevés."
+msgstr "Les canaux augmentent l’impôt produit par les habitants présents, une fois achevés."
+
+msgid "Les chroniques de Yaara"
+msgstr "Les chroniques de Yaara"
+
+msgid "Les comptes de la cité"
+msgstr "Les comptes de la cité"
+
+msgid "Les comptes de votre maison"
+msgstr "Les comptes de votre maison"
+
+msgid "Les comptes de {value0} sont arrêtés pour cette année. Le prélèvement a fait entrer {value1} Mesures dans son grenier ; {value2} autres n’ont pu y trouver place. J’ai inscrit {value3} nouveaux habitants et {value4} habitants rejoignant les Fidèles. La cité compte à présent {value5} habitants. Depuis le début du règne, {value6} de ses habitants ont perdu la vie."
+msgstr "Les comptes de {value0} sont arrêtés pour cette année. Le prélèvement a fait entrer {value1} Mesures dans son grenier ; {value2} autres n’ont pu y trouver place. J’ai inscrit {value3} nouveaux habitants et {value4} habitants rejoignant les Fidèles. La cité compte à présent {value5} habitants. Depuis le début du règne, {value6} de ses habitants ont perdu la vie."
+
+msgid "Les contributions militaires sont invalides."
+msgstr "Les contributions militaires sont invalides."
+
+msgid "Les contributions ne peuvent plus rejoindre cette frontière."
+msgstr "Les contributions ne peuvent plus rejoindre cette frontière."
+
+msgid "Les dernières nouvelles"
+msgstr "Les dernières nouvelles"
+
+msgid "Les effectifs doivent être des nombres entiers positifs."
+msgstr "Les effectifs doivent être des nombres entiers positifs."
+
+msgid "Les effectifs doivent être des nombres entiers."
+msgstr "Les effectifs doivent être des nombres entiers."
+
+msgid "Les feuillets de votre règne"
+msgstr "Les feuillets de votre règne"
+
+msgid "Les feuillets des cités"
+msgstr "Les feuillets des cités"
+
+msgid "Les foyers et les Fidèles"
+msgstr "Les foyers et les Fidèles"
+
+msgid "Les hommes défendent encore leurs foyers jusqu’au départ. Une fois partis, ils n’y produisent plus d’impôt. Le premier sceau accepté engage la cible jusqu’au combat."
+msgstr "Les hommes défendent encore leurs foyers jusqu’au départ. Une fois partis, ils n’y produisent plus d’impôt. Le premier sceau accepté engage la cible jusqu’au combat."
+
+msgid "Les hommes engagés"
+msgstr "Les hommes engagés"
+
+msgid "Les lettres de votre maison"
+msgstr "Les lettres de votre maison"
+
+msgid "Les lettres qui vous parviennent"
+msgstr "Les lettres qui vous parviennent"
+
+msgid "Les maîtres de la forge ont achevé ce que vous leur aviez confié. "
+msgstr "Les maîtres de la forge ont achevé ce que vous leur aviez confié. "
+
+msgid "Les moyens libres de votre maison"
+msgstr "Les moyens libres de votre maison"
+
+msgid "Les moyens sont réservés, sans être encore dépensés."
+msgstr "Les moyens sont réservés, sans être encore dépensés."
+
+msgid "Les murs renforcent la garnison contre une capture ; ils ne protègent pas les villages d’un raid."
+msgstr "Les murs renforcent la garnison contre une capture ; ils ne protègent pas les villages d’un raid."
+
+msgid "Les ouvrages confiés à nos cités"
+msgstr "Les ouvrages confiés à nos cités"
+
+msgid "Les ouvrages et les équipes"
+msgstr "Les ouvrages et les équipes"
+
+msgid "Les ouvrages réalisés ici profitent à cette cité. Leur prix est réparti automatiquement entre tous les greniers de votre maison."
+msgstr "Les ouvrages réalisés ici profitent à cette cité. Leur prix est réparti automatiquement entre tous les greniers de votre maison."
+
+msgid "Les projets d’armement appartiennent aux règles V1."
+msgstr "Les projets d’armement appartiennent aux règles V1."
+
+msgid "Les rares survivants ne livrent que des observations incertaines."
+msgstr "Les rares survivants ne livrent que des observations incertaines."
+
+msgid "Les routes de cette oasis"
+msgstr "Les routes de cette oasis"
+
+msgid "Les routes entre les oasis"
+msgstr "Les routes entre les oasis"
+
+msgid "Les réserves et la récolte"
+msgstr "Les réserves et la récolte"
+
+msgid "Les seigneurs de Sefra"
+msgstr "Les seigneurs de Sefra"
+
+msgid "Les souverains et les enceintes sont connus. Les réserves et les hommes des maisons rivales demeurent secrets."
+msgstr "Les souverains et les enceintes sont connus. Les réserves et les hommes des maisons rivales demeurent secrets."
+
+msgid "Les survivants rentreront sans butin. "
+msgstr "Les survivants rentreront sans butin. "
+
+msgid "Les survivants transportent {value0} Mesures vers leurs origines ; nous ne pourrons les engager avant leur retour. "
+msgstr "Les survivants transportent {value0} Mesures vers leurs origines ; nous ne pourrons les engager avant leur retour. "
+
+msgid "Les terres et les hommes"
+msgstr "Les terres et les hommes"
+
+msgid "Les terres sous votre sceau"
+msgstr "Les terres sous votre sceau"
+
+msgid "Les villages de {value0} ont été attaqués"
+msgstr "Les villages de {value0} ont été attaqués"
+
+msgid "Les villages ne constituent pas une cible de pillage disponible."
+msgstr "Les villages ne constituent pas une cible de pillage disponible."
+
+msgid "Les villages sont encore protégés. Les hommes rentrent sans remboursement."
+msgstr "Les villages sont encore protégés. Les hommes rentrent sans remboursement."
+
+msgid "Les équipes attendent l’entrée en vigueur d’un décret scellé."
+msgstr "Les équipes attendent l’entrée en vigueur d’un décret scellé."
+
+msgid "Les équipes de cette cité sont déjà engagées."
+msgstr "Les équipes de cette cité sont déjà engagées."
+
+msgid "Les équipes de {value0} ont mené leur tâche à son terme : {value1}. L’ouvrage est désormais en service ; j’en tiendrai compte dans les registres à venir."
+msgstr "Les équipes de {value0} ont mené leur tâche à son terme : {value1}. L’ouvrage est désormais en service ; j’en tiendrai compte dans les registres à venir."
+
+msgid "Les équipes d’une cité conduisent un seul chantier à la fois. Le prix dépend du niveau de l’ouvrage ; le brouillon donnera le partage exact entre vos greniers."
+msgstr "Les équipes d’une cité conduisent un seul chantier à la fois. Le prix dépend du niveau de l’ouvrage ; le brouillon donnera le partage exact entre vos greniers."
+
+msgid "Les équipes poursuivent <em>%(v0)s</em>. L’ouvrage doit s’achever à la <strong>lune %(v1)s</strong>."
+msgstr "Les équipes poursuivent <em>%(v0)s</em>. L’ouvrage doit s’achever à la <strong>lune %(v1)s</strong>."
+
+msgid "Les équipes sont engagées."
+msgstr "Les équipes sont engagées."
+
+msgid "Les équipes sont libres de recevoir un chantier."
+msgstr "Les équipes sont libres de recevoir un chantier."
+
+msgid "Les équipes sont libres."
+msgstr "Les équipes sont libres."
+
+msgid "Lune %(v0)s"
+msgstr "Lune %(v0)s"
+
+msgid "Lune %(v0)s / %(v1)s"
+msgstr "Lune %(v0)s / %(v1)s"
+
+msgid "Lune %(v0)s · Relu avant l’apposition du sceau"
+msgstr "Lune %(v0)s · Relu avant l’apposition du sceau"
+
+msgid "Lune %(v0)s, année %(v1)s"
+msgstr "Lune %(v0)s, année %(v1)s"
+
+msgid "L’enceinte retrouvera toute la protection de son niveau actuel."
+msgstr "L’enceinte retrouvera toute la protection de son niveau actuel."
+
+msgid "L’expédition renonce au combat"
+msgstr "L’expédition renonce au combat"
+
+msgid "L’impôt s’accumule à chaque lune et entre dans les greniers toutes les douze lunes. Les dépenses sont réparties entre leurs fonds libres. Les ouvrages portent leur fruit à leur achèvement."
+msgstr "L’impôt s’accumule à chaque lune et entre dans les greniers toutes les douze lunes. Les dépenses sont réparties entre leurs fonds libres. Les ouvrages portent leur fruit à leur achèvement."
+
+msgid "Manuel · vous avancez chaque mois"
+msgstr "Manuel · vous avancez chaque lune"
+
+msgid "Mes règnes"
+msgstr "Mes règnes"
+
+msgid "Mesures"
+msgstr "Mesures"
+
+msgid "Monseigneur,"
+msgstr "Monseigneur,"
+
+msgid "Monseigneur, voici les termes que j’ai couchés pour vous."
+msgstr "Monseigneur, voici les termes que j’ai couchés pour vous."
+
+msgid "Navigation principale"
+msgstr "Navigation principale"
+
+msgid "Neuf cités."
+msgstr "Neuf cités."
+
+msgid "Niveau %(v0)s : <strong>%(v1)s Mesures</strong> ; <strong>%(v2)s lunes</strong>."
+msgstr "Niveau %(v0)s : <strong>%(v1)s Mesures</strong> ; <strong>%(v2)s lunes</strong>."
+
+msgid "Nom de votre règne"
+msgstr "Nom de votre règne"
+
+msgid "Nos greniers conservent <strong>%(v0)s Mesures</strong>.<br>Vous pouvez encore engager <strong>%(v1)s Mesures</strong>."
+msgstr "Nos greniers conservent <strong>%(v0)s Mesures</strong>.<br>Vous pouvez encore engager <strong>%(v1)s Mesures</strong>."
+
+msgid "Nos hommes en route"
+msgstr "Nos hommes en route"
+
+msgid "Nos registres ne révèlent ni les effectifs ni les réserves de cette maison. Les lettres de vos hommes conservent les seules observations que nous ayons reçues."
+msgstr "Nos registres ne révèlent ni les effectifs ni les réserves de cette maison. Les lettres de vos hommes conservent les seules observations que nous ayons reçues."
+
+msgid "Nos survivants disent avoir rencontré entre {value0} et {value1} hommes, avec un {value2}. Je rapporte ce qu’ils ont vu à la date de cette lettre ; leur récit ne révèle pas les forces de tout le domaine adverse."
+msgstr "Nos survivants disent avoir rencontré entre {value0} et {value1} hommes, avec un {value2}. Je rapporte ce qu’ils ont vu à la date de cette lettre ; leur récit ne révèle pas les forces de tout le domaine adverse."
+
+msgid "Nos survivants n’ont rencontré aucun défenseur."
+msgstr "Nos survivants n’ont rencontré aucun défenseur."
+
+msgid "Nous attendons le retour de <strong>%(v0)s Fidèles</strong> partis en expédition."
+msgstr "Nous attendons le retour de <strong>%(v0)s Fidèles</strong> partis en expédition."
+
+msgid "Nous avons perdu {value0} Fidèles dans cette expédition."
+msgstr "Nous avons perdu {value0} Fidèles dans cette expédition."
+
+msgid "Nouveau règne"
+msgstr "Nouveau règne"
+
+msgid "OUVRIR LES CHRONIQUES"
+msgstr "OUVRIR LES CHRONIQUES"
+
+msgid "Ordre invalidé"
+msgstr "Ordre invalidé"
+
+msgid "Ordres et ouvrages"
+msgstr "Ordres et ouvrages"
+
+msgid "Organiser l’armement"
+msgstr "Organiser l’armement"
+
+msgid "Ouverte à vos ordres"
+msgstr "Ouverte à vos ordres"
+
+msgid "PREMIÈRES CHRONIQUES"
+msgstr "PREMIÈRES CHRONIQUES"
+
+msgid "Pillage : %(raid_base)s Mesures + %(raid_person)s par Fidèle, au moins %(raid_min)s Fidèles.<br>Capture : %(capture_base)s Mesures + %(capture_person)s par Fidèle, au moins %(capture_min)s Fidèles."
+msgstr "Pillage : %(raid_base)s Mesures + %(raid_person)s par Fidèle, au moins %(raid_min)s Fidèles.<br>Capture : %(capture_base)s Mesures + %(capture_person)s par Fidèle, au moins %(capture_min)s Fidèles."
+
+msgid "Pillage impossible"
+msgstr "Pillage impossible"
+
+msgid "Pillage réussi"
+msgstr "Pillage réussi"
+
+msgid "Piller les villages"
+msgstr "Piller les villages"
+
+msgid "Pour une première partie, choisissez les règles V1 et le calendrier manuel. Vous pourrez lire chaque nouvelle avant de passer à la lune suivante."
+msgstr "Pour une première partie, choisissez les règles V1 et le calendrier manuel. Vous pourrez lire chaque nouvelle avant de passer à la lune suivantee."
+
+msgid "Premier versement à la lune 12"
+msgstr "Premier versement à la lune 12"
+
+msgid "Première visite ?"
+msgstr "Première visite ?"
+
+msgid "Prise sans défense"
+msgstr "Prise sans défense"
+
+msgid "Prix :"
+msgstr "Prix :"
+
+msgid "Prix total :"
+msgstr "Prix total :"
+
+msgid "Que <strong>%(v0)s</strong> fournisse <strong>%(v1)s Fidèles</strong>."
+msgstr "Que <strong>%(v0)s</strong> fournisse <strong>%(v1)s Fidèles</strong>."
+
+msgid "Que ces travaux soient entrepris…"
+msgstr "Que ces travaux soient entrepris…"
+
+msgid "Que chacune de nos cités fournisse les hommes suivants :"
+msgstr "Que chacune de nos cités fournisse les hommes suivants :"
+
+msgid "Que la forge équipe toutes nos possessions. Le projet s’achèvera à la <strong>lune %(v0)s</strong>."
+msgstr "Que la forge équipe toutes nos possessions. Le projet s’achèvera à la <strong>lune %(v0)s</strong>."
+
+msgid "Que l’on consacre <strong>%(v0)s Mesures</strong> à cet ordre. Le sceau les réservera ; elles seront dépensées à son entrée en vigueur, lors de la clôture de la <strong>lune %(v1)s</strong>."
+msgstr "Que l’on consacre <strong>%(v0)s Mesures</strong> à cet ordre. Le sceau les réservera ; elles seront dépensées à son entrée en vigueur, lors de la clôture de la <strong>lune %(v1)s</strong>."
+
+msgid "Que nos hommes partent pour…"
+msgstr "Que nos hommes partent pour…"
+
+msgid "Que nos hommes se portent vers <strong>%(v0)s</strong> pour <em>%(v1)s</em>.<br>Départ à la lune <strong>%(v2)s</strong>, combat à la lune <strong>%(v3)s</strong>, retour à la lune <strong>%(v4)s</strong>."
+msgstr "Que nos hommes se portent vers <strong>%(v0)s</strong> pour <em>%(v1)s</em>.<br>Départ à la lune <strong>%(v2)s</strong>, combat à la lune <strong>%(v3)s</strong>, retour à la lune <strong>%(v4)s</strong>."
+
+msgid "Quitter"
+msgstr "Quitter"
+
+msgid "Reddition rapide"
+msgstr "Reddition rapide"
+
+msgid "Refermer ce livre"
+msgstr "Refermer ce livre"
+
+msgid "Relire et sceller"
+msgstr "Relire et sceller"
+
+msgid "Relire les prétentions au trône"
+msgstr "Relire les prétentions au trône"
+
+msgid "Renforcer les fortifications"
+msgstr "Renforcer les fortifications"
+
+msgid "Reprendre la plume sans rien engager"
+msgstr "Reprendre la plume sans rien engager"
+
+msgid "Reprendre le cours des chroniques"
+msgstr "Reprendre le cours des chroniques"
+
+msgid "Reprendre mon règne"
+msgstr "Reprendre mon règne"
+
+msgid "Reprendre toute la correspondance"
+msgstr "Reprendre toute la correspondance"
+
+msgid "Reprendre votre règne · Yaara"
+msgstr "Reprendre votre règne · Yaara"
+
+msgid "Retirer ce décret"
+msgstr "Retirer ce décret"
+
+msgid "Retour à {value0}"
+msgstr "Retour à {value0}"
+
+msgid "Retrouver mes règnes"
+msgstr "Retrouver mes règnes"
+
+msgid "Retrouvez vos possessions ou inscrivez une nouvelle maison dans les chroniques."
+msgstr "Retrouvez vos possessions ou inscrivez une nouvelle maison dans les chroniques."
+
+msgid "Revenir au domaine"
+msgstr "Revenir au domaine"
+
+msgid "Revenir aux décrets"
+msgstr "Revenir aux décrets"
+
+msgid "Rivaux passifs · explorer les règles"
+msgstr "Rivaux passifs · explorer les règles"
+
+msgid "Règles"
+msgstr "Règles"
+
+msgid "Règles %(v0)s"
+msgstr "Règles %(v0)s"
+
+msgid "Règne achevé"
+msgstr "Règne achevé"
+
+msgid "Récits et nouvelles"
+msgstr "Récits et nouvelles"
+
+msgid "Récolte dans <strong>%(v0)s lunes</strong>"
+msgstr "Récolte dans <strong>%(v0)s lunes</strong>"
+
+msgid "Réparer la grande enceinte"
+msgstr "Réparer la grande enceinte"
+
+msgid "Réparer l’enceinte"
+msgstr "Réparer l’enceinte"
+
+msgid "Réparer l’enceinte de terre crue"
+msgstr "Réparer l’enceinte de terre crue"
+
+msgid "Réserver %(v0)s Mesures"
+msgstr "Réserver %(v0)s Mesures"
+
+msgid "Sans enceinte"
+msgstr "Sans enceinte"
+
+msgid "Sceller ce décret"
+msgstr "Sceller ce décret"
+
+msgid "Selon votre volonté, j’ai retiré ce décret : {value0}. Les moyens qu’il engageait sont de nouveau libres."
+msgstr "Selon votre volonté, j’ai retiré ce décret : {value0}. Les moyens qu’il engageait sont de nouveau libres."
+
+msgid "Suspendre le cours des chroniques"
+msgstr "Suspendre le cours des chroniques"
+
+msgid "TERRE CRUE · OASIS · RIVALITÉS"
+msgstr "TERRE CRUE · OASIS · RIVALITÉS"
+
+msgid "Terres et greniers"
+msgstr "Terres et greniers"
+
+msgid "Toutes vos possessions"
+msgstr "Toutes vos possessions"
+
+msgid "Travaux achevés à {value0}"
+msgstr "Travaux achevés à {value0}"
+
+msgid "Trois cités, un avenir."
+msgstr "Trois cités, un avenir."
+
+msgid "UN JEU DE STRATÉGIE ET DE PATIENCE"
+msgstr "UN JEU DE STRATÉGIE ET DE PATIENCE"
+
+msgid "UNE HISTOIRE COMMENCE"
+msgstr "UNE HISTOIRE COMMENCE"
+
+msgid "Un grenier agrandi conserve davantage de récolte. Sa capacité reste propre à la cité."
+msgstr "Un grenier agrandi conserve davantage de récolte. Sa capacité reste propre à la cité."
+
+msgid "Un mois toutes les 10 minutes"
+msgstr "Une lune toutes les 10 minutes"
+
+msgid "Un mois toutes les 5 minutes"
+msgstr "Une lune toutes les 5 minutes"
+
+msgid "Un nouveau règne · Yaara"
+msgstr "Un nouveau règne · Yaara"
+
+msgid "Un nouveau règne."
+msgstr "Un nouveau règne."
+
+msgid "Un seul décret peut confier le même ouvrage à plusieurs cités. Choisissez-les ci-dessous, puis relisez et scellez une seule fois."
+msgstr "Un seul décret peut confier le même ouvrage à plusieurs cités. Choisissez-les ci-dessous, puis relisez et scellez une seule fois."
+
+msgid "Un seul trône."
+msgstr "Un seul trône."
+
+msgid "Une armée rejoint une frontière par vos possessions reliées entre elles. Les secours défendent les cités contre les captures ; les murs n’abritent pas les villages d’un raid."
+msgstr "Une armée rejoint une frontière par vos possessions reliées entre elles. Les secours défendent les cités contre les captures ; les murs n’abritent pas les villages d’un raid."
+
+msgid "Une autre expédition est déjà engagée vers cette cité. Aucun moyen n’a été réservé."
+msgstr "Une autre expédition est déjà engagée vers cette cité. Aucun moyen n’a été réservé."
+
+msgid "Une expédition est déjà engagée vers cette cité."
+msgstr "Une expédition est déjà engagée vers cette cité."
+
+msgid "Une expédition ne reviendra pas"
+msgstr "Une expédition ne reviendra pas"
+
+msgid "Une expédition y est déjà engagée"
+msgstr "Une expédition y est déjà engagée"
+
+msgid "Une récolte annuelle"
+msgstr "Une récolte annuelle"
+
+msgid "V0 · règles essentielles"
+msgstr "V0 · règles essentielles"
+
+msgid "V1 · sièges, croissance et annulation"
+msgstr "V1 · sièges, croissance et annulation"
+
+msgid "VOTRE POINT DE DÉPART"
+msgstr "VOTRE POINT DE DÉPART"
+
+msgid "VOTRE PREMIER SCEAU"
+msgstr "VOTRE PREMIER SCEAU"
+
+msgid "Vers <strong>%(v0)s</strong>, <strong>%(v1)s Fidèles</strong> poursuivent leur mission : <em>%(v2)s</em>."
+msgstr "Vers <strong>%(v0)s</strong>, <strong>%(v1)s Fidèles</strong> poursuivent leur mission : <em>%(v2)s</em>."
+
+msgid "Vers quelle cité ?"
+msgstr "Vers quelle cité ?"
+
+msgid "Voici les comptes de votre maison. Au-delà de nos frontières, les hommes et les réserves des autres maisons nous demeurent inconnus."
+msgstr "Voici les comptes de votre maison. Au-delà de nos frontières, les hommes et les réserves des autres maisons nous demeurent inconnus."
+
+msgid "Voici l’issue que l’on nous rapporte : {value0}. Nous avons perdu {value1} Fidèles engagés, dont {value2} de la garnison locale, ainsi que {value3} civils. "
+msgstr "Voici l’issue que l’on nous rapporte : {value0}. Nous avons perdu {value1} Fidèles engagés, dont {value2} de la garnison locale, ainsi que {value3} civils. "
+
+msgid "Vos chroniques"
+msgstr "Vos chroniques"
+
+msgid "Vos décrets ont déjà réservé <strong>%(v0)s Mesures</strong>."
+msgstr "Vos décrets ont déjà réservé <strong>%(v0)s Mesures</strong>."
+
+msgid "Vos rivaux"
+msgstr "Vos rivaux"
+
+msgid "Votre autorité s’étend sur <strong>%(v0)s cités</strong>, où <strong>%(v1)s habitants</strong> sont rattachés à leurs foyers.<br>Parmi eux, <strong>%(v2)s Fidèles</strong> peuvent encore recevoir vos ordres."
+msgstr "Votre autorité s’étend sur <strong>%(v0)s cités</strong>, où <strong>%(v1)s habitants</strong> sont rattachés à leurs foyers.<br>Parmi eux, <strong>%(v2)s Fidèles</strong> peuvent encore recevoir vos ordres."
+
+msgid "Votre compte conserve vos parties et vos chroniques. Commencez un règne à votre rythme, face à deux maisons rivales."
+msgstr "Votre compte conserve vos parties et vos chroniques. Commencez un règne à votre rythme, face à deux maisons rivales."
+
+msgid "Votre décret entre en vigueur"
+msgstr "Votre décret entre en vigueur"
+
+msgid "Votre forge est déjà engagée ou son organisation est achevée."
+msgstr "Votre forge est déjà engagée ou son organisation est achevée."
+
+msgid "Votre histoire s’écrit dans le sable."
+msgstr "Votre histoire s’écrit dans le sable."
+
+msgid "Votre maison"
+msgstr "Votre maison"
+
+msgid "Votre ordre a pris son cours : {value0}. J’ai fait prélever {value1} Mesures dans les greniers qui les avaient promises. Les nouvelles vous seront rapportées à leur échéance."
+msgstr "Votre ordre a pris son cours : {value0}. J’ai fait prélever {value1} Mesures dans les greniers qui les avaient promises. Les nouvelles vous seront rapportées à leur échéance."
+
+msgid "Votre prétention au trône s’achève"
+msgstr "Votre prétention au trône s’achève"
+
+msgid "Votre règne"
+msgstr "Votre règne"
+
+msgid "Vous avez déjà trente parties. Conservez vos règnes existants pour le moment."
+msgstr "Vous avez déjà trente parties. Conservez vos règnes existants pour le moment."
+
+msgid "Vous ne participez pas à cette partie."
+msgstr "Vous ne participez pas à cette partie."
+
+msgid "Vous ne possédez plus de cité. Vos armées encore en route rentrent vers leurs origines."
+msgstr "Vous ne possédez plus de cité. Vos armées encore en route rentrent vers leurs origines."
+
+msgid "Vous n’avez encore scellé aucun décret. Le premier mot vous appartient."
+msgstr "Vous n’avez encore scellé aucun décret. Le premier mot vous appartient."
+
+msgid "Vous préparez un décret pour <strong>%(v0)s</strong>. Sa case est précochée ; vous pouvez choisir d’autres cités."
+msgstr "Vous préparez un décret pour <strong>%(v0)s</strong>. Sa case est précochée ; vous pouvez choisir d’autres cités."
+
+msgid "Yaara · Les cités du désert"
+msgstr "Yaara · Les cités du désert"
+
+msgid "Yaara, accueil"
+msgstr "Yaara, accueil"
+
+msgid "avant de se conquérir."
+msgstr "avant de se conquérir."
+
+msgid "dont 300 Fidèles mobilisables"
+msgstr "dont 300 Fidèles mobilisables"
+
+msgid "endommagée"
+msgstr "endommagée"
+
+msgid "le pouvoir se cultive"
+msgstr "le pouvoir se cultive"
+
+msgid "les équipes sont déjà engagées"
+msgstr "les équipes sont déjà engagées"
+
+msgid "number-group-separator"
+msgstr " "
+
+msgid "votre maison."
+msgstr "votre maison."
+
+msgid "vous attend."
+msgstr "vous attend."
+
+msgid "{first}{second}"
+msgstr "{first}{second}"
+
+msgid "{value0} Les survivants repartent vers leurs origines ; ils y rejoindront les présents à la date annoncée. "
+msgstr "{value0} Les survivants repartent vers leurs origines ; ils y rejoindront les présents à la date annoncée. "
+
+msgid "{value0} change de souverain"
+msgstr "{value0} change de souverain"
+
+msgid "{value0} à {value1}"
+msgstr "{value0} à {value1}"
+
+msgid "À <strong>%(v0)s</strong> : <em>%(v1)s</em>. Achèvement à la <strong>lune %(v2)s</strong>."
+msgstr "À <strong>%(v0)s</strong> : <em>%(v1)s</em>. Achèvement à la <strong>lune %(v2)s</strong>."
+
+msgid "À la fin du règne, le nombre de cités prime ; la population départage les égalités. Les populations rivales restent secrètes."
+msgstr "À la fin du règne, le nombre de cités prime ; la population départage les égalités. Les populations rivales restent secrètes."
+
+msgid "Élever une grande enceinte"
+msgstr "Élever une grande enceinte"
+
+msgid "Équipement ordinaire"
+msgstr "Équipement ordinaire"
+
+msgid "Équipement renforcé"
+msgstr "Équipement renforcé"
+
+msgid "Équipement supérieur"
+msgstr "Équipement supérieur"
+
+msgid "Ériger des silos"
+msgstr "Ériger des silos"
+
+msgid "Ériger une enceinte de terre crue"
+msgstr "Ériger une enceinte de terre crue"
+
+msgid "Étendez votre autorité, une lune après l’autre."
+msgstr "Étendez votre autorité, une lune après l’autre."
+
+msgid "Étendre le réseau de canaux"
+msgstr "Étendre le réseau de canaux"

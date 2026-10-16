@@ -1,11 +1,12 @@
 # Yaara
 
-A playable strategy game of rival oasis kingdoms. Govern three cities, develop production, send raids and capture your rivals' cities. French interface; English Python code. Prepared for Railway with Django 5.2 LTS, Python 3.13 and PostgreSQL 17.
+A playable strategy game of rival oasis kingdoms. Govern three cities, develop production, send raids and capture your rivals' cities. French and English interfaces; English Python code. Prepared for Railway with Django 5.2 LTS, Python 3.13 and PostgreSQL 17.
 
 ## Play locally
 
 ```sh
 uv sync --frozen
+uv run python scripts/compile_translations.py
 uv run python manage.py migrate
 uv run python manage.py runserver
 ```
@@ -28,10 +29,10 @@ Django does not load `.env` automatically. It is ignored by Git. In the current 
 - V0/V1, local stocks, annual harvest, growth and Fidèle renewal.
 - Batched construction, equipment, raids, captures, relief, siege and returns by origin.
 - Decree previews, atomic confirmation, target reservation and V1 cancellation.
-- Dated private reports and a plain French manuscript for play: scribe narration, unfolding city accounts, letters and dictated decrees. Account and reign-selection pages retain their conventional layout.
-- Manual months or a five/ten-minute worker; persistent games and fixed results.
+- Dated private reports in French and English, a persistent resource ribbon, textual house accounts, optional city folios, realm-wide multi-city work checklists and expedition forms, and an explicit draft/seal flow. Account and reign-selection pages retain their conventional layout. Change languages in the footer, including on an unsealed draft.
+- Manual Moons or a five/ten-minute worker; persistent games and fixed results. New reigns open at Moon 1; saved legacy calendars retain their timing.
 
-The default reign lasts ten years. The first harvest arrives at month 12; initial captures are deliberately unaffordable. The game includes a rules summary.
+The default reign lasts ten years. The first harvest arrives at the closure of Moon 12; initial captures are deliberately unaffordable. The game includes a rules summary. Older reports without structured narration remain labelled original French archives; new reports switch languages when read.
 
 ## Deployment and development
 

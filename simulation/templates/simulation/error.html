@@ -1,18 +1,13 @@
 {% extends 'simulation/base.html' %}
-{% block title %}Le chemin s’interrompt · Yaara{% endblock %}
+{% load i18n %}
+{% block title %}{% translate "Le chemin s’interrompt · Yaara" %}{% endblock %}
 {% block content %}
     <section class="panel empty-state error-panel">
         <span class="eyebrow">{{ status }}</span>
-        <h1>Le chemin s’interrompt.</h1>
+        <h1>{% translate "Le chemin s’interrompt." %}</h1>
         <p>
-            {% if status == 403 %}
-                Cette page ne relève pas de votre autorité. Reconnectez-vous si votre session a expiré.
-            {% elif status == 404 %}
-                Cette page ne figure pas dans nos registres.
-            {% else %}
-                Le scribe ne peut pas répondre pour le moment. Votre dernier mois confirmé reste enregistré.
-            {% endif %}
+            {% if status == 403 %}{% translate "Cette page ne relève pas de votre autorité. Reconnectez-vous si votre session a expiré." %}{% elif status == 404 %}{% translate "Cette page ne figure pas dans nos registres." %}{% else %}{% translate "Le scribe ne peut pas répondre pour le moment. Votre dernier mois confirmé reste enregistré." %}{% endif %}
         </p>
-        <a href="{% url 'home' %}" class="button primary">Retrouver mes règnes</a>
+        <a href="{% url 'home' %}" class="button primary">{% translate "Retrouver mes règnes" %}</a>
     </section>
 {% endblock %}

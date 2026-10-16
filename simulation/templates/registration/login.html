@@ -1,17 +1,12 @@
 {% extends 'simulation/base.html' %}
-{% block title %}Reprendre votre règne · Yaara{% endblock %}
+{% load i18n %}
+{% block title %}{% translate "Reprendre votre règne · Yaara" %}{% endblock %}
 {% block content %}
     <div class="auth-layout">
         <div class="auth-intro">
-            <span class="eyebrow">LE SABLE GARDE LA MÉMOIRE</span>
-            <h1>
-                Votre règne
-                <br>
-                vous attend.
-            </h1>
-            <p>
-                Des canaux à creuser, des frontières à défendre, des cités à rallier. Retrouvez votre place à la table du pouvoir.
-            </p>
+            <span class="eyebrow">{% translate "LE SABLE GARDE LA MÉMOIRE" %}</span>
+            <h1>{% translate "Votre règne" %}<br>{% translate "vous attend." %}</h1>
+            <p>{% translate "Des canaux à creuser, des frontières à défendre, des cités à rallier. Retrouvez votre place à la table du pouvoir." %}</p>
             <div class="auth-art" aria-hidden="true">
                 <div class="sun"></div>
                 <div class="dune dune-one"></div>
@@ -20,17 +15,15 @@
             </div>
         </div>
         <section class="panel auth-panel">
-            <span class="eyebrow">LE BUREAU DU PRÉTENDANT</span>
-            <h2>Entrer dans Yaara</h2>
+            <span class="eyebrow">{% translate "LE BUREAU DU PRÉTENDANT" %}</span>
+            <h2>{% translate "Entrer dans Yaara" %}</h2>
             <form method="post" class="stack-form">
                 {% csrf_token %}{{ form.as_p }}
                 <input type="hidden" name="next" value="{{ next }}">
-                <button class="button primary" type="submit">
-                    Reprendre mon règne <span aria-hidden="true">→</span>
+                <button class="button primary" type="submit">{% translate "Reprendre mon règne" %}<span aria-hidden="true">→</span>
                 </button>
             </form>
-            <p class="form-foot">
-                Première visite ? <a href="{% url 'signup' %}">Créer mon compte</a>
+            <p class="form-foot">{% translate "Première visite ?" %}<a href="{% url 'signup' %}">{% translate "Créer mon compte" %}</a>
             </p>
         </section>
     </div>

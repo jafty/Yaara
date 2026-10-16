@@ -3,19 +3,25 @@
 import math
 
 from . import engine
-from .rules import ACTION_LABELS, EQUIPMENT_LABELS, RuleError, rule_family
+from .calendar import closed_moon, closing_moon
+from .messages import Message
+from .narration import work_effect
+from .rules import ACTION_LABELS, EQUIPMENT_LABELS, EXPEDITION_PRICES, RuleError, rule_family
 
 STATUS_LABELS = {
-    "confirmed": "Confirmé",
-    "active": "En cours",
-    "returning": "Au retour",
-    "completed": "Achevé",
-    "cancelled": "Annulé",
-    "invalidated": "Invalidé",
+    "confirmed": Message("Confirmé"),
+    "active": Message("En cours"),
+    "returning": Message("Au retour"),
+    "completed": Message("Achevé"),
+    "cancelled": Message("Annulé"),
+    "invalidated": Message("Invalidé"),
 }
 
 
 def player_view(state, actor):
+    closed = closed_moon(state)
+    upcoming = closing_moon(state)
+    dating = max(1, closed if state["status"] == "finished" else upcoming)
     funds, people = engine.reservations(state)
     targets = engine.active_targets(state)
     busy = engine.busy_cities(state)
@@ -29,7 +35,11 @@ def player_view(state, actor):
             "owner_name": state["players"][city["owner"]]["name"],
             "owned": city["owner"] == actor,
             "walls": city["walls"],
-            "wall_label": ["Sans enceinte", "Enceinte de terre", "Grande enceinte"][city["walls"]],
+            "wall_label": [
+                Message("Sans enceinte"),
+                Message("Enceinte de terre"),
+                Message("Grande enceinte"),
+            ][city["walls"]],
             "damaged": city["damaged"],
             "engaged": city["id"] in targets,
             "x": round(340 + 244 * math.cos(angle), 1),
@@ -63,9 +73,7 @@ def player_view(state, actor):
                             "start_month": work["start_month"],
                             "progress": min(
                                 100,
-                                round(
-                                    (state["month"] - work["start_month"]) / work["duration"] * 100
-                                ),
+                                round((closed - work["start_month"]) / work["duration"] * 100),
                             ),
                         }
                         for work in state["works"]
@@ -94,7 +102,7 @@ def player_view(state, actor):
                 "destination": by_id[order["target"]]["name"]
                 if order.get("target")
                 else ", ".join(by_id[task["city"]]["name"] for task in order["tasks"])
-                or "Toutes vos possessions",
+                or Message("Toutes vos possessions"),
                 "men": sum(order.get("contributions", {}).values()),
             }
         )
@@ -154,19 +162,42 @@ def player_view(state, actor):
                 )
             except RuleError:
                 continue
-        available_actions.append({"kind": kind, "label": ACTION_LABELS[kind], "cities": options})
+        prices = sorted({(city["level"], city["cost"], city["duration"]) for city in options})
+        available_actions.append(
+            {
+                "kind": kind,
+                "label": ACTION_LABELS[kind],
+                "cities": options,
+                "selectable": any(not city["busy"] for city in options),
+                "prices": [
+                    {
+                        "level": level,
+                        "cost": cost,
+                        "duration": duration,
+                        "effect": work_effect(kind, level),
+                    }
+                    for level, cost, duration in prices
+                ],
+            }
+        )
+    equipment_quote = {}
+    if rule_family(state["rules"]).equipment and state["players"][actor]["equipment"] < 2:
+        equipment_quote = engine.equipment_spec(state, actor)
     return {
         "month": state["month"],
-        "year": max(0, state["month"] - (state["status"] == "finished")) // 12 + 1,
-        "year_month": max(0, state["month"] - (state["status"] == "finished")) % 12 + 1,
+        "open_moon": upcoming,
+        "closed_moon": closed,
+        "year": (dating - 1) // 12 + 1,
+        "year_month": (dating - 1) % 12 + 1,
         "reign_months": state["config"]["reign_months"],
-        "remaining": state["config"]["reign_months"] - state["month"],
+        "remaining": state["config"]["reign_months"] - closed,
         "rules": state["rules"],
         "finished": state["status"] == "finished",
         "eliminated": state["players"][actor]["eliminated"],
         "actor": actor,
         "realm": state["players"][actor]["name"],
         "equipment": EQUIPMENT_LABELS[state["players"][actor]["equipment"]],
+        "equipment_quote": equipment_quote,
         "equipment_available": rule_family(state["rules"]).equipment
         and state["players"][actor]["equipment"] < 2
         and not engine.equipment_busy(state, actor),
@@ -188,12 +219,20 @@ def player_view(state, actor):
         "available_fideles": sum(city["available_fideles"] for city in owned),
         "absent": sum(city["absent"] for city in owned),
         "tax": sum(city["tax"] for city in owned),
-        "harvest_in": 12 - state["month"] % 12,
+        "harvest_in": 12 - closed % 12,
+        "harvest_moon": closed + 12 - closed % 12,
+        "sealed_count": sum(order["status"] == "confirmed" for order in orders),
         "orders": orders,
         "missions": missions,
         "ranking": ranking,
         "attack_targets": attack_targets,
         "work_actions": available_actions,
         "cancellable": rule_family(state["rules"]).cancellable,
+        "raid_minimum": state["config"]["raid_minimum"],
+        "capture_minimum": state["config"]["capture_minimum"],
+        "expedition_prices": {
+            kind: {**prices, "minimum": state["config"][f"{kind}_minimum"]}
+            for kind, prices in EXPEDITION_PRICES.items()
+        },
         "epilogue_missions": state["result"]["expeditions_in_transit"] if state["result"] else 0,
     }

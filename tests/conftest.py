@@ -24,7 +24,8 @@ def user(db):
 def game(user):
     from simulation.services import create_game
 
-    return create_game(user, "Le règne des tests", opponents="passive")
+    # Existing exact-date cases also protect compatibility with persisted reigns.
+    return create_game(user, "Le règne des tests", opponents="passive", calendar_version=1)
 
 
 def pytest_addoption(parser):

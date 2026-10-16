@@ -16,14 +16,14 @@ pytestmark = pytest.mark.logic
     "field", ["population", "fideles", "stock", "tax", "irrigation", "storage", "works"]
 )
 def test_opponent_city_fields_are_private(field):
-    projection = player_view(engine.new_state(), "p1")
+    projection = player_view(engine.new_state(calendar_version=1), "p1")
     enemy = next(city for city in projection["cities"] if city["id"] == "c4")
     assert field not in enemy
 
 
 @case("projection-ranking", "Design §26.2 Information: rankings hide opponent populations")
 def test_ranking_hides_population():
-    projection = player_view(engine.new_state(), "p1")
+    projection = player_view(engine.new_state(calendar_version=1), "p1")
     assert all("population" not in rank for rank in projection["ranking"])
 
 
@@ -33,7 +33,7 @@ def test_ranking_hides_population():
 )
 @pytest.mark.parametrize("secret", ["combativity", "secret-order", "cohorts", "seed"])
 def test_serialized_projection_hides_internal_state(secret):
-    state = engine.new_state()
+    state = engine.new_state(calendar_version=1)
     engine.confirm_order(
         state, "p2", {"kind": "raid", "target": "c3", "contributions": {"c4": 45}}, "secret-order"
     )

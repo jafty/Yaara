@@ -82,11 +82,11 @@ assert post(game_path + "orders/confirm/", {"payload": payload}).status_code == 
 for month in range(13, 16):
     assert post(game_path + "advance/", {"month": month}).status_code == 302
 state = client.get(game_path + "state/", secure=True).json()
-assert state["view"]["month"] == 15
+assert state["view"]["month"] == 16
 assert len(state["view"]["owned_cities"]) == 4
 assert state["view"]["orders"][0]["status"] == "completed"
 assert post(game_path + "advance/", {"month": 15}).status_code == 302
-assert client.get(game_path + "state/", secure=True).json()["view"]["month"] == 15
+assert client.get(game_path + "state/", secure=True).json()["view"]["month"] == 16
 letters = client.get(game_path + "?tab=letters", secure=True)
 assert "Assaut victorieux" in letters.content.decode()
 print(

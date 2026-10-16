@@ -3,6 +3,8 @@
 from dataclasses import dataclass
 from fractions import Fraction
 
+from .messages import Message
+
 
 class RuleError(ValueError):
     """An expected, player-facing rejection."""
@@ -51,7 +53,7 @@ FAMILIES = {
 
 def rule_family(version: str) -> RuleFamily:
     if version not in FAMILIES:
-        raise RuleError("Cette version des règles n’est pas disponible.")
+        raise RuleError(Message("Cette version des règles n’est pas disponible."))
     return FAMILIES[version]
 
 
@@ -119,7 +121,15 @@ def raid_result(attackers, attack_equipment, defenders, defense_equipment, stock
 
 
 EQUIPMENT = [100, 120, 145]
-EQUIPMENT_LABELS = ["Équipement ordinaire", "Équipement renforcé", "Équipement supérieur"]
+EXPEDITION_PRICES = {
+    "raid": {"base": 20_000, "per_person": 2500},
+    "capture": {"base": 900_000, "per_person": 18_000},
+}
+EQUIPMENT_LABELS = [
+    Message("Équipement ordinaire"),
+    Message("Équipement renforcé"),
+    Message("Équipement supérieur"),
+]
 WALLS = [Fraction(1), Fraction(8, 5), Fraction(3)]
 CAPACITIES = [2_400_000, 3_600_000, 6_000_000]
 WORK_PRICES = {
@@ -129,21 +139,21 @@ WORK_PRICES = {
     "repair": [(240_000, 3), (1_920_000, 6)],
 }
 ACTION_LABELS = {
-    "irrigation": "Aménager les canaux",
-    "storage": "Agrandir le stockage",
-    "walls": "Renforcer les fortifications",
-    "repair": "Réparer l’enceinte",
-    "equipment": "Organiser l’armement",
-    "raid": "Piller les villages",
-    "capture": "Capturer une cité",
+    "irrigation": Message("Aménager les canaux"),
+    "storage": Message("Agrandir le stockage"),
+    "walls": Message("Renforcer les fortifications"),
+    "repair": Message("Réparer l’enceinte"),
+    "equipment": Message("Organiser l’armement"),
+    "raid": Message("Piller les villages"),
+    "capture": Message("Capturer une cité"),
 }
 OUTCOME_LABELS = {
-    "unopposed": "Prise sans défense",
-    "surrender": "Reddition rapide",
-    "assault": "Assaut victorieux",
-    "held": "La cité tient le siège",
-    "shortage": "Capitulation par pénurie",
-    "rout": "Défaite sévère",
-    "defeat": "Attaque repoussée",
-    "success": "Pillage réussi",
+    "unopposed": Message("Prise sans défense"),
+    "surrender": Message("Reddition rapide"),
+    "assault": Message("Assaut victorieux"),
+    "held": Message("La cité tient le siège"),
+    "shortage": Message("Capitulation par pénurie"),
+    "rout": Message("Défaite sévère"),
+    "defeat": Message("Attaque repoussée"),
+    "success": Message("Pillage réussi"),
 }

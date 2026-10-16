@@ -25,7 +25,7 @@ pytestmark = pytest.mark.logic
     "Design §26.2 Capture initiale impossible: initial funds cannot finance minimum capture",
 )
 def test_initial_capture_rejected_without_partial_reservations():
-    state = new_state()
+    state = new_state(calendar_version=1)
     before = deepcopy(state)
     with pytest.raises(RuleError, match="dépense"):
         confirm_order(
@@ -36,7 +36,7 @@ def test_initial_capture_rejected_without_partial_reservations():
 
 @pytest.fixture
 def reserved_raid():
-    state = new_state()
+    state = new_state(calendar_version=1)
     spec = {"kind": "raid", "target": "c4", "contributions": [["c3", 20], ["c3", 25]]}
     confirm_order(state, "p1", spec, "one")
     return state, spec
@@ -104,7 +104,7 @@ def test_new_order_can_take_released_target(reserved_raid):
 
 @case("v0-confirmation-is-final", "Design V0: a sealed order cannot be cancelled")
 def test_v0_confirmation_is_final():
-    state = new_state("V0")
+    state = new_state("V0", calendar_version=1)
     confirm_order(state, "p1", {"kind": "walls", "cities": ["c1"]}, "wall")
     with pytest.raises(RuleError, match="définitive"):
         cancel_order(state, "p1", "wall")
@@ -115,7 +115,7 @@ def test_v0_confirmation_is_final():
     "Design §26.2 Stocks locaux: an unaffordable batch has no partial reservations",
 )
 def test_unaffordable_batch_is_atomic():
-    state = new_state()
+    state = new_state(calendar_version=1)
     before = deepcopy(state)
     with pytest.raises(RuleError):
         confirm_order(state, "p1", {"kind": "walls", "cities": ["c1", "c2"]}, "bad")
@@ -127,7 +127,7 @@ def test_unaffordable_batch_is_atomic():
     "Design §26.3: batch reservations reduce availability without spending stock",
 )
 def test_affordable_batch_reserves_total_price():
-    state = new_state()
+    state = new_state(calendar_version=1)
     confirm_order(state, "p1", {"kind": "storage", "cities": ["c1", "c2"]}, "batch")
     assert sum(reservations(state)[0].values()) == 1000000
     assert sum(city["stock"] for city in state["cities"].values()) == 5400000
@@ -138,7 +138,7 @@ def test_affordable_batch_reserves_total_price():
     "Design §26.2 Double chantier: one slot per city, rejection without side effects",
 )
 def test_busy_work_slot_rejects_without_mutation():
-    state = new_state()
+    state = new_state(calendar_version=1)
     confirm_order(state, "p1", {"kind": "storage", "cities": ["c1", "c2"]}, "batch")
     before = deepcopy(state)
     with pytest.raises(RuleError, match="équipes"):
@@ -182,7 +182,7 @@ def test_monthly_tax_and_construction_timing_match_document(month, level, tax, s
     ],
 )
 def test_disconnected_origins_must_touch_same_frontier(target, expected):
-    state = new_state()
+    state = new_state(calendar_version=1)
     state["cities"]["c2"]["owner"] = "p2"
     assert eligible_origins(state, "p1", target) == expected
 
@@ -193,7 +193,7 @@ def test_disconnected_origins_must_touch_same_frontier(target, expected):
 )
 @pytest.mark.parametrize("scenario", ["two-fronts", "threat-cap"])
 def test_relief_allocation(scenario):
-    state = new_state()
+    state = new_state(calendar_version=1)
     missions = [
         {
             "id": "a",
@@ -229,7 +229,7 @@ def test_relief_allocation(scenario):
     "Design §26.3: survivors and loot return to the origin city under its current owner",
 )
 def test_captured_origin_receives_survivors_and_loot():
-    state = new_state("V1", opponents="passive")
+    state = new_state("V1", opponents="passive", calendar_version=1)
     confirm_order(
         state, "p1", {"kind": "raid", "target": "c4", "contributions": {"c3": 45}}, "raid"
     )
@@ -249,7 +249,7 @@ def test_captured_origin_receives_survivors_and_loot():
     "Design V1 annual renewal: growth precedes renewal, absent troops count toward the ceiling",
 )
 def test_annual_growth_renewal_and_absent_ceiling():
-    state = new_state("V1", opponents="passive")
+    state = new_state("V1", opponents="passive", calendar_version=1)
     for _ in range(11):
         advance_month(state, "seed")
     confirm_order(

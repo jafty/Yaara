@@ -1,59 +1,50 @@
-{% load static %}
+{% load static i18n %}{% get_current_language as current_language %}
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ current_language }}">
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
-        <title>
-            {% block title %}{{ game.title }} · Yaara{% endblock %}
-        </title>
+        <title>{% block title %}{{ game.title }} · Yaara{% endblock %}</title>
+        <link rel="stylesheet" href="{% static 'simulation/common.css' %}">
         <link rel="stylesheet" href="{% static 'simulation/manuscript.css' %}">
         <script defer src="{% static 'simulation/app.js' %}"></script>
     </head>
-    <body class="manuscript">
-        <a class="skip-link" href="#main">Aller au récit</a>
-        <div class="book">
-            <header class="book-heading">
+    <body data-revision="{{ game.revision }}" class="manuscript" data-state-url="{% url 'state' game.id %}">
+        <a class="skip-link" href="#main">{% translate "Aller au récit" %}</a>
+        <header class="reign-header">
+            <div class="book book-heading">
                 <a class="book-world" href="{% url 'home' %}">Yaara</a>
                 <p class="book-title">{{ game.title }}</p>
-                <nav class="bookmarks" aria-label="Les feuillets de votre règne">
-                    <a href="{% url 'game' game.id %}"
-                       {% if tab == 'domain' %}aria-current="page"{% endif %}>Domaine</a>
-                    <a href="{% url 'game' game.id %}?tab=decrees"
-                       {% if tab == 'decrees' %}aria-current="page"{% endif %}>Décrets</a>
-                    <a href="{% url 'game' game.id %}?tab=letters"
-                       {% if tab == 'letters' %}aria-current="page"{% endif %}>Correspondance</a>
+                <nav class="bookmarks" aria-label="{% translate "Les feuillets de votre règne" %}">
+                    <a href="{% url 'game' game.id %}" {% if tab == 'domain' or tab == 'city' %}aria-current="page"{% endif %}>
+                        <span>{% translate "Domaine" %}</span><small>{% translate "Terres et greniers" %}</small>
+                    </a>
+                    <a href="{% url 'game' game.id %}?tab=decrees" {% if tab == 'decrees' %}aria-current="page"{% endif %}>
+                        <span>{% translate "Décrets" %}{% if view.sealed_count %} <span class="seal-count">({{ view.sealed_count }})</span>{% endif %}</span><small>{% translate "Ordres et ouvrages" %}</small>
+                    </a>
+                    <a href="{% url 'game' game.id %}?tab=letters" {% if tab == 'letters' %}aria-current="page"{% endif %}>
+                        <span>{% translate "Correspondance" %}</span><small>{% translate "Récits et nouvelles" %}</small>
+                    </a>
                 </nav>
-                {% if view and not view.finished %}
-                    <p class="running-note">
-                        {% if game.mode == 'manual' %}
-                            <a href="#turn-page">Aller à la fin du mois</a>
-                        {% elif game.deadline %}
-                            <span data-deadline="{{ game.deadline|date:'c' }}">Le prochain mois sera clos à {{ game.deadline|date:'H:i' }} UTC.</span>
-                        {% else %}
-                            Le cours des chroniques est suspendu.
-                        {% endif %}
-                    </p>
-                {% endif %}
-            </header>
-            <main id="main">
-                {% if messages %}
-                    <div class="notices" aria-live="polite">
-                        {% for message in messages %}<p class="notice {{ message.tags }}">{{ message }}</p>{% endfor %}
+                {% if view %}
+                    <div class="resource-ribbon" aria-label="{% translate "Les moyens libres de votre maison" %}">
+                        <span>{% blocktranslate with v0=view.available_stock %}<strong>{{ v0 }} Mesures</strong> libres{% endblocktranslate %}</span>
+                        <span>{% blocktranslate with v0=view.available_fideles %}<strong>{{ v0 }} Fidèles</strong> libres{% endblocktranslate %}</span>
+                        {% if not view.finished %}<span>{% blocktranslate with v0=view.harvest_in %}Récolte dans <strong>{{ v0 }} lunes</strong>{% endblocktranslate %}</span>{% endif %}
+                        {% if not view.finished %}<a href="{% url 'game' game.id %}?tab={{ tab }}{% if selected %}&city={{ selected.id }}{% endif %}#turn-page">{% translate "Clore la lune" %} →</a>{% endif %}
                     </div>
                 {% endif %}
+            </div>
+        </header>
+        <div class="book">
+            <main id="main">
+                {% if messages %}<div class="notices" aria-live="polite">{% for message in messages %}<p class="notice {{ message.tags }}">{{ message }}</p>{% endfor %}</div>{% endif %}
                 {% block content %}{% endblock %}
             </main>
             <footer class="book-footer">
-                <p>
-                    <a href="{% url 'home' %}">Refermer ce livre</a>
-                    {% if view %}<span class="edition">Règles {{ view.rules }}</span>{% endif %}
-                </p>
-                <form method="post" action="{% url 'logout' %}">
-                    {% csrf_token %}
-                    <button type="submit">Quitter</button>
-                </form>
+                <p><a href="{% url 'home' %}">{% translate "Refermer ce livre" %}</a>{% if view %} · {% blocktranslate with v0=view.rules %}Règles {{ v0 }}{% endblocktranslate %}{% endif %}</p>
+                {% include 'simulation/language_switch.html' %}
+                <form method="post" action="{% url 'logout' %}">{% csrf_token %}<button type="submit">{% translate "Quitter" %}</button></form>
             </footer>
         </div>
     </body>

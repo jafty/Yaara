@@ -27,6 +27,7 @@ jobs:
           python-version: "3.13"
           enable-cache: true
       - run: uv sync --frozen
+      - run: uv run python scripts/compile_translations.py
       - run: uv run ruff check .
       - run: uv run ruff format --check .
       - run: uv run python manage.py makemigrations --check --dry-run

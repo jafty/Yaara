@@ -9,7 +9,9 @@ One Python/Django application, one PostgreSQL database, and an optional calendar
 - `simulation/services.py`: authorization, deadlines, transactions, request idempotency, persistence and tick audit.
 - `simulation/models.py`: canonical `Game.state` snapshot; relational memberships, receipts, target engagements, tick executions and recipient reports.
 - `simulation/projections.py`: explicit player-facing allowlist. Enemy figures and numerical combativity never leave the server. Ranking reveals rank, not enemy population.
-- Django templates, local CSS and progressive JavaScript: French UI. JavaScript estimates costs; the server independently validates every request.
+- Django templates, translation catalogs, local CSS and progressive JavaScript: French and English UI. `common.css` holds shared primitives; the conventional pre-game layout and manuscript layout each load only their own stylesheet. Partial templates share optional folios, inline batch-work checklists and dedicated action forms, correspondence, closing controls and the footer language switch. JavaScript estimates costs from public rule prices; the server independently validates every request.
+- `simulation/calendar.py`: pure compatibility helpers for original elapsed-month snapshots and the version-two open-Moon calendar. The application, scheduler and presentation use the same closure target.
+- `simulation/messages.py`: pure, serializable narration expression trees. The raw French title/body remain stored alongside structured report content; `presentation.py` renders the already-authorized projection in the request language. Names and observed values remain literal parameters. Reading or changing languages never rewrites a report.
 
 ## Mutation protocol
 

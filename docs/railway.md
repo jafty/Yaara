@@ -20,7 +20,7 @@ This repository is prepared for Railway; it has not been published to your accou
 
 Railway's `RAILWAY_PUBLIC_DOMAIN` is automatically allowed and trusted. The start script honors `PORT`. Generate a secret locally with `python -c 'import secrets; print(secrets.token_urlsafe(64))'` and enter it in Railway variables, not a committed file.
 
-4. Generate the public domain. The build installs pinned, checksum-verified dependencies and collects static assets. Pre-deploy runs `python manage.py migrate --noinput`; Gunicorn runs as a non-root user. `/health/` checks database connectivity.
+4. Generate the public domain. The build installs pinned, checksum-verified dependencies, compiles French and English catalogs and collects static assets. Apply migration `0002_report_content` before starting the updated web and calendar services; existing game calendars and original archives are preserved. Pre-deploy runs `python manage.py migrate --noinput`; Gunicorn runs as a non-root user. `/health/` checks database connectivity.
 5. Open the domain, register, and create a **manual V1** game. This mode requires no scheduler. Accounts, sessions, games and reports persist in PostgreSQL; the web container requires no volume.
 
 Railway terminates HTTPS. Django trusts its forwarded HTTPS header and uses HTTPS redirects and secure cookies. Direct public container hosting requires a trusted TLS reverse proxy.

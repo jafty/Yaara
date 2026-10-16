@@ -16,7 +16,7 @@ def fixed_random(monkeypatch):
 
 @pytest.fixture
 def raid(fixed_random):
-    state = engine.new_state("V0", opponents="passive")
+    state = engine.new_state("V0", opponents="passive", calendar_version=1)
     state["cities"]["c4"]["stock"] = 1200000
     engine.confirm_order(
         state, "p1", {"kind": "raid", "target": "c4", "contributions": {"c3": 45}}, "raid"
@@ -61,7 +61,7 @@ def test_raid_timeline(raid, month, present, away, population, tax, status):
 )
 def test_prescribed_raid_defense(percentage, remaining, monkeypatch):
     monkeypatch.setattr(engine, "random_stream", FixedRandom(percentage))
-    state = engine.new_state(opponents="passive")
+    state = engine.new_state(opponents="passive", calendar_version=1)
     engine.confirm_order(
         state, "p1", {"kind": "raid", "target": "c4", "contributions": {"c3": 45}}, "raid"
     )

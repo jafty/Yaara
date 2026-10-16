@@ -8,12 +8,15 @@ import hashlib
 import random
 from copy import deepcopy
 
+from .calendar import closed_moon, closing_moon, open_calendar
+from .messages import Message, content
 from .narration import military_losses, number, returned_loot, work_phrase
 from .rules import (
     ACTION_LABELS,
     CAPACITIES,
     EQUIPMENT,
     EQUIPMENT_LABELS,
+    EXPEDITION_PRICES,
     OUTCOME_LABELS,
     WALLS,
     WORK_PRICES,
@@ -26,13 +29,24 @@ from .rules import (
 )
 
 CITY_NAMES = ["Qasr", "Tamesh", "Namar", "Sefra", "Ishar", "Daram", "Azal", "Mirha", "Tazir"]
-REALM_NAMES = ["La maison d’Ambre", "Les seigneurs de Sefra", "La ligue d’Azal"]
+REALM_NAMES = [
+    Message("La maison d’Ambre"),
+    Message("Les seigneurs de Sefra"),
+    Message("La ligue d’Azal"),
+]
 
 
-def new_state(version="V1", reign_months=120, opponents="active", player_name="La maison d’Ambre"):
+def new_state(
+    version="V1",
+    reign_months=120,
+    opponents="active",
+    player_name=Message("La maison d’Ambre"),
+    *,
+    calendar_version=2,
+):
     rule_family(version)
     if reign_months not in (24, 60, 120, 240) or opponents not in ("active", "passive"):
-        raise RuleError("La configuration de cette partie est invalide.")
+        raise RuleError(Message("La configuration de cette partie est invalide."))
     cities = {}
     for index, name in enumerate(CITY_NAMES):
         city_id = f"c{index + 1}"
@@ -55,7 +69,8 @@ def new_state(version="V1", reign_months=120, opponents="active", player_name="L
     return {
         "schema": 1,
         "rules": version,
-        "month": 0,
+        "month": 1 if calendar_version == 2 else 0,
+        "calendar_version": calendar_version,
         "status": "active",
         "config": {"reign_months": reign_months, "raid_minimum": 20, "capture_minimum": 80},
         "players": {
@@ -160,34 +175,34 @@ def equipment_busy(state, actor):
 
 def ensure_actor(state, actor):
     if state["status"] != "active":
-        raise RuleError("Le règne est terminé. Son résultat est désormais scellé.")
+        raise RuleError(Message("Le règne est terminé. Son résultat est désormais scellé."))
     if actor not in state["players"] or state["players"][actor]["eliminated"]:
-        raise RuleError("Ce Prétendant ne peut plus donner d’ordres.")
+        raise RuleError(Message("Ce Prétendant ne peut plus donner d’ordres."))
 
 
 def work_spec(state, city, kind):
     rules = rule_family(state["rules"])
     if kind not in WORK_PRICES:
-        raise RuleError("Ce chantier n’existe pas.")
+        raise RuleError(Message("Ce chantier n’existe pas."))
     if kind in ("storage", "repair") and not rules.storage:
-        raise RuleError("Cette action appartient aux règles V1.")
+        raise RuleError(Message("Cette action appartient aux règles V1."))
     if kind == "repair":
         if not city["walls"] or not city["damaged"]:
-            raise RuleError("Cette enceinte ne nécessite aucune réparation.")
+            raise RuleError(Message("Cette enceinte ne nécessite aucune réparation."))
         level = city["walls"]
     else:
         level = city[kind] + 1
         if level > rules.max_level:
-            raise RuleError("Le niveau maximal de cet ouvrage est déjà atteint.")
+            raise RuleError(Message("Le niveau maximal de cet ouvrage est déjà atteint."))
         if kind == "walls" and city["damaged"]:
-            raise RuleError("Il faut réparer l’enceinte avant de la renforcer.")
+            raise RuleError(Message("Il faut réparer l’enceinte avant de la renforcer."))
     cost, duration = WORK_PRICES[kind][level - 1]
     return {"city": city["id"], "kind": kind, "level": level, "cost": cost, "duration": duration}
 
 
 def normalized_contributions(entries):
     if not isinstance(entries, dict) and not isinstance(entries, list):
-        raise RuleError("Les contributions militaires sont invalides.")
+        raise RuleError(Message("Les contributions militaires sont invalides."))
     pairs = entries.items() if isinstance(entries, dict) else entries
     contributions = {}
     try:
@@ -197,7 +212,9 @@ def normalized_contributions(entries):
             if count:
                 contributions[city_id] = contributions.get(city_id, 0) + count
     except (ValueError, TypeError):
-        raise RuleError("Les effectifs doivent être des nombres entiers positifs.") from None
+        raise RuleError(
+            Message("Les effectifs doivent être des nombres entiers positifs.")
+        ) from None
     return contributions
 
 
@@ -214,7 +231,7 @@ def prepare_order(state, actor, spec, order_id):
         "actor": actor,
         "kind": kind,
         "status": "confirmed",
-        "execute_month": state["month"] + 1,
+        "execute_month": closing_moon(state),
         "funding": {},
         "cost": 0,
         "tasks": [],
@@ -222,66 +239,71 @@ def prepare_order(state, actor, spec, order_id):
     if kind in WORK_PRICES:
         targets = spec.get("cities", [])
         if not isinstance(targets, list) or not targets or len(targets) != len(set(targets)):
-            raise RuleError("Choisissez au moins une cité, une seule fois chacune.")
+            raise RuleError(Message("Choisissez au moins une cité, une seule fois chacune."))
         for city_id in sorted(targets):
             city = state["cities"].get(city_id)
             if not city or city["owner"] != actor:
-                raise RuleError("Cette cité ne relève pas de votre autorité.")
+                raise RuleError(Message("Cette cité ne relève pas de votre autorité."))
             if city_id in busy_cities(state):
-                raise RuleError("Les équipes de cette cité sont déjà engagées.")
+                raise RuleError(Message("Les équipes de cette cité sont déjà engagées."))
             order["tasks"].append(work_spec(state, city, kind))
         order["cost"] = sum(task["cost"] for task in order["tasks"])
     elif kind == "equipment":
         if not rules.equipment:
-            raise RuleError("Les projets d’armement appartiennent aux règles V1.")
+            raise RuleError(Message("Les projets d’armement appartiennent aux règles V1."))
         player = state["players"][actor]
         if player["equipment"] >= 2 or equipment_busy(state, actor):
-            raise RuleError("Votre forge est déjà engagée ou son organisation est achevée.")
-        level = player["equipment"] + 1
-        population = sum(city["population"] for city in owned_cities(state, actor))
-        order.update(
-            {
-                "level": level,
-                "duration": 8 if level == 1 else 14,
-                "cost": max(1_800_000, 600 * population)
-                if level == 1
-                else max(4_200_000, 1400 * population),
-            }
-        )
+            raise RuleError(
+                Message("Votre forge est déjà engagée ou son organisation est achevée.")
+            )
+        order.update(equipment_spec(state, actor))
     elif kind in ("raid", "capture"):
         target = spec.get("target")
         if target not in state["cities"] or state["cities"][target]["owner"] == actor:
-            raise RuleError("Choisissez une cité ennemie de cette partie.")
+            raise RuleError(Message("Choisissez une cité ennemie de cette partie."))
         if target in active_targets(state):
             raise RuleError(
-                "Une autre expédition est déjà engagée vers cette cité. Aucun moyen n’a été réservé."
+                Message(
+                    "Une autre expédition est déjà engagée vers cette cité. Aucun moyen n’a été réservé."
+                )
             )
-        if kind == "raid" and state["month"] < state["cities"][target]["raid_protected_until"]:
-            raise RuleError("Les villages ne constituent pas une cible de pillage disponible.")
+        if kind == "raid" and closed_moon(state) < state["cities"][target]["raid_protected_until"]:
+            raise RuleError(
+                Message("Les villages ne constituent pas une cible de pillage disponible.")
+            )
         contributions = normalized_contributions(spec.get("contributions", {}))
         eligible = eligible_origins(state, actor, target)
         for city_id, count in contributions.items():
             if city_id not in eligible:
                 raise RuleError(
-                    "Cette communauté ne peut rejoindre cette frontière par nos possessions."
+                    Message(
+                        "Cette communauté ne peut rejoindre cette frontière par nos possessions."
+                    )
                 )
             if count > state["cities"][city_id]["fideles"] - people[city_id]:
-                raise RuleError("Certains de ces hommes sont déjà promis à une autre expédition.")
+                raise RuleError(
+                    Message("Certains de ces hommes sont déjà promis à une autre expédition.")
+                )
         total = sum(contributions.values())
         minimum = state["config"][f"{kind}_minimum"]
         if total < minimum:
-            raise RuleError(f"Cette expédition demande au moins {minimum} Fidèles au total.")
+            raise RuleError(
+                Message(
+                    "Cette expédition demande au moins {value0} Fidèles au total.", value0=minimum
+                )
+            )
         order.update(
             {
                 "target": target,
                 "contributions": contributions,
-                "cost": 20_000 + 2500 * total if kind == "raid" else 900_000 + 18000 * total,
+                "cost": EXPEDITION_PRICES[kind]["base"]
+                + EXPEDITION_PRICES[kind]["per_person"] * total,
             }
         )
     else:
-        raise RuleError("Cet ordre n’est pas reconnu.")
+        raise RuleError(Message("Cet ordre n’est pas reconnu."))
     if sum(available.values()) < order["cost"]:
-        raise RuleError("Cette dépense dépasserait les moyens non engagés.")
+        raise RuleError(Message("Cette dépense dépasserait les moyens non engagés."))
     # Batch work keeps its individual financing plans in deterministic city order.
     if order["tasks"]:
         for task in order["tasks"]:
@@ -294,11 +316,23 @@ def prepare_order(state, actor, spec, order_id):
     return order
 
 
+def equipment_spec(state, actor):
+    level = state["players"][actor]["equipment"] + 1
+    population = sum(city["population"] for city in owned_cities(state, actor))
+    return {
+        "level": level,
+        "duration": 8 if level == 1 else 14,
+        "cost": max(1_800_000, 600 * population)
+        if level == 1
+        else max(4_200_000, 1400 * population),
+    }
+
+
 def confirm_order(state, actor, spec, order_id):
     existing = next((order for order in state["orders"] if order["id"] == order_id), None)
     if existing:
         if existing["actor"] != actor:
-            raise RuleError("Cet identifiant de confirmation est déjà utilisé.")
+            raise RuleError(Message("Cet identifiant de confirmation est déjà utilisé."))
         return existing
     order = prepare_order(state, actor, spec, order_id)
     state["orders"].append(order)
@@ -308,13 +342,13 @@ def confirm_order(state, actor, spec, order_id):
 def cancel_order(state, actor, order_id):
     ensure_actor(state, actor)
     if not rule_family(state["rules"]).cancellable:
-        raise RuleError("En V0, une confirmation est définitive.")
+        raise RuleError(Message("En V0, une confirmation est définitive."))
     order = next(
         (item for item in state["orders"] if item["id"] == order_id and item["actor"] == actor),
         None,
     )
     if not order or order["status"] != "confirmed":
-        raise RuleError("Cet ordre ne peut plus être annulé.")
+        raise RuleError(Message("Cet ordre ne peut plus être annulé."))
     order["status"] = "cancelled"
     return order
 
@@ -325,7 +359,15 @@ def random_stream(seed, month, purpose):
 
 
 def report(events, recipient, kind, title, body):
-    events.append({"recipient": recipient, "kind": kind, "title": title, "body": body})
+    events.append(
+        {
+            "recipient": recipient,
+            "kind": kind,
+            "title": title,
+            "body": body,
+            "content": content(title, body),
+        }
+    )
 
 
 def annual_economy(state, events):
@@ -349,10 +391,17 @@ def annual_economy(state, events):
             events,
             city["owner"],
             "harvest",
-            f"La récolte de {city['name']}",
-            f"Les comptes de {city['name']} sont arrêtés pour cette année. Le prélèvement a fait entrer {number(added)} Mesures dans son grenier ; {number(overflow)} autres n’ont pu y trouver place. "
-            f"J’ai inscrit {growth} nouveaux habitants et {renewed} habitants rejoignant les Fidèles. "
-            f"La cité compte à présent {number(city['population'])} habitants. Depuis le début du règne, {city['military_deaths'] + city['civilian_deaths']} de ses habitants ont perdu la vie.",
+            Message("La récolte de {value0}", value0=city["name"]),
+            Message(
+                "Les comptes de {value0} sont arrêtés pour cette année. Le prélèvement a fait entrer {value1} Mesures dans son grenier ; {value2} autres n’ont pu y trouver place. J’ai inscrit {value3} nouveaux habitants et {value4} habitants rejoignant les Fidèles. La cité compte à présent {value5} habitants. Depuis le début du règne, {value6} de ses habitants ont perdu la vie.",
+                value0=city["name"],
+                value1=number(added),
+                value2=number(overflow),
+                value3=growth,
+                value4=renewed,
+                value5=number(city["population"]),
+                value6=city["military_deaths"] + city["civilian_deaths"],
+            ),
         )
 
 
@@ -366,31 +415,31 @@ def depart_orders(state, events):
             state["cities"][city_id]["owner"] != actor or state["cities"][city_id]["stock"] < amount
             for city_id, amount in order["funding"].items()
         ):
-            reason = "Le financement réservé n’est plus disponible."
+            reason = Message("Le financement réservé n’est plus disponible.")
         if order["kind"] in ("raid", "capture"):
             eligible = eligible_origins(state, actor, order["target"])
             if any(
                 city_id not in eligible or state["cities"][city_id]["fideles"] < count
                 for city_id, count in order["contributions"].items()
             ):
-                reason = "Les contributions ne peuvent plus rejoindre cette frontière."
+                reason = Message("Les contributions ne peuvent plus rejoindre cette frontière.")
             if (
                 order["kind"] == "raid"
                 and state["month"] < state["cities"][order["target"]]["raid_protected_until"]
             ):
-                reason = "La protection contre le pillage est encore active."
+                reason = Message("La protection contre le pillage est encore active.")
         for task in order["tasks"]:
             city = state["cities"][task["city"]]
             if city["owner"] != actor or (task["kind"] == "walls" and city["damaged"]):
-                reason = "La cité ou l’état de l’enceinte ne permet plus ces travaux."
+                reason = Message("La cité ou l’état de l’enceinte ne permet plus ces travaux.")
         if reason:
             order["status"] = "invalidated"
             report(
                 events,
                 actor,
                 "order",
-                "Ordre invalidé",
-                reason + " Toutes les réservations sont libérées.",
+                Message("Ordre invalidé"),
+                reason + Message(" Toutes les réservations sont libérées."),
             )
             continue
         for city_id, amount in order["funding"].items():
@@ -442,8 +491,12 @@ def depart_orders(state, events):
             events,
             actor,
             "order",
-            "Votre décret entre en vigueur",
-            f"Votre ordre a pris son cours : {ACTION_LABELS[order['kind']].lower()}. J’ai fait prélever {number(order['cost'])} Mesures dans les greniers qui les avaient promises. Les nouvelles vous seront rapportées à leur échéance.",
+            Message("Votre décret entre en vigueur"),
+            Message(
+                "Votre ordre a pris son cours : {value0}. J’ai fait prélever {value1} Mesures dans les greniers qui les avaient promises. Les nouvelles vous seront rapportées à leur échéance.",
+                value0=ACTION_LABELS[order["kind"]].lower(),
+                value1=number(order["cost"]),
+            ),
         )
 
 
@@ -455,11 +508,13 @@ def finish_works(state, events):
         if work["kind"] == "equipment":
             state["players"][work["actor"]]["equipment"] = work["level"]
             recipient = work["actor"]
-            title = "La forge a achevé son œuvre"
+            title = Message("La forge a achevé son œuvre")
             body = (
-                "Les maîtres de la forge ont achevé ce que vous leur aviez confié. "
+                Message("Les maîtres de la forge ont achevé ce que vous leur aviez confié. ")
                 + EQUIPMENT_LABELS[work["level"]]
-                + " : tel est désormais l’état de nos hommes. Leur organisation équipera aussi les populations qui rejoindront votre maison."
+                + Message(
+                    " : tel est désormais l’état de nos hommes. Leur organisation équipera aussi les populations qui rejoindront votre maison."
+                )
             )
         else:
             city = state["cities"][work["city"]]
@@ -468,8 +523,12 @@ def finish_works(state, events):
             else:
                 city[work["kind"]] = work["level"]
             recipient = city["owner"]
-            title = f"Travaux achevés à {city['name']}"
-            body = f"Les équipes de {city['name']} ont mené leur tâche à son terme : {work_phrase(work['kind'], work['level']).lower()}. L’ouvrage est désormais en service ; j’en tiendrai compte dans les registres à venir."
+            title = Message("Travaux achevés à {value0}", value0=city["name"])
+            body = Message(
+                "Les équipes de {value0} ont mené leur tâche à son terme : {value1}. L’ouvrage est désormais en service ; j’en tiendrai compte dans les registres à venir.",
+                value0=city["name"],
+                value1=work_phrase(work["kind"], work["level"]).lower(),
+            )
         report(events, recipient, "work", title, body)
     active = {work["order_id"] for work in state["works"] if work["status"] == "active"}
     for order in state["orders"]:
@@ -539,13 +598,18 @@ def lose_attackers(state, mission, dead, priority):
 
 def observation(enemy_count, own_survivors, equipment):
     if own_survivors == 0:
-        return "Aucun survivant ne peut décrire les forces adverses."
+        return Message("Aucun survivant ne peut décrire les forces adverses.")
     if own_survivors < 10:
-        return "Les rares survivants ne livrent que des observations incertaines."
+        return Message("Les rares survivants ne livrent que des observations incertaines.")
     if enemy_count == 0:
-        return "Nos survivants n’ont rencontré aucun défenseur."
+        return Message("Nos survivants n’ont rencontré aucun défenseur.")
     lower = enemy_count // 20 * 20
-    return f"Nos survivants disent avoir rencontré entre {lower} et {lower + 19} hommes, avec un {EQUIPMENT_LABELS[equipment].lower()}. Je rapporte ce qu’ils ont vu à la date de cette lettre ; leur récit ne révèle pas les forces de tout le domaine adverse."
+    return Message(
+        "Nos survivants disent avoir rencontré entre {value0} et {value1} hommes, avec un {value2}. Je rapporte ce qu’ils ont vu à la date de cette lettre ; leur récit ne révèle pas les forces de tout le domaine adverse.",
+        value0=lower,
+        value1=lower + 19,
+        value2=EQUIPMENT_LABELS[equipment].lower(),
+    )
 
 
 def resolve_combats(state, seed, events):
@@ -579,8 +643,10 @@ def resolve_combats(state, seed, events):
                 events,
                 actor,
                 "battle",
-                "L’expédition renonce au combat",
-                "Le combat n’a plus lieu d’être. Les hommes rentrent selon le calendrier prévu, sans remboursement.",
+                Message("L’expédition renonce au combat"),
+                Message(
+                    "Le combat n’a plus lieu d’être. Les hommes rentrent selon le calendrier prévu, sans remboursement."
+                ),
             )
             continue
         attackers = sum(mission["cohorts"].values())
@@ -593,8 +659,10 @@ def resolve_combats(state, seed, events):
                     events,
                     actor,
                     "battle",
-                    "Pillage impossible",
-                    "Les villages sont encore protégés. Les hommes rentrent sans remboursement.",
+                    Message("Pillage impossible"),
+                    Message(
+                        "Les villages sont encore protégés. Les hommes rentrent sans remboursement."
+                    ),
                 )
                 continue
             fraction = random_stream(seed, state["month"], f"raid:{mission['id']}").choice(
@@ -616,12 +684,22 @@ def resolve_combats(state, seed, events):
                 events,
                 actor,
                 "battle",
-                f"{OUTCOME_LABELS[result.outcome]} à {target['name']}",
-                f"La nouvelle de cette expédition nous est parvenue. {military_losses(result.attacker_losses)} "
+                Message(
+                    "{value0} à {value1}",
+                    value0=OUTCOME_LABELS[result.outcome],
+                    value1=target["name"],
+                ),
+                Message(
+                    "La nouvelle de cette expédition nous est parvenue. {value0} ",
+                    value0=military_losses(result.attacker_losses),
+                )
                 + (
-                    f"Les survivants transportent {number(result.stolen)} Mesures vers leurs origines ; nous ne pourrons les engager avant leur retour. "
+                    Message(
+                        "Les survivants transportent {value0} Mesures vers leurs origines ; nous ne pourrons les engager avant leur retour. ",
+                        value0=number(result.stolen),
+                    )
                     if result.stolen
-                    else "Les survivants rentreront sans butin. "
+                    else Message("Les survivants rentreront sans butin. ")
                 )
                 + observation(encountered, attackers - result.attacker_losses, defender_equipment),
             )
@@ -629,8 +707,13 @@ def resolve_combats(state, seed, events):
                 events,
                 defender,
                 "battle",
-                f"Les villages de {target['name']} ont été attaqués",
-                f"Le raid sur nos villages a coûté la vie à {result.defender_losses} de nos Fidèles. Les assaillants ont emporté {number(result.stolen)} Mesures et en ont détruit {number(result.destroyed)} autres. Ces pertes sont inscrites dans le grenier de la cité. "
+                Message("Les villages de {value0} ont été attaqués", value0=target["name"]),
+                Message(
+                    "Le raid sur nos villages a coûté la vie à {value0} de nos Fidèles. Les assaillants ont emporté {value1} Mesures et en ont détruit {value2} autres. Ces pertes sont inscrites dans le grenier de la cité. ",
+                    value0=result.defender_losses,
+                    value1=number(result.stolen),
+                    value2=number(result.destroyed),
+                )
                 + observation(attackers, encountered - result.defender_losses, attacker_equipment),
             )
             continue
@@ -689,25 +772,43 @@ def resolve_combats(state, seed, events):
                     events,
                     recipient,
                     "sovereignty",
-                    f"{target['name']} change de souverain",
-                    f"Le nom du souverain a changé dans les registres de {target['name']}. La cité relève désormais de {state['players'][actor]['name']} ; c’est tout ce que cette nouvelle publique nous apprend.",
+                    Message("{value0} change de souverain", value0=target["name"]),
+                    Message(
+                        "Le nom du souverain a changé dans les registres de {value0}. La cité relève désormais de {value1} ; c’est tout ce que cette nouvelle publique nous apprend.",
+                        value0=target["name"],
+                        value1=state["players"][actor]["name"],
+                    ),
                 )
         report(
             events,
             actor,
             "battle",
-            f"{OUTCOME_LABELS[result.outcome]} à {target['name']}",
-            f"{military_losses(attacker_dead)} Les survivants repartent vers leurs origines ; ils y rejoindront les présents à la date annoncée. "
+            Message(
+                "{value0} à {value1}", value0=OUTCOME_LABELS[result.outcome], value1=target["name"]
+            ),
+            Message(
+                "{value0} Les survivants repartent vers leurs origines ; ils y rejoindront les présents à la date annoncée. ",
+                value0=military_losses(attacker_dead),
+            )
             + observation(local + reinforcement, attackers - attacker_dead, defender_equipment),
         )
         report(
             events,
             defender,
             "battle",
-            f"La bataille de {target['name']}",
-            f"Voici l’issue que l’on nous rapporte : {OUTCOME_LABELS[result.outcome].lower()}. Nous avons perdu {defender_dead} Fidèles engagés, dont {split[target['id']]} de la garnison locale, ainsi que {civilian_dead} civils. "
+            Message("La bataille de {value0}", value0=target["name"]),
+            Message(
+                "Voici l’issue que l’on nous rapporte : {value0}. Nous avons perdu {value1} Fidèles engagés, dont {value2} de la garnison locale, ainsi que {value3} civils. ",
+                value0=OUTCOME_LABELS[result.outcome].lower(),
+                value1=defender_dead,
+                value2=split[target["id"]],
+                value3=civilian_dead,
+            )
             + (
-                f"Le siège a consommé {number(result.food_used)} Mesures prises dans le grenier de cette cité. "
+                Message(
+                    "Le siège a consommé {value0} Mesures prises dans le grenier de cette cité. ",
+                    value0=number(result.food_used),
+                )
                 if result.outcome in ("held", "shortage")
                 else ""
             )
@@ -733,16 +834,21 @@ def return_expeditions(state, events):
                 events,
                 city["owner"],
                 "return",
-                f"Retour à {city['name']}",
-                f"J’ai fait inscrire le retour de {survivors} Fidèles à {city['name']}. Ils rejoignent les présents de leur cité d’origine. {returned_loot(deposited, shares[city_id] - deposited)}",
+                Message("Retour à {value0}", value0=city["name"]),
+                Message(
+                    "J’ai fait inscrire le retour de {value0} Fidèles à {value1}. Ils rejoignent les présents de leur cité d’origine. {value2}",
+                    value0=survivors,
+                    value1=city["name"],
+                    value2=returned_loot(deposited, shares[city_id] - deposited),
+                ),
             )
         if not sum(mission["cohorts"].values()):
             report(
                 events,
                 mission["actor"],
                 "return",
-                "Une expédition ne reviendra pas",
-                "Aucun homme n’a survécu. Aucun butin n’est déposé.",
+                Message("Une expédition ne reviendra pas"),
+                Message("Aucun homme n’a survécu. Aucun butin n’est déposé."),
             )
         mission["loot"] = 0
         mission["status"] = "completed"
@@ -787,8 +893,10 @@ def check_end(state, events):
                 events,
                 actor,
                 "result",
-                "Votre prétention au trône s’achève",
-                "Vous ne possédez plus de cité. Vos armées encore en route rentrent vers leurs origines.",
+                Message("Votre prétention au trône s’achève"),
+                Message(
+                    "Vous ne possédez plus de cité. Vos armées encore en route rentrent vers leurs origines."
+                ),
             )
     if (
         len({city["owner"] for city in state["cities"].values()}) == 1
@@ -811,8 +919,11 @@ def check_end(state, events):
                 events,
                 actor,
                 "result",
-                "Le règne est achevé",
-                f"Au premier rang : {winners}. Les opérations encore en route ne modifieront plus ce résultat.",
+                Message("Le règne est achevé"),
+                Message(
+                    "Au premier rang : {value0}. Les opérations encore en route ne modifieront plus ce résultat.",
+                    value0=winners,
+                ),
             )
 
 
@@ -846,8 +957,9 @@ def assert_invariants(state):
 
 def advance_month(state, seed):
     if state["status"] != "active":
-        raise RuleError("Ce règne est déjà terminé.")
-    state["month"] += 1
+        raise RuleError(Message("Ce règne est déjà terminé."))
+    if not open_calendar(state):
+        state["month"] += 1
     events = []
     annual_economy(state, events)
     depart_orders(state, events)
@@ -855,17 +967,20 @@ def advance_month(state, seed):
     audit = resolve_combats(state, seed, events)
     return_expeditions(state, events)
     check_end(state, events)
+    if open_calendar(state) and state["status"] == "active":
+        state["month"] += 1
     assert_invariants(state)
     return events, audit
 
 
 def bot_orders(state, seed):
     """A modest policy using owned state and public geography, never enemy stocks/men."""
+    decision_month = closed_moon(state)
     accepted = []
     for actor, player in state["players"].items():
         if not player["bot"] or player["eliminated"]:
             continue
-        rng = random_stream(seed, state["month"], f"bot:{actor}")
+        rng = random_stream(seed, decision_month, f"bot:{actor}")
         cities = owned_cities(state, actor)
         rng.shuffle(cities)
         targets = [
@@ -890,10 +1005,10 @@ def bot_orders(state, seed):
                     proposals.append(
                         {"kind": "capture", "target": target, "contributions": contributions}
                     )
-        if state["month"] % 3 == 0:
+        if decision_month % 3 == 0:
             for city in cities:
                 proposals.append({"kind": "irrigation", "cities": [city["id"]]})
-        if state["month"] % 4 == 1:
+        if decision_month % 4 == 1:
             for city in cities:
                 if city["walls"] == 0:
                     proposals.append({"kind": "walls", "cities": [city["id"]]})
@@ -901,7 +1016,7 @@ def bot_orders(state, seed):
             proposals.append({"kind": "equipment"})
             for city in cities:
                 proposals.append({"kind": "storage", "cities": [city["id"]]})
-        if state["month"] % 5 == 2:
+        if decision_month % 5 == 2:
             for target in targets:
                 origins = eligible_origins(state, actor, target)
                 origin = next(
@@ -918,7 +1033,7 @@ def bot_orders(state, seed):
                     )
         for spec in proposals:
             try:
-                order = confirm_order(state, actor, spec, f"bot-{actor}-{state['month']}")
+                order = confirm_order(state, actor, spec, f"bot-{actor}-{decision_month}")
             except RuleError:
                 continue
             accepted.append(order)

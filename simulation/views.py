@@ -9,12 +9,15 @@ from django.core.exceptions import PermissionDenied
 from django.db import connection
 from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from django.views.decorators.http import require_GET, require_POST
+from django.utils.translation import gettext as _
+from django.views.decorators.http import require_GET, require_http_methods, require_POST
 
-from . import services
+from . import engine, services
+from .calendar import closing_moon
 from .forms import GameForm, SignupForm
 from .models import Game, Report
-from .narration import work_phrase
+from .narration import work_effect, work_phrase
+from .presentation import localize, report_view
 from .projections import player_view
 from .rules import ACTION_LABELS, RuleError
 
@@ -34,7 +37,7 @@ def signup(request):
     if request.user.is_authenticated:
         return redirect("home")
     if not settings.SIGNUP_ENABLED:
-        raise PermissionDenied("La création de comptes est actuellement fermée.")
+        raise PermissionDenied(_("La création de comptes est actuellement fermée."))
     form = SignupForm(request.POST or None)
     if request.method == "POST" and form.is_valid():
         user = form.save()
@@ -50,7 +53,9 @@ def home(request):
         {
             "id": game.id,
             "title": game.title,
-            "month": game.state["month"],
+            "month": game.state["month"]
+            if game.state["status"] == "finished"
+            else closing_moon(game.state),
             "rules": game.state["rules"],
             "finished": game.state["status"] == "finished",
             "reign_months": game.state["config"]["reign_months"],
@@ -69,7 +74,7 @@ def new_game(request):
         try:
             game = services.create_game(request.user, **form.cleaned_data)
         except RuleError as error:
-            form.add_error(None, str(error))
+            form.add_error(None, localize(error.args[0]))
         else:
             return redirect("game", game_id=game.id)
     return render(request, "simulation/new_game.html", {"form": form})
@@ -97,16 +102,26 @@ def metadata(game):
 @require_GET
 def desk(request, game_id):
     game, actor = authorized_game(request, game_id)
-    view = player_view(game.state, actor)
+    view = localize(player_view(game.state, actor))
     tab = request.GET.get("tab", "domain")
-    if tab not in ("domain", "decrees", "letters"):
+    if tab not in ("domain", "decrees", "letters", "city"):
         raise Http404
     city_id = request.GET.get("city")
     selected = next((city for city in view["cities"] if city["id"] == city_id), None)
+    if selected is None and (city_id is not None or tab == "city"):
+        raise Http404
     if selected is None:
         selected = next(iter(view["owned_cities"]), view["cities"][0])
     # Reports are immutable per-recipient records; never infer access from current ownership.
     reports = Report.objects.filter(game=game, recipient=actor)[: 100 if tab == "letters" else 4]
+    action_kind = request.GET.get("action")
+    action = next((item for item in view["work_actions"] if item["kind"] == action_kind), None)
+    if action_kind == "expedition":
+        action = {"kind": action_kind, "label": _("Dicter l’ordre d’une expédition")}
+    elif action_kind == "equipment" and view["equipment_available"]:
+        action = {"kind": action_kind, "label": _("Organiser l’armement")}
+    elif action_kind and action is None:
+        raise Http404
     return render(
         request,
         "simulation/chronicle.html",
@@ -115,7 +130,14 @@ def desk(request, game_id):
             "view": view,
             "tab": tab,
             "selected": selected,
-            "reports": reports,
+            "reports": [report_view(report) for report in reports],
+            "action": action,
+            "city_requested": city_id is not None,
+            "neighbors": [
+                link["second"] if link["first"]["id"] == selected["id"] else link["first"]
+                for link in view["links"]
+                if selected["id"] in (link["first"]["id"], link["second"]["id"])
+            ],
             "attack_origins": {
                 target["id"]: target["origins"] for target in view["attack_targets"]
             },
@@ -127,45 +149,67 @@ def desk(request, game_id):
 @require_GET
 def state_view(request, game_id):
     game, actor = authorized_game(request, game_id)
-    return JsonResponse({"game": metadata(game), "view": player_view(game.state, actor)})
+    return JsonResponse({"game": metadata(game), "view": localize(player_view(game.state, actor))})
 
 
 @login_required
-@require_POST
+@require_http_methods(["GET", "POST"])
 def preview_order(request, game_id):
-    authorized_game(request, game_id)
-    kind = request.POST.get("kind", "")
-    spec = {"kind": kind}
-    if kind in ("raid", "capture"):
+    game, actor = authorized_game(request, game_id)
+    if request.method == "GET":
+        payload = request.GET.get("payload", "")
         try:
-            contributions = {
-                key.removeprefix("men_"): int(value or 0)
-                for key, value in request.POST.items()
-                if key.startswith("men_")
-            }
-        except ValueError:
-            messages.error(request, "Les effectifs doivent être des nombres entiers.")
+            data = signing.loads(payload, salt="yaara-order", max_age=3600)
+            if (
+                data["game_id"] != str(game_id)
+                or data["user_id"] != request.user.pk
+                or data["actor"] != actor
+                or data["revision"] != game.revision
+                or data["month"] != game.state["month"]
+            ):
+                raise signing.BadSignature
+            services.check_window(game, data["month"])
+            spec = data["spec"]
+            order = engine.prepare_order(game.state, actor, spec, data["request_id"])
+        except (signing.BadSignature, KeyError, ValueError):
+            messages.error(
+                request, _("Ce devis n’est plus valable. Préparez à nouveau votre décret.")
+            )
             return redirect(f"/games/{game_id}/?tab=decrees")
-        spec.update({"target": request.POST.get("target"), "contributions": contributions})
-    elif kind != "equipment":
-        spec["cities"] = request.POST.getlist("cities")
-    try:
-        game, actor, order, request_id = services.quote(request.user, game_id, spec)
-    except RuleError as error:
-        messages.error(request, str(error))
-        return redirect(f"/games/{game_id}/?tab=decrees")
-    payload = signing.dumps(
-        {
-            "game_id": str(game.id),
-            "actor": actor,
-            "user_id": request.user.pk,
-            "request_id": str(request_id),
-            "month": game.state["month"],
-            "revision": game.revision,
-            "spec": spec,
-        },
-        salt="yaara-order",
-    )
+    else:
+        kind = request.POST.get("kind", "")
+        spec = {"kind": kind}
+        if kind in ("raid", "capture"):
+            try:
+                contributions = {
+                    key.removeprefix("men_"): int(value or 0)
+                    for key, value in request.POST.items()
+                    if key.startswith("men_")
+                }
+            except ValueError:
+                messages.error(request, _("Les effectifs doivent être des nombres entiers."))
+                return redirect(f"/games/{game_id}/?tab=decrees")
+            spec.update({"target": request.POST.get("target"), "contributions": contributions})
+        elif kind != "equipment":
+            spec["cities"] = request.POST.getlist("cities")
+        try:
+            game, actor, order, request_id = services.quote(request.user, game_id, spec)
+        except RuleError as error:
+            messages.error(request, localize(error.args[0]))
+            return redirect(f"/games/{game_id}/?tab=decrees")
+        payload = signing.dumps(
+            {
+                "game_id": str(game.id),
+                "actor": actor,
+                "user_id": request.user.pk,
+                "request_id": str(request_id),
+                "month": game.state["month"],
+                "revision": game.revision,
+                "spec": spec,
+            },
+            salt="yaara-order",
+        )
+    kind = spec["kind"]
     city_names = {city_id: city["name"] for city_id, city in game.state["cities"].items()}
     funding = [
         {"name": city_names[city_id], "amount": amount}
@@ -181,6 +225,7 @@ def preview_order(request, game_id):
             "name": city_names[task["city"]],
             "level": task["level"],
             "description": work_phrase(task["kind"], task["level"]),
+            "effect": work_effect(task["kind"], task["level"]),
             "finish_month": order["execute_month"] + task["duration"],
         }
         for task in order["tasks"]
@@ -190,12 +235,14 @@ def preview_order(request, game_id):
         "simulation/decree_letter.html",
         {
             "game": metadata(game),
-            "label": ACTION_LABELS[kind],
+            "label": localize(ACTION_LABELS[kind]),
+            "view": localize(player_view(game.state, actor)),
+            "tab": "decrees",
             "order": order,
             "target": city_names.get(order.get("target")),
             "funding": funding,
             "contributions": contributions,
-            "tasks": tasks,
+            "tasks": localize(tasks),
             "payload": payload,
             "combat_month": order["execute_month"] + 1,
             "return_month": order["execute_month"] + 2,
@@ -223,14 +270,16 @@ def confirm_order(request, game_id):
         )
         messages.success(
             request,
-            "J’ai reçu votre sceau. Les moyens promis attendent l’entrée en vigueur de votre décret.",
+            _(
+                "J’ai reçu votre sceau. Les moyens promis attendent l’entrée en vigueur de votre décret."
+            ),
         )
     except (signing.BadSignature, KeyError, ValueError) as error:
         messages.error(
             request,
-            str(error)
+            localize(error.args[0])
             if isinstance(error, RuleError)
-            else "Ce devis n’est plus valable. Préparez à nouveau votre décret.",
+            else _("Ce devis n’est plus valable. Préparez à nouveau votre décret."),
         )
     return redirect(f"/games/{game_id}/?tab=decrees")
 
@@ -243,10 +292,12 @@ def cancel_order(request, game_id, order_id):
         services.cancel(request.user, game_id, str(order_id))
         messages.success(
             request,
-            "J’ai retiré ce décret de nos engagements. Les moyens qu’il promettait sont de nouveau libres.",
+            _(
+                "J’ai retiré ce décret de nos engagements. Les moyens qu’il promettait sont de nouveau libres."
+            ),
         )
     except RuleError as error:
-        messages.error(request, str(error))
+        messages.error(request, localize(error.args[0]))
     return redirect(f"/games/{game_id}/?tab=decrees")
 
 
@@ -256,20 +307,25 @@ def advance(request, game_id):
     authorized_game(request, game_id)
     try:
         target = int(request.POST.get("month", "0"))
-        _, executed = services.tick(game_id, target, request.user)
+        execution, executed = services.tick(game_id, target, request.user)
         if executed:
             messages.success(
                 request,
-                f"Le mois {target} est désormais consigné dans ces chroniques. Voici les nouvelles qui nous sont parvenues.",
+                _(
+                    "La lune {moon} est désormais consignée dans ces chroniques. Voici les nouvelles qui nous sont parvenues."
+                ).format(moon=target),
             )
         else:
             messages.info(
                 request,
-                "Ce mois figure déjà dans nos chroniques. Je n’en ai pas répété les événements.",
+                _("Ce mois figure déjà dans nos chroniques. Je n’en ai pas répété les événements."),
             )
     except (ValueError, RuleError) as error:
         messages.error(
-            request, str(error) if isinstance(error, RuleError) else "Le mois demandé est invalide."
+            request,
+            localize(error.args[0])
+            if isinstance(error, RuleError)
+            else _("Le mois demandé est invalide."),
         )
     return redirect("game", game_id=game_id)
 
@@ -281,7 +337,7 @@ def pause(request, game_id):
     try:
         services.toggle_pause(request.user, game_id)
     except RuleError as error:
-        messages.error(request, str(error))
+        messages.error(request, localize(error.args[0]))
     return redirect("game", game_id=game_id)
 
 

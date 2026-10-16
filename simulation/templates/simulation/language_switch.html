@@ -1,0 +1,11 @@
+{% load i18n %}
+{% get_current_language as current_language %}
+<form method="post" action="{% url 'set_language' %}" class="language-switch">
+    {% csrf_token %}<input type="hidden" name="next" value="{% if payload %}{% url 'preview' game.id %}?payload={{ payload|urlencode }}{% else %}{{ request.get_full_path }}{% endif %}">
+    <label for="language">{% translate "Langue" %}</label>
+    <select name="language" id="language">
+        <option value="fr" {% if current_language == 'fr' %}selected{% endif %}>Français</option>
+        <option value="en" {% if current_language == 'en' %}selected{% endif %}>English</option>
+    </select>
+    <button type="submit">{% translate "Choisir" %}</button>
+</form>

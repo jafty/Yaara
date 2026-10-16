@@ -1,17 +1,12 @@
 {% extends 'simulation/base.html' %}
-{% block title %}Devenir Prétendant · Yaara{% endblock %}
+{% load i18n %}
+{% block title %}{% translate "Devenir Prétendant · Yaara" %}{% endblock %}
 {% block content %}
     <div class="auth-layout">
         <div class="auth-intro">
-            <span class="eyebrow">UNE HISTOIRE COMMENCE</span>
-            <h1>
-                Faites vivre
-                <br>
-                votre maison.
-            </h1>
-            <p>
-                Votre compte conserve vos parties et vos chroniques. Commencez un règne à votre rythme, face à deux maisons rivales.
-            </p>
+            <span class="eyebrow">{% translate "UNE HISTOIRE COMMENCE" %}</span>
+            <h1>{% translate "Faites vivre" %}<br>{% translate "votre maison." %}</h1>
+            <p>{% translate "Votre compte conserve vos parties et vos chroniques. Commencez un règne à votre rythme, face à deux maisons rivales." %}</p>
             <div class="auth-art" aria-hidden="true">
                 <div class="sun"></div>
                 <div class="dune dune-one"></div>
@@ -20,16 +15,14 @@
             </div>
         </div>
         <section class="panel auth-panel">
-            <span class="eyebrow">VOTRE PREMIER SCEAU</span>
-            <h2>Devenir Prétendant</h2>
+            <span class="eyebrow">{% translate "VOTRE PREMIER SCEAU" %}</span>
+            <h2>{% translate "Devenir Prétendant" %}</h2>
             <form method="post" class="stack-form">
                 {% csrf_token %}{{ form.as_p }}
-                <button class="button primary" type="submit">
-                    Créer mon compte <span aria-hidden="true">→</span>
+                <button class="button primary" type="submit">{% translate "Créer mon compte" %}<span aria-hidden="true">→</span>
                 </button>
             </form>
-            <p class="form-foot">
-                Déjà Prétendant ? <a href="{% url 'login' %}">Entrer dans Yaara</a>
+            <p class="form-foot">{% translate "Déjà Prétendant ?" %}<a href="{% url 'login' %}">{% translate "Entrer dans Yaara" %}</a>
             </p>
         </section>
     </div>

@@ -1,6 +1,6 @@
 # Test-first development policy
 
-The owner's policy is a standing requirement. Its basis is the design dossier, §26, plus the explicit requirement for one logical test per use-case variation. Conversation and test code are English; player-facing copy is French.
+The owner's policy is a standing requirement. Its basis is the design dossier, §26, plus the explicit requirement for one logical test per use-case variation. Conversation and test code are English; player-facing copy supports French and English.
 
 ## Working sequence
 
@@ -46,6 +46,7 @@ With `DATABASE_URL` pointing to a disposable PostgreSQL database whose user can 
 ```bash
 uv run ruff check .
 uv run ruff format --check .
+uv run python scripts/compile_translations.py
 uv run python manage.py makemigrations --check --dry-run
 uv run pytest -q --require-postgresql --fail-on-skip --check-case-catalog --case-report=artifacts/test-cases.json
 # With the application running against the development database:
@@ -61,3 +62,11 @@ During iteration, `uv run pytest -q -m logic` is the fast pure-core loop. It doe
 Grouped allocation, siege, raid, target lifecycle, construction timing, authorization, HTTP and calendar checks have independent cases. Additional prescribed-draw military cases cover departure/combat/return accounting, protection boundaries, local stock movements, capture effects and wall repair. Longer invariant/reproducibility journeys are retained separately.
 
 The zero-defender reporting regression was observed failing before its fix: an unopposed encounter claimed to reveal equipment. The corrected report says no defenders were encountered and discloses no equipment. This changes narration only, not combat balance.
+
+## Bilingual folio and Moon regression coverage
+
+Existing exact-date cases explicitly select calendar version one, preserving their original expectations for existing saves. New independent cases cover Moon 1, departure/combat/return dates, twelve-closure harvests, final dates, retries, scheduled closure/pause boundaries, city privacy, translated recipient reports and reopening signed drafts. The two-year calendar equivalence journey compares complete city, order, work, mission, result, report and combat-audit outputs against the established simulation.
+
+The browser smoke runs the full journey in both French and English, changes the language of the same stored letters, and checks 390px and 320px layouts. It uses real forms, CSRF, JavaScript cost estimates and persisted game state. Compile both catalogs before running it.
+
+The realm-wide batch regression starts directly on Decrees, selects two cities, checks the single read-only preview and seals one atomic order. Busy-team exclusion has its own HTTP case. Both browser languages exercise select-all, clear, live batch totals, one seal/cancellation for two cities, and optional city-folio preselection.

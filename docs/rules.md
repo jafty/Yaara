@@ -22,11 +22,13 @@ V0 offers first-level canals/walls, no growth, no siege and no cancellation. V1 
 ## French quick start
 
 1. Créez un compte, puis un règne V1 avec calendrier manuel.
-2. Dans **Domaine**, sélectionnez vos cités pour lire leurs réserves et leurs effectifs.
-3. Dans **Décrets**, choisissez un ouvrage ou une expédition. Le récapitulatif détaille le prix, les contributions et les échéances.
-4. **Sceller ce décret** réserve les moyens. Le départ et le paiement ont lieu au mois suivant.
-5. **Passer au mois suivant** avance le monde. Un raid part au mois 1, combat au mois 2 et revient au mois 3.
+2. Dans **Domaine**, ouvrez directement le feuillet d’une cité pour lire ses réserves et ses effectifs.
+3. Dans **Décrets**, choisissez un ouvrage et cochez toutes les cités concernées, sans ouvrir leurs feuillets. Un seul récapitulatif et un seul sceau suffisent pour ce lot. Les expéditions réunissent aussi plusieurs origines dans un même ordre.
+4. **Sceller ce décret** réserve les moyens. Le départ et le paiement ont lieu à la clôture de la lune ouverte.
+5. **Clore la lune 1** avance le monde. Un raid scellé à la lune 1 part à sa clôture, combat à la lune 2 et revient à la lune 3.
 6. Consultez **Correspondance** après les événements. Le butin n’est utilisable qu’au retour.
-7. Le premier prélèvement est versé au mois 12. Épargnez, irriguez ou préparez vos premières conquêtes.
+7. Le premier prélèvement est versé à la clôture de la lune 12. Épargnez, irriguez ou préparez vos premières conquêtes.
 
 Les rivaux actifs utilisent leurs propres ressources et les mêmes confirmations. Les rivaux passifs permettent d’explorer les mécanismes sans recevoir de nouvelles attaques. Une capture est volontairement impossible avec le budget initial ; un raid victorieux peut perdre de l’argent.
+
+New reigns begin at the open Moon 1. Existing games keep their original simulation dates; the compatibility contract is recorded in [decisions.md](decisions.md). The footer switches between French and English.
