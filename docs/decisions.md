@@ -14,3 +14,10 @@ The supplied French design dossier is retained verbatim as `design-source.fr.md`
 - Siege subsistence counts residents physically present after temporary relief departures. Relief returning after all battles joins the current ruler of its origin, as do expedition survivors and their loot.
 - Cancelled/retried commands retain their request receipts. A new attempt requires a new request ID; duplicate HTTP delivery never re-reserves released resources.
 - No rule rebalancing is justified before playtesting. The long first-harvest wait is preserved; manual mode makes it practical to explore.
+
+## 2026-10-16 — A plain manuscript for play
+
+- The in-game experience is a quiet, white manuscript with a single reading column, serif typography and French scribe narration. City accounts, letters and decree choices unfold as accessible native disclosures. No images, parchment texture, illustrated map, dashboard cards or application sidebar are used in play.
+- Pre-game account and reign-selection pages retain their existing layout. A separate manuscript template and stylesheet keep the two experiences independent.
+- Decree previews read as dictated instructions while preserving exact prices, funding shares, troop origins, departure/combat/return dates and cancellation consequences. The month closes only through the existing explicit action.
+- New reports use the scribe's voice and French number grouping. Existing stored reports remain intact; presentation changes do not rewrite archives or reveal new opponent information. No simulation parameters or outcomes change.

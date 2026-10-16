@@ -1,0 +1,213 @@
+<p class="salutation">Monseigneur,</p>
+{% if not view.finished and not view.eliminated and not game.paused %}
+    <p>
+        Je suis prêt à écrire ce que vous déciderez. Nos greniers nous permettent d’engager <strong>{{ view.available_stock }} Mesures</strong>, et <strong>{{ view.available_fideles }} Fidèles</strong> sont encore libres de recevoir vos ordres.
+    </p>
+    <p>
+        Dictez-moi votre intention ; je vous en relirai les termes avant que vous y apposiez votre sceau. Jusque-là, aucun homme ni aucune Mesure ne sera réservé.
+    </p>
+    <section class="chapter-section" aria-labelledby="works-heading">
+        <h2 id="works-heading">De la terre et des ouvrages</h2>
+        <p>
+            Nous pouvons ouvrir des canaux, préparer les greniers ou affermir nos enceintes. Les équipes d’une cité ne conduisent qu’un chantier à la fois ; plusieurs cités peuvent recevoir le même décret.
+        </p>
+        {% for action in view.work_actions %}
+            <details class="decree-choice">
+                <summary>{{ action.label }}</summary>
+                <div class="unfolded">
+                    {% if action.kind == 'irrigation' %}
+                        <p>
+                            Faites conduire l’eau vers les terres cultivées. Une fois les travaux achevés, chaque habitant présent apportera davantage au prélèvement.
+                        </p>
+                    {% elif action.kind == 'storage' %}
+                        <p>
+                            Faites place aux récoltes à venir. Un grenier plein ne pourra pas garder ce qui dépasse sa capacité, même si une autre cité possède encore de la place.
+                        </p>
+                    {% elif action.kind == 'walls' %}
+                        <p>
+                            Faites élever les défenses du centre. Elles protégeront les hommes restés sur place, sans abriter les villages d’un raid ni renforcer les secours venus du dehors.
+                        </p>
+                    {% else %}
+                        <p>
+                            Faites reprendre les parties endommagées de l’enceinte. Le chantier rendra à l’ouvrage la protection qu’il a perdue.
+                        </p>
+                    {% endif %}
+                    <form method="post" action="{% url 'preview' game.id %}" class="work-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="kind" value="{{ action.kind }}">
+                        <fieldset>
+                            <legend>Que ces travaux soient entrepris…</legend>
+                            {% for city in action.cities %}
+                                <label class="city-choice {% if city.busy %}disabled{% endif %}">
+                                    <input type="checkbox"
+                                           name="cities"
+                                           value="{{ city.id }}"
+                                           {% if city.busy %}disabled{% endif %}>
+                                    <span>à <strong>{{ city.name }}</strong>
+                                        {% if city.busy %}
+                                            — les équipes sont déjà engagées
+                                        {% else %}
+                                            , pour {{ city.cost }} Mesures et {{ city.duration }} mois de travaux
+                                        {% endif %}
+                                    .</span>
+                                </label>
+                            {% empty %}
+                                <p>Nous ne pouvons entreprendre cet ouvrage dans aucune de nos cités pour le moment.</p>
+                            {% endfor %}
+                        </fieldset>
+                        <button type="submit" {% if not action.cities %}disabled{% endif %}>Faire relire ce décret</button>
+                    </form>
+                </div>
+            </details>
+        {% endfor %}
+    </section>
+    <section class="chapter-section" aria-labelledby="campaign-heading">
+        <h2 id="campaign-heading">Des hommes que l’on envoie</h2>
+        <p>
+            Vous pouvez faire piller les villages d’une cité voisine ou tenter de la soumettre. Nos communautés reliées à cette frontière pourront réunir leurs hommes sous un même commandement.
+        </p>
+        <details class="decree-choice" id="expedition">
+            <summary>Dicter l’ordre d’une expédition</summary>
+            <div class="unfolded">
+                <form method="post"
+                      action="{% url 'preview' game.id %}"
+                      class="expedition-form">
+                    {% csrf_token %}
+                    <p>
+                        <label for="mission-kind">Que nos hommes partent pour…</label>
+                        <select name="kind" id="mission-kind">
+                            <option value="raid">Piller les villages — au moins 20 Fidèles</option>
+                            <option value="capture">Capturer la cité — au moins 80 Fidèles</option>
+                        </select>
+                    </p>
+                    <p>
+                        <label for="mission-target">…porter cet ordre vers…</label>
+                        <select name="target" id="mission-target" required>
+                            <option value="">Désigner une cité à notre portée</option>
+                            {% for target in view.attack_targets %}
+                                <option value="{{ target.id }}" {% if target.engaged %}disabled{% endif %}>
+                                    {{ target.name }} —
+                                    {% if target.engaged %}
+                                        une expédition y est déjà engagée
+                                    {% else %}
+                                        {{ target.owner_name }}
+                                    {% endif %}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </p>
+                    <fieldset class="contributions">
+                        <legend>Que chacune de nos cités fournisse les hommes suivants :</legend>
+                        {% for city in view.owned_cities %}
+                            <label class="contribution" data-origin="{{ city.id }}">
+                                <span>De <strong>{{ city.name }}</strong>,<small>{{ city.available_fideles }} Fidèles libres de partir.<span class="origin-note"></span></small></span><span class="manpower-input">
+                                    <input type="number"
+                                           name="men_{{ city.id }}"
+                                           value="0"
+                                           min="0"
+                                           max="{{ city.available_fideles }}"
+                                           inputmode="numeric"
+                                           aria-label="Fidèles de {{ city.name }}">
+                                    <span>Fidèles.</span></span>
+                                </label>
+                            {% endfor %}
+                        </fieldset>
+                        <p class="expedition-summary" aria-live="polite">
+                            Ainsi seront réunis <strong id="army-total">0</strong> Fidèles. Il faudra prévoir <strong id="army-cost">20 000</strong> Mesures pour cette campagne.
+                        </p>
+                        <p class="aside-text" id="mission-help">
+                            Nos hommes prendront les réserves des villages s’ils parviennent à repousser leurs défenseurs. Le butin ne sera à notre disposition qu’au retour.
+                        </p>
+                        <button type="submit">Faire relire l’ordre d’expédition</button>
+                    </form>
+                </div>
+            </details>
+        </section>
+        {% if view.rules == 'V1' %}
+            <section class="chapter-section" aria-labelledby="forge-heading">
+                <h2 id="forge-heading">Du travail de la forge</h2>
+                <p>
+                    Voici ce que les maîtres de la forge me disent de nos hommes : <em>{{ view.equipment|lower }}</em>. Leur organisation équipera aussi les populations nouvellement rattachées à votre maison.
+                </p>
+                {% for work in view.equipment_work %}
+                    <p>
+                        Le projet que vous leur avez confié doit s’achever au mois <strong>{{ work.finish_month }}</strong>.
+                    </p>
+                {% endfor %}
+                {% if view.equipment_available %}
+                    <details class="decree-choice">
+                        <summary>Entendre la proposition des maîtres de la forge</summary>
+                        <div class="unfolded">
+                            <p>
+                                Leur demande dépendra de la population actuelle de nos terres. J’en fixerai le prix dans le décret que je vous présenterai ; les naissances à venir ne le renchériront pas.
+                            </p>
+                            <form method="post" action="{% url 'preview' game.id %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="kind" value="equipment">
+                                <button type="submit">Faire préparer le projet d’armement</button>
+                            </form>
+                        </div>
+                    </details>
+                {% endif %}
+            </section>
+        {% endif %}
+        <p class="aside-text">
+            {% if view.cancellable %}
+                Vous pourrez me faire retirer un décret avant la clôture. Il faudra le rédiger à nouveau pour en changer les termes, et vous perdrez alors sa priorité sur la cible.
+            {% else %}
+                Sous ces règles, le sceau ne se reprend pas : une confirmation est définitive. Je vous prie de relire vos intentions avant de vous engager.
+            {% endif %}
+            Après le départ, aucun rappel ni remboursement des frais ne sera possible.
+        </p>
+    {% else %}
+        <p>
+            {% if game.paused %}
+                Je garderai l’encre en réserve jusqu’à ce que vous repreniez le cours des chroniques.
+            {% else %}
+                Je ne peux plus recevoir de nouveaux ordres pour ce règne. Les décrets passés demeurent dans nos registres.
+            {% endif %}
+        </p>
+    {% endif %}
+    <section class="chapter-section orders-register"
+             aria-labelledby="orders-heading">
+        <h2 id="orders-heading">Ce que porte déjà votre sceau</h2>
+        {% for order in view.orders %}
+            <details class="order-entry"
+                     {% if order.status == 'confirmed' %}open{% endif %}>
+                <summary>
+                    <span>{{ order.label }} — {{ order.destination }}</span><span class="order-status">{{ order.status_label }}</span>
+                </summary>
+                <div class="unfolded">
+                    <p>
+                        Vous avez engagé <strong>{{ order.cost }} Mesures</strong>
+                        {% if order.men %}et <strong>{{ order.men }} Fidèles</strong>{% endif %}
+                        pour cet ordre. Le départ a été fixé au mois <strong>{{ order.execute_month }}</strong>.
+                    </p>
+                    <p>
+                        {% if order.status == 'confirmed' %}
+                            Le décret est confirmé. Ses moyens sont promis, mais ne sont pas encore dépensés.
+                        {% elif order.status == 'cancelled' %}
+                            Vous avez retiré ce décret. Les hommes, les fonds et les emplacements qu’il engageait sont redevenus libres.
+                        {% elif order.status == 'invalidated' %}
+                            Ce décret n’a pu entrer en vigueur. Son motif est consigné dans la correspondance et ses réservations sont libérées.
+                        {% elif order.status == 'returning' %}
+                            Le combat est passé. Les survivants suivent le chemin de leurs origines.
+                        {% elif order.status == 'completed' %}
+                            L’ordre a suivi son cours. Ses nouvelles figurent dans votre correspondance.
+                        {% else %}
+                            Cet ordre a pris son cours. Les nouvelles vous parviendront à leur échéance.
+                        {% endif %}
+                    </p>
+                    {% if order.can_cancel and not game.paused %}
+                        <form method="post" action="{% url 'cancel' game.id order.id %}">
+                            {% csrf_token %}
+                            <button type="submit">Retirer ce décret</button>
+                        </form>
+                    {% endif %}
+                </div>
+            </details>
+        {% empty %}
+            <p>Vous n’avez encore scellé aucun décret. Le premier mot vous appartient.</p>
+        {% endfor %}
+    </section>
+    {{ attack_origins|json_script:'attack-origins' }}

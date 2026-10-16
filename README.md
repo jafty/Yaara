@@ -28,7 +28,7 @@ Django does not load `.env` automatically. It is ignored by Git. In the current 
 - V0/V1, local stocks, annual harvest, growth and Fidèle renewal.
 - Batched construction, equipment, raids, captures, relief, siege and returns by origin.
 - Decree previews, atomic confirmation, target reservation and V1 cancellation.
-- Dated private reports, public ownership/ranking, and French desktop/mobile UI.
+- Dated private reports and a plain French manuscript for play: scribe narration, unfolding city accounts, letters and dictated decrees. Account and reign-selection pages retain their conventional layout.
 - Manual months or a five/ten-minute worker; persistent games and fixed results.
 
 The default reign lasts ten years. The first harvest arrives at month 12; initial captures are deliberately unaffordable. The game includes a rules summary.
