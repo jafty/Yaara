@@ -1,27 +1,63 @@
-# Established pseudo-TDD policy
+# Test-first development policy
 
-The project owner's test-first policy is a standing requirement, not a new optional recommendation. The design dossier's section 26 explains native stubs, direct pure-function inputs, integration tests and invariants. The owner's clarification explicitly requires one logical test per use-case variation.
+The owner's policy is a standing requirement. Its basis is the design dossier, §26, plus the explicit requirement for one logical test per use-case variation. Conversation and test code are English; player-facing copy is French.
 
-## Logical use cases
+## Working sequence
 
-1. Identify the use case and name each specified variation, including relevant rejection and boundary cases.
-2. Write an independent logical test for each variation before implementing or changing its behavior. Verify that the test fails for the intended missing or incorrect behavior, rather than an unrelated setup error.
-3. Implement the smallest coherent behavior that satisfies those cases, then refactor while keeping them green.
-4. Keep the variation-to-test relationship explicit in names or parameter IDs. Each pytest parameter row is an independent collected case. Several assertions may establish one outcome and its invariants; they do not require several artificial tests.
-5. Keep broader journey and integration checks as additional coverage. They do not replace individually identifiable logical variation tests.
+1. Read the relevant rule. List its normal, rejection and boundary variations before editing behavior. Give each variation a stable case ID and a concrete expected outcome derived from the dossier or an explicit product decision, not from the implementation's output.
+2. Write one independently collected logical test per variation. Parameter rows are separate cases with readable IDs. Several assertions may establish one outcome and its invariants; do not split one outcome into a test per assertion.
+3. For new or corrected behavior, run the case first and observe the intended failure. Implement the smallest coherent solution and rerun it. Writing a good implementation on the first attempt is welcome; do not add artificial iterations.
+4. Refactor only for a concrete benefit: clearer rules, less duplication, easier isolation, or an observed defect. AI does not make a test/code pair automatically correct. Both can share a mistaken assumption; compare expected results with the source and retain cross-cutting invariants.
+5. Run affected checks during development, then all test layers before every push. Add the new IDs to the reviewed case catalog and inspect its diff. Summarize behavior changes and actual verification.
 
-Use fixed inputs directly for pure functions. When a use case depends on an external collaborator, use a small native Python stub returning the specified data. A stub does not implement an in-memory database or invent the collaborator's production behavior. Reuse fixed fixtures/stubs across tests where useful. Do not introduce a separate stub framework merely to satisfy this policy.
+Existing tests can be reorganized without manufacturing a red phase or breaking working code. The initial implementation's historical test-first ordering cannot be established retroactively. New regressions must follow the sequence above.
 
-Use real PostgreSQL connections to establish locking, rollback, concurrent confirmations and database constraints. Failure injection in integration tests may substitute a failing boundary; it does not prove a database property on its own.
+## Direct inputs and native stubs
+
+Use direct values or fixed state builders for pure rules. `tests/stubs.py` supplies small native Python collaborators:
+
+- `FixedRandom`: a prescribed raid defense percentage and identity permutation. It supplies a draw, without recreating random generation or combat logic.
+- `FixedClock`: a prescribed instant for scheduled application cases.
+- `FailingBoundary`: a prescribed exception at a persistence/reporting boundary to exercise transaction rollback.
+
+Use pytest's scoped `monkeypatch` to install these collaborators. Do not mock the rule being tested, derive expected values by calling production helpers, or build a second in-memory database. Seeded full-reign journeys additionally exercise the actual production random generator.
+
+Use real PostgreSQL connections and transactions for locking, concurrent confirmations, constraints and rollback. Failure injection substitutes only the failing boundary; the database and rollback are real. Pure logic tests require neither a running database nor wall-clock waits.
+
+## Traceability
+
+Each collected test declares exactly one `@case("stable-id", "source requirement")` and one layer: `logic`, `integration`, or `journey`. Parameter IDs extend the stable ID. Broad journeys remain additional coverage and do not replace the individual rule variations in the logic suite.
+
+`tests/case_ids.txt` is the reviewed list of collected variation IDs across all layers. Collection rejects missing metadata or duplicate IDs. Full verification also compares the collected set with the catalog, catching accidental removal or unreviewed additions. The JSON report includes each ID, source requirement, layer, node ID, phase outcomes and final outcome. Unrun and skipped cases remain distinguishable from passes.
+
+The catalog enforces the declared mapping; it cannot discover an unspecified variation or prove exhaustive correctness. Review the variation list against the dossier whenever rules change. Do not weaken an expectation merely to make a failing test green.
+
+To refresh the catalog after reviewing new or intentionally changed variations:
+
+```bash
+uv run pytest --collect-only -q --case-report=/tmp/yaara-cases.json
+uv run python -c 'import json; from pathlib import Path; rows=json.loads(Path("/tmp/yaara-cases.json").read_text()); Path("tests/case_ids.txt").write_text("\n".join(sorted(row["id"] for row in rows))+"\n")'
+```
 
 ## Every push
 
-Run the full existing pytest suite against PostgreSQL and the browser smoke, with the application running against the intended development database. CI runs these checks on both pushes and PRs, currently against PostgreSQL 17 and 18. Preserve all layers; do not silently reduce frequency or treat a skipped database check as passed. Record what actually ran and which database versions were verified locally.
+With `DATABASE_URL` pointing to a disposable PostgreSQL database whose user can create test databases:
 
-Formatting or presentation-only changes need no invented game-logic tests, but existing regression checks still run at the push checkpoint.
+```bash
+uv run ruff check .
+uv run ruff format --check .
+uv run python manage.py makemigrations --check --dry-run
+uv run pytest -q --require-postgresql --fail-on-skip --check-case-catalog --case-report=artifacts/test-cases.json
+# With the application running against the development database:
+uv run python scripts/browser_smoke.py
+```
 
-## Current suite and traceability
+CI runs all layers on pushes and PRs against PostgreSQL 17 and 18, and uploads the case report even on failure. Required runs reject SQLite, skipped cases and expected failures. Never report a skipped PostgreSQL check as passed. Record the database versions actually verified locally; CI results are separate evidence.
 
-The initial suite contains parameterized boundary tests and broader tests that group multiple logical variations, such as allocation examples, siege outcomes and confirmation/cancellation/idempotency. Passing that suite establishes the checks it contains; it does not establish strict one-to-one compliance or prove that all tests were historically written first.
+During iteration, `uv run pytest -q -m logic` is the fast pure-core loop. It does not replace the full push checkpoint. Presentation-only changes need no invented game-logic tests, but all existing layers still run before pushing.
 
-Existing grouped logical cases need an explicit traceability/refactoring pass before the whole suite can be described as strictly one-to-one. Retain their assertions and integration coverage during that pass. Do not claim that a dedicated native-stub system has already been implemented: the current pure core primarily receives explicit inputs and deterministic fixture states.
+## Evidence from this compliance pass
+
+Grouped allocation, siege, raid, target lifecycle, construction timing, authorization, HTTP and calendar checks have independent cases. Additional prescribed-draw military cases cover departure/combat/return accounting, protection boundaries, local stock movements, capture effects and wall repair. Longer invariant/reproducibility journeys are retained separately.
+
+The zero-defender reporting regression was observed failing before its fix: an unopposed encounter claimed to reveal equipment. The corrected report says no defenders were encountered and discloses no equipment. This changes narration only, not combat balance.

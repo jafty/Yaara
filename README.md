@@ -39,11 +39,12 @@ The default reign lasts ten years. The first harvest arrives at month 12; initia
 - [Original design dossier](docs/design-source.fr.md)
 - [Implemented rules and quick start](docs/rules.md)
 - [Architecture and working method](docs/architecture.md)
+- [Test-first policy, native stubs and case catalog](docs/testing.md)
 - [Prototype decisions and limitations](docs/decisions.md)
 - [Agent instructions](AGENTS.md)
 
 ```sh
-uv run pytest
+uv run pytest --require-postgresql --fail-on-skip --check-case-catalog
 uv run ruff check .
 uv run python manage.py check
 ```

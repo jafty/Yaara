@@ -542,6 +542,8 @@ def observation(enemy_count, own_survivors, equipment):
         return "Aucun survivant ne peut décrire les forces adverses."
     if own_survivors < 10:
         return "Les rares survivants ne livrent que des observations incertaines."
+    if enemy_count == 0:
+        return "Nos survivants n’ont rencontré aucun défenseur."
     lower = enemy_count // 20 * 20
     return f"Nos survivants disent avoir rencontré entre {lower} et {lower + 19} hommes, avec un {EQUIPMENT_LABELS[equipment].lower()}. Je rapporte ce qu’ils ont vu à la date de cette lettre ; leur récit ne révèle pas les forces de tout le domaine adverse."
 

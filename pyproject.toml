@@ -18,6 +18,13 @@ dev = ["pytest>=8.4,<10", "pytest-django>=4.11,<5", "ruff>=0.12,<1", "playwright
 DJANGO_SETTINGS_MODULE = "yaara.settings"
 python_files = ["test_*.py"]
 testpaths = ["tests"]
+addopts = "--strict-markers"
+markers = [
+  "case(identifier, requirement): stable use-case variation and its source requirement",
+  "logic: pure rules, engine or projection cases without database access",
+  "integration: application, HTTP and real PostgreSQL boundary cases",
+  "journey: additional multi-stage simulation regression coverage",
+]
 
 [tool.ruff]
 line-length = 100
