@@ -55,6 +55,16 @@ def pytest_collection_modifyitems(config, items):
         ]
         if len(markers) != 1 or len(layers) != 1:
             raise pytest.UsageError(f"{item.nodeid}: require exactly one case and one layer")
+        if layers == ["logic"] and (
+            item.get_closest_marker("django_db")
+            or {
+                "db",
+                "transactional_db",
+                "django_db_reset_sequences",
+                "django_db_serialized_rollback",
+            }.intersection(item.fixturenames)
+        ):
+            raise pytest.UsageError(f"{item.nodeid}: logic cases must not request a database")
         marker = markers[0]
         if (
             len(marker.args) != 2

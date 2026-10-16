@@ -6,7 +6,7 @@ The owner's policy is a standing requirement. Its basis is the design dossier, Â
 
 1. Read the relevant rule. List its normal, rejection and boundary variations before editing behavior. Give each variation a stable case ID and a concrete expected outcome derived from the dossier or an explicit product decision, not from the implementation's output.
 2. Write one independently collected logical test per variation. Parameter rows are separate cases with readable IDs. Several assertions may establish one outcome and its invariants; do not split one outcome into a test per assertion.
-3. For new or corrected behavior, run the case first and observe the intended failure. Implement the smallest coherent solution and rerun it. Writing a good implementation on the first attempt is welcome; do not add artificial iterations.
+3. For new or corrected behavior, define the expected contract before implementing it. A failing regression is useful evidence when correcting a defect. Implement the smallest coherent solution and rerun the cases. Actual red-green baby steps and deliberately naive intermediate implementations are not required; do not manufacture failures when adding coverage for existing correct behavior.
 4. Refactor only for a concrete benefit: clearer rules, less duplication, easier isolation, or an observed defect. AI does not make a test/code pair automatically correct. Both can share a mistaken assumption; compare expected results with the source and retain cross-cutting invariants.
 5. Run affected checks during development, then all test layers before every push. Add the new IDs to the reviewed case catalog and inspect its diff. Summarize behavior changes and actual verification.
 
@@ -31,6 +31,26 @@ Each collected test declares exactly one `@case("stable-id", "source requirement
 `tests/case_ids.txt` is the reviewed list of collected variation IDs across all layers. Collection rejects missing metadata or duplicate IDs. Full verification also compares the collected set with the catalog, catching accidental removal or unreviewed additions. The JSON report includes each ID, source requirement, layer, node ID, phase outcomes and final outcome. Unrun and skipped cases remain distinguishable from passes.
 
 The catalog enforces the declared mapping; it cannot discover an unspecified variation or prove exhaustive correctness. Review the variation list against the dossier whenever rules change. Do not weaken an expectation merely to make a failing test green.
+
+## Complete core behavior coverage
+
+The core comprises `simulation.engine`, `simulation.rules`, `simulation.projections` and `simulation.narration`. All their statements and branches must execute in the **logic suite alone**, with coverage's required total set to 100%. Add any new core module to the coverage source list. Do not omit branches, add coverage exemptions, remove real behavior or invoke unrelated code merely to satisfy the metric. Journey and integration execution cannot fill a gap in the logic gate.
+
+For each behavior, specify normal outcomes, rejection causes, equality boundaries, state transitions and side effects. A rejection test must also establish that authoritative state did not change. A successful command must assert the relevant reservations, debits, movements, reports or result, rather than merely checking that no exception occurred. Each parameter row is one independent variation. Fixed native inputs and collaborators remain the default; do not substitute the production rule under test.
+
+Complete coverage means the current finite set of specified behavior classes, not enumerating every integer, seed or sequence of commands. Statement and branch coverage are necessary checks, not a proof of every possible path or correctness: loops admit unbounded sequences and different inputs can traverse the same branches. Review the cases against the rules and decisions as well as the missing-coverage report. Unspecified behavior must be clarified rather than invented just to add a test.
+
+The logic layer cannot request Django database fixtures or a `django_db` marker; pytest-django also blocks unrequested database access. Database transactions and concurrency remain real PostgreSQL integration requirements.
+
+Run the independent core gate:
+
+```bash
+uv run coverage run -m pytest -q -m logic --fail-on-skip --check-case-catalog --case-report=artifacts/core-cases.json
+uv run coverage report
+uv run coverage json
+```
+
+The JSON case and coverage reports are CI artifacts. `coverage report` fails if even one core statement or branch is uncovered.
 
 To refresh the catalog after reviewing new or intentionally changed variations:
 
@@ -83,6 +103,9 @@ With `DATABASE_URL` pointing to a disposable PostgreSQL database whose user can 
 ```bash
 uv run ruff check .
 uv run ruff format --check .
+uv run coverage run -m pytest -q -m logic --fail-on-skip --check-case-catalog --case-report=artifacts/core-cases.json
+uv run coverage report
+uv run coverage json
 uv run python manage.py makemigrations --check --dry-run
 uv run pytest -q --require-postgresql --fail-on-skip --check-case-catalog --case-report=artifacts/test-cases.json
 # With the application running against the development database:

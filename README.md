@@ -1,6 +1,6 @@
 # Yaara
 
-A playable strategy game of rival oasis kingdoms. Govern three cities, develop production, send raids and capture your rivals' cities. French interface; English Python code. Prepared for Railway with Django 5.2 LTS, Python 3.13 and PostgreSQL 17.
+A playable strategy game of rival oasis kingdoms. Govern three cities, develop production, send raids and capture your rivals' cities. French/English interface; English Python code. Prepared for Railway with Django 5.2 LTS, Python 3.13 and PostgreSQL 17.
 
 ## Play locally
 
@@ -34,6 +34,8 @@ Django does not load `.env` automatically. It is ignored by Git. In the current 
 The default reign lasts ten years. The first harvest arrives at month 12; initial captures are deliberately unaffordable. The game includes a rules summary.
 
 ## Deployment and development
+
+By default, commit and push all changes directly to `yaara-deployment`. No pull request is needed for now; create one only when explicitly requested by the owner.
 
 - [Railway setup, variables, scheduler and backups](docs/railway.md)
 - [Original design dossier](docs/design-source.fr.md)
