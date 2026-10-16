@@ -29,6 +29,11 @@ jobs:
       - run: uv sync --frozen
       - run: uv run ruff check .
       - run: uv run ruff format --check .
+      - name: Database-free core behavior and coverage gate
+        run: |
+          uv run coverage run -m pytest -q -m logic --fail-on-skip --check-case-catalog --case-report=artifacts/core-cases.json
+          uv run coverage report
+          uv run coverage json
       - run: uv run python manage.py makemigrations --check --dry-run
       - run: uv run python manage.py migrate --noinput
       - run: uv run python manage.py collectstatic --noinput
@@ -38,7 +43,10 @@ jobs:
         if: always()
         with:
           name: test-cases-pg${{ matrix.postgres }}
-          path: artifacts/test-cases.json
+          path: |
+            artifacts/test-cases.json
+            artifacts/core-cases.json
+            artifacts/core-coverage.json
           if-no-files-found: warn
       - name: Verify production dependency export
         run: |
