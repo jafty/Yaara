@@ -1,10 +1,10 @@
 # Railway deployment
 
-This repository is prepared for Railway; it has not been published to your account.
+This repository contains the Railway build and deployment configuration. A Git push triggers deployment when the Railway service is connected to `jafty/Yaara`, watches `codex/yaara-deployment`, and has automatic deployments enabled. Repository configuration alone does not prove that a deployment is live.
 
 ## Web and PostgreSQL
 
-1. Push the project to GitHub, then create a Railway service from that repository, using the repository root. `railway.toml` selects the Dockerfile.
+1. Connect the Railway service to `jafty/Yaara`, select the `codex/yaara-deployment` branch and enable automatic deployments, using the repository root. `railway.toml` selects the Dockerfile. If Railway waits for CI, deployment starts only after the checks succeed.
 2. Add PostgreSQL 17. Set the web service's `DATABASE_URL` to its Railway reference, for example `${{Postgres.DATABASE_URL}}` (adapt the service name).
 3. Configure these variables:
 
@@ -20,7 +20,9 @@ This repository is prepared for Railway; it has not been published to your accou
 
 Railway's `RAILWAY_PUBLIC_DOMAIN` is automatically allowed and trusted. The start script honors `PORT`. Generate a secret locally with `python -c 'import secrets; print(secrets.token_urlsafe(64))'` and enter it in Railway variables, not a committed file.
 
-4. Generate the public domain. The build installs pinned, checksum-verified dependencies, compiles French and English catalogs and collects static assets. Apply migration `0002_report_content` before starting the updated web and calendar services; existing game calendars and original archives are preserved. Pre-deploy runs `python manage.py migrate --noinput`; Gunicorn runs as a non-root user. `/health/` checks database connectivity.
+4. Generate the public domain. The build installs pinned, checksum-verified dependencies and compiles French and English catalogs and collects static assets. Pre-deploy runs `python manage.py migrate --noinput`; Gunicorn runs as a non-root user. `/health/` checks database connectivity.
+The compiled translation catalogs are included in Git and the Docker image. The report-content schema migration runs through the existing pre-deploy command; no manual translation compilation is needed on Railway.
+
 5. Open the domain, register, and create a **manual V1** game. This mode requires no scheduler. Accounts, sessions, games and reports persist in PostgreSQL; the web container requires no volume.
 
 Railway terminates HTTPS. Django trusts its forwarded HTTPS header and uses HTTPS redirects and secure cookies. Direct public container hosting requires a trusted TLS reverse proxy.
@@ -63,4 +65,4 @@ Email password reset is not configured. An authorized operator can run `python m
 
 ## Scope
 
-Private, unranked solo games; active/passive opponents; V0/V1; manual/scheduled months; fixed final results. French responsive UI and local assets. No external fonts, LLM APIs, Redis, or frontend build system. Human multiplayer, email, competitive rankings and game-master edits remain future work. Computer opponents are basic; rule tests do not establish game balance.
+Private, unranked solo games; active/passive opponents; V0/V1; manual/scheduled months; fixed final results. French/English responsive UI and local assets. No external fonts, LLM APIs, Redis, or frontend build system. Human multiplayer, email, competitive rankings and game-master edits remain future work. Computer opponents are basic; rule tests do not establish game balance.

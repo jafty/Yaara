@@ -1,18 +1,2324 @@
-# Yaara player interface and immutable report narration.
+#
 msgid ""
-msgstr "Content-Type: text/plain; charset=UTF-8\nLanguage: en\nPlural-Forms: nplurals=2; plural=(n != 1);\n"
+msgstr ""
+"Project-Id-Version: Yaara\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-16 12:44+0000\n"
+"PO-Revision-Date: 2026-10-16 14:00+0200\n"
+"Last-Translator: Yaara contributors\n"
+"Language-Team: English\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-msgid " : tel est désormais l’état de nos hommes. Leur organisation équipera aussi les populations qui rejoindront votre maison."
-msgstr ": this is now our men’s equipment. The same organization will equip populations that join your house."
+#: simulation/engine.py:46
+msgid "La configuration de cette partie est invalide."
+msgstr "This game configuration is invalid."
+
+#: simulation/engine.py:174
+msgid "Le règne est terminé. Son résultat est désormais scellé."
+msgstr "The reign is over. Its result is now sealed."
+
+#: simulation/engine.py:176
+msgid "Ce Prétendant ne peut plus donner d’ordres."
+msgstr "This Pretender can no longer issue orders."
+
+#: simulation/engine.py:182
+msgid "Ce chantier n’existe pas."
+msgstr "This work does not exist."
+
+#: simulation/engine.py:184
+msgid "Cette action appartient aux règles V1."
+msgstr "This action belongs to the V1 rules."
+
+#: simulation/engine.py:187
+msgid "Cette enceinte ne nécessite aucune réparation."
+msgstr "This wall needs no repairs."
+
+#: simulation/engine.py:192
+msgid "Le niveau maximal de cet ouvrage est déjà atteint."
+msgstr "This work is already at its highest level."
+
+#: simulation/engine.py:194
+msgid "Il faut réparer l’enceinte avant de la renforcer."
+msgstr "The wall must be repaired before it can be strengthened."
+
+#: simulation/engine.py:201
+msgid "Les contributions militaires sont invalides."
+msgstr "The military contributions are invalid."
+
+#: simulation/engine.py:212
+msgid "Les effectifs doivent être des nombres entiers positifs."
+msgstr "Troop counts must be positive whole numbers."
+
+#: simulation/engine.py:238
+msgid "Choisissez au moins une cité, une seule fois chacune."
+msgstr "Choose at least one city, each only once."
+
+#: simulation/engine.py:242
+msgid "Cette cité ne relève pas de votre autorité."
+msgstr "This city is not under your authority."
+
+#: simulation/engine.py:244
+msgid "Les équipes de cette cité sont déjà engagées."
+msgstr "This city’s teams are already committed."
+
+#: simulation/engine.py:249
+msgid "Les projets d’armement appartiennent aux règles V1."
+msgstr "Armament projects belong to the V1 rules."
+
+#: simulation/engine.py:253
+msgid "Votre forge est déjà engagée ou son organisation est achevée."
+msgstr "Your forge is already committed or its organisation is complete."
+
+#: simulation/engine.py:269
+msgid "Choisissez une cité ennemie de cette partie."
+msgstr "Choose an enemy city in this game."
+
+#: simulation/engine.py:273
+msgid ""
+"Une autre expédition est déjà engagée vers cette cité. Aucun moyen n’a été "
+"réservé."
+msgstr ""
+"Another expedition is already committed to this city. No resources have been"
+" reserved."
+
+#: simulation/engine.py:278
+msgid "Les villages ne constituent pas une cible de pillage disponible."
+msgstr "These villages are not available as a raid target."
+
+#: simulation/engine.py:286
+msgid ""
+"Cette communauté ne peut rejoindre cette frontière par nos possessions."
+msgstr "This community cannot reach that frontier through our lands."
+
+#: simulation/engine.py:291
+msgid "Certains de ces hommes sont déjà promis à une autre expédition."
+msgstr "Some of these people are already promised to another expedition."
+
+#: simulation/engine.py:297
+#, python-brace-format
+msgid "Cette expédition demande au moins {p0} Fidèles au total."
+msgstr "This expedition requires at least {p0} Faithful in total."
+
+#: simulation/engine.py:307
+msgid "Cet ordre n’est pas reconnu."
+msgstr "This order is not recognised."
+
+#: simulation/engine.py:309
+msgid "Cette dépense dépasserait les moyens non engagés."
+msgstr "This expense would exceed the uncommitted funds."
+
+#: simulation/engine.py:326
+msgid "Cet identifiant de confirmation est déjà utilisé."
+msgstr "This confirmation identifier is already in use."
+
+#: simulation/engine.py:336
+msgid "En V0, une confirmation est définitive."
+msgstr "Under V0, confirmation is final."
+
+#: simulation/engine.py:342
+msgid "Cet ordre ne peut plus être annulé."
+msgstr "This order can no longer be cancelled."
+
+#: simulation/engine.py:385
+#, python-brace-format
+msgid "La récolte de {p0}"
+msgstr "The harvest of {p0}"
+
+#: simulation/engine.py:387
+#, python-brace-format
+msgid ""
+"Les comptes de {p0} sont arrêtés pour cette année. Le prélèvement a fait "
+"entrer {p1} Mesures dans son grenier ; {p2} autres n’ont pu y trouver place."
+" J’ai inscrit {p3} nouveaux habitants et {p4} habitants rejoignant les "
+"Fidèles. La cité compte à présent {p5} habitants. Depuis le début du règne, "
+"{p6} de ses habitants ont perdu la vie."
+msgstr ""
+"The accounts of {p0} are closed for this year. Tax brought {p1} Measures "
+"into its granary; another {p2} found no room. I have recorded {p3} new "
+"inhabitants and {p4} people joining the Faithful. The city now has {p5} "
+"inhabitants. Since the reign began, {p6} of its inhabitants have lost their "
+"lives."
+
+#: simulation/engine.py:409
+msgid "Le financement réservé n’est plus disponible."
+msgstr "The reserved funding is no longer available."
+
+#: simulation/engine.py:416
+msgid "Les contributions ne peuvent plus rejoindre cette frontière."
+msgstr "The contributions can no longer reach this frontier."
+
+#: simulation/engine.py:421
+msgid "La protection contre le pillage est encore active."
+msgstr "Protection against raiding is still active."
+
+#: simulation/engine.py:425
+msgid "La cité ou l’état de l’enceinte ne permet plus ces travaux."
+msgstr "The city or the condition of its wall no longer permits this work."
+
+#: simulation/engine.py:432
+msgid "Ordre invalidé"
+msgstr "Order invalidated"
+
+#: simulation/engine.py:433
+msgid " Toutes les réservations sont libérées."
+msgstr " All reservations have been released."
+
+#: simulation/engine.py:485
+msgid "Votre décret entre en vigueur"
+msgstr "Your decree takes effect"
+
+#: simulation/engine.py:487
+#, python-brace-format
+msgid ""
+"{p0} J’ai fait prélever {p1} Mesures dans les greniers qui les avaient "
+"promises. Les nouvelles vous seront rapportées à leur échéance."
+msgstr ""
+"{p0} I have had {p1} Measures drawn from the granaries that promised them. "
+"News will reach you when it is due."
+
+#: simulation/engine.py:502
+msgid "La forge a achevé son œuvre"
+msgstr "The forge has finished its work"
+
+#: simulation/engine.py:504
+msgid "Les maîtres de la forge ont achevé ce que vous leur aviez confié. "
+msgstr "The masters of the forge have completed what you entrusted to them. "
+
+#: simulation/engine.py:507
+msgid ""
+" : tel est désormais l’état de nos hommes. Leur organisation équipera aussi "
+"les populations qui rejoindront votre maison."
+msgstr ""
+" : this is now how our people are equipped. The same organisation will equip"
+" those who later join your house."
+
+#: simulation/engine.py:517
+#, python-brace-format
+msgid "Travaux achevés à {p0}"
+msgstr "Works completed in {p0}"
+
+#: simulation/engine.py:519
+#, python-brace-format
+msgid ""
+"Les équipes de {p0} {p1}. L’ouvrage est désormais en service ; j’en tiendrai"
+" compte dans les registres à venir."
+msgstr ""
+"The teams of {p0} {p1}. The work is now in service; I will account for it in"
+" future records."
+
+#: simulation/engine.py:592
+msgid "Aucun survivant ne peut décrire les forces adverses."
+msgstr "No survivor can describe the opposing forces."
+
+#: simulation/engine.py:594
+msgid "Les rares survivants ne livrent que des observations incertaines."
+msgstr "The few survivors offer only uncertain observations."
+
+#: simulation/engine.py:596
+msgid "Nos survivants n’ont rencontré aucun défenseur."
+msgstr "Our survivors encountered no defenders."
+
+#: simulation/engine.py:599
+#, python-brace-format
+msgid ""
+"Nos survivants disent avoir rencontré entre {p0} et {p1} hommes, avec un "
+"{p2}. Je rapporte ce qu’ils ont vu à la date de cette lettre ; leur récit ne"
+" révèle pas les forces de tout le domaine adverse."
+msgstr ""
+"Our survivors say they encountered between {p0} and {p1} people, with {p2}. "
+"I report what they saw on the date of this letter; their account does not "
+"reveal the forces of the entire opposing domain."
+
+#: simulation/engine.py:637
+msgid "L’expédition renonce au combat"
+msgstr "The expedition abandons battle"
+
+#: simulation/engine.py:639
+msgid ""
+"Le combat n’a plus lieu d’être. Les hommes rentrent selon le calendrier "
+"prévu, sans remboursement."
+msgstr ""
+"The battle no longer has a purpose. The people will return on schedule, "
+"without reimbursement."
+
+#: simulation/engine.py:653
+msgid "Pillage impossible"
+msgstr "Raid impossible"
+
+#: simulation/engine.py:655
+msgid ""
+"Les villages sont encore protégés. Les hommes rentrent sans remboursement."
+msgstr ""
+"The villages are still protected. The people return without reimbursement."
+
+#: simulation/engine.py:678 simulation/engine.py:773
+#, python-brace-format
+msgid "{p0} à {p1}"
+msgstr "{p0} at {p1}"
+
+#: simulation/engine.py:680
+#, python-brace-format
+msgid "La nouvelle de cette expédition nous est parvenue. {p0} "
+msgstr "News of this expedition has reached us. {p0} "
+
+#: simulation/engine.py:685
+#, python-brace-format
+msgid ""
+"Les survivants transportent {p0} Mesures vers leurs origines ; nous ne "
+"pourrons les engager avant leur retour. "
+msgstr ""
+"The survivors carry {p0} Measures towards their origins; we cannot commit "
+"them before their return. "
+
+#: simulation/engine.py:689
+msgid "Les survivants rentreront sans butin. "
+msgstr "The survivors will return without loot. "
+
+#: simulation/engine.py:697
+#, python-brace-format
+msgid "Les villages de {p0} ont été attaqués"
+msgstr "The villages of {p0} have been attacked"
+
+#: simulation/engine.py:699
+#, python-brace-format
+msgid ""
+"Le raid sur nos villages a coûté la vie à {p0} de nos Fidèles. Les "
+"assaillants ont emporté {p1} Mesures et en ont détruit {p2} autres. Ces "
+"pertes sont inscrites dans le grenier de la cité. "
+msgstr ""
+"The raid on our villages cost {p0} of our Faithful their lives. The "
+"attackers carried away {p1} Measures and destroyed another {p2}. These "
+"losses are recorded in the city’s granary. "
+
+#: simulation/engine.py:762
+#, python-brace-format
+msgid "{p0} change de souverain"
+msgstr "{p0} changes ruler"
+
+#: simulation/engine.py:764
+#, python-brace-format
+msgid ""
+"Le nom du souverain a changé dans les registres de {p0}. La cité relève "
+"désormais de {p1} ; c’est tout ce que cette nouvelle publique nous apprend."
+msgstr ""
+"The ruler’s name has changed in the records of {p0}. The city now belongs to"
+" {p1}; that is all this public news tells us."
+
+#: simulation/engine.py:775
+#, python-brace-format
+msgid ""
+"{p0} Les survivants repartent vers leurs origines ; ils y rejoindront les "
+"présents à la date annoncée. "
+msgstr ""
+"{p0} The survivors depart towards their origins; they will rejoin those "
+"present there on the announced date. "
+
+#: simulation/engine.py:784
+#, python-brace-format
+msgid "La bataille de {p0}"
+msgstr "The battle of {p0}"
+
+#: simulation/engine.py:786
+#, python-brace-format
+msgid ""
+"Voici l’issue que l’on nous rapporte : {p0}. Nous avons perdu {p1} Fidèles "
+"engagés, dont {p2} de la garnison locale, ainsi que {p3} civils. "
+msgstr ""
+"This is the outcome reported to us: {p0}. We have lost {p1} committed "
+"Faithful, including {p2} from the local garrison, as well as {p3} civilians."
+" "
+
+#: simulation/engine.py:794
+#, python-brace-format
+msgid ""
+"Le siège a consommé {p0} Mesures prises dans le grenier de cette cité. "
+msgstr "The siege consumed {p0} Measures from this city’s granary. "
+
+#: simulation/engine.py:822
+#, python-brace-format
+msgid "Retour à {p0}"
+msgstr "Return to {p0}"
+
+#: simulation/engine.py:824
+#, python-brace-format
+msgid ""
+"J’ai fait inscrire le retour de {p0} Fidèles à {p1}. Ils rejoignent les "
+"présents de leur cité d’origine. {p2}"
+msgstr ""
+"I have recorded the return of {p0} Faithful to {p1}. They rejoin those "
+"present in their city of origin. {p2}"
+
+#: simulation/engine.py:835
+msgid "Une expédition ne reviendra pas"
+msgstr "An expedition will not return"
+
+#: simulation/engine.py:836
+msgid "Aucun homme n’a survécu. Aucun butin n’est déposé."
+msgstr "No one has survived. No loot is deposited."
+
+#: simulation/engine.py:881
+msgid "Votre prétention au trône s’achève"
+msgstr "Your claim to the throne ends"
+
+#: simulation/engine.py:883
+msgid ""
+"Vous ne possédez plus de cité. Vos armées encore en route rentrent vers "
+"leurs origines."
+msgstr ""
+"You no longer own a city. Your armies still on the road return towards their"
+" origins."
+
+#: simulation/engine.py:907
+msgid "Le règne est achevé"
+msgstr "The reign has ended"
+
+#: simulation/engine.py:909
+#, python-brace-format
+msgid ""
+"Au premier rang : {p0}. Les opérations encore en route ne modifieront plus "
+"ce résultat."
+msgstr ""
+"In first place: {p0}. Operations still in transit will no longer change this"
+" result."
+
+#: simulation/engine.py:945
+msgid "Ce règne est déjà terminé."
+msgstr "This reign has already ended."
+
+#: simulation/forms.py:13
+msgid "Nom de votre règne"
+msgstr "Name of your reign"
+
+#: simulation/forms.py:15
+msgid "Les chroniques de Yaara"
+msgstr "The chronicles of Yaara"
+
+#: simulation/forms.py:18
+msgid "Votre maison"
+msgstr "Your house"
+
+#: simulation/forms.py:18 simulation/services.py:75
+msgid "La maison d’Ambre"
+msgstr "The house of Amber"
+
+#: simulation/forms.py:21
+msgid "Règles"
+msgstr "Rules"
+
+#: simulation/forms.py:23
+msgid "V1 · sièges, croissance et annulation"
+msgstr "V1 · sieges, growth and cancellation"
+
+#: simulation/forms.py:24
+msgid "V0 · règles essentielles"
+msgstr "V0 · essential rules"
+
+#: simulation/forms.py:28
+msgid "Vos rivaux"
+msgstr "Your rivals"
+
+#: simulation/forms.py:30
+msgid "Deux Prétendants contrôlés par l’ordinateur"
+msgstr "Two computer-controlled Pretenders"
+
+#: simulation/forms.py:31
+msgid "Rivaux passifs · explorer les règles"
+msgstr "Passive rivals · explore the rules"
+
+#: simulation/forms.py:35
+msgid "Durée du règne"
+msgstr "Length of reign"
+
+#: simulation/forms.py:39
+msgid "10 ans · 120 mois"
+msgstr "10 years · 120 moons"
+
+#: simulation/forms.py:40
+msgid "5 ans · 60 mois"
+msgstr "5 years · 60 moons"
+
+#: simulation/forms.py:41
+msgid "2 ans · 24 mois"
+msgstr "2 years · 24 moons"
+
+#: simulation/forms.py:42
+msgid "20 ans · 240 mois"
+msgstr "20 years · 240 moons"
+
+#: simulation/forms.py:46
+msgid "Calendrier"
+msgstr "Calendar"
+
+#: simulation/forms.py:48
+msgid "Manuel · vous avancez chaque mois"
+msgstr "Manual · you advance each moon"
+
+#: simulation/forms.py:49
+msgid "Automatique · le monde avance à échéance"
+msgstr "Automatic · the world advances at each deadline"
+
+#: simulation/forms.py:53
+msgid "Cadence du calendrier automatique"
+msgstr "Automatic calendar pace"
+
+#: simulation/forms.py:57
+msgid "Un mois toutes les 10 minutes"
+msgstr "One moon every 10 minutes"
+
+#: simulation/forms.py:58
+msgid "Un mois toutes les 5 minutes"
+msgstr "One moon every 5 minutes"
+
+#: simulation/messages.py:19 simulation/messages.py:22
+#, python-brace-format
+msgid "{left}{right}"
+msgstr "{left}{right}"
+
+#: simulation/narration.py:13
+msgid "Aménager les premiers canaux"
+msgstr "Build the first canals"
+
+#: simulation/narration.py:13
+msgid "Étendre le réseau de canaux"
+msgstr "Extend the canal network"
+
+#: simulation/narration.py:14
+msgid "Agrandir le grenier"
+msgstr "Enlarge the granary"
+
+#: simulation/narration.py:14
+msgid "Ériger des silos"
+msgstr "Erect silos"
+
+#: simulation/narration.py:15
+msgid "Ériger une enceinte de terre crue"
+msgstr "Erect an earthen wall"
+
+#: simulation/narration.py:15
+msgid "Élever une grande enceinte"
+msgstr "Raise a great wall"
+
+#: simulation/narration.py:16
+msgid "Réparer l’enceinte de terre crue"
+msgstr "Repair the earthen wall"
+
+#: simulation/narration.py:16
+msgid "Réparer la grande enceinte"
+msgstr "Repair the great wall"
+
+#: simulation/narration.py:26
+msgid "Aucun de nos Fidèles n’a perdu la vie dans cette expédition."
+msgstr "None of our Faithful have lost their lives on this expedition."
+
+#: simulation/narration.py:27
+#, python-brace-format
+msgid "Nous avons perdu {p0} Fidèles dans cette expédition."
+msgstr "We have lost {p0} Faithful on this expedition."
+
+#: simulation/narration.py:32
+msgid "Ils ne rapportent pas de butin."
+msgstr "They bring back no loot."
+
+#: simulation/narration.py:33
+#, python-brace-format
+msgid "Le grenier reçoit {p0} Mesures de leur butin."
+msgstr "The granary receives {p0} Measures of their loot."
+
+#: simulation/narration.py:36
+#, python-brace-format
+msgid " Faute de place, {p0} autres n’ont pu être conservées."
+msgstr " For lack of space, another {p0} could not be kept."
+
+#: simulation/narration.py:43
+msgid "ont aménagé les premiers canaux"
+msgstr "have built the first canals"
+
+#: simulation/narration.py:44
+msgid "ont étendu le réseau de canaux"
+msgstr "have extended the canal network"
+
+#: simulation/narration.py:46
+msgid "ont agrandi le grenier"
+msgstr "have enlarged the granary"
+
+#: simulation/narration.py:46
+msgid "ont érigé des silos"
+msgstr "have erected silos"
+
+#: simulation/narration.py:48
+msgid "ont érigé une enceinte de terre crue"
+msgstr "have erected an earthen wall"
+
+#: simulation/narration.py:49
+msgid "ont élevé une grande enceinte"
+msgstr "have raised a great wall"
+
+#: simulation/narration.py:52
+msgid "ont réparé l’enceinte de terre crue"
+msgstr "have repaired the earthen wall"
+
+#: simulation/narration.py:53
+msgid "ont réparé la grande enceinte"
+msgstr "have repaired the great wall"
+
+#: simulation/narration.py:63
+msgid "Les travaux des canaux ont commencé."
+msgstr "Work on the canals has begun."
+
+#: simulation/narration.py:64
+msgid "Les travaux des greniers ont commencé."
+msgstr "Work on the granaries has begun."
+
+#: simulation/narration.py:65
+msgid "Les travaux des fortifications ont commencé."
+msgstr "Work on the fortifications has begun."
+
+#: simulation/narration.py:66
+msgid "Les réparations de l’enceinte ont commencé."
+msgstr "Repairs to the wall have begun."
+
+#: simulation/narration.py:67
+msgid "Les maîtres de la forge ont commencé leur ouvrage."
+msgstr "The masters of the forge have begun their work."
+
+#: simulation/narration.py:68
+msgid "Nos hommes sont partis piller les villages."
+msgstr "Our people have departed to raid the villages."
+
+#: simulation/narration.py:69
+msgid "Nos hommes sont partis conquérir la cité."
+msgstr "Our people have departed to capture the city."
+
+#: simulation/projections.py:10
+msgid "Confirmé"
+msgstr "Confirmed"
+
+#: simulation/projections.py:11 simulation/templates/simulation/home.html:40
+msgid "En cours"
+msgstr "In progress"
+
+#: simulation/projections.py:12
+msgid "Au retour"
+msgstr "Returning"
+
+#: simulation/projections.py:13
+msgid "Achevé"
+msgstr "Completed"
+
+#: simulation/projections.py:14
+msgid "Annulé"
+msgstr "Cancelled"
+
+#: simulation/projections.py:15
+msgid "Invalidé"
+msgstr "Invalidated"
+
+#: simulation/projections.py:34
+msgid "Sans enceinte"
+msgstr "No wall"
+
+#: simulation/projections.py:35
+msgid "Enceinte de terre"
+msgstr "Earthen wall"
+
+#: simulation/projections.py:36
+msgid "Grande enceinte"
+msgstr "Great wall"
+
+#: simulation/projections.py:102
+msgid "Toutes vos possessions"
+msgstr "All your lands"
+
+#: simulation/rules.py:56
+msgid "Cette version des règles n’est pas disponible."
+msgstr "This rule version is unavailable."
+
+#: simulation/rules.py:125
+msgid "Équipement ordinaire"
+msgstr "Ordinary equipment"
+
+#: simulation/rules.py:126
+msgid "Équipement renforcé"
+msgstr "Reinforced equipment"
+
+#: simulation/rules.py:127
+msgid "Équipement supérieur"
+msgstr "Superior equipment"
+
+#: simulation/rules.py:138
+msgid "Aménager les canaux"
+msgstr "Build canals"
+
+#: simulation/rules.py:139
+msgid "Agrandir le stockage"
+msgstr "Expand storage"
+
+#: simulation/rules.py:140
+msgid "Renforcer les fortifications"
+msgstr "Strengthen fortifications"
+
+#: simulation/rules.py:141
+msgid "Réparer l’enceinte"
+msgstr "Repair the wall"
+
+#: simulation/rules.py:142
+msgid "Organiser l’armement"
+msgstr "Organise armament"
+
+#: simulation/rules.py:143
+msgid "Piller les villages"
+msgstr "Raid the villages"
+
+#: simulation/rules.py:144
+msgid "Capturer une cité"
+msgstr "Capture a city"
+
+#: simulation/rules.py:147
+msgid "Prise sans défense"
+msgstr "Undefended capture"
+
+#: simulation/rules.py:148
+msgid "Reddition rapide"
+msgstr "Swift surrender"
+
+#: simulation/rules.py:149
+msgid "Assaut victorieux"
+msgstr "Successful assault"
+
+#: simulation/rules.py:150
+msgid "La cité tient le siège"
+msgstr "The city holds out under siege"
+
+#: simulation/rules.py:151
+msgid "Capitulation par pénurie"
+msgstr "Surrender through shortage"
+
+#: simulation/rules.py:152
+msgid "Défaite sévère"
+msgstr "Severe defeat"
+
+#: simulation/rules.py:153
+msgid "Attaque repoussée"
+msgstr "Attack repelled"
+
+#: simulation/rules.py:154
+msgid "Pillage réussi"
+msgstr "Successful raid"
+
+#: simulation/services.py:22
+msgid "Vous ne participez pas à cette partie."
+msgstr "You do not participate in this game."
+
+#: simulation/services.py:29
+msgid "La partie est en pause. Reprenez le calendrier pour donner un ordre."
+msgstr "The game is paused. Resume the calendar to issue an order."
+
+#: simulation/services.py:32
+msgid "Ce règne est terminé."
+msgstr "This reign has ended."
+
+#: simulation/services.py:35
+msgid "Le mois est clos. Vérifiez le départ et le devis du mois suivant."
+msgstr ""
+"The moon is closed. Check the departure and estimate for the next moon."
+
+#: simulation/services.py:38
+msgid "Le calendrier a changé. Préparez à nouveau votre décret."
+msgstr "The calendar has changed. Prepare your decree again."
+
+#: simulation/services.py:81
+msgid ""
+"Vous avez déjà trente parties. Conservez vos règnes existants pour le "
+"moment."
+msgstr "You already have thirty games. Keep your existing reigns for now."
+
+#: simulation/services.py:84
+msgid "Ce calendrier n’est pas disponible."
+msgstr "This calendar is unavailable."
+
+#: simulation/services.py:104
+msgid "Le sceau vous appartient"
+msgstr "The seal is yours"
+
+#: simulation/services.py:106
+msgid ""
+"J’ai fait ouvrir les registres de vos trois cités. Leurs habitants "
+"reconnaissent votre autorité, mais il nous appartient encore de préparer les"
+" années qui viennent. Chaque cité gardera ses réserves ; pour vos dépenses, "
+"je demanderai à tous les greniers de contribuer selon leurs moyens. La "
+"première récolte nous sera versée au mois 12. D’ici là, je tiendrai compte "
+"des hommes partis et des ouvrages que vous aurez ordonnés."
+msgstr ""
+"I have opened the records of your three cities. Their people recognise your "
+"authority, but we must still prepare for the years ahead. Each city will "
+"keep its reserves; for your expenses, I will ask all granaries to contribute"
+" according to their means. Our first harvest will be paid in moon 12. Until "
+"then, I will account for those who depart and the works you command."
+
+#: simulation/services.py:123
+msgid "La situation a changé depuis ce devis. Vérifiez à nouveau vos moyens."
+msgstr ""
+"The situation has changed since this estimate. Check your resources again."
+
+#: simulation/services.py:135
+msgid "Décret scellé"
+msgstr "Decree sealed"
+
+#: simulation/services.py:137
+#, python-brace-format
+msgid ""
+"J’ai placé sous votre sceau cet ordre : {p0}. Les greniers promettent {p1} "
+"Mesures, qui ne seront dépensées qu’au départ, au mois {p2}. Les hommes et "
+"les emplacements nécessaires vous sont désormais réservés."
+msgstr ""
+"I have placed this order under your seal: {p0}. The granaries promise {p1} "
+"Measures, to be spent only at departure, in moon {p2}. The necessary people "
+"and building slots are now reserved."
+
+#: simulation/services.py:160
+msgid "Décret retiré"
+msgstr "Decree withdrawn"
+
+#: simulation/services.py:162
+#, python-brace-format
+msgid ""
+"Selon votre volonté, j’ai retiré ce décret : {p0}. Les moyens qu’il "
+"engageait sont de nouveau libres."
+msgstr ""
+"As you wished, I have withdrawn this decree: {p0}. The resources it "
+"committed are free again."
+
+#: simulation/services.py:166
+msgid " Une autre expédition pourra désormais engager la cible."
+msgstr " Another expedition may now engage the target."
+
+#: simulation/services.py:182
+msgid "Le calendrier de cette partie ne peut pas être avancé manuellement."
+msgstr "This game’s calendar cannot be advanced manually."
+
+#: simulation/services.py:189
+msgid "Le calendrier de cette partie est arrêté."
+msgstr "This game’s calendar is stopped."
+
+#: simulation/services.py:191
+msgid "Ce mois ne peut pas être résolu. Actualisez la page."
+msgstr "This moon cannot be resolved. Refresh the page."
+
+#: simulation/services.py:195
+msgid "La prochaine clôture n’est pas encore atteinte."
+msgstr "The next deadline has not yet arrived."
+
+#: simulation/services.py:206
+msgid "Le calendrier est suspendu"
+msgstr "The calendar is paused"
+
+#: simulation/services.py:208
+msgid ""
+"Le traitement a pris du retard. Reprenez la partie pour ouvrir une nouvelle "
+"fenêtre de décision complète."
+msgstr ""
+"Processing fell behind. Resume the game to open a full new decision window."
+
+#: simulation/services.py:237
+msgid "Cette partie ne peut pas être suspendue."
+msgstr "This game cannot be paused."
+
+#: simulation/services.py:245
+msgid ""
+"La clôture est déjà atteinte ; attendez son traitement avant de suspendre la"
+" partie."
+msgstr "The deadline has passed; wait for processing before pausing the game."
+
+#: simulation/templates/registration/login.html:3
+msgid "Reprendre votre règne · Yaara"
+msgstr "Resume your reign · Yaara"
+
+#: simulation/templates/registration/login.html:7
+msgid "LE SABLE GARDE LA MÉMOIRE"
+msgstr "THE SAND REMEMBERS"
+
+#: simulation/templates/registration/login.html:9
+msgid "Votre règne"
+msgstr "Your reign"
+
+#: simulation/templates/registration/login.html:11
+msgid "vous attend."
+msgstr "awaits you."
+
+#: simulation/templates/registration/login.html:14
+msgid ""
+"Des canaux à creuser, des frontières à défendre, des cités à rallier. "
+"Retrouvez votre place à la table du pouvoir."
+msgstr ""
+"Canals to dig, borders to defend, cities to unite. Take your place at the "
+"council table."
+
+#: simulation/templates/registration/login.html:24
+#: simulation/templates/simulation/base.html:22
+msgid "LE BUREAU DU PRÉTENDANT"
+msgstr "THE PRETENDER’S DESK"
+
+#: simulation/templates/registration/login.html:25
+#: simulation/templates/registration/signup.html:33
+msgid "Entrer dans Yaara"
+msgstr "Enter Yaara"
+
+#: simulation/templates/registration/login.html:30
+msgid "Reprendre mon règne"
+msgstr "Resume my reign"
+
+#: simulation/templates/registration/login.html:34
+msgid "Première visite ?"
+msgstr "First visit?"
+
+#: simulation/templates/registration/login.html:34
+#: simulation/templates/registration/signup.html:29
+msgid "Créer mon compte"
+msgstr "Create my account"
+
+#: simulation/templates/registration/signup.html:3
+msgid "Devenir Prétendant · Yaara"
+msgstr "Become a Pretender · Yaara"
+
+#: simulation/templates/registration/signup.html:7
+msgid "UNE HISTOIRE COMMENCE"
+msgstr "A STORY BEGINS"
+
+#: simulation/templates/registration/signup.html:9
+msgid "Faites vivre"
+msgstr "Bring to life"
+
+#: simulation/templates/registration/signup.html:11
+msgid "votre maison."
+msgstr "your house."
+
+#: simulation/templates/registration/signup.html:14
+msgid ""
+"Votre compte conserve vos parties et vos chroniques. Commencez un règne à "
+"votre rythme, face à deux maisons rivales."
+msgstr ""
+"Your account keeps your games and chronicles. Begin a reign at your own "
+"pace, facing two rival houses."
+
+#: simulation/templates/registration/signup.html:24
+msgid "VOTRE PREMIER SCEAU"
+msgstr "YOUR FIRST SEAL"
+
+#: simulation/templates/registration/signup.html:25
+msgid "Devenir Prétendant"
+msgstr "Become a Pretender"
+
+#: simulation/templates/registration/signup.html:33
+msgid "Déjà Prétendant ?"
+msgstr "Already a Pretender?"
+
+#: simulation/templates/simulation/base.html:11
+msgid "Yaara · Les cités du désert"
+msgstr "Yaara · The desert cities"
+
+#: simulation/templates/simulation/base.html:18
+msgid "Aller au contenu"
+msgstr "Skip to content"
+
+#: simulation/templates/simulation/base.html:20
+msgid "Yaara, accueil"
+msgstr "Yaara, home"
+
+#: simulation/templates/simulation/base.html:20
+#: simulation/templates/simulation/base.html:59
+#: simulation/templates/simulation/base.html:88
+msgid "YAARA"
+msgstr "YAARA"
+
+#: simulation/templates/simulation/base.html:20
+msgid "LES CITÉS DU DÉSERT"
+msgstr "THE DESERT CITIES"
+
+#: simulation/templates/simulation/base.html:23
+#: simulation/templates/simulation/base.html:42
+msgid "Navigation principale"
+msgstr "Main navigation"
+
+#: simulation/templates/simulation/base.html:25
+#: simulation/templates/simulation/manuscript.html:25
+msgid "Domaine"
+msgstr "Domain"
+
+#: simulation/templates/simulation/base.html:27
+#: simulation/templates/simulation/manuscript.html:27
+msgid "Décrets"
+msgstr "Decrees"
+
+#: simulation/templates/simulation/base.html:29
+#: simulation/templates/simulation/manuscript.html:29
+msgid "Correspondance"
+msgstr "Letters"
+
+#: simulation/templates/simulation/base.html:32
+#: simulation/templates/simulation/base.html:43
+msgid "Mes règnes"
+msgstr "My reigns"
+
+#: simulation/templates/simulation/base.html:35
+msgid "Dans les terres de Yaara,"
+msgstr "In the lands of Yaara,"
+
+#: simulation/templates/simulation/base.html:37
+msgid "le pouvoir se cultive"
+msgstr "power is cultivated"
+
+#: simulation/templates/simulation/base.html:39
+msgid "avant de se conquérir."
+msgstr "before it is conquered."
+
+#: simulation/templates/simulation/base.html:43
+#: simulation/templates/simulation/home.html:10
+msgid "Nouveau règne"
+msgstr "New reign"
+
+#: simulation/templates/simulation/base.html:48
+msgid "Y"
+msgstr "Y"
+
+#: simulation/templates/simulation/base.html:50
+msgid "Neuf cités."
+msgstr "Nine cities."
+
+#: simulation/templates/simulation/base.html:52
+msgid "Un seul trône."
+msgstr "One throne."
+
+#: simulation/templates/simulation/base.html:54
+msgid "CHRONIQUES DES OASIS"
+msgstr "CHRONICLES OF THE OASES"
+
+#: simulation/templates/simulation/base.html:63
+msgid "Le livre des règnes"
+msgstr "The book of reigns"
+
+#: simulation/templates/simulation/base.html:71
+#: simulation/templates/simulation/manuscript.html:59
+msgid "Quitter"
+msgstr "Sign out"
+
+#: simulation/templates/simulation/base.html:74
+msgid "UN JEU DE STRATÉGIE ET DE PATIENCE"
+msgstr "A GAME OF STRATEGY AND PATIENCE"
+
+#: simulation/templates/simulation/base.html:88
+msgid "Votre histoire s’écrit dans le sable."
+msgstr "Your story is written in the sand."
+
+#: simulation/templates/simulation/base.html:88
+msgid "PREMIÈRES CHRONIQUES"
+msgstr "FIRST CHRONICLES"
+
+#: simulation/templates/simulation/chronicle.html:3
+#: simulation/templates/simulation/manuscript.html:11
+#, python-format
+msgid "%(p0)s · Yaara"
+msgstr "%(p0)s · Yaara"
+
+#: simulation/templates/simulation/chronicle.html:8
+msgid "Au seuil du règne"
+msgstr "At the dawn of the reign"
+
+#: simulation/templates/simulation/chronicle.html:10
+#, python-format
+msgid "Au terme du mois %(p0)s"
+msgstr "At the end of moon %(p0)s"
+
+#: simulation/templates/simulation/chronicle.html:12
+#, python-format
+msgid "— année %(p0)s"
+msgstr "— year %(p0)s"
+
+#: simulation/templates/simulation/chronicle.html:16
+msgid "Les terres sous votre sceau"
+msgstr "The lands under your seal"
+
+#: simulation/templates/simulation/chronicle.html:18
+msgid "Ce que vous dicterez"
+msgstr "What you will dictate"
+
+#: simulation/templates/simulation/chronicle.html:20
+msgid "Les lettres qui vous parviennent"
+msgstr "The letters that reach you"
+
+#: simulation/templates/simulation/chronicle.html:23
+#, python-format
+msgid "Au service de %(p0)s."
+msgstr "In the service of %(p0)s."
+
+#: simulation/templates/simulation/chronicle.html:26
+msgid "Épilogue du règne"
+msgstr "Epilogue of the reign"
+
+#: simulation/templates/simulation/chronicle.html:27
+msgid "La dernière page du règne"
+msgstr "The last page of the reign"
+
+#: simulation/templates/simulation/chronicle.html:29
+#, python-format
+msgid "Monseigneur, j’arrête ici ces chroniques. Au mois %(p0)s,"
+msgstr "My lord, I close these chronicles here. In moon %(p0)s,"
+
+#: simulation/templates/simulation/chronicle.html:31
+msgid "figure au premier rang."
+msgstr "ranks first."
+
+#: simulation/templates/simulation/chronicle.html:35
+#, python-format
+msgid ""
+"%(count)s expédition demeure encore en route. Son histoire appartient à "
+"l’épilogue ; elle ne changera plus l’issue de votre règne."
+msgid_plural ""
+"%(count)s expéditions demeurent encore en route. Leur histoire appartient à "
+"l’épilogue ; elle ne changera plus l’issue de votre règne."
+msgstr[0] ""
+"%(count)s expedition remains on the road. Its story belongs to the epilogue;"
+" it will no longer change the outcome of your reign."
+msgstr[1] ""
+"%(count)s expeditions remain on the road. Their story belongs to the "
+"epilogue; they will no longer change the outcome of your reign."
+
+#: simulation/templates/simulation/chronicle.html:40
+msgid ""
+"Monseigneur, aucune cité ne reconnaît plus votre autorité. Je continuerai "
+"pourtant de tenir ce livre jusqu’à la fin du règne."
+msgstr ""
+"My lord, no city recognises your authority any longer. Yet I will keep this "
+"book until the end of the reign."
+
+#: simulation/templates/simulation/chronicle.html:44
+msgid ""
+"Nous avons suspendu le cours des chroniques. Aucun nouveau décret ne sera "
+"reçu avant la reprise du calendrier."
+msgstr ""
+"We have suspended the chronicles. No new decree will be accepted until the "
+"calendar resumes."
+
+#: simulation/templates/simulation/chronicle.html:48
+msgid "Les nouvelles de votre domaine"
+msgstr "News of your domain"
+
+#: simulation/templates/simulation/chronicle.html:49
+#: simulation/templates/simulation/chronicle.html:189
+#: simulation/templates/simulation/chronicle_decrees.html:2
+#: simulation/templates/simulation/letter_entries.html:8
+msgid "Monseigneur,"
+msgstr "My lord,"
+
+#: simulation/templates/simulation/chronicle.html:52
+msgid ""
+"J’ouvre ce livre au premier jour de votre règne. Vos décisions y laisseront "
+"leur trace ; j’y consignerai les travaux achevés, les hommes qui reviennent "
+"et les cités qui changent de maître."
+msgstr ""
+"I open this book on the first day of your reign. Your decisions will leave "
+"their mark; I will record completed works, returning people and cities that "
+"change hands."
+
+#: simulation/templates/simulation/chronicle.html:56
+msgid ""
+"Voici ce que je peux vous dire de nos terres au terme du mois écoulé. Ces "
+"comptes sont ceux de votre maison ; au-delà de ses frontières, nos "
+"connaissances demeurent incertaines."
+msgstr ""
+"Here is what I can tell you of our lands at the end of the past moon. These "
+"accounts belong to your house; beyond its borders, our knowledge remains "
+"uncertain."
+
+#: simulation/templates/simulation/chronicle.html:60
+#: simulation/templates/simulation/chronicle.html:168
+#, python-format
+msgid "%(count)s cité"
+msgid_plural "%(count)s cités"
+msgstr[0] "%(count)s city"
+msgstr[1] "%(count)s cities"
+
+#: simulation/templates/simulation/chronicle.html:60
+msgid "relève de votre autorité, avec"
+msgid_plural "relèvent de votre autorité, avec"
+msgstr[0] "is under your authority, with"
+msgstr[1] "are under your authority, with"
+
+#: simulation/templates/simulation/chronicle.html:60
+#: simulation/templates/simulation/chronicle.html:91
+#, python-format
+msgid "%(p0)s habitants"
+msgstr "%(p0)s inhabitants"
+
+#: simulation/templates/simulation/chronicle.html:60
+msgid "rattachés à leurs foyers. Parmi eux,"
+msgstr "belonging to their homes. Among them,"
+
+#: simulation/templates/simulation/chronicle.html:60
+#: simulation/templates/simulation/chronicle_decrees.html:5
+#: simulation/templates/simulation/chronicle_decrees.html:184
+#: simulation/templates/simulation/decree_letter.html:21
+#, python-format
+msgid "%(p0)s Fidèles"
+msgstr "%(p0)s Faithful"
+
+#: simulation/templates/simulation/chronicle.html:60
+msgid "peuvent encore recevoir vos ordres."
+msgstr "can still receive your orders."
+
+#: simulation/templates/simulation/chronicle.html:62
+#, python-format
+msgid ""
+"%(p0)s autres sont en expédition ; leur place demeure vide dans les "
+"garnisons."
+msgstr ""
+"Another %(p0)s are on expedition; their places in the garrisons remain "
+"empty."
+
+#: simulation/templates/simulation/chronicle.html:66
+msgid "Les greniers renferment"
+msgstr "The granaries hold"
+
+#: simulation/templates/simulation/chronicle.html:66
+#: simulation/templates/simulation/chronicle.html:96
+#: simulation/templates/simulation/chronicle_decrees.html:5
+#: simulation/templates/simulation/chronicle_decrees.html:183
+#: simulation/templates/simulation/decree_letter.html:12
+#: simulation/templates/simulation/decree_letter.html:42
+#, python-format
+msgid "%(p0)s Mesures"
+msgstr "%(p0)s Measures"
+
+#: simulation/templates/simulation/chronicle.html:66
+msgid ". Nous pouvons encore engager"
+msgstr ". We can still commit"
+
+#: simulation/templates/simulation/chronicle.html:67
+#, python-format
+msgid "Les %(p0)s autres sont déjà promises à vos décrets."
+msgstr "The other %(p0)s are already promised to your decrees."
+
+#: simulation/templates/simulation/chronicle.html:71
+msgid "La prochaine récolte sera versée dans"
+msgstr "The next harvest will be paid in"
+
+#: simulation/templates/simulation/chronicle.html:71
+#, python-format
+msgid "%(p0)s mois"
+msgstr "%(p0)s moons"
+
+#: simulation/templates/simulation/chronicle.html:71
+#, python-format
+msgid ""
+". J’ai comptabilisé jusqu’ici %(p0)s Mesures de prélèvement à venir. Ce "
+"montant n’est pas encore entre nos mains."
+msgstr ""
+". I have recorded %(p0)s Measures in accrued tax. These funds are not yet in"
+" our hands."
+
+#: simulation/templates/simulation/chronicle.html:76
+msgid "Faire venir le scribe pour dicter vos ordres."
+msgstr "Summon the scribe to dictate your orders."
+
+#: simulation/templates/simulation/chronicle.html:79
+#: simulation/templates/simulation/decree_letter.html:62
+msgid "Votre scribe"
+msgstr "Your scribe"
+
+#: simulation/templates/simulation/chronicle.html:82
+msgid "Les feuillets des cités"
+msgstr "The city pages"
+
+#: simulation/templates/simulation/chronicle.html:83
+msgid ""
+"J’ai laissé un feuillet pour chacune de vos cités. Vous pouvez les ouvrir à "
+"votre gré."
+msgstr "I have left a page for each of your cities. Open them as you wish."
+
+#: simulation/templates/simulation/chronicle.html:91
+#, python-format
+msgid "%(p0)s compte"
+msgstr "%(p0)s has"
+
+#: simulation/templates/simulation/chronicle.html:91
+#, python-format
+msgid "rattachés à ses foyers, dont %(p0)s sont présents. De ses Fidèles,"
+msgstr "belonging to its homes, of whom %(p0)s are present. Of its Faithful,"
+
+#: simulation/templates/simulation/chronicle.html:91
+msgid "sont encore libres de partir."
+msgstr "are still free to depart."
+
+#: simulation/templates/simulation/chronicle.html:92
+#, python-format
+msgid "Nous en avons déjà promis %(p0)s à une expédition."
+msgstr "We have already promised %(p0)s to an expedition."
+
+#: simulation/templates/simulation/chronicle.html:93
+#, python-format
+msgid "Nous attendons le retour de %(p0)s autres à leur origine."
+msgstr "We await the return of another %(p0)s to their origin."
+
+#: simulation/templates/simulation/chronicle.html:96
+msgid "Le grenier conserve"
+msgstr "The granary holds"
+
+#: simulation/templates/simulation/chronicle.html:96
+#, python-format
+msgid "sur les %(p0)s qu’il peut abriter."
+msgstr "out of the %(p0)s it can hold."
+
+#: simulation/templates/simulation/chronicle.html:98
+#, python-format
+msgid "%(p0)s sont réservées ; il en reste %(p1)s de libres."
+msgstr "%(p0)s are reserved; %(p1)s remain available."
+
+#: simulation/templates/simulation/chronicle.html:100
+#, python-format
+msgid ""
+"Chaque habitant présent rapporte %(p0)s Mesures par mois. Le prélèvement en "
+"préparation s’élève à %(p1)s Mesures."
+msgstr ""
+"Each inhabitant present yields %(p0)s Measures per moon. Accrued tax amounts"
+" to %(p1)s Measures."
+
+#: simulation/templates/simulation/chronicle.html:104
+#, python-format
+msgid "Une %(p0)s protège le centre."
+msgstr "An %(p0)s protects the centre."
+
+#: simulation/templates/simulation/chronicle.html:105
+msgid "Elle porte encore les dommages de l’assaut et doit être réparée."
+msgstr "It still bears damage from the assault and must be repaired."
+
+#: simulation/templates/simulation/chronicle.html:107
+msgid "Le centre ne possède pas encore d’enceinte."
+msgstr "The centre has no wall yet."
+
+#: simulation/templates/simulation/chronicle.html:112
+msgid "Vos équipes poursuivent leur ouvrage :"
+msgstr "Your teams continue their work:"
+
+#: simulation/templates/simulation/chronicle.html:112
+msgid ". Elles en annoncent l’achèvement au mois"
+msgstr ". They expect to finish in moon"
+
+#: simulation/templates/simulation/chronicle.html:116
+msgid "Les équipes attendent le départ d’un chantier déjà confirmé."
+msgstr "The teams await the start of an already confirmed work."
+
+#: simulation/templates/simulation/chronicle.html:118
+msgid "Les équipes de cette cité sont libres de recevoir un chantier."
+msgstr "This city’s teams are free to accept a work."
+
+#: simulation/templates/simulation/chronicle.html:123
+#, python-format
+msgid ""
+"Depuis l’ouverture de ces chroniques, %(p0)s habitants de cette cité ont "
+"perdu la vie."
+msgstr ""
+"Since these chronicles began, %(p0)s inhabitants of this city have lost "
+"their lives."
+
+#: simulation/templates/simulation/chronicle.html:127
+msgid "Dicter un décret pour nos terres."
+msgstr "Dictate a decree for our lands."
+
+#: simulation/templates/simulation/chronicle.html:132
+msgid "Il ne reste aucun feuillet de cité à placer sous votre sceau."
+msgstr "No city page remains to bear your seal."
+
+#: simulation/templates/simulation/chronicle.html:136
+msgid "Ce que nous savons de Yaara"
+msgstr "What we know of Yaara"
+
+#: simulation/templates/simulation/chronicle.html:140
+msgid "Consulter les noms, les routes et les souverains"
+msgstr "Consult the names, roads and rulers"
+
+#: simulation/templates/simulation/chronicle.html:143
+msgid ""
+"Les noms des souverains et les ouvrages visibles sont connus. Les réserves "
+"et les hommes des autres maisons nous échappent ; je n’inscrirai ici aucune "
+"certitude que nous n’ayons acquise."
+msgstr ""
+"The rulers’ names and visible buildings are known. The reserves and people "
+"of other houses remain beyond our knowledge; I will record no certainty we "
+"have not earned."
+
+#: simulation/templates/simulation/chronicle.html:148
+#, python-format
+msgid "relève de %(p0)s. %(p1)s"
+msgstr "belongs to %(p0)s. %(p1)s"
+
+#: simulation/templates/simulation/chronicle.html:149
+msgid ", endommagée"
+msgstr ", damaged"
+
+#: simulation/templates/simulation/chronicle.html:151
+msgid "Une expédition est déjà engagée vers cette cité."
+msgstr "An expedition is already committed to this city."
+
+#: simulation/templates/simulation/chronicle.html:154
+msgid "Les routes entre les oasis"
+msgstr "The roads between the oases"
+
+#: simulation/templates/simulation/chronicle.html:159
+msgid ""
+"Pour porter une armée sur une frontière, ses origines doivent y être reliées"
+" par nos possessions. Chaque ensemble de terres touchant la même cible peut "
+"y envoyer ses hommes."
+msgstr ""
+"To send an army to a frontier, its origins must connect to it through our "
+"lands. Each group of lands adjoining the same target may send its people."
+
+#: simulation/templates/simulation/chronicle.html:164
+msgid "Relire les prétentions au trône"
+msgstr "Review the claims to the throne"
+
+#: simulation/templates/simulation/chronicle.html:168
+#, python-format
+msgid "%(p0)s gouverne"
+msgstr "%(p0)s rules"
+
+#: simulation/templates/simulation/chronicle.html:168
+#, python-format
+msgid "et figure au rang %(p0)s des Prétendants"
+msgstr "and ranks %(p0)s among the Pretenders"
+
+#: simulation/templates/simulation/chronicle.html:169
+msgid "; c’est votre maison"
+msgstr "; this is your house"
+
+#: simulation/templates/simulation/chronicle.html:174
+msgid ""
+"À la fin du règne, le nombre de cités primera ; la population départagera "
+"les égalités. Les comptes exacts des maisons rivales ne nous sont pas "
+"révélés."
+msgstr ""
+"At the end of the reign, the number of cities comes first; population breaks"
+" ties. The exact accounts of rival houses are not revealed to us."
+
+#: simulation/templates/simulation/chronicle.html:180
+msgid "Les dernières nouvelles"
+msgstr "The latest news"
+
+#: simulation/templates/simulation/chronicle.html:183
+msgid "Reprendre toute la correspondance."
+msgstr "Read all the letters again."
+
+#: simulation/templates/simulation/chronicle.html:191
+msgid ""
+"J’ai réuni ici les lettres et les récits qui vous sont destinés. Chaque "
+"feuillet garde sa date : ce qu’un homme a vu hier n’est pas nécessairement "
+"ce qu’il verrait aujourd’hui."
+msgstr ""
+"I have gathered the letters and accounts intended for you here. Each page "
+"keeps its date: what someone saw yesterday is not necessarily what they "
+"would see today."
+
+#: simulation/templates/simulation/chronicle.html:194
+msgid ""
+"Les pertes et les recettes de notre maison sont comptées avec exactitude. "
+"Les forces adverses ne sont décrites qu’à travers ce que nos hommes ont "
+"réellement rencontré."
+msgstr ""
+"Our house’s losses and receipts are counted precisely. Opposing forces are "
+"described only through what our people actually encountered."
+
+#: simulation/templates/simulation/chronicle.html:196
+msgid "Les lettres de votre maison"
+msgstr "The letters of your house"
+
+#: simulation/templates/simulation/chronicle.html:200
+msgid ""
+"Je garde ici les cent dernières nouvelles. Les comptes présents de vos cités"
+" sont consignés au domaine."
+msgstr ""
+"I keep the latest hundred reports here. Your cities’ current accounts are "
+"recorded in the domain."
+
+#: simulation/templates/simulation/chronicle.html:205
+msgid "Demander des nouvelles de nos hommes en route"
+msgstr "Ask for news of our people on the road"
+
+#: simulation/templates/simulation/chronicle.html:209
+msgid "Vers"
+msgstr "Towards"
+
+#: simulation/templates/simulation/chronicle.html:209
+#, python-format
+msgid ", %(p0)s de nos hommes poursuivent une mission :"
+msgstr ", %(p0)s of our people are on a mission:"
+
+#: simulation/templates/simulation/chronicle.html:211
+msgid ""
+"Ils ont repris le chemin de leurs origines ; le retour est attendu au mois"
+msgstr "They have begun their journey home; their return is expected in moon"
+
+#: simulation/templates/simulation/chronicle.html:213
+msgid "Le combat est prévu au mois"
+msgstr "Battle is expected in moon"
+
+#: simulation/templates/simulation/chronicle.html:213
+msgid ", et leur retour au mois"
+msgstr ", and return in moon"
+
+#: simulation/templates/simulation/chronicle.html:216
+#, python-format
+msgid ""
+"Ils transportent %(p0)s Mesures qui ne seront disponibles qu’à leur arrivée."
+msgstr "They carry %(p0)s Measures, which will be available only on arrival."
+
+#: simulation/templates/simulation/chronicle.html:223
+msgid "Le cours du règne"
+msgstr "The course of the reign"
+
+#: simulation/templates/simulation/chronicle.html:227
+msgid ""
+"Lorsque vous aurez donné vos ordres et lu ces feuillets, je pourrai clore ce"
+" mois. Les décrets confirmés prendront leur cours, les travaux avanceront, "
+"puis nous attendrons les nouvelles."
+msgstr ""
+"Once you have issued your orders and read these pages, I can close this "
+"moon. Confirmed decrees will take effect, work will advance, and we will "
+"await news."
+
+#: simulation/templates/simulation/chronicle.html:232
+#, python-format
+msgid "Clore le mois %(p0)s"
+msgstr "Close moon %(p0)s"
+
+#: simulation/templates/simulation/chronicle.html:238
+#: simulation/templates/simulation/manuscript.html:38
+msgid "Le cours des chroniques est suspendu."
+msgstr "The chronicles are suspended."
+
+#: simulation/templates/simulation/chronicle.html:240
+#: simulation/templates/simulation/manuscript.html:36
+#, python-format
+msgid "Le prochain mois sera clos à %(p0)s UTC."
+msgstr "The next moon will close at %(p0)s UTC."
+
+#: simulation/templates/simulation/chronicle.html:247
+msgid "Reprendre le cours des chroniques"
+msgstr "Resume the chronicles"
+
+#: simulation/templates/simulation/chronicle.html:249
+msgid "Suspendre le cours des chroniques"
+msgstr "Pause the chronicles"
+
+#: simulation/templates/simulation/chronicle.html:255
+msgid ""
+"Ce livre est achevé. Vous pouvez en relire les feuillets ou commencer un "
+"autre règne."
+msgstr ""
+"This book is finished. You may reread its pages or begin another reign."
+
+#: simulation/templates/simulation/chronicle.html:259
+msgid "Demander au scribe de rappeler les usages du règne"
+msgstr "Ask the scribe to recall the customs of the reign"
+
+#: simulation/templates/simulation/chronicle.html:262
+msgid ""
+"L’impôt s’accumule chaque mois, mais n’entre dans les greniers que tous les "
+"douze mois. Chaque cité conserve ses réserves ; les dépenses de votre maison"
+" sont réparties entre leurs fonds libres. Les ouvrages ne portent leur fruit"
+" qu’une fois achevés."
+msgstr ""
+"Tax accrues each moon but enters the granaries only every twelve moons. Each"
+" city keeps its reserves; your house’s expenses are shared across their free"
+" funds. Works bear fruit only once complete."
+
+#: simulation/templates/simulation/chronicle.html:265
+msgid ""
+"Les Fidèles sont des habitants de vos cités, non des hommes ajoutés à leur "
+"population. Ceux qui partent ne défendent plus leur origine. Les secours "
+"protègent nos places contre les captures ; les murs ne protègent pas les "
+"villages contre le pillage."
+msgstr ""
+"The Faithful are inhabitants of your cities, not people added to their "
+"population. Those who leave no longer defend their origin. Relief forces "
+"protect our cities from capture; walls do not protect villages from raids."
+
+#: simulation/templates/simulation/chronicle.html:268
+#, python-format
+msgid ""
+"Une seule attaque peut être engagée vers une cité. À la fin des %(p0)s mois "
+"du règne, celui qui en possède le plus l’emporte ; celui qui les réunit "
+"toutes gagne aussitôt."
+msgstr ""
+"Only one attack may engage a city. At the end of the reign’s %(p0)s moons, "
+"whoever holds the most wins; whoever unites them all wins immediately."
+
+#: simulation/templates/simulation/chronicle_decrees.html:5
+msgid ""
+"Je suis prêt à écrire ce que vous déciderez. Nos greniers nous permettent "
+"d’engager"
+msgstr "I am ready to write your decisions. Our granaries allow us to commit"
+
+#: simulation/templates/simulation/chronicle_decrees.html:5
+msgid ", et"
+msgstr ", and"
+
+#: simulation/templates/simulation/chronicle_decrees.html:5
+msgid "sont encore libres de recevoir vos ordres."
+msgstr "are still free to receive your orders."
+
+#: simulation/templates/simulation/chronicle_decrees.html:8
+msgid ""
+"Dictez-moi votre intention ; je vous en relirai les termes avant que vous y "
+"apposiez votre sceau. Jusque-là, aucun homme ni aucune Mesure ne sera "
+"réservé."
+msgstr ""
+"Dictate your intention; I will read back its terms before you affix your "
+"seal. Until then, no person or Measure will be reserved."
+
+#: simulation/templates/simulation/chronicle_decrees.html:11
+msgid "De la terre et des ouvrages"
+msgstr "Of land and buildings"
+
+#: simulation/templates/simulation/chronicle_decrees.html:13
+msgid ""
+"Nous pouvons ouvrir des canaux, préparer les greniers ou affermir nos "
+"enceintes. Les équipes d’une cité ne conduisent qu’un chantier à la fois ; "
+"plusieurs cités peuvent recevoir le même décret."
+msgstr ""
+"We can open canals, prepare granaries or strengthen our walls. A city’s "
+"teams undertake only one work at a time; several cities may receive the same"
+" decree."
+
+#: simulation/templates/simulation/chronicle_decrees.html:21
+msgid ""
+"Faites conduire l’eau vers les terres cultivées. Une fois les travaux "
+"achevés, chaque habitant présent apportera davantage au prélèvement."
+msgstr ""
+"Bring water to the cultivated lands. Once the work is complete, each "
+"inhabitant present will contribute more tax."
+
+#: simulation/templates/simulation/chronicle_decrees.html:25
+msgid ""
+"Faites place aux récoltes à venir. Un grenier plein ne pourra pas garder ce "
+"qui dépasse sa capacité, même si une autre cité possède encore de la place."
+msgstr ""
+"Make room for future harvests. A full granary cannot keep any excess, even "
+"if another city still has space."
+
+#: simulation/templates/simulation/chronicle_decrees.html:29
+msgid ""
+"Faites élever les défenses du centre. Elles protégeront les hommes restés "
+"sur place, sans abriter les villages d’un raid ni renforcer les secours "
+"venus du dehors."
+msgstr ""
+"Raise the defences of the centre. They will protect those who remain there, "
+"but will not shelter villages from raids or strengthen relief forces from "
+"elsewhere."
+
+#: simulation/templates/simulation/chronicle_decrees.html:33
+msgid ""
+"Faites reprendre les parties endommagées de l’enceinte. Le chantier rendra à"
+" l’ouvrage la protection qu’il a perdue."
+msgstr ""
+"Repair the damaged sections of the wall. The work will restore its lost "
+"protection."
+
+#: simulation/templates/simulation/chronicle_decrees.html:40
+msgid "Que ces travaux soient entrepris…"
+msgstr "Let these works begin…"
+
+#: simulation/templates/simulation/chronicle_decrees.html:47
+msgid "à"
+msgstr "to"
+
+#: simulation/templates/simulation/chronicle_decrees.html:49
+msgid "— les équipes sont déjà engagées"
+msgstr "— the teams are already committed"
+
+#: simulation/templates/simulation/chronicle_decrees.html:51
+#, python-format
+msgid ", pour %(p0)s Mesures et %(p1)s mois de travaux"
+msgstr ", for %(p0)s Measures and %(p1)s moons of work"
+
+#: simulation/templates/simulation/chronicle_decrees.html:56
+msgid ""
+"Nous ne pouvons entreprendre cet ouvrage dans aucune de nos cités pour le "
+"moment."
+msgstr "We cannot undertake this work in any of our cities at present."
+
+#: simulation/templates/simulation/chronicle_decrees.html:59
+msgid "Faire relire ce décret"
+msgstr "Have this decree read back"
+
+#: simulation/templates/simulation/chronicle_decrees.html:66
+msgid "Des hommes que l’on envoie"
+msgstr "Of those we send forth"
+
+#: simulation/templates/simulation/chronicle_decrees.html:68
+msgid ""
+"Vous pouvez faire piller les villages d’une cité voisine ou tenter de la "
+"soumettre. Nos communautés reliées à cette frontière pourront réunir leurs "
+"hommes sous un même commandement."
+msgstr ""
+"You may raid a neighbouring city’s villages or attempt to subdue it. Our "
+"communities connected to that frontier can unite their people under one "
+"command."
+
+#: simulation/templates/simulation/chronicle_decrees.html:71
+msgid "Dicter l’ordre d’une expédition"
+msgstr "Dictate an expedition order"
+
+#: simulation/templates/simulation/chronicle_decrees.html:78
+msgid "Que nos hommes partent pour…"
+msgstr "Let our people depart to…"
+
+#: simulation/templates/simulation/chronicle_decrees.html:80
+msgid "Piller les villages — au moins 20 Fidèles"
+msgstr "Raid the villages — at least 20 Faithful"
+
+#: simulation/templates/simulation/chronicle_decrees.html:81
+msgid "Capturer la cité — au moins 80 Fidèles"
+msgstr "Capture the city — at least 80 Faithful"
+
+#: simulation/templates/simulation/chronicle_decrees.html:85
+msgid "…porter cet ordre vers…"
+msgstr "…send this order towards…"
+
+#: simulation/templates/simulation/chronicle_decrees.html:87
+msgid "Désigner une cité à notre portée"
+msgstr "Choose a city within reach"
+
+#: simulation/templates/simulation/chronicle_decrees.html:92
+msgid "une expédition y est déjà engagée"
+msgstr "an expedition is already engaged there"
+
+#: simulation/templates/simulation/chronicle_decrees.html:101
+msgid "Que chacune de nos cités fournisse les hommes suivants :"
+msgstr "Let each of our cities provide the following people:"
+
+#: simulation/templates/simulation/chronicle_decrees.html:104
+msgid "De"
+msgstr "From"
+
+#: simulation/templates/simulation/chronicle_decrees.html:104
+#, python-format
+msgid "%(p0)s Fidèles libres de partir."
+msgstr "%(p0)s Faithful free to depart."
+
+#: simulation/templates/simulation/chronicle_decrees.html:111
+#, python-format
+msgid "Fidèles de %(city)s"
+msgstr "Faithful from %(city)s"
+
+#: simulation/templates/simulation/chronicle_decrees.html:112
+msgid "Fidèles."
+msgstr "Faithful."
+
+#: simulation/templates/simulation/chronicle_decrees.html:117
+msgid "Ainsi seront réunis"
+msgstr "This will muster"
+
+#: simulation/templates/simulation/chronicle_decrees.html:117
+msgid "Fidèles. Il faudra prévoir"
+msgstr "Faithful. We must provide"
+
+#: simulation/templates/simulation/chronicle_decrees.html:117
+msgid "Mesures pour cette campagne."
+msgstr "Measures for this campaign."
+
+#: simulation/templates/simulation/chronicle_decrees.html:120
+msgid ""
+"Nos hommes prendront les réserves des villages s’ils parviennent à repousser"
+" leurs défenseurs. Le butin ne sera à notre disposition qu’au retour."
+msgstr ""
+"Our people will take the villages’ reserves if they drive off their "
+"defenders. The loot will be available only on their return."
+
+#: simulation/templates/simulation/chronicle_decrees.html:122
+msgid "Faire relire l’ordre d’expédition"
+msgstr "Have the expedition order read back"
+
+#: simulation/templates/simulation/chronicle_decrees.html:129
+msgid "Du travail de la forge"
+msgstr "Of the work of the forge"
+
+#: simulation/templates/simulation/chronicle_decrees.html:131
+msgid "Voici ce que les maîtres de la forge me disent de nos hommes :"
+msgstr "Here is what the masters of the forge tell me of our people:"
+
+#: simulation/templates/simulation/chronicle_decrees.html:131
+msgid ""
+". Leur organisation équipera aussi les populations nouvellement rattachées à"
+" votre maison."
+msgstr ""
+". Their organisation will also equip the people who later join your house."
+
+#: simulation/templates/simulation/chronicle_decrees.html:135
+msgid "Le projet que vous leur avez confié doit s’achever au mois"
+msgstr "The project you entrusted to them is due to finish in moon"
+
+#: simulation/templates/simulation/chronicle_decrees.html:140
+msgid "Entendre la proposition des maîtres de la forge"
+msgstr "Hear the proposal of the masters of the forge"
+
+#: simulation/templates/simulation/chronicle_decrees.html:143
+msgid ""
+"Leur demande dépendra de la population actuelle de nos terres. J’en fixerai "
+"le prix dans le décret que je vous présenterai ; les naissances à venir ne "
+"le renchériront pas."
+msgstr ""
+"Their request will depend on our lands’ current population. I will fix its "
+"price in the decree I present; future births will not increase it."
+
+#: simulation/templates/simulation/chronicle_decrees.html:148
+msgid "Faire préparer le projet d’armement"
+msgstr "Prepare the armament project"
+
+#: simulation/templates/simulation/chronicle_decrees.html:157
+msgid ""
+"Vous pourrez me faire retirer un décret avant la clôture. Il faudra le "
+"rédiger à nouveau pour en changer les termes, et vous perdrez alors sa "
+"priorité sur la cible."
+msgstr ""
+"You may ask me to withdraw a decree before closure. To change its terms, it "
+"must be written again and will lose its priority on the target."
+
+#: simulation/templates/simulation/chronicle_decrees.html:159
+msgid ""
+"Sous ces règles, le sceau ne se reprend pas : une confirmation est "
+"définitive. Je vous prie de relire vos intentions avant de vous engager."
+msgstr ""
+"Under these rules, a seal cannot be withdrawn: confirmation is final. Please"
+" reread your intentions before committing."
+
+#: simulation/templates/simulation/chronicle_decrees.html:161
+msgid ""
+"Après le départ, aucun rappel ni remboursement des frais ne sera possible."
+msgstr "After departure, neither recall nor reimbursement will be possible."
+
+#: simulation/templates/simulation/chronicle_decrees.html:166
+msgid ""
+"Je garderai l’encre en réserve jusqu’à ce que vous repreniez le cours des "
+"chroniques."
+msgstr "I will keep the ink in reserve until you resume the chronicles."
+
+#: simulation/templates/simulation/chronicle_decrees.html:168
+msgid ""
+"Je ne peux plus recevoir de nouveaux ordres pour ce règne. Les décrets "
+"passés demeurent dans nos registres."
+msgstr ""
+"I can no longer accept new orders for this reign. Past decrees remain in our"
+" records."
+
+#: simulation/templates/simulation/chronicle_decrees.html:174
+msgid "Ce que porte déjà votre sceau"
+msgstr "What already bears your seal"
+
+#: simulation/templates/simulation/chronicle_decrees.html:183
+msgid "Vous avez engagé"
+msgstr "You have committed"
+
+#: simulation/templates/simulation/chronicle_decrees.html:184
+msgid "et"
+msgstr "and"
+
+#: simulation/templates/simulation/chronicle_decrees.html:185
+msgid "pour cet ordre. Le départ a été fixé au mois"
+msgstr "for this order. Departure is set for moon"
+
+#: simulation/templates/simulation/chronicle_decrees.html:189
+msgid ""
+"Le décret est confirmé. Ses moyens sont promis, mais ne sont pas encore "
+"dépensés."
+msgstr ""
+"The decree is confirmed. Its resources are promised but not yet spent."
+
+#: simulation/templates/simulation/chronicle_decrees.html:191
+msgid ""
+"Vous avez retiré ce décret. Les hommes, les fonds et les emplacements qu’il "
+"engageait sont redevenus libres."
+msgstr ""
+"You have withdrawn this decree. Its people, funds and building slots are "
+"free again."
+
+#: simulation/templates/simulation/chronicle_decrees.html:193
+msgid ""
+"Ce décret n’a pu entrer en vigueur. Son motif est consigné dans la "
+"correspondance et ses réservations sont libérées."
+msgstr ""
+"This decree could not take effect. Its reason is recorded in your letters "
+"and its reservations have been released."
+
+#: simulation/templates/simulation/chronicle_decrees.html:195
+msgid ""
+"Le combat est passé. Les survivants suivent le chemin de leurs origines."
+msgstr "The battle is over. The survivors are travelling home."
+
+#: simulation/templates/simulation/chronicle_decrees.html:197
+msgid ""
+"L’ordre a suivi son cours. Ses nouvelles figurent dans votre correspondance."
+msgstr "The order has run its course. Its news is in your letters."
+
+#: simulation/templates/simulation/chronicle_decrees.html:199
+msgid ""
+"Cet ordre a pris son cours. Les nouvelles vous parviendront à leur échéance."
+msgstr "This order has taken effect. News will reach you when it is due."
+
+#: simulation/templates/simulation/chronicle_decrees.html:205
+msgid "Retirer ce décret"
+msgstr "Withdraw this decree"
+
+#: simulation/templates/simulation/chronicle_decrees.html:211
+msgid ""
+"Vous n’avez encore scellé aucun décret. Le premier mot vous appartient."
+msgstr "You have not sealed a decree yet. The first word is yours."
+
+#: simulation/templates/simulation/decree_letter.html:3
+msgid "Le décret à sceller · Yaara"
+msgstr "The decree to seal · Yaara"
+
+#: simulation/templates/simulation/decree_letter.html:6
+msgid "Relu par votre scribe, avant l’apposition du sceau"
+msgstr "Read back by your scribe, before the seal is affixed"
+
+#: simulation/templates/simulation/decree_letter.html:10
+msgid "Monseigneur, voici les termes que j’ai couchés pour vous."
+msgstr "My lord, here are the terms I have written for you."
+
+#: simulation/templates/simulation/decree_letter.html:12
+msgid "Que l’on consacre à cet ordre"
+msgstr "Let us devote to this order"
+
+#: simulation/templates/simulation/decree_letter.html:12
+msgid ""
+". Les fonds seront engagés lorsque vous scellerez ce décret, puis dépensés à"
+" son entrée en vigueur, au mois"
+msgstr ""
+". The funds will be reserved when you seal this decree and spent when it "
+"takes effect, in moon"
+
+#: simulation/templates/simulation/decree_letter.html:16
+msgid "Que nos hommes se portent vers"
+msgstr "Let our people march towards"
+
+#: simulation/templates/simulation/decree_letter.html:16
+msgid ", avec pour mission de"
+msgstr ", with orders to"
+
+#: simulation/templates/simulation/decree_letter.html:16
+msgid ". Qu’ils partent au mois"
+msgstr ". Let them depart in moon"
+
+#: simulation/templates/simulation/decree_letter.html:16
+msgid ", livrent combat au mois"
+msgstr ", fight in moon"
+
+#: simulation/templates/simulation/decree_letter.html:16
+msgid ", et que les survivants regagnent leurs origines au mois"
+msgstr ", and let the survivors return to their origins in moon"
+
+#: simulation/templates/simulation/decree_letter.html:18
+msgid "Les hommes engagés"
+msgstr "The people committed"
+
+#: simulation/templates/simulation/decree_letter.html:21
+msgid "Que"
+msgstr "Let"
+
+#: simulation/templates/simulation/decree_letter.html:21
+msgid "fournisse"
+msgstr "provide"
+
+#: simulation/templates/simulation/decree_letter.html:21
+msgid "à cette expédition."
+msgstr "to this expedition."
+
+#: simulation/templates/simulation/decree_letter.html:25
+msgid "Les ouvrages confiés à nos cités"
+msgstr "The works entrusted to our cities"
+
+#: simulation/templates/simulation/decree_letter.html:28
+msgid "À"
+msgstr "To"
+
+#: simulation/templates/simulation/decree_letter.html:28
+msgid ", que l’on entreprenne les travaux suivants :"
+msgstr ", let the following works begin:"
+
+#: simulation/templates/simulation/decree_letter.html:28
+msgid ". L’ouvrage sera achevé au mois"
+msgstr ". The work will be completed in moon"
+
+#: simulation/templates/simulation/decree_letter.html:33
+msgid ""
+"Que les maîtres de la forge entreprennent leur projet pour toutes nos "
+"possessions. Qu’ils en rendent compte au mois"
+msgstr ""
+"Let the masters of the forge begin their project for all our lands. Let them"
+" report in moon"
+
+#: simulation/templates/simulation/decree_letter.html:33
+msgid ", date de son achèvement."
+msgstr ", when it will be completed."
+
+#: simulation/templates/simulation/decree_letter.html:36
+msgid "La part demandée aux greniers"
+msgstr "The share requested from the granaries"
+
+#: simulation/templates/simulation/decree_letter.html:38
+msgid ""
+"Chaque cité contribuera selon ses réserves libres. Je garderai ce partage "
+"avec le décret ; au départ, les fonds seront prélevés dans ces mêmes "
+"greniers."
+msgstr ""
+"Each city will contribute according to its free reserves. I will keep this "
+"allocation with the decree; at departure, funds will be taken from those "
+"same granaries."
+
+#: simulation/templates/simulation/decree_letter.html:42
+msgid "Du grenier de"
+msgstr "From the granary of"
+
+#: simulation/templates/simulation/decree_letter.html:47
+msgid ""
+"Tant que le mois n’est pas clos, vous pourrez retirer ce décret et libérer "
+"les moyens promis. Après le départ, les frais seront définitivement "
+"dépensés."
+msgstr ""
+"Until the moon closes, you may withdraw this decree and release its promised"
+" resources. After departure, its costs are spent permanently."
+
+#: simulation/templates/simulation/decree_letter.html:49
+msgid ""
+"Votre sceau rendra cet ordre définitif. Aucune annulation ne sera possible."
+msgstr ""
+"Your seal will make this order final. Cancellation will not be possible."
+
+#: simulation/templates/simulation/decree_letter.html:54
+msgid ""
+"Le premier sceau accepté engage la cible jusqu’à la résolution du combat. "
+"Nos hommes défendront encore leurs foyers tant qu’ils n’auront pas pris la "
+"route."
+msgstr ""
+"The first accepted seal engages the target until the battle is resolved. Our"
+" people will still defend their homes until they depart."
+
+#: simulation/templates/simulation/decree_letter.html:57
+msgid ""
+"Les ouvrages actuels resteront en service jusqu’à l’achèvement du chantier."
+msgstr "Existing works will remain in service until construction is complete."
+
+#: simulation/templates/simulation/decree_letter.html:60
+msgid "J’attends votre sceau."
+msgstr "I await your seal."
+
+#: simulation/templates/simulation/decree_letter.html:67
+msgid "Sceller ce décret"
+msgstr "Seal this decree"
+
+#: simulation/templates/simulation/decree_letter.html:70
+msgid "Reprendre la plume sans rien engager."
+msgstr "Take up the quill again without committing anything."
+
+#: simulation/templates/simulation/error.html:3
+msgid "Le chemin s’interrompt · Yaara"
+msgstr "The path ends here · Yaara"
+
+#: simulation/templates/simulation/error.html:7
+msgid "Le chemin s’interrompt."
+msgstr "The path ends here."
+
+#: simulation/templates/simulation/error.html:10
+msgid ""
+"Cette page ne relève pas de votre autorité. Reconnectez-vous si votre "
+"session a expiré."
+msgstr ""
+"This page is outside your authority. Sign in again if your session has "
+"expired."
+
+#: simulation/templates/simulation/error.html:12
+msgid "Cette page ne figure pas dans nos registres."
+msgstr "This page is not in our records."
+
+#: simulation/templates/simulation/error.html:14
+msgid ""
+"Le scribe ne peut pas répondre pour le moment. Votre dernier mois confirmé "
+"reste enregistré."
+msgstr ""
+"The scribe cannot answer at present. Your last confirmed moon remains "
+"recorded."
+
+#: simulation/templates/simulation/error.html:17
+msgid "Retrouver mes règnes"
+msgstr "Find my reigns"
+
+#: simulation/templates/simulation/home.html:6
+msgid "LE LIVRE DES RÈGNES"
+msgstr "THE BOOK OF REIGNS"
+
+#: simulation/templates/simulation/home.html:7
+msgid "Chaque règne, une histoire."
+msgstr "Every reign, a story."
+
+#: simulation/templates/simulation/home.html:8
+msgid ""
+"Retrouvez vos possessions ou inscrivez une nouvelle maison dans les "
+"chroniques."
+msgstr "Return to your lands or record a new house in the chronicles."
+
+#: simulation/templates/simulation/home.html:14
+msgid "TERRE CRUE · OASIS · RIVALITÉS"
+msgstr "EARTH · OASES · RIVALRIES"
+
+#: simulation/templates/simulation/home.html:16
+msgid "Le désert n’offre pas de couronne."
+msgstr "The desert offers no crown."
+
+#: simulation/templates/simulation/home.html:18
+msgid "Il faut la gagner."
+msgstr "It must be earned."
+
+#: simulation/templates/simulation/home.html:21
+msgid "Gouvernez trois cités. Faites prospérer vos terres."
+msgstr "Rule three cities. Let your lands prosper."
+
+#: simulation/templates/simulation/home.html:23
+msgid "Étendez votre autorité, un mois après l’autre."
+msgstr "Extend your authority, one moon at a time."
+
+#: simulation/templates/simulation/home.html:29
+msgid "Vos chroniques"
+msgstr "Your chronicles"
+
+#: simulation/templates/simulation/home.html:30
+#, python-format
+msgid "%(count)s règne"
+msgid_plural "%(count)s règnes"
+msgstr[0] "%(count)s reign"
+msgstr[1] "%(count)s reigns"
+
+#: simulation/templates/simulation/home.html:38
+msgid "Règne achevé"
+msgstr "Reign ended"
+
+#: simulation/templates/simulation/home.html:45
+#, python-format
+msgid "%(count)s cité sous votre autorité"
+msgid_plural "%(count)s cités sous votre autorité"
+msgstr[0] "%(count)s city under your authority"
+msgstr[1] "%(count)s cities under your authority"
+
+#: simulation/templates/simulation/home.html:47
+#, python-format
+msgid "Mois %(p0)s / %(p1)s"
+msgstr "Moon %(p0)s / %(p1)s"
+
+#: simulation/templates/simulation/home.html:52
+msgid "La première page est encore blanche."
+msgstr "The first page is still blank."
+
+#: simulation/templates/simulation/home.html:53
+msgid ""
+"Créez votre règne. Le mode manuel vous laisse tout le temps de découvrir "
+"Yaara."
+msgstr ""
+"Begin your reign. Manual mode gives you all the time you need to discover "
+"Yaara."
+
+#: simulation/templates/simulation/home.html:54
+msgid "Fonder ma maison"
+msgstr "Found my house"
+
+#: simulation/templates/simulation/language_switch.html:6
+msgid "Langue"
+msgstr "Language"
+
+#: simulation/templates/simulation/language_switch.html:11
+msgid "Choisir"
+msgstr "Choose"
+
+#: simulation/templates/simulation/letter_entries.html:5
+#, python-format
+msgid "Mois %(p0)s"
+msgstr "Moon %(p0)s"
+
+#: simulation/templates/simulation/letter_entries.html:10
+#, python-format
+msgid "Consigné par votre scribe, au mois %(p0)s."
+msgstr "Recorded by your scribe, in moon %(p0)s."
+
+#: simulation/templates/simulation/letter_entries.html:14
+msgid ""
+"Le scribe n’a rien de nouveau à consigner. Un mois paisible n’exige pas de "
+"lettre."
+msgstr ""
+"The scribe has no new events to record. A peaceful moon needs no letter."
+
+#: simulation/templates/simulation/manuscript.html:18
+msgid "Aller au récit"
+msgstr "Skip to the story"
+
+#: simulation/templates/simulation/manuscript.html:21
+msgid "Yaara"
+msgstr "Yaara"
+
+#: simulation/templates/simulation/manuscript.html:23
+msgid "Les feuillets de votre règne"
+msgstr "The pages of your reign"
+
+#: simulation/templates/simulation/manuscript.html:34
+msgid "Aller à la fin du mois"
+msgstr "Go to the end of the moon"
+
+#: simulation/templates/simulation/manuscript.html:54
+msgid "Refermer ce livre"
+msgstr "Close this book"
+
+#: simulation/templates/simulation/manuscript.html:55
+#, python-format
+msgid "Règles %(p0)s"
+msgstr "Rules %(p0)s"
+
+#: simulation/templates/simulation/new_game.html:3
+msgid "Un nouveau règne · Yaara"
+msgstr "A new reign · Yaara"
+
+#: simulation/templates/simulation/new_game.html:7
+msgid "OUVRIR LES CHRONIQUES"
+msgstr "OPEN THE CHRONICLES"
+
+#: simulation/templates/simulation/new_game.html:8
+msgid "Un nouveau règne."
+msgstr "A new reign."
+
+#: simulation/templates/simulation/new_game.html:9
+msgid ""
+"Choisissez le rythme de votre histoire. Ces règles resteront celles de votre"
+" partie."
+msgstr ""
+"Choose the pace of your story. These rules will remain in force for your "
+"game."
+
+#: simulation/templates/simulation/new_game.html:14
+msgid "Le nom et le calendrier"
+msgstr "The name and calendar"
+
+#: simulation/templates/simulation/new_game.html:18
+msgid "Apposer mon sceau"
+msgstr "Affix my seal"
+
+#: simulation/templates/simulation/new_game.html:24
+msgid "VOTRE POINT DE DÉPART"
+msgstr "YOUR STARTING POSITION"
+
+#: simulation/templates/simulation/new_game.html:25
+msgid "Trois cités, un avenir."
+msgstr "Three cities, one future."
+
+#: simulation/templates/simulation/new_game.html:28
+msgid "3 000 habitants"
+msgstr "3,000 inhabitants"
+
+#: simulation/templates/simulation/new_game.html:28
+msgid "dont 300 Fidèles mobilisables"
+msgstr "including 300 Faithful available to mobilise"
+
+#: simulation/templates/simulation/new_game.html:31
+msgid "1 800 000 Mesures"
+msgstr "1,800,000 Measures"
+
+#: simulation/templates/simulation/new_game.html:31
+msgid "600 000 dans chaque cité"
+msgstr "600,000 in each city"
+
+#: simulation/templates/simulation/new_game.html:34
+msgid "Une récolte annuelle"
+msgstr "An annual harvest"
+
+#: simulation/templates/simulation/new_game.html:34
+msgid "Premier versement au mois 12"
+msgstr "First payment in moon 12"
+
+#: simulation/templates/simulation/new_game.html:38
+msgid ""
+"La capture est volontairement hors de portée des réserves initiales. "
+"Préparez votre économie avant de lancer de grandes campagnes."
+msgstr ""
+"Capture is deliberately beyond the initial reserves. Prepare your economy "
+"before launching great campaigns."
+
+#: simulation/templates/simulation/new_game.html:42
+msgid "LE CONSEIL DU SCRIBE"
+msgstr "THE SCRIBE’S COUNSEL"
+
+#: simulation/templates/simulation/new_game.html:44
+msgid ""
+"Pour une première partie, choisissez les règles V1 et le calendrier manuel. "
+"Vous pourrez lire chaque nouvelle avant de passer au mois suivant."
+msgstr ""
+"For a first game, choose V1 rules and the manual calendar. You can read "
+"every report before advancing to the next moon."
+
+#: simulation/templates/simulation/new_game.html:47
+msgid ""
+"Avec le calendrier automatique, les rivaux avancent même lorsque vous êtes "
+"absent. La pause suspend toute la partie."
+msgstr ""
+"With an automatic calendar, rivals act even while you are away. Pausing "
+"suspends the entire game."
+
+#: simulation/views.py:65
+msgid "La création de comptes est actuellement fermée."
+msgstr "Account creation is currently closed."
+
+#: simulation/views.py:183
+msgid "Les effectifs doivent être des nombres entiers."
+msgstr "Troop counts must be whole numbers."
+
+#: simulation/views.py:263
+msgid ""
+"J’ai reçu votre sceau. Les moyens promis attendent l’entrée en vigueur de "
+"votre décret."
+msgstr ""
+"I have received your seal. The promised resources await your decree taking "
+"effect."
+
+#: simulation/views.py:271
+msgid "Ce devis n’est plus valable. Préparez à nouveau votre décret."
+msgstr "This estimate is no longer valid. Prepare your decree again."
+
+#: simulation/views.py:285
+msgid ""
+"J’ai retiré ce décret de nos engagements. Les moyens qu’il promettait sont "
+"de nouveau libres."
+msgstr ""
+"I have withdrawn this decree from our commitments. Its promised resources "
+"are free again."
+
+#: simulation/views.py:304
+#, python-brace-format
+msgid ""
+"Le mois {p0} est désormais consigné dans ces chroniques. Voici les nouvelles"
+" qui nous sont parvenues."
+msgstr ""
+"Moon {p0} is now recorded in these chronicles. Here is the news that has "
+"reached us."
+
+#: simulation/views.py:312
+msgid ""
+"Ce mois figure déjà dans nos chroniques. Je n’en ai pas répété les "
+"événements."
+msgstr ""
+"This moon is already in our chronicles. I have not repeated its events."
+
+#: simulation/views.py:320
+msgid "Le mois demandé est invalide."
+msgstr "The requested moon is invalid."
 
 msgid " Faute de place, {value0} autres n’ont pu être conservées."
 msgstr " There was no room to preserve {value0} more."
-
-msgid " Toutes les réservations sont libérées."
-msgstr " All reservations are released."
-
-msgid " Une autre expédition pourra désormais engager la cible."
-msgstr " Another expedition may now claim the target."
 
 msgid "%(v0)s Fidèles libres de partir."
 msgstr "%(v0)s Faithful free to depart."
@@ -26,35 +2332,18 @@ msgstr "%(v0)s belongs to <strong>%(v1)s</strong>."
 msgid "%(v0)s règne%(v1)s"
 msgstr "%(v0)s reign%(v1)s"
 
-msgid "1 800 000 Mesures"
-msgstr "1,800,000 Measures"
-
 msgid "1. Dicter · 2. Relire et sceller · 3. Clore la lune"
 msgstr "1. Dictate · 2. Review & seal · 3. Close the Moon"
-
-msgid "10 ans · 120 mois"
-msgstr "10 years · 120 moons"
-
-msgid "2 ans · 24 mois"
-msgstr "2 years · 24 moons"
-
-msgid "20 ans · 240 mois"
-msgstr "20 years · 240 moons"
-
-msgid "3 000 habitants"
-msgstr "3,000 inhabitants"
-
-msgid "5 ans · 60 mois"
-msgstr "5 years · 60 moons"
-
-msgid "600 000 dans chaque cité"
-msgstr "600,000 in each city"
 
 msgid "<strong>%(v0)s Fidèles</strong> libres"
 msgstr "<strong>%(v0)s Faithful</strong> free"
 
-msgid "<strong>%(v0)s Mesures</strong> ; <strong>%(v1)s lunes</strong>, selon notre population actuelle."
-msgstr "<strong>%(v0)s Measures</strong>; <strong>%(v1)s moons</strong>, based on our current population."
+msgid ""
+"<strong>%(v0)s Mesures</strong> ; <strong>%(v1)s lunes</strong>, selon notre"
+" population actuelle."
+msgstr ""
+"<strong>%(v0)s Measures</strong>; <strong>%(v1)s moons</strong>, based on "
+"our current population."
 
 msgid "<strong>%(v0)s Mesures</strong> ; <strong>%(v1)s lunes</strong>."
 msgstr "<strong>%(v0)s Measures</strong>; <strong>%(v1)s moons</strong>."
@@ -62,44 +2351,31 @@ msgstr "<strong>%(v0)s Measures</strong>; <strong>%(v1)s moons</strong>."
 msgid "<strong>%(v0)s Mesures</strong> libres"
 msgstr "<strong>%(v0)s Measures</strong> free"
 
-msgid "<strong>%(v0)s Mesures</strong>. Entrée en vigueur prévue à la lune <strong>%(v2)s</strong>."
-msgstr "<strong>%(v0)s Measures</strong>. Scheduled to take effect in Moon <strong>%(v2)s</strong>."
+msgid ""
+"<strong>%(v0)s Mesures</strong>. Entrée en vigueur prévue à la lune "
+"<strong>%(v2)s</strong>."
+msgstr ""
+"<strong>%(v0)s Measures</strong>. Scheduled to take effect in Moon "
+"<strong>%(v2)s</strong>."
 
-msgid "<strong>%(v0)s habitants</strong> ; <strong>%(v1)s Fidèles</strong> libres.<br>Le grenier abrite <strong>%(v2)s</strong> Mesures sur <strong>%(v3)s</strong>."
-msgstr "<strong>%(v0)s inhabitants</strong>; <strong>%(v1)s Faithful</strong> free.<br>The granary holds <strong>%(v2)s</strong> Measures out of <strong>%(v3)s</strong>."
+msgid ""
+"<strong>%(v0)s habitants</strong> ; <strong>%(v1)s Fidèles</strong> "
+"libres.<br>Le grenier abrite <strong>%(v2)s</strong> Mesures sur "
+"<strong>%(v3)s</strong>."
+msgstr ""
+"<strong>%(v0)s inhabitants</strong>; <strong>%(v1)s Faithful</strong> "
+"free.<br>The granary holds <strong>%(v2)s</strong> Measures out of "
+"<strong>%(v3)s</strong>."
 
 msgid "<strong>%(v0)s</strong> figure au premier rang."
 msgstr "<strong>%(v0)s</strong> holds first place."
 
-msgid "<strong>%(v0)s</strong> gouverne <strong>%(v1)s cités</strong> et figure au <strong>rang %(v2)s</strong>."
-msgstr "<strong>%(v0)s</strong> governs <strong>%(v1)s cities</strong> and holds <strong>rank %(v2)s</strong>."
-
-msgid "Achevé"
-msgstr "Completed"
-
-msgid "Agrandir le grenier"
-msgstr "Expand the granary"
-
-msgid "Agrandir le stockage"
-msgstr "Expand storage"
-
-msgid "Aller au contenu"
-msgstr "Skip to content"
-
-msgid "Aller au récit"
-msgstr "Skip to the story"
-
-msgid "Aménager les canaux"
-msgstr "Build canals"
-
-msgid "Aménager les premiers canaux"
-msgstr "Build the first canals"
-
-msgid "Annulé"
-msgstr "Cancelled"
-
-msgid "Apposer mon sceau"
-msgstr "Affix my seal"
+msgid ""
+"<strong>%(v0)s</strong> gouverne <strong>%(v1)s cités</strong> et figure au "
+"<strong>rang %(v2)s</strong>."
+msgstr ""
+"<strong>%(v0)s</strong> governs <strong>%(v1)s cities</strong> and holds "
+"<strong>rank %(v2)s</strong>."
 
 msgid "Après le départ, ni rappel ni remboursement ne sont possibles."
 msgstr "After departure, neither recall nor refunds are possible."
@@ -107,17 +2383,12 @@ msgstr "After departure, neither recall nor refunds are possible."
 msgid "Archive originale en français"
 msgstr "Original French archive"
 
-msgid "Assaut victorieux"
-msgstr "Victorious assault"
-
-msgid "Attaque repoussée"
-msgstr "Attack repelled"
-
-msgid "Au premier rang : {value0}. Les opérations encore en route ne modifieront plus ce résultat."
-msgstr "In first place: {value0}. Operations still in progress can no longer change this result."
-
-msgid "Au retour"
-msgstr "Returning"
+msgid ""
+"Au premier rang : {value0}. Les opérations encore en route ne modifieront "
+"plus ce résultat."
+msgstr ""
+"In first place: {value0}. Operations still in progress can no longer change "
+"this result."
 
 msgid "Au service de %(v0)s."
 msgstr "In the service of %(v0)s."
@@ -125,164 +2396,73 @@ msgstr "In the service of %(v0)s."
 msgid "Au terme de la lune %(v0)s"
 msgstr "At the close of Moon %(v0)s"
 
-msgid "Aucun de nos Fidèles n’a perdu la vie dans cette expédition."
-msgstr "None of our Faithful lost their lives on this expedition."
-
-msgid "Aucun fonds, homme ou chantier n’est encore réservé. Relisez les termes, puis apposez votre sceau pour engager <strong>%(v0)s Mesures</strong>."
-msgstr "No funds, people or building teams are reserved yet. Read the terms, then affix your seal to commit <strong>%(v0)s Measures</strong>."
-
-msgid "Aucun homme n’a survécu. Aucun butin n’est déposé."
-msgstr "No man survived. No loot is deposited."
-
-msgid "Aucun survivant ne peut décrire les forces adverses."
-msgstr "No survivor can describe the opposing forces."
+msgid ""
+"Aucun fonds, homme ou chantier n’est encore réservé. Relisez les termes, "
+"puis apposez votre sceau pour engager <strong>%(v0)s Mesures</strong>."
+msgstr ""
+"No funds, people or building teams are reserved yet. Read the terms, then "
+"affix your seal to commit <strong>%(v0)s Measures</strong>."
 
 msgid "Aucune cité ne demeure sous votre sceau."
 msgstr "No city remains beneath your seal."
 
-msgid "Aucune cité ne reconnaît plus votre autorité. Je continuerai pourtant de tenir ce livre jusqu’à la fin du règne."
-msgstr "No city recognizes your authority. I shall keep this book until the reign ends."
+msgid ""
+"Aucune cité ne reconnaît plus votre autorité. Je continuerai pourtant de "
+"tenir ce livre jusqu’à la fin du règne."
+msgstr ""
+"No city recognizes your authority. I shall keep this book until the reign "
+"ends."
 
 msgid "Aucune équipe ne peut recevoir cet ouvrage pour le moment."
 msgstr "No team can undertake this work at present."
 
-msgid "Automatique · le monde avance à échéance"
-msgstr "Automatic · the world advances at the deadline"
+msgid ""
+"Avant la clôture, un décret peut être retiré. Pour le modifier, il faut le "
+"rédiger de nouveau ; sa priorité sur la cible sera perdue."
+msgstr ""
+"Before closure, a decree may be withdrawn. Changing it requires a new draft;"
+" its priority on the target is lost."
 
-msgid "Avant la clôture, un décret peut être retiré. Pour le modifier, il faut le rédiger de nouveau ; sa priorité sur la cible sera perdue."
-msgstr "Before closure, a decree may be withdrawn. Changing it requires a new draft; its priority on the target is lost."
-
-msgid "Avant la clôture, vous pourrez retirer le décret et libérer les moyens promis. Après le départ, les frais seront définitivement dépensés."
-msgstr "Before closure, you may withdraw the decree and free its promised resources. After departure, the cost is spent permanently."
-
-msgid "Avec le calendrier automatique, les rivaux avancent même lorsque vous êtes absent. La pause suspend toute la partie."
-msgstr "With the automatic calendar, rivals act even while you are away. Pausing suspends the whole game."
+msgid ""
+"Avant la clôture, vous pourrez retirer le décret et libérer les moyens "
+"promis. Après le départ, les frais seront définitivement dépensés."
+msgstr ""
+"Before closure, you may withdraw the decree and free its promised resources."
+" After departure, the cost is spent permanently."
 
 msgid "Brouillon sans sceau"
 msgstr "Unsealed draft"
 
-msgid "CHRONIQUES DES OASIS"
-msgstr "CHRONICLES OF THE OASES"
-
-msgid "Cadence du calendrier automatique"
-msgstr "Automatic calendar pace"
-
-msgid "Calendrier"
-msgstr "Calendar"
-
-msgid "Capitulation par pénurie"
-msgstr "Surrender through shortage"
-
 msgid "Capturer la cité"
 msgstr "Capture the city"
 
-msgid "Capturer une cité"
-msgstr "Capture a city"
-
-msgid "Ce Prétendant ne peut plus donner d’ordres."
-msgstr "This claimant can no longer issue orders."
-
-msgid "Ce calendrier n’est pas disponible."
-msgstr "This calendar is unavailable."
-
-msgid "Ce chantier n’existe pas."
-msgstr "This work does not exist."
-
-msgid "Ce devis n’est plus valable. Préparez à nouveau votre décret."
-msgstr "This quote is no longer valid. Prepare your decree again."
-
-msgid "Ce livre est achevé. Vous pouvez le relire ou commencer un autre règne."
+msgid ""
+"Ce livre est achevé. Vous pouvez le relire ou commencer un autre règne."
 msgstr "This book is complete. You may reread it or begin another reign."
-
-msgid "Ce mois figure déjà dans nos chroniques. Je n’en ai pas répété les événements."
-msgstr "This Moon is already in our chronicle. I have not repeated its events."
-
-msgid "Ce mois ne peut pas être résolu. Actualisez la page."
-msgstr "This Moon cannot be resolved. Refresh the page."
-
-msgid "Ce que nous savons de Yaara"
-msgstr "What we know of Yaara"
-
-msgid "Ce que porte déjà votre sceau"
-msgstr "What already bears your seal"
-
-msgid "Ce que vous dicterez"
-msgstr "What you will dictate"
-
-msgid "Ce règne est déjà terminé."
-msgstr "This reign has already ended."
-
-msgid "Ce règne est terminé."
-msgstr "This reign has ended."
-
-msgid "Certains de ces hommes sont déjà promis à une autre expédition."
-msgstr "Some of these men are already promised to another expedition."
-
-msgid "Cet identifiant de confirmation est déjà utilisé."
-msgstr "This confirmation identifier has already been used."
-
-msgid "Cet ordre ne peut plus être annulé."
-msgstr "This order can no longer be cancelled."
-
-msgid "Cet ordre n’est pas reconnu."
-msgstr "This order is not recognized."
-
-msgid "Cette action appartient aux règles V1."
-msgstr "This action is available under V1 rules."
-
-msgid "Cette cité ne relève pas de votre autorité."
-msgstr "This city is outside your authority."
-
-msgid "Cette communauté ne peut rejoindre cette frontière par nos possessions."
-msgstr "This community cannot reach this border through our lands."
-
-msgid "Cette dépense dépasserait les moyens non engagés."
-msgstr "This expense would exceed your uncommitted resources."
-
-msgid "Cette enceinte ne nécessite aucune réparation."
-msgstr "This wall needs no repair."
 
 msgid "Cette expédition demande au moins {value0} Fidèles au total."
 msgstr "This expedition requires at least {value0} Faithful in total."
 
-msgid "Cette page ne figure pas dans nos registres."
-msgstr "This page does not appear in our records."
+msgid ""
+"Chaque cité garde ses propres réserves. Les frais de vos décrets sont "
+"répartis entre nos greniers selon leurs fonds libres ; une place vide "
+"ailleurs ne préserve pas le surplus d’un grenier plein."
+msgstr ""
+"Each city keeps its own reserves. Decree costs are shared across our "
+"granaries according to their free funds; empty space elsewhere cannot "
+"preserve the overflow of a full granary."
 
-msgid "Cette page ne relève pas de votre autorité. Reconnectez-vous si votre session a expiré."
-msgstr "This page is outside your authority. Sign in again if your session has expired."
-
-msgid "Cette partie ne peut pas être suspendue."
-msgstr "This game cannot be paused."
-
-msgid "Cette version des règles n’est pas disponible."
-msgstr "This version of the rules is unavailable."
-
-msgid "Chaque cité garde ses propres réserves. Les frais de vos décrets sont répartis entre nos greniers selon leurs fonds libres ; une place vide ailleurs ne préserve pas le surplus d’un grenier plein."
-msgstr "Each city keeps its own reserves. Decree costs are shared across our granaries according to their free funds; empty space elsewhere cannot preserve the overflow of a full granary."
-
-msgid "Chaque habitant présent produira {yield_per_moon} Mesures d’impôt par lune."
-msgstr "Each present inhabitant will produce {yield_per_moon} Measures of tax per moon."
-
-msgid "Chaque règne, une histoire."
-msgstr "Every reign, a story."
-
-msgid "Choisir"
-msgstr "Apply"
+msgid ""
+"Chaque habitant présent produira {yield_per_moon} Mesures d’impôt par lune."
+msgstr ""
+"Each present inhabitant will produce {yield_per_moon} Measures of tax per "
+"moon."
 
 msgid "Choisir les cités pour cet ouvrage"
 msgstr "Choose cities for this work"
 
 msgid "Choisir toutes les cités disponibles"
 msgstr "Choose all available cities"
-
-msgid "Choisissez au moins une cité, une seule fois chacune."
-msgstr "Choose at least one city, each only once."
-
-msgid "Choisissez le rythme de votre histoire. Ces règles resteront celles de votre partie."
-msgstr "Choose the pace of your story. These rules will remain fixed for your game."
-
-msgid "Choisissez une cité ennemie de cette partie."
-msgstr "Choose an enemy city in this game."
 
 msgid "Cités retenues :"
 msgstr "Cities selected:"
@@ -299,50 +2479,16 @@ msgstr "Close Moon %(v0)s"
 msgid "Comptes arrêtés à la lune %(v0)s"
 msgstr "Accounts through Moon %(v0)s"
 
-msgid "Confirmé"
-msgstr "Confirmed"
-
 msgid "Consigné par votre scribe à la lune %(v0)s."
 msgstr "Recorded by your scribe in Moon %(v0)s."
 
 msgid "Consulter les cités, les routes et les souverains"
 msgstr "Consult cities, roads and rulers"
 
-msgid "Correspondance"
-msgstr "Letters"
-
-msgid "Créer mon compte"
-msgstr "Create my account"
-
-msgid "Créez votre règne. Le mode manuel vous laisse tout le temps de découvrir Yaara."
-msgstr "Begin your reign. The manual calendar gives you time to discover Yaara."
-
-msgid "Dans les terres de Yaara,"
-msgstr "In the lands of Yaara,"
-
-msgid "De la terre et des ouvrages"
-msgstr "Of land and buildings"
-
-msgid "Demander au scribe de rappeler les usages du règne"
-msgstr "Ask the scribe about the customs of the reign"
-
-msgid "Depuis le début du règne, <strong>%(v0)s habitants</strong> ont perdu la vie."
+msgid ""
+"Depuis le début du règne, <strong>%(v0)s habitants</strong> ont perdu la "
+"vie."
 msgstr "Since the reign began, <strong>%(v0)s inhabitants</strong> have died."
-
-msgid "Des canaux à creuser, des frontières à défendre, des cités à rallier. Retrouvez votre place à la table du pouvoir."
-msgstr "Canals to dig, borders to defend, cities to win over. Return to your place at the table of power."
-
-msgid "Des hommes que l’on envoie"
-msgstr "Of those we send forth"
-
-msgid "Deux Prétendants contrôlés par l’ordinateur"
-msgstr "Two computer-controlled claimants"
-
-msgid "Devenir Prétendant"
-msgstr "Become a claimant"
-
-msgid "Devenir Prétendant · Yaara"
-msgstr "Become a claimant · Yaara"
 
 msgid "Dicter"
 msgstr "Dictate"
@@ -350,47 +2496,25 @@ msgstr "Dictate"
 msgid "Dicter le projet d’armement"
 msgstr "Dictate the equipment project"
 
-msgid "Dicter l’ordre d’une expédition"
-msgstr "Dictate an expedition order"
-
 msgid "Dicter un décret pour %(v0)s"
 msgstr "Dictate a decree for %(v0)s"
 
-msgid "Dictez votre intention, puis relisez le brouillon. Seul votre sceau réserve les fonds, les hommes et les équipes. La clôture de la lune mettra les décrets scellés en mouvement."
-msgstr "Dictate your intention, then review the draft. Only your seal reserves funds, people and teams. Closing the Moon sets sealed decrees in motion."
+msgid ""
+"Dictez votre intention, puis relisez le brouillon. Seul votre sceau réserve "
+"les fonds, les hommes et les équipes. La clôture de la lune mettra les "
+"décrets scellés en mouvement."
+msgstr ""
+"Dictate your intention, then review the draft. Only your seal reserves "
+"funds, people and teams. Closing the Moon sets sealed decrees in motion."
 
-msgid "Domaine"
-msgstr "Domain"
-
-msgid "Du grenier de <strong>%(v0)s</strong>, <strong>%(v1)s Mesures</strong>."
-msgstr "From the granary of <strong>%(v0)s</strong>, <strong>%(v1)s Measures</strong>."
-
-msgid "Du travail de la forge"
-msgstr "Of the forge’s work"
-
-msgid "Durée du règne"
-msgstr "Length of the reign"
-
-msgid "Décret retiré"
-msgstr "Decree withdrawn"
-
-msgid "Décret scellé"
-msgstr "Decree sealed"
-
-msgid "Décrets"
-msgstr "Decrees"
+msgid ""
+"Du grenier de <strong>%(v0)s</strong>, <strong>%(v1)s Mesures</strong>."
+msgstr ""
+"From the granary of <strong>%(v0)s</strong>, <strong>%(v1)s "
+"Measures</strong>."
 
 msgid "Décrets scellés pour la lune %(v0)s : <strong>%(v1)s</strong>."
 msgstr "Decrees sealed for Moon %(v0)s: <strong>%(v1)s</strong>."
-
-msgid "Défaite sévère"
-msgstr "Severe defeat"
-
-msgid "Déjà Prétendant ?"
-msgstr "Already a claimant?"
-
-msgid "Désigner une cité à notre portée"
-msgstr "Choose a city within reach"
 
 msgid "Effacer ce choix"
 msgstr "Clear this selection"
@@ -398,38 +2522,27 @@ msgstr "Clear this selection"
 msgid "Effectif réuni :"
 msgstr "Men assembled:"
 
-msgid "En V0, le sceau rend cet ordre définitif. Aucune annulation ne sera possible."
-msgstr "Under V0 rules, your seal makes this order final. Cancellation will not be possible."
+msgid ""
+"En V0, le sceau rend cet ordre définitif. Aucune annulation ne sera "
+"possible."
+msgstr ""
+"Under V0 rules, your seal makes this order final. Cancellation will not be "
+"possible."
 
-msgid "En V0, un sceau est définitif. Aucun décret confirmé ne peut être annulé."
-msgstr "Under V0 rules, a seal is final. A confirmed decree cannot be cancelled."
+msgid ""
+"En V0, un sceau est définitif. Aucun décret confirmé ne peut être annulé."
+msgstr ""
+"Under V0 rules, a seal is final. A confirmed decree cannot be cancelled."
 
-msgid "En V0, une confirmation est définitive."
-msgstr "Under V0 rules, confirmation is final."
-
-msgid "En cours"
-msgstr "In progress"
-
-msgid "Enceinte de terre"
-msgstr "Earthen wall"
-
-msgid "Entrer dans Yaara"
-msgstr "Enter Yaara"
-
-msgid "Expéditions encore en route : <strong>%(v0)s</strong>. Leur retour ne changera plus le résultat du règne."
-msgstr "Expeditions still travelling: <strong>%(v0)s</strong>. Their return can no longer change the result."
-
-msgid "Faire relire ce décret"
-msgstr "Read back this decree"
-
-msgid "Faire relire l’ordre d’expédition"
-msgstr "Read back the expedition order"
+msgid ""
+"Expéditions encore en route : <strong>%(v0)s</strong>. Leur retour ne "
+"changera plus le résultat du règne."
+msgstr ""
+"Expeditions still travelling: <strong>%(v0)s</strong>. Their return can no "
+"longer change the result."
 
 msgid "Faire venir le scribe pour dicter vos ordres"
 msgstr "Summon the scribe to dictate your orders"
-
-msgid "Faites vivre"
-msgstr "Give life to"
 
 msgid "Fidèles"
 msgstr "Faithful"
@@ -440,68 +2553,49 @@ msgstr "Faithful from %(v0)s"
 msgid "Fidèles engagés : <strong>%(count)s</strong>."
 msgstr "Faithful committed: <strong>%(count)s</strong>."
 
-msgid "Fonder ma maison"
-msgstr "Found my house"
+msgid ""
+"Ils transportent <strong>%(v0)s Mesures</strong>, disponibles seulement à "
+"leur retour."
+msgstr ""
+"They carry <strong>%(v0)s Measures</strong>, available only upon return."
 
-msgid "Gouvernez trois cités. Faites prospérer vos terres."
-msgstr "Govern three cities. Help your lands prosper."
+msgid ""
+"Je ne peux recevoir de nouveaux décrets tant que le calendrier est suspendu "
+"ou le règne achevé."
+msgstr ""
+"I cannot receive new decrees while the calendar is paused or the reign has "
+"ended."
 
-msgid "Grande enceinte"
-msgstr "Great wall"
+msgid ""
+"J’ai fait inscrire le retour de {value0} Fidèles à {value1}. Ils rejoignent "
+"les présents de leur cité d’origine. {value2}"
+msgstr ""
+"I have recorded the return of {value0} Faithful to {value1}. They rejoin "
+"those present in their city of origin. {value2}"
 
-msgid "Il faut la gagner."
-msgstr "You must earn it."
+msgid ""
+"J’ai placé sous votre sceau cet ordre : {value0}. Les greniers promettent "
+"{value1} Mesures, qui ne seront dépensées qu’au départ, au mois {value2}. "
+"Les hommes et les emplacements nécessaires vous sont désormais réservés."
+msgstr ""
+"I have placed this order under your seal: {value0}. The granaries promise "
+"{value1} Measures, to be spent only when the order takes effect in Moon "
+"{value2}. The necessary men and building slots are now reserved for you."
 
-msgid "Il faut réparer l’enceinte avant de la renforcer."
-msgstr "Repair the wall before strengthening it."
+msgid ""
+"J’ai réuni les cent dernières lettres qui vous sont destinées. Chacune garde"
+" sa date ; les observations d’hier ne décrivent pas nécessairement les "
+"forces d’aujourd’hui."
+msgstr ""
+"I have gathered the last hundred letters addressed to you. Each retains its "
+"date; yesterday’s observations may not describe today’s forces."
 
-msgid "Ils ne rapportent pas de butin."
-msgstr "They bring back no loot."
-
-msgid "Ils transportent <strong>%(v0)s Mesures</strong>, disponibles seulement à leur retour."
-msgstr "They carry <strong>%(v0)s Measures</strong>, available only upon return."
-
-msgid "Invalidé"
-msgstr "Invalidated"
-
-msgid "Je ne peux recevoir de nouveaux décrets tant que le calendrier est suspendu ou le règne achevé."
-msgstr "I cannot receive new decrees while the calendar is paused or the reign has ended."
-
-msgid "J’ai fait inscrire le retour de {value0} Fidèles à {value1}. Ils rejoignent les présents de leur cité d’origine. {value2}"
-msgstr "I have recorded the return of {value0} Faithful to {value1}. They rejoin those present in their city of origin. {value2}"
-
-msgid "J’ai fait ouvrir les registres de vos trois cités. Leurs habitants reconnaissent votre autorité, mais il nous appartient encore de préparer les années qui viennent. Chaque cité gardera ses réserves ; pour vos dépenses, je demanderai à tous les greniers de contribuer selon leurs moyens. La première récolte nous sera versée au mois 12. D’ici là, je tiendrai compte des hommes partis et des ouvrages que vous aurez ordonnés."
-msgstr "I have opened the registers of your three cities. Their inhabitants recognize your authority, but the years ahead still require preparation. Each city keeps its reserves; for your expenses, I shall ask every granary to contribute according to its means. The first harvest arrives at the close of Moon 12. Until then, I shall account for those who leave and the works you order."
-
-msgid "J’ai placé sous votre sceau cet ordre : {value0}. Les greniers promettent {value1} Mesures, qui ne seront dépensées qu’au départ, au mois {value2}. Les hommes et les emplacements nécessaires vous sont désormais réservés."
-msgstr "I have placed this order under your seal: {value0}. The granaries promise {value1} Measures, to be spent only when the order takes effect in Moon {value2}. The necessary men and building slots are now reserved for you."
-
-msgid "J’ai retiré ce décret de nos engagements. Les moyens qu’il promettait sont de nouveau libres."
-msgstr "I have withdrawn this decree from our commitments. The resources it promised are free again."
-
-msgid "J’ai reçu votre sceau. Les moyens promis attendent l’entrée en vigueur de votre décret."
-msgstr "I have received your seal. The promised resources await your decree taking effect."
-
-msgid "J’ai réuni les cent dernières lettres qui vous sont destinées. Chacune garde sa date ; les observations d’hier ne décrivent pas nécessairement les forces d’aujourd’hui."
-msgstr "I have gathered the last hundred letters addressed to you. Each retains its date; yesterday’s observations may not describe today’s forces."
-
-msgid "J’ouvre ce livre au premier jour de votre règne. Voici les terres et les moyens que vous confiez à ma plume."
-msgstr "I open this book on the first day of your reign. Here are the lands and resources entrusted to my pen."
-
-msgid "LE BUREAU DU PRÉTENDANT"
-msgstr "THE CLAIMANT’S DESK"
-
-msgid "LE CONSEIL DU SCRIBE"
-msgstr "THE SCRIBE’S COUNSEL"
-
-msgid "LE LIVRE DES RÈGNES"
-msgstr "THE BOOK OF REIGNS"
-
-msgid "LE SABLE GARDE LA MÉMOIRE"
-msgstr "THE SAND REMEMBERS"
-
-msgid "LES CITÉS DU DÉSERT"
-msgstr "THE DESERT CITIES"
+msgid ""
+"J’ouvre ce livre au premier jour de votre règne. Voici les terres et les "
+"moyens que vous confiez à ma plume."
+msgstr ""
+"I open this book on the first day of your reign. Here are the lands and "
+"resources entrusted to my pen."
 
 msgid "La bataille de {value0}"
 msgstr "The battle of {value0}"
@@ -509,38 +2603,30 @@ msgstr "The battle of {value0}"
 msgid "La capacité de ce grenier passera à {capacity} Mesures."
 msgstr "This granary’s capacity will increase to {capacity} Measures."
 
-msgid "La capture est volontairement hors de portée des réserves initiales. Préparez votre économie avant de lancer de grandes campagnes."
-msgstr "Your initial reserves cannot fund a capture. Prepare your economy before launching major campaigns."
+msgid ""
+"La cité compte <strong>%(v0)s habitants</strong>, dont "
+"<strong>%(v1)s</strong> sont présents.<br><strong>%(v2)s Fidèles</strong> "
+"sont libres de recevoir un ordre ; <strong>%(v3)s</strong> sont promis à une"
+" expédition et <strong>%(v4)s</strong> sont en route."
+msgstr ""
+"The city has <strong>%(v0)s inhabitants</strong>, of whom "
+"<strong>%(v1)s</strong> are present.<br><strong>%(v2)s Faithful</strong> are"
+" free for orders; <strong>%(v3)s</strong> are promised to expeditions and "
+"<strong>%(v4)s</strong> are travelling."
 
-msgid "La cité compte <strong>%(v0)s habitants</strong>, dont <strong>%(v1)s</strong> sont présents.<br><strong>%(v2)s Fidèles</strong> sont libres de recevoir un ordre ; <strong>%(v3)s</strong> sont promis à une expédition et <strong>%(v4)s</strong> sont en route."
-msgstr "The city has <strong>%(v0)s inhabitants</strong>, of whom <strong>%(v1)s</strong> are present.<br><strong>%(v2)s Faithful</strong> are free for orders; <strong>%(v3)s</strong> are promised to expeditions and <strong>%(v4)s</strong> are travelling."
+msgid ""
+"La clôture fait entrer les décrets scellés en vigueur et avance les ouvrages"
+" et les expéditions. Un brouillon sans sceau n’engage rien."
+msgstr ""
+"Closing the Moon puts sealed decrees into effect and advances works and "
+"expeditions. An unsealed draft commits nothing."
 
-msgid "La cité ou l’état de l’enceinte ne permet plus ces travaux."
-msgstr "The city or the state of its wall no longer permits these works."
-
-msgid "La cité tient le siège"
-msgstr "The city withstands the siege"
-
-msgid "La clôture est déjà atteinte ; attendez son traitement avant de suspendre la partie."
-msgstr "Closure is already due; wait for it to be processed before pausing the game."
-
-msgid "La clôture fait entrer les décrets scellés en vigueur et avance les ouvrages et les expéditions. Un brouillon sans sceau n’engage rien."
-msgstr "Closing the Moon puts sealed decrees into effect and advances works and expeditions. An unsealed draft commits nothing."
-
-msgid "La configuration de cette partie est invalide."
-msgstr "This game’s configuration is invalid."
-
-msgid "La création de comptes est actuellement fermée."
-msgstr "Account creation is currently closed."
-
-msgid "La dernière page du règne"
-msgstr "The last page of the reign"
-
-msgid "La forge a achevé son œuvre"
-msgstr "The forge has completed its work"
-
-msgid "La forge équipera aussi les populations qui rejoindront votre maison. Le devis fixe le prix selon la population actuelle."
-msgstr "The forge will also equip populations joining your house. The quote fixes the price using the current population."
+msgid ""
+"La forge équipera aussi les populations qui rejoindront votre maison. Le "
+"devis fixe le prix selon la population actuelle."
+msgstr ""
+"The forge will also equip populations joining your house. The quote fixes "
+"the price using the current population."
 
 msgid "La garnison locale sera mieux protégée contre les captures."
 msgstr "The local garrison will be better protected against capture."
@@ -548,32 +2634,18 @@ msgstr "The local garrison will be better protected against capture."
 msgid "La ligue d’Azal"
 msgstr "La ligue d’Azal"
 
-msgid "La lune {moon} est désormais consignée dans ces chroniques. Voici les nouvelles qui nous sont parvenues."
-msgstr "Moon {moon} is now recorded in this chronicle. Here are the tidings that reached us."
-
-msgid "La maison d’Ambre"
-msgstr "La maison d’Ambre"
+msgid ""
+"La lune {moon} est désormais consignée dans ces chroniques. Voici les "
+"nouvelles qui nous sont parvenues."
+msgstr ""
+"Moon {moon} is now recorded in this chronicle. Here are the tidings that "
+"reached us."
 
 msgid "La nouvelle de cette expédition nous est parvenue. {value0} "
 msgstr "News of this expedition has reached us. {value0} "
 
-msgid "La part demandée aux greniers"
-msgstr "The share drawn from the granaries"
-
-msgid "La partie est en pause. Reprenez le calendrier pour donner un ordre."
-msgstr "The game is paused. Resume the calendar to issue an order."
-
-msgid "La première page est encore blanche."
-msgstr "The first page is still blank."
-
-msgid "La prochaine clôture n’est pas encore atteinte."
-msgstr "The next closure is not due yet."
-
 msgid "La prochaine lune sera close à %(v0)s UTC."
 msgstr "The next Moon closes at %(v0)s UTC."
-
-msgid "La protection contre le pillage est encore active."
-msgstr "Protection against raids is still active."
 
 msgid "La récolte de {value0}"
 msgstr "The harvest of {value0}"
@@ -581,59 +2653,28 @@ msgstr "The harvest of {value0}"
 msgid "La réparation rend à une enceinte endommagée sa protection."
 msgstr "Repairs restore the protection of a damaged wall."
 
-msgid "La situation a changé depuis ce devis. Vérifiez à nouveau vos moyens."
-msgstr "The situation has changed since this quote. Check your resources again."
-
-msgid "Langue"
-msgstr "Language"
-
-msgid "Le calendrier a changé. Préparez à nouveau votre décret."
-msgstr "The calendar has changed. Prepare your decree again."
-
-msgid "Le calendrier de cette partie est arrêté."
-msgstr "This game’s calendar is stopped."
-
-msgid "Le calendrier de cette partie ne peut pas être avancé manuellement."
-msgstr "This game’s calendar cannot be advanced manually."
-
-msgid "Le calendrier est suspendu"
-msgstr "The calendar is paused"
-
-msgid "Le calendrier est suspendu. Reprenez-le avant de dicter de nouveaux ordres."
+msgid ""
+"Le calendrier est suspendu. Reprenez-le avant de dicter de nouveaux ordres."
 msgstr "The calendar is paused. Resume it before dictating new orders."
-
-msgid "Le chemin s’interrompt · Yaara"
-msgstr "The path ends · Yaara"
-
-msgid "Le chemin s’interrompt."
-msgstr "The path ends here."
 
 msgid "Le combat est prévu à la lune <strong>%(v0)s</strong>."
 msgstr "Combat is expected in Moon <strong>%(v0)s</strong>."
 
-msgid "Le combat n’a plus lieu d’être. Les hommes rentrent selon le calendrier prévu, sans remboursement."
-msgstr "Combat no longer serves a purpose. The men return on schedule, without a refund."
-
-msgid "Le cours des chroniques est suspendu."
-msgstr "The chronicle is paused."
-
-msgid "Le cours du règne"
-msgstr "The course of the reign"
-
-msgid "Le décret à sceller · Yaara"
-msgstr "The decree awaiting your seal · Yaara"
-
-msgid "Le désert n’offre pas de couronne."
-msgstr "The desert offers no crown."
-
 msgid "Le feuillet de %(v0)s"
 msgstr "The folio of %(v0)s"
 
-msgid "Le financement réservé n’est plus disponible."
-msgstr "The reserved funding is no longer available."
-
-msgid "Le grenier conserve <strong>%(v0)s Mesures</strong> sur <strong>%(v1)s</strong>.<br><strong>%(v2)s Mesures</strong> sont libres, et <strong>%(v3)s</strong> sont réservées.<br>Le prélèvement en préparation atteint <strong>%(v4)s Mesures</strong>. Chaque habitant présent y ajoute <strong>%(v5)s Mesures par lune</strong>."
-msgstr "The granary holds <strong>%(v0)s Measures</strong> out of <strong>%(v1)s</strong>.<br><strong>%(v2)s Measures</strong> are free, and <strong>%(v3)s</strong> are reserved.<br>Accrued tax stands at <strong>%(v4)s Measures</strong>. Each present inhabitant adds <strong>%(v5)s Measures per moon</strong>."
+msgid ""
+"Le grenier conserve <strong>%(v0)s Mesures</strong> sur "
+"<strong>%(v1)s</strong>.<br><strong>%(v2)s Mesures</strong> sont libres, et "
+"<strong>%(v3)s</strong> sont réservées.<br>Le prélèvement en préparation "
+"atteint <strong>%(v4)s Mesures</strong>. Chaque habitant présent y ajoute "
+"<strong>%(v5)s Mesures par lune</strong>."
+msgstr ""
+"The granary holds <strong>%(v0)s Measures</strong> out of "
+"<strong>%(v1)s</strong>.<br><strong>%(v2)s Measures</strong> are free, and "
+"<strong>%(v3)s</strong> are reserved.<br>Accrued tax stands at "
+"<strong>%(v4)s Measures</strong>. Each present inhabitant adds "
+"<strong>%(v5)s Measures per moon</strong>."
 
 msgid "Le grenier et le prélèvement"
 msgstr "Granary and tax"
@@ -641,77 +2682,87 @@ msgstr "Granary and tax"
 msgid "Le grenier reçoit {value0} Mesures de leur butin."
 msgstr "The granary receives {value0} Measures of their loot."
 
-msgid "Le livre des règnes"
-msgstr "The book of reigns"
+msgid ""
+"Le nom du souverain a changé dans les registres de {value0}. La cité relève "
+"désormais de {value1} ; c’est tout ce que cette nouvelle publique nous "
+"apprend."
+msgstr ""
+"The ruler’s name has changed in the registers of {value0}. The city now "
+"belongs to {value1}; that is all this public report tells us."
 
-msgid "Le mois demandé est invalide."
-msgstr "The requested Moon is invalid."
+msgid ""
+"Le prix est partagé selon les fonds libres de chaque cité. Ce partage sera "
+"conservé avec le décret."
+msgstr ""
+"The cost is shared according to each city’s free funds. These shares will be"
+" kept with the decree."
 
-msgid "Le mois est clos. Vérifiez le départ et le devis du mois suivant."
-msgstr "The Moon is closed. Check the departure and quote for the next Moon."
-
-msgid "Le niveau maximal de cet ouvrage est déjà atteint."
-msgstr "This work is already at its maximum level."
-
-msgid "Le nom du souverain a changé dans les registres de {value0}. La cité relève désormais de {value1} ; c’est tout ce que cette nouvelle publique nous apprend."
-msgstr "The ruler’s name has changed in the registers of {value0}. The city now belongs to {value1}; that is all this public report tells us."
-
-msgid "Le nom et le calendrier"
-msgstr "Name and calendar"
-
-msgid "Le prix est partagé selon les fonds libres de chaque cité. Ce partage sera conservé avec le décret."
-msgstr "The cost is shared according to each city’s free funds. These shares will be kept with the decree."
-
-msgid "Le prochain prélèvement sera versé à la clôture de la <strong>lune %(v0)s</strong>, dans <strong>%(v1)s lunes</strong>.<br>J’ai inscrit <strong>%(v2)s Mesures</strong> de prélèvement en préparation ; elles ne peuvent pas encore être dépensées."
-msgstr "The next harvest tax arrives at the close of <strong>Moon %(v0)s</strong>, in <strong>%(v1)s moons</strong>.<br>I have recorded <strong>%(v2)s Measures</strong> in accrued tax; these funds cannot yet be spent."
+msgid ""
+"Le prochain prélèvement sera versé à la clôture de la <strong>lune "
+"%(v0)s</strong>, dans <strong>%(v1)s lunes</strong>.<br>J’ai inscrit "
+"<strong>%(v2)s Mesures</strong> de prélèvement en préparation ; elles ne "
+"peuvent pas encore être dépensées."
+msgstr ""
+"The next harvest tax arrives at the close of <strong>Moon %(v0)s</strong>, "
+"in <strong>%(v1)s moons</strong>.<br>I have recorded <strong>%(v2)s "
+"Measures</strong> in accrued tax; these funds cannot yet be spent."
 
 msgid "Le projet doit s’achever à la lune <strong>%(v0)s</strong>."
 msgstr "The project is due in Moon <strong>%(v0)s</strong>."
 
-msgid "Le raid sur nos villages a coûté la vie à {value0} de nos Fidèles. Les assaillants ont emporté {value1} Mesures et en ont détruit {value2} autres. Ces pertes sont inscrites dans le grenier de la cité. "
-msgstr "The raid on our villages cost {value0} of our Faithful their lives. The attackers took {value1} Measures and destroyed {value2} more. These losses are recorded in the city’s granary. "
+msgid ""
+"Le raid sur nos villages a coûté la vie à {value0} de nos Fidèles. Les "
+"assaillants ont emporté {value1} Mesures et en ont détruit {value2} autres. "
+"Ces pertes sont inscrites dans le grenier de la cité. "
+msgstr ""
+"The raid on our villages cost {value0} of our Faithful their lives. The "
+"attackers took {value1} Measures and destroyed {value2} more. These losses "
+"are recorded in the city’s granary. "
 
 msgid "Le retour est attendu à la lune <strong>%(v0)s</strong>."
 msgstr "Return is expected in Moon <strong>%(v0)s</strong>."
 
-msgid "Le règne dure %(v0)s lunes. Posséder toutes les cités donne une victoire immédiate."
-msgstr "The reign lasts %(v0)s moons. Owning every city grants immediate victory."
-
-msgid "Le règne est achevé"
-msgstr "The reign is complete"
-
-msgid "Le règne est terminé. Son résultat est désormais scellé."
-msgstr "The reign is over. Its result is now sealed."
-
-msgid "Le sceau vous appartient"
-msgstr "The seal is yours"
-
-msgid "Le scribe ne peut pas répondre pour le moment. Votre dernier mois confirmé reste enregistré."
-msgstr "The scribe cannot respond at present. Your last confirmed Moon remains recorded."
+msgid ""
+"Le règne dure %(v0)s lunes. Posséder toutes les cités donne une victoire "
+"immédiate."
+msgstr ""
+"The reign lasts %(v0)s moons. Owning every city grants immediate victory."
 
 msgid "Le scribe n’a rien de nouveau à consigner."
 msgstr "The scribe has no new tidings to record."
 
-msgid "Le siège a consommé {value0} Mesures prises dans le grenier de cette cité. "
+msgid ""
+"Le siège a consommé {value0} Mesures prises dans le grenier de cette cité. "
 msgstr "The siege consumed {value0} Measures drawn from this city’s granary. "
 
-msgid "Le traitement a pris du retard. Reprenez la partie pour ouvrir une nouvelle fenêtre de décision complète."
-msgstr "Processing was delayed. Resume the game to open a full new decision window."
+msgid ""
+"Les Fidèles font partie des habitants. Ceux qui partent cessent de défendre "
+"leur origine et de produire de l’impôt jusqu’à leur retour. Une seule "
+"attaque peut être engagée vers une cité."
+msgstr ""
+"The Faithful are part of the population. Those who leave stop defending "
+"their origin and producing tax until they return. Only one attack may be "
+"committed to a city."
 
-msgid "Les Fidèles font partie des habitants. Ceux qui partent cessent de défendre leur origine et de produire de l’impôt jusqu’à leur retour. Une seule attaque peut être engagée vers une cité."
-msgstr "The Faithful are part of the population. Those who leave stop defending their origin and producing tax until they return. Only one attack may be committed to a city."
+msgid ""
+"Les Fidèles partis ne défendent plus leur origine et ne contribuent plus à "
+"l’impôt jusqu’à leur retour. Le butin n’est utilisable qu’au retour."
+msgstr ""
+"Departing Faithful stop defending their origin and contributing tax until "
+"they return. Loot can only be used upon return."
 
-msgid "Les Fidèles partis ne défendent plus leur origine et ne contribuent plus à l’impôt jusqu’à leur retour. Le butin n’est utilisable qu’au retour."
-msgstr "Departing Faithful stop defending their origin and contributing tax until they return. Loot can only be used upon return."
+msgid ""
+"Les Fidèles restent des habitants de leur cité. Une fois partis, ils cessent"
+" de défendre leur origine et de contribuer à l’impôt jusqu’à leur retour."
+msgstr ""
+"The Faithful remain inhabitants of their city. Once they leave, they stop "
+"defending their origin and contributing tax until they return."
 
-msgid "Les Fidèles restent des habitants de leur cité. Une fois partis, ils cessent de défendre leur origine et de contribuer à l’impôt jusqu’à leur retour."
-msgstr "The Faithful remain inhabitants of their city. Once they leave, they stop defending their origin and contributing tax until they return."
-
-msgid "Les canaux augmentent l’impôt produit par les habitants présents, une fois achevés."
-msgstr "Canals increase the tax produced by present inhabitants once complete."
-
-msgid "Les chroniques de Yaara"
-msgstr "The chronicles of Yaara"
+msgid ""
+"Les canaux augmentent l’impôt produit par les habitants présents, une fois "
+"achevés."
+msgstr ""
+"Canals increase the tax produced by present inhabitants once complete."
 
 msgid "Les comptes de la cité"
 msgstr "The city’s accounts"
@@ -719,47 +2770,30 @@ msgstr "The city’s accounts"
 msgid "Les comptes de votre maison"
 msgstr "Your house’s accounts"
 
-msgid "Les comptes de {value0} sont arrêtés pour cette année. Le prélèvement a fait entrer {value1} Mesures dans son grenier ; {value2} autres n’ont pu y trouver place. J’ai inscrit {value3} nouveaux habitants et {value4} habitants rejoignant les Fidèles. La cité compte à présent {value5} habitants. Depuis le début du règne, {value6} de ses habitants ont perdu la vie."
-msgstr "The accounts of {value0} are closed for this year. Tax brought {value1} Measures into its granary; there was no room for {value2} more. I have recorded {value3} new inhabitants and {value4} inhabitants joining the Faithful. The city now has {value5} inhabitants. Since the reign began, {value6} of its inhabitants have died."
-
-msgid "Les contributions militaires sont invalides."
-msgstr "The military contributions are invalid."
-
-msgid "Les contributions ne peuvent plus rejoindre cette frontière."
-msgstr "These contributions can no longer reach this border."
-
-msgid "Les dernières nouvelles"
-msgstr "The latest news"
-
-msgid "Les effectifs doivent être des nombres entiers positifs."
-msgstr "Troop counts must be positive whole numbers."
-
-msgid "Les effectifs doivent être des nombres entiers."
-msgstr "Troop counts must be whole numbers."
-
-msgid "Les feuillets de votre règne"
-msgstr "Pages of your reign"
-
-msgid "Les feuillets des cités"
-msgstr "The city folios"
+msgid ""
+"Les comptes de {value0} sont arrêtés pour cette année. Le prélèvement a fait"
+" entrer {value1} Mesures dans son grenier ; {value2} autres n’ont pu y "
+"trouver place. J’ai inscrit {value3} nouveaux habitants et {value4} "
+"habitants rejoignant les Fidèles. La cité compte à présent {value5} "
+"habitants. Depuis le début du règne, {value6} de ses habitants ont perdu la "
+"vie."
+msgstr ""
+"The accounts of {value0} are closed for this year. Tax brought {value1} "
+"Measures into its granary; there was no room for {value2} more. I have "
+"recorded {value3} new inhabitants and {value4} inhabitants joining the "
+"Faithful. The city now has {value5} inhabitants. Since the reign began, "
+"{value6} of its inhabitants have died."
 
 msgid "Les foyers et les Fidèles"
 msgstr "Homes and Faithful"
 
-msgid "Les hommes défendent encore leurs foyers jusqu’au départ. Une fois partis, ils n’y produisent plus d’impôt. Le premier sceau accepté engage la cible jusqu’au combat."
-msgstr "The men still defend their homes until departure. Once away, they produce no tax there. The first accepted seal claims the target until combat."
-
-msgid "Les hommes engagés"
-msgstr "The men committed"
-
-msgid "Les lettres de votre maison"
-msgstr "Your house’s letters"
-
-msgid "Les lettres qui vous parviennent"
-msgstr "The letters that reach you"
-
-msgid "Les maîtres de la forge ont achevé ce que vous leur aviez confié. "
-msgstr "The masters of the forge have completed the task you entrusted to them. "
+msgid ""
+"Les hommes défendent encore leurs foyers jusqu’au départ. Une fois partis, "
+"ils n’y produisent plus d’impôt. Le premier sceau accepté engage la cible "
+"jusqu’au combat."
+msgstr ""
+"The men still defend their homes until departure. Once away, they produce no"
+" tax there. The first accepted seal claims the target until combat."
 
 msgid "Les moyens libres de votre maison"
 msgstr "Your house’s available resources"
@@ -767,29 +2801,25 @@ msgstr "Your house’s available resources"
 msgid "Les moyens sont réservés, sans être encore dépensés."
 msgstr "Resources are reserved and have not yet been spent."
 
-msgid "Les murs renforcent la garnison contre une capture ; ils ne protègent pas les villages d’un raid."
-msgstr "Walls strengthen the garrison against capture; they do not protect villages from raids."
-
-msgid "Les ouvrages confiés à nos cités"
-msgstr "Works entrusted to our cities"
+msgid ""
+"Les murs renforcent la garnison contre une capture ; ils ne protègent pas "
+"les villages d’un raid."
+msgstr ""
+"Walls strengthen the garrison against capture; they do not protect villages "
+"from raids."
 
 msgid "Les ouvrages et les équipes"
 msgstr "Works and building teams"
 
-msgid "Les ouvrages réalisés ici profitent à cette cité. Leur prix est réparti automatiquement entre tous les greniers de votre maison."
-msgstr "Works undertaken here benefit this city. Their cost is shared automatically across all your house’s granaries."
-
-msgid "Les projets d’armement appartiennent aux règles V1."
-msgstr "Equipment projects are available under V1 rules."
-
-msgid "Les rares survivants ne livrent que des observations incertaines."
-msgstr "The few survivors offer only uncertain observations."
+msgid ""
+"Les ouvrages réalisés ici profitent à cette cité. Leur prix est réparti "
+"automatiquement entre tous les greniers de votre maison."
+msgstr ""
+"Works undertaken here benefit this city. Their cost is shared automatically "
+"across all your house’s granaries."
 
 msgid "Les routes de cette oasis"
 msgstr "This oasis’s roads"
-
-msgid "Les routes entre les oasis"
-msgstr "Roads between the oases"
 
 msgid "Les réserves et la récolte"
 msgstr "Reserves and harvest"
@@ -797,44 +2827,51 @@ msgstr "Reserves and harvest"
 msgid "Les seigneurs de Sefra"
 msgstr "Les seigneurs de Sefra"
 
-msgid "Les souverains et les enceintes sont connus. Les réserves et les hommes des maisons rivales demeurent secrets."
-msgstr "Rulers and walls are public knowledge. Rival houses’ reserves and people remain secret."
+msgid ""
+"Les souverains et les enceintes sont connus. Les réserves et les hommes des "
+"maisons rivales demeurent secrets."
+msgstr ""
+"Rulers and walls are public knowledge. Rival houses’ reserves and people "
+"remain secret."
 
-msgid "Les survivants rentreront sans butin. "
-msgstr "The survivors will return without loot. "
-
-msgid "Les survivants transportent {value0} Mesures vers leurs origines ; nous ne pourrons les engager avant leur retour. "
-msgstr "The survivors carry {value0} Measures towards their origins; we cannot commit them before their return. "
+msgid ""
+"Les survivants transportent {value0} Mesures vers leurs origines ; nous ne "
+"pourrons les engager avant leur retour. "
+msgstr ""
+"The survivors carry {value0} Measures towards their origins; we cannot "
+"commit them before their return. "
 
 msgid "Les terres et les hommes"
 msgstr "Lands and people"
 
-msgid "Les terres sous votre sceau"
-msgstr "The lands beneath your seal"
-
 msgid "Les villages de {value0} ont été attaqués"
 msgstr "The villages of {value0} were attacked"
-
-msgid "Les villages ne constituent pas une cible de pillage disponible."
-msgstr "The villages are not currently available as a raid target."
-
-msgid "Les villages sont encore protégés. Les hommes rentrent sans remboursement."
-msgstr "The villages are still protected. The men return without a refund."
 
 msgid "Les équipes attendent l’entrée en vigueur d’un décret scellé."
 msgstr "The team awaits the start of a sealed decree."
 
-msgid "Les équipes de cette cité sont déjà engagées."
-msgstr "This city’s building team is already committed."
+msgid ""
+"Les équipes de {value0} ont mené leur tâche à son terme : {value1}. "
+"L’ouvrage est désormais en service ; j’en tiendrai compte dans les registres"
+" à venir."
+msgstr ""
+"The teams of {value0} have completed their task: {value1}. The work is now "
+"in service; I shall account for it in future records."
 
-msgid "Les équipes de {value0} ont mené leur tâche à son terme : {value1}. L’ouvrage est désormais en service ; j’en tiendrai compte dans les registres à venir."
-msgstr "The teams of {value0} have completed their task: {value1}. The work is now in service; I shall account for it in future records."
+msgid ""
+"Les équipes d’une cité conduisent un seul chantier à la fois. Le prix dépend"
+" du niveau de l’ouvrage ; le brouillon donnera le partage exact entre vos "
+"greniers."
+msgstr ""
+"A city’s team undertakes one work at a time. Cost depends on the work’s "
+"level; the draft gives the exact shares drawn from your granaries."
 
-msgid "Les équipes d’une cité conduisent un seul chantier à la fois. Le prix dépend du niveau de l’ouvrage ; le brouillon donnera le partage exact entre vos greniers."
-msgstr "A city’s team undertakes one work at a time. Cost depends on the work’s level; the draft gives the exact shares drawn from your granaries."
-
-msgid "Les équipes poursuivent <em>%(v0)s</em>. L’ouvrage doit s’achever à la <strong>lune %(v1)s</strong>."
-msgstr "The team is working to <em>%(v0)s</em>. Completion is expected in <strong>Moon %(v1)s</strong>."
+msgid ""
+"Les équipes poursuivent <em>%(v0)s</em>. L’ouvrage doit s’achever à la "
+"<strong>lune %(v1)s</strong>."
+msgstr ""
+"The team is working to <em>%(v0)s</em>. Completion is expected in "
+"<strong>Moon %(v1)s</strong>."
 
 msgid "Les équipes sont engagées."
 msgstr "The building team is committed."
@@ -860,104 +2897,84 @@ msgstr "Moon %(v0)s, Year %(v1)s"
 msgid "L’enceinte retrouvera toute la protection de son niveau actuel."
 msgstr "The wall will regain the full protection of its current level."
 
-msgid "L’expédition renonce au combat"
-msgstr "The expedition abandons combat"
-
-msgid "L’impôt s’accumule à chaque lune et entre dans les greniers toutes les douze lunes. Les dépenses sont réparties entre leurs fonds libres. Les ouvrages portent leur fruit à leur achèvement."
-msgstr "Tax accrues each moon and enters the granaries every twelve moons. Costs are shared across their free funds. Works take effect upon completion."
-
-msgid "Manuel · vous avancez chaque mois"
-msgstr "Manual · you close each Moon"
-
-msgid "Mes règnes"
-msgstr "My reigns"
+msgid ""
+"L’impôt s’accumule à chaque lune et entre dans les greniers toutes les douze"
+" lunes. Les dépenses sont réparties entre leurs fonds libres. Les ouvrages "
+"portent leur fruit à leur achèvement."
+msgstr ""
+"Tax accrues each moon and enters the granaries every twelve moons. Costs are"
+" shared across their free funds. Works take effect upon completion."
 
 msgid "Mesures"
 msgstr "Measures"
 
-msgid "Monseigneur,"
-msgstr "My lord,"
+msgid ""
+"Niveau %(v0)s : <strong>%(v1)s Mesures</strong> ; <strong>%(v2)s "
+"lunes</strong>."
+msgstr ""
+"Level %(v0)s: <strong>%(v1)s Measures</strong>; <strong>%(v2)s "
+"moons</strong>."
 
-msgid "Monseigneur, voici les termes que j’ai couchés pour vous."
-msgstr "My lord, here are the terms I have written for you."
-
-msgid "Navigation principale"
-msgstr "Main navigation"
-
-msgid "Neuf cités."
-msgstr "Nine cities."
-
-msgid "Niveau %(v0)s : <strong>%(v1)s Mesures</strong> ; <strong>%(v2)s lunes</strong>."
-msgstr "Level %(v0)s: <strong>%(v1)s Measures</strong>; <strong>%(v2)s moons</strong>."
-
-msgid "Nom de votre règne"
-msgstr "Name of your reign"
-
-msgid "Nos greniers conservent <strong>%(v0)s Mesures</strong>.<br>Vous pouvez encore engager <strong>%(v1)s Mesures</strong>."
-msgstr "Our granaries hold <strong>%(v0)s Measures</strong>.<br>You can still commit <strong>%(v1)s Measures</strong>."
+msgid ""
+"Nos greniers conservent <strong>%(v0)s Mesures</strong>.<br>Vous pouvez "
+"encore engager <strong>%(v1)s Mesures</strong>."
+msgstr ""
+"Our granaries hold <strong>%(v0)s Measures</strong>.<br>You can still commit"
+" <strong>%(v1)s Measures</strong>."
 
 msgid "Nos hommes en route"
 msgstr "Our men on the road"
 
-msgid "Nos registres ne révèlent ni les effectifs ni les réserves de cette maison. Les lettres de vos hommes conservent les seules observations que nous ayons reçues."
-msgstr "Our registers reveal neither this house’s forces nor its reserves. Your men’s letters preserve only the observations we have received."
+msgid ""
+"Nos registres ne révèlent ni les effectifs ni les réserves de cette maison. "
+"Les lettres de vos hommes conservent les seules observations que nous ayons "
+"reçues."
+msgstr ""
+"Our registers reveal neither this house’s forces nor its reserves. Your "
+"men’s letters preserve only the observations we have received."
 
-msgid "Nos survivants disent avoir rencontré entre {value0} et {value1} hommes, avec un {value2}. Je rapporte ce qu’ils ont vu à la date de cette lettre ; leur récit ne révèle pas les forces de tout le domaine adverse."
-msgstr "Our survivors report encountering between {value0} and {value1} men with {value2}. I report what they saw on the date of this letter; their account does not reveal the forces of the entire opposing domain."
+msgid ""
+"Nos survivants disent avoir rencontré entre {value0} et {value1} hommes, "
+"avec un {value2}. Je rapporte ce qu’ils ont vu à la date de cette lettre ; "
+"leur récit ne révèle pas les forces de tout le domaine adverse."
+msgstr ""
+"Our survivors report encountering between {value0} and {value1} men with "
+"{value2}. I report what they saw on the date of this letter; their account "
+"does not reveal the forces of the entire opposing domain."
 
-msgid "Nos survivants n’ont rencontré aucun défenseur."
-msgstr "Our survivors encountered no defenders."
-
-msgid "Nous attendons le retour de <strong>%(v0)s Fidèles</strong> partis en expédition."
-msgstr "We await the return of <strong>%(v0)s Faithful</strong> away on expeditions."
+msgid ""
+"Nous attendons le retour de <strong>%(v0)s Fidèles</strong> partis en "
+"expédition."
+msgstr ""
+"We await the return of <strong>%(v0)s Faithful</strong> away on expeditions."
 
 msgid "Nous avons perdu {value0} Fidèles dans cette expédition."
 msgstr "We lost {value0} Faithful on this expedition."
 
-msgid "Nouveau règne"
-msgstr "New reign"
-
-msgid "OUVRIR LES CHRONIQUES"
-msgstr "OPEN THE CHRONICLES"
-
-msgid "Ordre invalidé"
-msgstr "Order invalidated"
-
 msgid "Ordres et ouvrages"
 msgstr "Orders & works"
-
-msgid "Organiser l’armement"
-msgstr "Organize equipment"
 
 msgid "Ouverte à vos ordres"
 msgstr "Open for your orders"
 
-msgid "PREMIÈRES CHRONIQUES"
-msgstr "FIRST CHRONICLES"
+msgid ""
+"Pillage : %(raid_base)s Mesures + %(raid_person)s par Fidèle, au moins "
+"%(raid_min)s Fidèles.<br>Capture : %(capture_base)s Mesures + "
+"%(capture_person)s par Fidèle, au moins %(capture_min)s Fidèles."
+msgstr ""
+"Raid: %(raid_base)s Measures + %(raid_person)s per Faithful, at least "
+"%(raid_min)s Faithful.<br>Capture: %(capture_base)s Measures + "
+"%(capture_person)s per Faithful, at least %(capture_min)s Faithful."
 
-msgid "Pillage : %(raid_base)s Mesures + %(raid_person)s par Fidèle, au moins %(raid_min)s Fidèles.<br>Capture : %(capture_base)s Mesures + %(capture_person)s par Fidèle, au moins %(capture_min)s Fidèles."
-msgstr "Raid: %(raid_base)s Measures + %(raid_person)s per Faithful, at least %(raid_min)s Faithful.<br>Capture: %(capture_base)s Measures + %(capture_person)s per Faithful, at least %(capture_min)s Faithful."
-
-msgid "Pillage impossible"
-msgstr "Raid impossible"
-
-msgid "Pillage réussi"
-msgstr "Raid successful"
-
-msgid "Piller les villages"
-msgstr "Raid the villages"
-
-msgid "Pour une première partie, choisissez les règles V1 et le calendrier manuel. Vous pourrez lire chaque nouvelle avant de passer à la lune suivante."
-msgstr "For your first game, choose V1 rules and the manual calendar. You can read each report before closing the next Moon."
+msgid ""
+"Pour une première partie, choisissez les règles V1 et le calendrier manuel. "
+"Vous pourrez lire chaque nouvelle avant de passer à la lune suivante."
+msgstr ""
+"For your first game, choose V1 rules and the manual calendar. You can read "
+"each report before closing the next Moon."
 
 msgid "Premier versement à la lune 12"
 msgstr "First payment at the close of Moon 12"
-
-msgid "Première visite ?"
-msgstr "First visit?"
-
-msgid "Prise sans défense"
-msgstr "Capture without resistance"
 
 msgid "Prix :"
 msgstr "Cost:"
@@ -968,68 +2985,42 @@ msgstr "Total cost:"
 msgid "Que <strong>%(v0)s</strong> fournisse <strong>%(v1)s Fidèles</strong>."
 msgstr "Let <strong>%(v0)s</strong> provide <strong>%(v1)s Faithful</strong>."
 
-msgid "Que ces travaux soient entrepris…"
-msgstr "Let these works be undertaken…"
+msgid ""
+"Que la forge équipe toutes nos possessions. Le projet s’achèvera à la "
+"<strong>lune %(v0)s</strong>."
+msgstr ""
+"Let the forge equip all our lands. The project will finish in <strong>Moon "
+"%(v0)s</strong>."
 
-msgid "Que chacune de nos cités fournisse les hommes suivants :"
-msgstr "Let each of our cities provide the following men:"
+msgid ""
+"Que l’on consacre <strong>%(v0)s Mesures</strong> à cet ordre. Le sceau les "
+"réservera ; elles seront dépensées à son entrée en vigueur, lors de la "
+"clôture de la <strong>lune %(v1)s</strong>."
+msgstr ""
+"Let <strong>%(v0)s Measures</strong> be devoted to this order. Your seal "
+"reserves them; they will be spent when the order takes effect at the close "
+"of <strong>Moon %(v1)s</strong>."
 
-msgid "Que la forge équipe toutes nos possessions. Le projet s’achèvera à la <strong>lune %(v0)s</strong>."
-msgstr "Let the forge equip all our lands. The project will finish in <strong>Moon %(v0)s</strong>."
-
-msgid "Que l’on consacre <strong>%(v0)s Mesures</strong> à cet ordre. Le sceau les réservera ; elles seront dépensées à son entrée en vigueur, lors de la clôture de la <strong>lune %(v1)s</strong>."
-msgstr "Let <strong>%(v0)s Measures</strong> be devoted to this order. Your seal reserves them; they will be spent when the order takes effect at the close of <strong>Moon %(v1)s</strong>."
-
-msgid "Que nos hommes partent pour…"
-msgstr "Let our men set out to…"
-
-msgid "Que nos hommes se portent vers <strong>%(v0)s</strong> pour <em>%(v1)s</em>.<br>Départ à la lune <strong>%(v2)s</strong>, combat à la lune <strong>%(v3)s</strong>, retour à la lune <strong>%(v4)s</strong>."
-msgstr "Let our men travel towards <strong>%(v0)s</strong> to <em>%(v1)s</em>.<br>Departure in Moon <strong>%(v2)s</strong>, combat in Moon <strong>%(v3)s</strong>, return in Moon <strong>%(v4)s</strong>."
-
-msgid "Quitter"
-msgstr "Sign out"
-
-msgid "Reddition rapide"
-msgstr "Swift surrender"
-
-msgid "Refermer ce livre"
-msgstr "Close this book"
+msgid ""
+"Que nos hommes se portent vers <strong>%(v0)s</strong> pour "
+"<em>%(v1)s</em>.<br>Départ à la lune <strong>%(v2)s</strong>, combat à la "
+"lune <strong>%(v3)s</strong>, retour à la lune <strong>%(v4)s</strong>."
+msgstr ""
+"Let our men travel towards <strong>%(v0)s</strong> to "
+"<em>%(v1)s</em>.<br>Departure in Moon <strong>%(v2)s</strong>, combat in "
+"Moon <strong>%(v3)s</strong>, return in Moon <strong>%(v4)s</strong>."
 
 msgid "Relire et sceller"
 msgstr "Review & seal"
 
-msgid "Relire les prétentions au trône"
-msgstr "Review the claims to the throne"
-
-msgid "Renforcer les fortifications"
-msgstr "Strengthen fortifications"
-
 msgid "Reprendre la plume sans rien engager"
 msgstr "Return to the pen without committing resources"
-
-msgid "Reprendre le cours des chroniques"
-msgstr "Resume the chronicle"
-
-msgid "Reprendre mon règne"
-msgstr "Resume my reign"
 
 msgid "Reprendre toute la correspondance"
 msgstr "Read all correspondence"
 
-msgid "Reprendre votre règne · Yaara"
-msgstr "Resume your reign · Yaara"
-
-msgid "Retirer ce décret"
-msgstr "Withdraw this decree"
-
 msgid "Retour à {value0}"
 msgstr "Return to {value0}"
-
-msgid "Retrouver mes règnes"
-msgstr "Return to my reigns"
-
-msgid "Retrouvez vos possessions ou inscrivez une nouvelle maison dans les chroniques."
-msgstr "Return to your lands or enter a new house in the chronicles."
 
 msgid "Revenir au domaine"
 msgstr "Return to the Domain"
@@ -1037,17 +3028,8 @@ msgstr "Return to the Domain"
 msgid "Revenir aux décrets"
 msgstr "Return to the decrees"
 
-msgid "Rivaux passifs · explorer les règles"
-msgstr "Passive rivals · explore the rules"
-
-msgid "Règles"
-msgstr "Rules"
-
 msgid "Règles %(v0)s"
 msgstr "Rules %(v0)s"
-
-msgid "Règne achevé"
-msgstr "Reign complete"
 
 msgid "Récits et nouvelles"
 msgstr "Chronicle & reports"
@@ -1055,182 +3037,102 @@ msgstr "Chronicle & reports"
 msgid "Récolte dans <strong>%(v0)s lunes</strong>"
 msgstr "Harvest in <strong>%(v0)s moons</strong>"
 
-msgid "Réparer la grande enceinte"
-msgstr "Repair the great wall"
-
-msgid "Réparer l’enceinte"
-msgstr "Repair the wall"
-
-msgid "Réparer l’enceinte de terre crue"
-msgstr "Repair the earthen wall"
-
 msgid "Réserver %(v0)s Mesures"
 msgstr "Reserve %(v0)s Measures"
 
-msgid "Sans enceinte"
-msgstr "No wall erected"
-
-msgid "Sceller ce décret"
-msgstr "Seal this decree"
-
-msgid "Selon votre volonté, j’ai retiré ce décret : {value0}. Les moyens qu’il engageait sont de nouveau libres."
-msgstr "As you wished, I have withdrawn this decree: {value0}. The resources it committed are free again."
-
-msgid "Suspendre le cours des chroniques"
-msgstr "Pause the chronicle"
-
-msgid "TERRE CRUE · OASIS · RIVALITÉS"
-msgstr "EARTH · OASES · RIVALRIES"
+msgid ""
+"Selon votre volonté, j’ai retiré ce décret : {value0}. Les moyens qu’il "
+"engageait sont de nouveau libres."
+msgstr ""
+"As you wished, I have withdrawn this decree: {value0}. The resources it "
+"committed are free again."
 
 msgid "Terres et greniers"
 msgstr "Lands & granaries"
 
-msgid "Toutes vos possessions"
-msgstr "All your lands"
-
 msgid "Travaux achevés à {value0}"
 msgstr "Works completed in {value0}"
 
-msgid "Trois cités, un avenir."
-msgstr "Three cities, one future."
+msgid ""
+"Un grenier agrandi conserve davantage de récolte. Sa capacité reste propre à"
+" la cité."
+msgstr ""
+"An expanded granary preserves more of the harvest. Its capacity belongs to "
+"this city alone."
 
-msgid "UN JEU DE STRATÉGIE ET DE PATIENCE"
-msgstr "A GAME OF STRATEGY AND PATIENCE"
+msgid ""
+"Un seul décret peut confier le même ouvrage à plusieurs cités. Choisissez-"
+"les ci-dessous, puis relisez et scellez une seule fois."
+msgstr ""
+"One decree can assign the same work to several cities. Select them below, "
+"then review and seal once."
 
-msgid "UNE HISTOIRE COMMENCE"
-msgstr "A STORY BEGINS"
-
-msgid "Un grenier agrandi conserve davantage de récolte. Sa capacité reste propre à la cité."
-msgstr "An expanded granary preserves more of the harvest. Its capacity belongs to this city alone."
-
-msgid "Un mois toutes les 10 minutes"
-msgstr "One Moon every 10 minutes"
-
-msgid "Un mois toutes les 5 minutes"
-msgstr "One Moon every 5 minutes"
-
-msgid "Un nouveau règne · Yaara"
-msgstr "A new reign · Yaara"
-
-msgid "Un nouveau règne."
-msgstr "A new reign."
-
-msgid "Un seul décret peut confier le même ouvrage à plusieurs cités. Choisissez-les ci-dessous, puis relisez et scellez une seule fois."
-msgstr "One decree can assign the same work to several cities. Select them below, then review and seal once."
-
-msgid "Un seul trône."
-msgstr "One throne."
-
-msgid "Une armée rejoint une frontière par vos possessions reliées entre elles. Les secours défendent les cités contre les captures ; les murs n’abritent pas les villages d’un raid."
-msgstr "An army reaches a border through your connected lands. Relief defends cities against capture; walls do not protect villages from raids."
-
-msgid "Une autre expédition est déjà engagée vers cette cité. Aucun moyen n’a été réservé."
-msgstr "Another expedition is already committed to this city. No resources have been reserved."
-
-msgid "Une expédition est déjà engagée vers cette cité."
-msgstr "An expedition is already committed to this city."
-
-msgid "Une expédition ne reviendra pas"
-msgstr "An expedition will not return"
+msgid ""
+"Une armée rejoint une frontière par vos possessions reliées entre elles. Les"
+" secours défendent les cités contre les captures ; les murs n’abritent pas "
+"les villages d’un raid."
+msgstr ""
+"An army reaches a border through your connected lands. Relief defends cities"
+" against capture; walls do not protect villages from raids."
 
 msgid "Une expédition y est déjà engagée"
 msgstr "An expedition is already committed"
 
-msgid "Une récolte annuelle"
-msgstr "One annual harvest"
-
-msgid "V0 · règles essentielles"
-msgstr "V0 · essential rules"
-
-msgid "V1 · sièges, croissance et annulation"
-msgstr "V1 · sieges, growth and cancellation"
-
-msgid "VOTRE POINT DE DÉPART"
-msgstr "YOUR BEGINNING"
-
-msgid "VOTRE PREMIER SCEAU"
-msgstr "YOUR FIRST SEAL"
-
-msgid "Vers <strong>%(v0)s</strong>, <strong>%(v1)s Fidèles</strong> poursuivent leur mission : <em>%(v2)s</em>."
-msgstr "Towards <strong>%(v0)s</strong>, <strong>%(v1)s Faithful</strong> pursue their mission: <em>%(v2)s</em>."
+msgid ""
+"Vers <strong>%(v0)s</strong>, <strong>%(v1)s Fidèles</strong> poursuivent "
+"leur mission : <em>%(v2)s</em>."
+msgstr ""
+"Towards <strong>%(v0)s</strong>, <strong>%(v1)s Faithful</strong> pursue "
+"their mission: <em>%(v2)s</em>."
 
 msgid "Vers quelle cité ?"
 msgstr "Towards which city?"
 
-msgid "Voici les comptes de votre maison. Au-delà de nos frontières, les hommes et les réserves des autres maisons nous demeurent inconnus."
-msgstr "Here are your house’s accounts. Beyond our borders, the people and reserves of other houses remain unknown to us."
+msgid ""
+"Voici les comptes de votre maison. Au-delà de nos frontières, les hommes et "
+"les réserves des autres maisons nous demeurent inconnus."
+msgstr ""
+"Here are your house’s accounts. Beyond our borders, the people and reserves "
+"of other houses remain unknown to us."
 
-msgid "Voici l’issue que l’on nous rapporte : {value0}. Nous avons perdu {value1} Fidèles engagés, dont {value2} de la garnison locale, ainsi que {value3} civils. "
-msgstr "Here is the outcome reported to us: {value0}. We lost {value1} committed Faithful, including {value2} from the local garrison, as well as {value3} civilians. "
-
-msgid "Vos chroniques"
-msgstr "Your chronicles"
+msgid ""
+"Voici l’issue que l’on nous rapporte : {value0}. Nous avons perdu {value1} "
+"Fidèles engagés, dont {value2} de la garnison locale, ainsi que {value3} "
+"civils. "
+msgstr ""
+"Here is the outcome reported to us: {value0}. We lost {value1} committed "
+"Faithful, including {value2} from the local garrison, as well as {value3} "
+"civilians. "
 
 msgid "Vos décrets ont déjà réservé <strong>%(v0)s Mesures</strong>."
 msgstr "Your decrees have already reserved <strong>%(v0)s Measures</strong>."
 
-msgid "Vos rivaux"
-msgstr "Your rivals"
+msgid ""
+"Votre autorité s’étend sur <strong>%(v0)s cités</strong>, où <strong>%(v1)s "
+"habitants</strong> sont rattachés à leurs foyers.<br>Parmi eux, "
+"<strong>%(v2)s Fidèles</strong> peuvent encore recevoir vos ordres."
+msgstr ""
+"Your authority extends over <strong>%(v0)s cities</strong>, with "
+"<strong>%(v1)s inhabitants</strong> belonging to their homes.<br>Among them,"
+" <strong>%(v2)s Faithful</strong> can still receive orders."
 
-msgid "Votre autorité s’étend sur <strong>%(v0)s cités</strong>, où <strong>%(v1)s habitants</strong> sont rattachés à leurs foyers.<br>Parmi eux, <strong>%(v2)s Fidèles</strong> peuvent encore recevoir vos ordres."
-msgstr "Your authority extends over <strong>%(v0)s cities</strong>, with <strong>%(v1)s inhabitants</strong> belonging to their homes.<br>Among them, <strong>%(v2)s Faithful</strong> can still receive orders."
+msgid ""
+"Votre ordre a pris son cours : {value0}. J’ai fait prélever {value1} Mesures"
+" dans les greniers qui les avaient promises. Les nouvelles vous seront "
+"rapportées à leur échéance."
+msgstr ""
+"Your order has taken effect: {value0}. I have drawn {value1} Measures from "
+"the granaries that promised them. Reports will reach you when due."
 
-msgid "Votre compte conserve vos parties et vos chroniques. Commencez un règne à votre rythme, face à deux maisons rivales."
-msgstr "Your account keeps your games and chronicles. Begin a reign at your own pace against two rival houses."
-
-msgid "Votre décret entre en vigueur"
-msgstr "Your decree takes effect"
-
-msgid "Votre forge est déjà engagée ou son organisation est achevée."
-msgstr "Your forge is already committed or its organization is complete."
-
-msgid "Votre histoire s’écrit dans le sable."
-msgstr "Your story is written in the sand."
-
-msgid "Votre maison"
-msgstr "Your house"
-
-msgid "Votre ordre a pris son cours : {value0}. J’ai fait prélever {value1} Mesures dans les greniers qui les avaient promises. Les nouvelles vous seront rapportées à leur échéance."
-msgstr "Your order has taken effect: {value0}. I have drawn {value1} Measures from the granaries that promised them. Reports will reach you when due."
-
-msgid "Votre prétention au trône s’achève"
-msgstr "Your claim to the throne ends"
-
-msgid "Votre règne"
-msgstr "Your reign"
-
-msgid "Vous avez déjà trente parties. Conservez vos règnes existants pour le moment."
-msgstr "You already have thirty games. Keep your existing reigns for now."
-
-msgid "Vous ne participez pas à cette partie."
-msgstr "You are not a participant in this game."
-
-msgid "Vous ne possédez plus de cité. Vos armées encore en route rentrent vers leurs origines."
-msgstr "You no longer own a city. Your armies still travelling return towards their origins."
-
-msgid "Vous n’avez encore scellé aucun décret. Le premier mot vous appartient."
-msgstr "You have not sealed a decree yet. The first word is yours."
-
-msgid "Vous préparez un décret pour <strong>%(v0)s</strong>. Sa case est précochée ; vous pouvez choisir d’autres cités."
-msgstr "You are preparing a decree for <strong>%(v0)s</strong>. It is preselected; you may choose other cities."
-
-msgid "Yaara · Les cités du désert"
-msgstr "Yaara · The desert cities"
-
-msgid "Yaara, accueil"
-msgstr "Yaara, home"
-
-msgid "avant de se conquérir."
-msgstr "before it is conquered."
-
-msgid "dont 300 Fidèles mobilisables"
-msgstr "including 300 Faithful ready for orders"
+msgid ""
+"Vous préparez un décret pour <strong>%(v0)s</strong>. Sa case est précochée "
+"; vous pouvez choisir d’autres cités."
+msgstr ""
+"You are preparing a decree for <strong>%(v0)s</strong>. It is preselected; "
+"you may choose other cities."
 
 msgid "endommagée"
 msgstr "damaged"
-
-msgid "le pouvoir se cultive"
-msgstr "power is cultivated"
 
 msgid "les équipes sont déjà engagées"
 msgstr "the team is already committed"
@@ -1238,17 +3140,15 @@ msgstr "the team is already committed"
 msgid "number-group-separator"
 msgstr ","
 
-msgid "votre maison."
-msgstr "your house."
-
-msgid "vous attend."
-msgstr "awaits you."
-
 msgid "{first}{second}"
 msgstr "{first}{second}"
 
-msgid "{value0} Les survivants repartent vers leurs origines ; ils y rejoindront les présents à la date annoncée. "
-msgstr "{value0} The survivors return towards their origins; they will rejoin those present on the announced date. "
+msgid ""
+"{value0} Les survivants repartent vers leurs origines ; ils y rejoindront "
+"les présents à la date annoncée. "
+msgstr ""
+"{value0} The survivors return towards their origins; they will rejoin those "
+"present on the announced date. "
 
 msgid "{value0} change de souverain"
 msgstr "{value0} changes ruler"
@@ -1256,32 +3156,19 @@ msgstr "{value0} changes ruler"
 msgid "{value0} à {value1}"
 msgstr "{value0} at {value1}"
 
-msgid "À <strong>%(v0)s</strong> : <em>%(v1)s</em>. Achèvement à la <strong>lune %(v2)s</strong>."
-msgstr "At <strong>%(v0)s</strong>: <em>%(v1)s</em>. Completion in <strong>Moon %(v2)s</strong>."
+msgid ""
+"À <strong>%(v0)s</strong> : <em>%(v1)s</em>. Achèvement à la <strong>lune "
+"%(v2)s</strong>."
+msgstr ""
+"At <strong>%(v0)s</strong>: <em>%(v1)s</em>. Completion in <strong>Moon "
+"%(v2)s</strong>."
 
-msgid "À la fin du règne, le nombre de cités prime ; la population départage les égalités. Les populations rivales restent secrètes."
-msgstr "At the end of the reign, city count comes first; population breaks ties. Rival populations remain secret."
-
-msgid "Élever une grande enceinte"
-msgstr "Raise a great wall"
-
-msgid "Équipement ordinaire"
-msgstr "Ordinary equipment"
-
-msgid "Équipement renforcé"
-msgstr "Reinforced equipment"
-
-msgid "Équipement supérieur"
-msgstr "Superior equipment"
-
-msgid "Ériger des silos"
-msgstr "Build silos"
-
-msgid "Ériger une enceinte de terre crue"
-msgstr "Build an earthen wall"
+msgid ""
+"À la fin du règne, le nombre de cités prime ; la population départage les "
+"égalités. Les populations rivales restent secrètes."
+msgstr ""
+"At the end of the reign, city count comes first; population breaks ties. "
+"Rival populations remain secret."
 
 msgid "Étendez votre autorité, une lune après l’autre."
 msgstr "Extend your authority, one moon at a time."
-
-msgid "Étendre le réseau de canaux"
-msgstr "Extend the canal network"

@@ -1,5 +1,8 @@
 # Working on Yaara
 
+- By default, commit and push completed changes directly to `origin/codex/yaara-deployment` after the full push checkpoint passes. Do not create a pull request unless the owner explicitly requests one. Preserve existing deployment-branch changes; never force-push. Report push and deployment verification separately.
+- Before editing, fetch and inspect the deployment branch and its current Markdown instructions. Base changes on that branch, and integrate newer deployment commits before pushing; do not assume the initial checkout of `main` is current.
+
 - Read `docs/design-source.fr.md` for game rules and `docs/decisions.md` for explicit implementation choices. Do not silently rebalance existing games.
 - Conversation and code (including identifiers, tests and comments) are English. Player-visible copy supports French and English through the checked-in Django catalogs. Preserve user-chosen names in either language.
 - In-game screens are a plain, image-free manuscript: a single reading column, restrained typography, and scribe narration. House accounts use headings and prose; city summaries link to optional inspection folios, work decrees expose multi-city checklists directly on Decrees, and letters read chronologically. A player must never open cities one by one to repeat the same work; preserve one batch preview and seal for all selected cities. Native disclosures keep forms and reference material scannable without plus/minus styling. Keep exact costs and consequences clear. The pre-game interface can retain its conventional web layout.
@@ -14,3 +17,5 @@
 - Run PostgreSQL tests with `DATABASE_URL` pointing to a disposable database whose user can create test databases. Browser smoke: `uv run python scripts/browser_smoke.py` against a local running server.
 - Keep each change coherent and playable. No extra agent framework or distributed architecture is needed. Summarize behavior, checks, and remaining limitations after changes.
 - Give each collected variation a stable `@case` ID and requirement; review updates to `tests/case_ids.txt`. Refactor only for a concrete benefit. See `docs/testing.md` for native stubs, report generation and the complete push checkpoint.
+
+- Require 100% statement and branch coverage of all native core modules from logic cases alone: `uv run coverage run -m pytest -q -m logic --fail-on-skip --check-case-catalog`, then `uv run coverage report`. No coverage exemptions or database-backed logic cases. Specify behavior and side effects before implementation; artificial red-green baby steps are unnecessary.

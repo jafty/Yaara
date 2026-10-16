@@ -30,21 +30,29 @@ jobs:
       - run: uv run python scripts/compile_translations.py
       - run: uv run ruff check .
       - run: uv run ruff format --check .
+      - name: Database-free core behavior and coverage gate
+        run: |
+          uv run coverage run -m pytest -q -m logic --fail-on-skip --check-case-catalog --case-report=artifacts/core-cases.json
+          uv run coverage report
+          uv run coverage json
       - run: uv run python manage.py makemigrations --check --dry-run
       - run: uv run python manage.py migrate --noinput
       - run: uv run python manage.py collectstatic --noinput
+      - run: uv run playwright install --with-deps chromium
       - run: uv run pytest -q --require-postgresql --fail-on-skip --check-case-catalog --case-report=artifacts/test-cases.json
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: test-cases-pg${{ matrix.postgres }}
-          path: artifacts/test-cases.json
+          path: |
+            artifacts/test-cases.json
+            artifacts/core-cases.json
+            artifacts/core-coverage.json
           if-no-files-found: warn
       - name: Verify production dependency export
         run: |
           uv export --frozen --no-dev --format requirements-txt --no-header --output-file /tmp/requirements.txt
           diff -u requirements.txt /tmp/requirements.txt
-      - run: uv run playwright install --with-deps chromium
       - name: Browser smoke
         run: |
           .venv/bin/python manage.py runserver 127.0.0.1:8000 --noreload > /tmp/yaara-server.log 2>&1 &

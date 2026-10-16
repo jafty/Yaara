@@ -7,6 +7,7 @@
         <title>{% block title %}{{ game.title }} · Yaara{% endblock %}</title>
         <link rel="stylesheet" href="{% static 'simulation/common.css' %}">
         <link rel="stylesheet" href="{% static 'simulation/manuscript.css' %}">
+        <script defer src="{% url 'javascript-catalog' %}"></script>
         <script defer src="{% static 'simulation/app.js' %}"></script>
     </head>
     <body data-revision="{{ game.revision }}" class="manuscript" data-state-url="{% url 'state' game.id %}">
@@ -28,6 +29,7 @@
                 </nav>
                 {% if view %}
                     <div class="resource-ribbon" aria-label="{% translate "Les moyens libres de votre maison" %}">
+                    {% if game.mode == 'scheduled' and game.deadline %}<span data-deadline="{{ game.deadline|date:'c' }}">{{ game.deadline|date:'H:i' }} UTC</span>{% endif %}
                         <span>{% blocktranslate with v0=view.available_stock %}<strong>{{ v0 }} Mesures</strong> libres{% endblocktranslate %}</span>
                         <span>{% blocktranslate with v0=view.available_fideles %}<strong>{{ v0 }} Fidèles</strong> libres{% endblocktranslate %}</span>
                         {% if not view.finished %}<span>{% blocktranslate with v0=view.harvest_in %}Récolte dans <strong>{{ v0 }} lunes</strong>{% endblocktranslate %}</span>{% endif %}

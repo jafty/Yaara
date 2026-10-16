@@ -48,7 +48,7 @@ with sync_playwright() as playwright:
         expect(
             page.get_by_role(
                 "heading",
-                name="The lands beneath your seal" if en else "Les terres sous votre sceau",
+                name="The lands under your seal" if en else "Les terres sous votre sceau",
             )
         ).to_be_visible()
         game_url = page.url
@@ -106,7 +106,7 @@ with sync_playwright() as playwright:
         expect(page.locator("#army-cost")).to_contain_text("132,500" if en else "132\u202f500")
         page.locator(".expedition-form button").click()
         expect(
-            page.get_by_role("heading", name="The men committed" if en else "Les hommes engagés")
+            page.get_by_role("heading", name="The people committed" if en else "Les hommes engagés")
         ).to_be_visible()
         page.locator(".wax-seal").click()
         page.screenshot(path=str(artifacts / f"decrees-desktop-{language}.png"), full_page=True)
@@ -117,7 +117,7 @@ with sync_playwright() as playwright:
             )
         page.locator('.bookmarks a[href$="?tab=letters"]').click()
         for title in (
-            ("Return to Namar", "Raid successful at Sefra")
+            ("Return to Namar", "Successful raid at Sefra")
             if en
             else ("Retour à Namar", "Pillage réussi à Sefra")
         ):
@@ -125,7 +125,7 @@ with sync_playwright() as playwright:
                 page.locator(".correspondence").get_by_role("heading", name=title)
             ).to_be_visible()
         expect(page.locator(".correspondence")).to_contain_text(
-            "Our survivors report encountering between"
+            "Our survivors say they encountered between"
             if en
             else "Nos survivants disent avoir rencontré entre"
         )

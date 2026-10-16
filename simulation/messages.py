@@ -1,51 +1,74 @@
-"""Serializable narration, independent of Django, storage and the active locale.
+"""Serializable presentation messages. The simulation always produces French.
 
-The French string remains useful to the simulation's callers. Its expression tree
-keeps vocabulary separate from names and observations for later translation.
+Only explicit message templates are translated, never player names or arbitrary
+stored strings. Rendering is pure and receives its language as an explicit input.
 """
+
+import gettext
+from functools import lru_cache
+from pathlib import Path
 
 
 class Message(str):
-    def __new__(cls, source, **values):
-        instance = super().__new__(cls, source.format(**values))
-        instance.tree = {
-            "source": source,
-            "values": {key: node(value) for key, value in values.items()},
-        }
-        return instance
+    def __new__(cls, template, **values):
+        obj = super().__new__(cls, template.format(**values))
+        obj.content = {"template": template, "values": {k: describe(v) for k, v in values.items()}}
+        return obj
 
     def __add__(self, other):
-        return Message("{first}{second}", first=self, second=other)
+        return message("{left}{right}", left=self, right=other)
 
     def __radd__(self, other):
-        return Message("{first}{second}", first=other, second=self)
+        return message("{left}{right}", left=other, right=self)
 
     def lower(self):
-        instance = str.__new__(Message, str(self).lower())
-        instance.tree = {"lower": self.tree}
-        return instance
+        obj = Message(str(self).lower())
+        obj.content = {"lower": self.content}
+        return obj
 
 
-def node(value):
-    return value.tree if isinstance(value, Message) else {"literal": value}
+def message(template, **values):
+    return Message(template, **values)
 
 
-def render(tree, translate=lambda source: source):
-    if "literal" in tree:
-        return str(tree["literal"])
-    if "number" in tree:
-        result = f"{tree['number']:,}"
-        separator = translate("number-group-separator")
-        return result.replace(",", "\u202f" if separator == "number-group-separator" else separator)
-    if "lower" in tree:
-        return render(tree["lower"], translate).lower()
-    return translate(tree["source"]).format(
-        **{key: render(value, translate) for key, value in tree["values"].items()}
+def describe(value):
+    return value.content if isinstance(value, Message) else value
+
+
+@lru_cache
+def catalog(language):
+    return gettext.translation(
+        "django",
+        Path(__file__).resolve().parent.parent / "locale",
+        languages=[language.split("-")[0]],
+        fallback=True,
     )
 
 
-def content(title, body):
-    return {
-        "title": node(title if isinstance(title, Message) else Message(title)),
-        "body": node(body if isinstance(body, Message) else Message(body)),
-    }
+def render(content, language="fr"):
+    if not isinstance(content, dict):
+        return content
+    if "literal" in content:
+        return content["literal"]
+    if "number" in content:
+        return (
+            f"{content['number']:,}".replace(",", "\u202f")
+            if language.startswith("fr")
+            else f"{content['number']:,}"
+        )
+    if "lower" in content:
+        return render(content["lower"], language).lower()
+    template = catalog(language).gettext(content.get("template", content.get("source")))
+    return template.format(
+        **{key: render(value, language) for key, value in content["values"].items()}
+    )
+
+
+def localize(value, language):
+    if isinstance(value, Message):
+        return render(value.content, language)
+    if isinstance(value, dict):
+        return {key: localize(item, language) for key, item in value.items()}
+    if isinstance(value, list):
+        return [localize(item, language) for item in value]
+    return value

@@ -2,10 +2,12 @@ from functools import partial
 
 from django.contrib.auth import views as auth_views
 from django.urls import include, path
+from django.views.i18n import JavaScriptCatalog
 
 from simulation import views
 
 urlpatterns = [
+    path("i18n/js/", JavaScriptCatalog.as_view(), name="javascript-catalog"),
     path("i18n/", include("django.conf.urls.i18n")),
     path("health/", views.health, name="health"),
     path("accounts/login/", auth_views.LoginView.as_view(), name="login"),

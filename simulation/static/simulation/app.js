@@ -1,8 +1,5 @@
 "use strict";
 
-const english = document.documentElement.lang.startsWith("en");
-const text = (fr, en) => english ? en : fr;
-
 document.querySelectorAll("[data-busy-form]").forEach((form) => {
   form.addEventListener("submit", () => {
     const button = form.querySelector("button[type=submit]");
@@ -48,10 +45,7 @@ if (targetSelect) {
     const price = prices[kind.value];
     document.querySelector("#army-total").textContent = format.format(total);
     document.querySelector("#army-cost").textContent = format.format(price.base + total * price.per_person);
-    document.querySelector("#mission-help").textContent = text(
-      `Il faut au moins ${price.minimum} Fidèles. Départ à la clôture de cette lune, combat à la suivante, retour une lune après le combat. Le butin ne sera disponible qu’au retour.`,
-      `At least ${price.minimum} Faithful are required. Departure at this Moon’s closure, combat in the next Moon, return one Moon after combat. Loot is available only upon return.`,
-    );
+    document.querySelector("#mission-help").textContent = interpolate(gettext("Il faut au moins %(minimum)s Fidèles. Départ à la clôture de cette lune, combat à la suivante, retour une lune après le combat. Le butin ne sera disponible qu’au retour."), { minimum: price.minimum }, true);
   };
   const updateOrigins = () => {
     const eligible = origins[targetSelect.value] || [];
@@ -61,7 +55,7 @@ if (targetSelect) {
       row.classList.toggle("disabled", input.disabled);
       if (input.disabled) input.value = "0";
       row.querySelector(".origin-note").textContent = input.disabled && targetSelect.value
-        ? text("Ces hommes ne peuvent rejoindre cette frontière par nos terres.", "These men cannot reach this border through our lands.") : "";
+        ? gettext("Ces hommes ne peuvent rejoindre cette frontière par nos terres.") : "";
     });
     updateTotals();
   };
@@ -76,8 +70,8 @@ document.querySelectorAll("[data-deadline]").forEach((element) => {
     const remaining = Math.max(0, Math.ceil((new Date(element.dataset.deadline) - Date.now()) / 1000));
     const duration = `${Math.floor(remaining / 60)} min ${String(remaining % 60).padStart(2, "0")} s`;
     element.textContent = remaining > 0
-      ? text(`Cette lune sera close dans ${duration}.`, `This Moon closes in ${duration}.`)
-      : text("La lune est close. Nous attendons les nouvelles.", "The Moon is closed. We await the news.");
+      ? interpolate(gettext("Cette lune sera close dans %(duration)s."), { duration }, true)
+      : gettext("La lune est close. Nous attendons les nouvelles.");
   };
   update();
   window.setInterval(update, 1000);
@@ -97,7 +91,7 @@ if (document.querySelector("[data-deadline]") && document.body.dataset.stateUrl)
         notice.className = "notice";
         const link = document.createElement("a");
         link.href = window.location.href;
-        link.textContent = text("De nouvelles lettres nous sont parvenues. Reprendre le livre à ce jour.", "New letters have arrived. Open the book at the present day.");
+        link.textContent = gettext("De nouvelles lettres nous sont parvenues. Reprendre le livre à ce jour.");
         notice.append(link);
         document.querySelector("#main").prepend(notice);
       }

@@ -1,3 +1,4 @@
+import inspect
 import json
 import re
 from pathlib import Path
@@ -55,6 +56,16 @@ def pytest_collection_modifyitems(config, items):
         ]
         if len(markers) != 1 or len(layers) != 1:
             raise pytest.UsageError(f"{item.nodeid}: require exactly one case and one layer")
+        if layers == ["logic"] and (
+            item.get_closest_marker("django_db")
+            or {
+                "db",
+                "transactional_db",
+                "django_db_reset_sequences",
+                "django_db_serialized_rollback",
+            }.intersection(item.fixturenames)
+        ):
+            raise pytest.UsageError(f"{item.nodeid}: logic cases must not request a database")
         marker = markers[0]
         if (
             len(marker.args) != 2
@@ -63,6 +74,19 @@ def pytest_collection_modifyitems(config, items):
         ):
             raise pytest.UsageError(
                 f"{item.nodeid}: require case('stable-id', 'source requirement')"
+            )
+        scenario = inspect.getdoc(item.obj) or ""
+        if layers == ["logic"] and not re.fullmatch(
+            r"Given [^\n]+\nWhen [^\n]+\nThen [^\n]+", scenario
+        ):
+            raise pytest.UsageError(
+                f"{item.nodeid}: logic tests require a Given/When/Then docstring"
+            )
+        if hasattr(item, "callspec"):
+            scenario = re.sub(
+                r"\{([a-z_]+)\}",
+                lambda match: str(item.callspec.params.get(match[1], match[0])),
+                scenario,
             )
         identifier, requirement = marker.args
         if hasattr(item, "callspec"):
@@ -76,6 +100,7 @@ def pytest_collection_modifyitems(config, items):
             "requirement": requirement,
             "layer": layers[0],
             "nodeid": item.nodeid,
+            "scenario": scenario,
             "phases": {},
         }
     if config.getoption("--check-case-catalog"):

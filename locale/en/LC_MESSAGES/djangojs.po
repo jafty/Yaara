@@ -1,0 +1,67 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Yaara\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-16 12:43+0000\n"
+"PO-Revision-Date: 2026-10-16 14:00+0200\n"
+"Last-Translator: Yaara contributors\n"
+"Language-Team: English\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: simulation/static/simulation/app.js:30
+msgid ""
+"Il leur faudra affronter les hommes de la cité, ses murs et les secours du "
+"domaine. S’ils l’emportent, la cité vous reviendra et nos survivants "
+"rentreront à leurs origines. Ils partiront au prochain mois, combattront un "
+"mois après et reviendront le mois suivant."
+msgstr ""
+"They will face the city’s people, walls and relief forces. If they prevail, "
+"the city will be yours and our survivors will return to their origins. They "
+"will depart next month, fight a month later and return the following month."
+
+#: simulation/static/simulation/app.js:31
+msgid ""
+"Nos hommes tenteront d’emporter les réserves des villages. Ils partiront au "
+"prochain mois, combattront un mois après et reviendront le mois suivant. "
+"Leur butin ne sera à notre disposition qu’à leur retour."
+msgstr ""
+"Our people will try to take the villages’ reserves. They will depart next "
+"month, fight a month later and return the following month. Their loot will "
+"be available only on their return."
+
+#: simulation/static/simulation/app.js:42
+msgid "Ces hommes ne peuvent rejoindre cette frontière par nos terres."
+msgstr "These men cannot reach this border through our lands."
+
+#: simulation/static/simulation/app.js:63
+msgid "Ce mois sera clos dans %(minutes)s min %(seconds)s s."
+msgstr "This month closes in %(minutes)s min %(seconds)s s."
+
+#: simulation/static/simulation/app.js:64
+msgid "Le mois est clos. Nous attendons les nouvelles."
+msgstr "The month is closed. We await news."
+
+#: simulation/static/simulation/app.js:93
+msgid ""
+"De nouvelles lettres nous sont parvenues. Reprendre le livre à ce jour."
+msgstr "New letters have arrived. Open the book at the present day."
+
+msgid "La lune est close. Nous attendons les nouvelles."
+msgstr "The Moon is closed. We await the news."
+
+msgid ""
+"Il faut au moins %(minimum)s Fidèles. Départ à la clôture de cette lune, "
+"combat à la suivante, retour une lune après le combat. Le butin ne sera "
+"disponible qu’au retour."
+msgstr ""
+"At least %(minimum)s Faithful are required. Departure at this Moon’s "
+"closure, combat in the next Moon, return one Moon after combat. Loot is "
+"available only upon return."
+
+msgid "Cette lune sera close dans %(duration)s."
+msgstr "This Moon closes in %(duration)s."

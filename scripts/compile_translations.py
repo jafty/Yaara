@@ -1,34 +1,48 @@
-"""Compile the checked-in Django catalogs without requiring system gettext.
+"""Compile the Django catalogs without requiring system gettext.
 
+Supports named contexts and plural entries used by the deployed catalogs.
 Usage: python scripts/compile_translations.py
-The catalogs use singular messages; plural UI text uses explicit counts.
 """
 
 import ast
+import re
 import struct
 from pathlib import Path
 
 
-def compile_catalog(path):
+def read_catalog(path):
     messages = {}
-    key = value = ""
+    entry = {}
     field = None
+    fuzzy = False
     for line in [*path.read_text().splitlines(), ""]:
-        if line.startswith("msgid "):
-            key = ast.literal_eval(line[6:])
-            field = "key"
-        elif line.startswith("msgstr "):
-            value = ast.literal_eval(line[7:])
-            field = "value"
-        elif line.startswith('"'):
-            if field == "key":
-                key += ast.literal_eval(line)
-            elif field == "value":
-                value += ast.literal_eval(line)
-        elif not line.strip() and field:
-            messages[key] = value
-            key = value = ""
-            field = None
+        if line.startswith("#, ") and "fuzzy" in line:
+            fuzzy = True
+        match = re.match(r'(msgctxt|msgid_plural|msgid|msgstr(?:\[\d+\])?) (".*")$', line)
+        if match:
+            field = match[1]
+            entry[field] = ast.literal_eval(match[2])
+        elif line.startswith('"') and field:
+            entry[field] += ast.literal_eval(line)
+        elif not line.strip():
+            if "msgid" in entry and not fuzzy:
+                key = entry["msgid"]
+                if "msgctxt" in entry:
+                    key = entry["msgctxt"] + "\x04" + key
+                if "msgid_plural" in entry:
+                    key += "\0" + entry["msgid_plural"]
+                    count = len([name for name in entry if name.startswith("msgstr[")])
+                    value = "\0".join(entry[f"msgstr[{index}]"] for index in range(count))
+                else:
+                    value = entry.get("msgstr", "")
+                if value or not key:
+                    messages[key] = value
+            entry, field, fuzzy = {}, None, False
+    return messages
+
+
+def compile_catalog(path):
+    messages = read_catalog(path)
     pairs = sorted((key.encode(), value.encode()) for key, value in messages.items())
     count = len(pairs)
     keys = b"\0".join(key for key, _ in pairs) + b"\0"
@@ -49,6 +63,6 @@ def compile_catalog(path):
 
 
 if __name__ == "__main__":
-    for catalog in Path(__file__).resolve().parent.parent.glob("locale/*/LC_MESSAGES/django.po"):
+    for catalog in Path(__file__).resolve().parent.parent.glob("locale/*/LC_MESSAGES/*.po"):
         compile_catalog(catalog)
         print(f"Compiled {catalog.relative_to(Path(__file__).resolve().parent.parent)}")

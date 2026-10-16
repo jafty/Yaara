@@ -1,24 +1,20 @@
 """Request-locale rendering of already authorized, recipient-specific data."""
 
-from django.utils.translation import gettext
+from django.utils.translation import get_language
 
-from .messages import Message, render
+from .messages import localize as localize_message
+from .messages import render
 
 
 def localize(value):
-    if isinstance(value, Message):
-        return render(value.tree, gettext)
-    if isinstance(value, dict):
-        return {key: localize(item) for key, item in value.items()}
-    if isinstance(value, list):
-        return [localize(item) for item in value]
-    return value
+    return localize_message(value, get_language() or "fr")
 
 
 def report_view(report):
+    language = get_language() or "fr"
     return {
         "month": max(1, report.month),
-        "title": render(report.content["title"], gettext) if report.content else report.title,
-        "body": render(report.content["body"], gettext) if report.content else report.body,
+        "title": render(report.content["title"], language) if report.content else report.title,
+        "body": render(report.content["body"], language) if report.content else report.body,
         "original_archive": not report.content,
     }

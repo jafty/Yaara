@@ -22,6 +22,13 @@ The supplied French design dossier is retained verbatim as `design-source.fr.md`
 - Decree previews read as dictated instructions while preserving exact prices, funding shares, troop origins, departure/combat/return dates and cancellation consequences. The month closes only through the existing explicit action.
 - New reports use the scribe's voice and French number grouping. Existing stored reports remain intact; presentation changes do not rewrite archives or reveal new opponent information. No simulation parameters or outcomes change.
 
+## 2026-10-16 — Language choice and readable logic cases
+
+- Support French and English with Django language selection and gettext catalogs. French remains the canonical simulation narration; browser language does not affect game logic or existing French assertions. Player-supplied and stored names are not translated.
+- Store new report message descriptions alongside original French prose, using only the same recipient-visible facts. Render on read in the chosen language; leave older archives verbatim. This extends the report schema without changing simulation state or rules.
+- Use explicit passé composé phrases for completed works and separate phrases for work begun. A proposed action remains in the infinitive.
+- Document every logic method with strict English Given/When/Then docstrings, enforced at collection and expanded per parameter row in the existing JSON case report. Keep pytest, stable IDs and the pseudo-TDD workflow; no second scenario runner is needed.
+
 ## 2026-10-16 · Folios, decree workflow and bilingual Moons
 
 - The supplied discussions and HTML preview are design references. Preserve the actual game’s city names, costs, local capacities, work effects, population rules and cancellation rules. In particular, canals increase tax yield; they do not add a population-capacity mechanic.

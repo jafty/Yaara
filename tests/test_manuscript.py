@@ -11,8 +11,25 @@ from django.utils import timezone
 
 from simulation import engine, services
 from simulation.models import Report
+from simulation.narration import work_effect
 from simulation.projections import player_view
 from tests.cases import case
+
+
+@pytest.mark.logic
+@case(
+    "narration-repair-effect",
+    "Decree preview: repairs restore the wall's current protection without implying an upgrade",
+)
+def test_repair_effect_preserves_wall_level():
+    """Given a repair to an existing wall.
+    When its effect is described for a decree.
+    Then the scribe promises restoration of the current level rather than an upgrade.
+    """
+    assert (
+        work_effect("repair", 2)
+        == "L’enceinte retrouvera toute la protection de son niveau actuel."
+    )
 
 
 @pytest.mark.integration
@@ -72,6 +89,9 @@ def test_bulk_decree_busy_city(user):
 @pytest.mark.logic
 @case("moon-first", "UI revision: new reigns open at Moon 1 with twelve closures to harvest")
 def test_first_moon():
+    """Given a new passive reign.
+    When its initial calendar is projected.
+    Then Moon 1 is open and twelve closures remain before the first harvest."""
     state = engine.new_state(opponents="passive")
     assert state["month"] == 1
     view = player_view(state, "p1")
@@ -85,6 +105,9 @@ def test_first_moon():
     "UI revision: sealing in Moon 1 departs on its closure, combats in 2, returns in 3",
 )
 def test_moon_departure():
+    """Given a raid sealed during Moon 1.
+    When that Moon closes.
+    Then it departs in Moon 1, fights in Moon 2 and returns in Moon 3."""
     state = engine.new_state(opponents="passive")
     order = engine.confirm_order(
         state, "p1", {"kind": "raid", "target": "c4", "contributions": {"c3": 45}}, "raid"
@@ -103,6 +126,9 @@ def test_moon_departure():
 @pytest.mark.logic
 @case("moon-harvest", "UI revision: Moon 12 pays twelve intervals and Moon 13 starts year two")
 def test_moon_harvest():
+    """Given a new passive V0 reign.
+    When twelve Moons close.
+    Then exactly twelve tax intervals are paid and Moon 13 opens year two."""
     state = engine.new_state("V0", opponents="passive")
     for _ in range(11):
         engine.advance_month(state, "seed")
@@ -119,6 +145,9 @@ def test_moon_harvest():
     "moon-finish", "UI revision: a 24-Moon reign closes exactly 24 times and retains its final date"
 )
 def test_moon_finish():
+    """Given a passive reign lasting twenty-four Moons.
+    When twenty-four closures are processed.
+    Then the result is fixed at Moon 24 with no remaining intervals."""
     state = engine.new_state("V0", reign_months=24, opponents="passive")
     for _ in range(24):
         engine.advance_month(state, "seed")
@@ -130,6 +159,9 @@ def test_moon_finish():
 @pytest.mark.logic
 @case("moon-legacy", "UI revision: schema-one saves retain their zero-based simulation schedule")
 def test_legacy_calendar():
+    """Given a save without a calendar-version marker.
+    When an order is prepared and a month advances.
+    Then the original zero-based admission and one-based departure timing remain intact."""
     state = engine.new_state(calendar_version=1, opponents="passive")
     state.pop("calendar_version", None)
     assert state["month"] == 0
