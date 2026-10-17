@@ -6,7 +6,7 @@
             {% if view.finished %}{% blocktranslate with v0=view.closed_moon %}Au terme de la lune {{ v0 }}{% endblocktranslate %}
             {% else %}{% blocktranslate with v0=view.open_moon v1=view.year %}Lune {{ v0 }}, année {{ v1 }}{% endblocktranslate %}<br><span>{% translate "Ouverte à vos ordres" %}{% if view.closed_moon %} · {% blocktranslate with v0=view.closed_moon %}Comptes arrêtés à la lune {{ v0 }}{% endblocktranslate %}{% endif %}</span>{% endif %}
         </p>
-        <h1>{% if tab == 'domain' %}{% translate "Les terres sous votre sceau" %}{% elif tab == 'city' %}{% blocktranslate with v0=selected.name %}Le feuillet de {{ v0 }}{% endblocktranslate %}{% elif tab == 'decrees' %}{% translate "Ce que vous dicterez" %}{% else %}{% translate "Les lettres qui vous parviennent" %}{% endif %}</h1>
+        <h1>{% if tab == 'domain' %}{% translate "Les nouvelles du règne" %}{% elif tab == 'city' %}{% blocktranslate with v0=selected.name %}Le feuillet de {{ v0 }}{% endblocktranslate %}{% elif tab == 'decrees' %}{% translate "Ce que vous dicterez" %}{% elif tab == 'constructions' %}{% translate "Constructions" %}{% elif tab == 'wars' %}{% translate "Guerres" %}{% else %}{% translate "Rapports" %}{% endif %}</h1>
         <p class="dedication">{% blocktranslate with v0=view.realm %}Au service de {{ v0 }}.{% endblocktranslate %}</p>
     </header>
     {% if view.finished %}
@@ -17,19 +17,21 @@
     {% elif view.eliminated %}<p class="marginal-note">{% translate "Aucune cité ne reconnaît plus votre autorité. Je continuerai pourtant de tenir ce livre jusqu’à la fin du règne." %}</p>
     {% elif game.paused %}<p class="marginal-note">{% translate "Le calendrier est suspendu. Reprenez-le avant de dicter de nouveaux ordres." %}</p>{% endif %}
     {% if tab == 'domain' %}
-        <section class="house-accounts" aria-labelledby="accounts-heading">
-            <p class="salutation">{% translate "Monseigneur," %}</p>
-            <p>{% if not view.closed_moon %}{% translate "J’ouvre ce livre au premier jour de votre règne. Voici les terres et les moyens que vous confiez à ma plume." %}{% else %}{% translate "Voici les comptes de votre maison. Au-delà de nos frontières, les hommes et les réserves des autres maisons nous demeurent inconnus." %}{% endif %}</p>
-            <h2 id="accounts-heading">{% translate "Les comptes de votre maison" %}</h2>
-            <h3>{% translate "Les terres et les hommes" %}</h3>
-            <p>{% blocktranslate with v0=view.owned_cities|length v1=view.population v2=view.available_fideles %}Votre autorité s’étend sur <strong>{{ v0 }} cités</strong>, où <strong>{{ v1 }} habitants</strong> sont rattachés à leurs foyers.<br>Parmi eux, <strong>{{ v2 }} Fidèles</strong> peuvent encore recevoir vos ordres.{% endblocktranslate %}
-                {% if view.absent %}<br>{% blocktranslate with v0=view.absent %}Nous attendons le retour de <strong>{{ v0 }} Fidèles</strong> partis en expédition.{% endblocktranslate %}{% endif %}</p>
-            <h3>{% translate "Les réserves et la récolte" %}</h3>
-            <p>{% blocktranslate with v0=view.stock v1=view.available_stock %}Nos greniers conservent <strong>{{ v0 }} Mesures</strong>.<br>Vous pouvez encore engager <strong>{{ v1 }} Mesures</strong>.{% endblocktranslate %}{% if view.reserved_stock %}<br>{% blocktranslate with v0=view.reserved_stock %}Vos décrets ont déjà réservé <strong>{{ v0 }} Mesures</strong>.{% endblocktranslate %}{% endif %}</p>
-            {% if not view.finished %}<p>{% blocktranslate with v0=view.harvest_moon v1=view.harvest_in v2=view.tax %}Le prochain prélèvement sera versé à la clôture de la <strong>lune {{ v0 }}</strong>, dans <strong>{{ v1 }} lunes</strong>.<br>J’ai inscrit <strong>{{ v2 }} Mesures</strong> de prélèvement en préparation ; elles ne peuvent pas encore être dépensées.{% endblocktranslate %}</p>{% endif %}
-            <p>{% translate "Chaque cité garde ses propres réserves. Les frais de vos décrets sont répartis entre nos greniers selon leurs fonds libres ; une place vide ailleurs ne préserve pas le surplus d’un grenier plein." %}</p>
-            {% if not view.finished and not view.eliminated %}<p class="reading-links"><a href="?tab=decrees">{% translate "Faire venir le scribe pour dicter vos ordres" %} →</a></p>{% endif %}
+        <section class="briefing-news" aria-labelledby="recent-letters">
+            <h2 id="recent-letters">{% translate "Les dernières nouvelles" %}</h2>
+            {% if not view.closed_moon %}<p>{% translate "Votre règne commence. Préparez vos premiers décrets, puis clôturez la lune pour les mettre en mouvement." %}</p>{% endif %}
+            {% include 'simulation/letter_entries.html' with compact=True %}
+            <p class="reading-links"><a href="?tab=letters">{% translate "Tous les rapports" %} →</a></p>
         </section>
+        {% if not view.finished %}<section class="chapter-section" aria-labelledby="upcoming-heading">
+            <h2 id="upcoming-heading">{% translate "Les prochaines échéances" %}</h2>
+            {% if game.paused %}<p class="aside-text">{% translate "Ces échéances attendent la reprise du calendrier." %}</p>{% endif %}
+            <ol class="milestones">{% for event in milestones %}<li>
+                <span class="milestone-date">{% blocktranslate with v0=event.moon %}Lune {{ v0 }}{% endblocktranslate %}</span>
+                <a href="?tab={{ event.tab }}{% if event.tab == 'domain' %}#upcoming-heading{% endif %}">{{ event.label }}</a>{% if event.detail %} · {{ event.detail }}{% endif %}
+            </li>{% endfor %}</ol>
+            {% if not view.eliminated and not game.paused %}<p class="reading-links"><a href="?tab=decrees">{% translate "Préparer un décret" %} →</a></p>{% endif %}
+        </section>{% endif %}
         <section class="chapter-section" aria-labelledby="city-ledgers">
             <h2 id="city-ledgers">{% translate "Les feuillets des cités" %}</h2>
             {% for city in view.owned_cities %}
@@ -41,11 +43,9 @@
             {% empty %}<p>{% translate "Aucune cité ne demeure sous votre sceau." %}</p>{% endfor %}
         </section>
         {% include 'simulation/world_notes.html' %}
-        <section class="chapter-section" aria-labelledby="recent-letters"><h2 id="recent-letters">{% translate "Les dernières nouvelles" %}</h2>
-            {% include 'simulation/letter_entries.html' %}
-            <p class="reading-links"><a href="?tab=letters">{% translate "Reprendre toute la correspondance" %} →</a></p>
-        </section>
     {% elif tab == 'city' %}{% include 'simulation/city_folio.html' %}
+    {% elif tab == 'constructions' %}{% include 'simulation/constructions.html' %}
+    {% elif tab == 'wars' %}{% include 'simulation/wars.html' %}
     {% elif tab == 'decrees' %}{% include 'simulation/chronicle_decrees.html' %}
     {% else %}
         <p class="salutation">{% translate "Monseigneur," %}</p>

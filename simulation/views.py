@@ -104,7 +104,7 @@ def desk(request, game_id):
     game, actor = authorized_game(request, game_id)
     view = localize(player_view(game.state, actor))
     tab = request.GET.get("tab", "domain")
-    if tab not in ("domain", "decrees", "letters", "city"):
+    if tab not in ("domain", "decrees", "constructions", "wars", "letters", "city"):
         raise Http404
     city_id = request.GET.get("city")
     selected = next((city for city in view["cities"] if city["id"] == city_id), None)
@@ -114,6 +114,68 @@ def desk(request, game_id):
         selected = next(iter(view["owned_cities"]), view["cities"][0])
     # Reports are immutable per-recipient records; never infer access from current ownership.
     reports = Report.objects.filter(game=game, recipient=actor)[: 100 if tab == "letters" else 4]
+    constructions = [
+        {**work, "city": city["name"], "city_id": city["id"]}
+        for city in view["owned_cities"]
+        for work in city["works"]
+    ]
+    milestones = []
+    if not view["finished"]:
+        milestones.extend(
+            {
+                "moon": order["execute_month"],
+                "label": order["label"],
+                "detail": order["destination"],
+                "tab": "decrees",
+            }
+            for order in view["orders"]
+            if order["status"] == "confirmed"
+        )
+        milestones.extend(
+            {
+                "moon": work["finish_month"],
+                "label": work["label"],
+                "detail": work["city"],
+                "tab": "constructions",
+            }
+            for work in constructions
+        )
+        milestones.extend(
+            {
+                "moon": work["finish_month"],
+                "label": _("Armement achevé"),
+                "detail": view["realm"],
+                "tab": "constructions",
+            }
+            for work in view["equipment_work"]
+        )
+        for mission in view["missions"]:
+            if not mission["returning"]:
+                milestones.append(
+                    {
+                        "moon": mission["combat_month"],
+                        "label": _("Combat prévu"),
+                        "detail": mission["target"],
+                        "tab": "wars",
+                    }
+                )
+            milestones.append(
+                {
+                    "moon": mission["return_month"],
+                    "label": _("Retour prévu"),
+                    "detail": mission["target"],
+                    "tab": "wars",
+                }
+            )
+        milestones.append(
+            {
+                "moon": view["harvest_moon"],
+                "label": _("Versement de la récolte"),
+                "detail": "",
+                "tab": "domain",
+            }
+        )
+        milestones.sort(key=lambda item: item["moon"])
     action_kind = request.GET.get("action")
     action = next((item for item in view["work_actions"] if item["kind"] == action_kind), None)
     if action_kind == "expedition":
@@ -133,6 +195,9 @@ def desk(request, game_id):
             "reports": [report_view(report) for report in reports],
             "action": action,
             "city_requested": city_id is not None,
+            "constructions": constructions,
+            "construction_count": len(constructions) + len(view["equipment_work"]),
+            "milestones": milestones,
             "neighbors": [
                 link["second"] if link["first"]["id"] == selected["id"] else link["first"]
                 for link in view["links"]

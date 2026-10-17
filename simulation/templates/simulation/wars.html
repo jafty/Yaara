@@ -1,0 +1,6 @@
+{% load i18n %}
+<p>{% translate "Suivez vos expéditions, leurs combats et leurs retours. Les effectifs et les réserves des maisons rivales demeurent secrets." %}</p>
+{% include 'simulation/missions.html' %}
+{% if not view.missions %}<p>{% translate "Aucune expédition en route." %}</p>{% endif %}
+<p class="reading-links"><a href="?tab=decrees&action=expedition">{% translate "Préparer une expédition" %} →</a> · <a href="?tab=decrees#orders-heading">{% translate "Consulter les décrets scellés" %} →</a></p>
+{% include 'simulation/world_notes.html' %}

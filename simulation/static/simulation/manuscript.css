@@ -101,3 +101,15 @@ input[type="number"] { width: 5rem; border: 0; border-bottom: 1px solid #b8ab9a;
 }
 @media (max-height: 500px) { .reign-header { position: static; } }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+/* Compact folio navigation keeps resources visible on narrow screens. */
+.bookmarks { flex-wrap: wrap; gap: .1rem 1.25rem; }
+.bookmarks a { font-size: .85rem; padding-block: .2rem .4rem; }
+.briefing-news > h2 { margin-top: 0; }
+.milestones { list-style: none; padding: 0; }
+.milestones li { padding: .65rem 0; border-bottom: 1px solid var(--rule); }
+.milestone-date { display: inline-block; min-width: 5rem; color: var(--muted); font-size: .85rem; font-variant-numeric: tabular-nums; }
+@media (max-width: 600px) {
+  .bookmarks { gap: .1rem .8rem; }
+  .bookmarks a { font-size: .78rem; }
+}

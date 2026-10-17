@@ -1,9 +1,4 @@
 {% load i18n %}
-{% if view.missions %}<section class="chapter-section"><h2>{% translate "Nos hommes en route" %}</h2>
-    {% for mission in view.missions %}<p>{% blocktranslate with v0=mission.target v1=mission.men v2=mission.kind|lower %}Vers <strong>{{ v0 }}</strong>, <strong>{{ v1 }} Fidèles</strong> poursuivent leur mission : <em>{{ v2 }}</em>.{% endblocktranslate %}
-        {% if not mission.returning %}{% blocktranslate with v0=mission.combat_month %}Le combat est prévu à la lune <strong>{{ v0 }}</strong>.{% endblocktranslate %}{% endif %}
-        {% blocktranslate with v0=mission.return_month %}Le retour est attendu à la lune <strong>{{ v0 }}</strong>.{% endblocktranslate %}
-        {% if mission.loot %}{% blocktranslate with v0=mission.loot %}Ils transportent <strong>{{ v0 }} Mesures</strong>, disponibles seulement à leur retour.{% endblocktranslate %}{% endif %}</p>{% endfor %}</section>{% endif %}
 <section class="chapter-closing" id="turn-page" aria-label="{% translate "Le cours du règne" %}">
     {% if not view.finished %}
         <p class="sealed-summary">{% blocktranslate with v0=view.open_moon v1=view.sealed_count %}Décrets scellés pour la lune {{ v0 }} : <strong>{{ v1 }}</strong>.{% endblocktranslate %}</p>

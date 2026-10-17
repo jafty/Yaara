@@ -1888,3 +1888,81 @@ msgid ""
 msgstr ""
 "La lune {p0} est désormais consigné dans ces chroniques. Voici les nouvelles"
 " qui nous sont parvenues."
+
+msgid "Les nouvelles du règne"
+msgstr "Les nouvelles du règne"
+
+msgid "Constructions"
+msgstr "Constructions"
+
+msgid "Guerres"
+msgstr "Guerres"
+
+msgid "Rapports"
+msgstr "Rapports"
+
+msgid "Vue d’ensemble"
+msgstr "Vue d’ensemble"
+
+msgid "Votre règne commence. Aucun événement n’a encore été consigné. Préparez vos premiers décrets, puis clôturez la lune pour les mettre en mouvement."
+msgstr "Votre règne commence. Aucun événement n’a encore été consigné. Préparez vos premiers décrets, puis clôturez la lune pour les mettre en mouvement."
+
+msgid "Tous les rapports"
+msgstr "Tous les rapports"
+
+msgid "Les prochaines échéances"
+msgstr "Les prochaines échéances"
+
+msgid "Ces échéances attendent la reprise du calendrier."
+msgstr "Ces échéances attendent la reprise du calendrier."
+
+msgid "Préparer un décret"
+msgstr "Préparer un décret"
+
+msgid "Armement achevé"
+msgstr "Armement achevé"
+
+msgid "Combat prévu"
+msgstr "Combat prévu"
+
+msgid "Retour prévu"
+msgstr "Retour prévu"
+
+msgid "Versement de la récolte"
+msgstr "Versement de la récolte"
+
+msgid "Retrouvez ici les chantiers et les projets d’armement en cours. Les dates indiquent leur achèvement ; les équipes restent engagées jusque-là."
+msgstr "Retrouvez ici les chantiers et les projets d’armement en cours. Les dates indiquent leur achèvement ; les équipes restent engagées jusque-là."
+
+msgid "Les travaux en cours"
+msgstr "Les travaux en cours"
+
+msgid "Achèvement prévu à la lune <strong>%(v0)s</strong>."
+msgstr "Achèvement prévu à la lune <strong>%(v0)s</strong>."
+
+msgid "Armement"
+msgstr "Armement"
+
+msgid "Aucun chantier ni projet d’armement en cours."
+msgstr "Aucun chantier ni projet d’armement en cours."
+
+msgid "Un décret scellé attend la clôture avant de démarrer. Retrouvez-le parmi vos décrets."
+msgstr "Un décret scellé attend la clôture avant de démarrer. Retrouvez-le parmi vos décrets."
+
+msgid "Préparer un chantier"
+msgstr "Préparer un chantier"
+
+msgid "Consulter les décrets scellés"
+msgstr "Consulter les décrets scellés"
+
+msgid "Suivez vos expéditions, leurs combats et leurs retours. Les effectifs et les réserves des maisons rivales demeurent secrets."
+msgstr "Suivez vos expéditions, leurs combats et leurs retours. Les effectifs et les réserves des maisons rivales demeurent secrets."
+
+msgid "Aucune expédition en route."
+msgstr "Aucune expédition en route."
+
+msgid "Préparer une expédition"
+msgstr "Préparer une expédition"
+
+msgid "Votre règne commence. Préparez vos premiers décrets, puis clôturez la lune pour les mettre en mouvement."
+msgstr "Votre règne commence. Préparez vos premiers décrets, puis clôturez la lune pour les mettre en mouvement."

@@ -216,6 +216,11 @@ observation-undefended
 order-id-owned-by-other-actor
 other-game-is-private/game
 other-game-is-private/state
+overview-finished-reign
+overview-first-reign/en
+overview-first-reign/fr
+overview-military-deadlines
+overview-work-deadlines
 polling-rendered-revision/initial-change
 polling-rendered-revision/later-change
 polling-rendered-revision/unchanged

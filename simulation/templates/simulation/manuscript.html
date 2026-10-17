@@ -18,14 +18,14 @@
                 <p class="book-title">{{ game.title }}</p>
                 <nav class="bookmarks" aria-label="{% translate "Les feuillets de votre règne" %}">
                     <a href="{% url 'game' game.id %}" {% if tab == 'domain' or tab == 'city' %}aria-current="page"{% endif %}>
-                        <span>{% translate "Domaine" %}</span><small>{% translate "Terres et greniers" %}</small>
+                        <span>{% translate "Vue d’ensemble" %}</span>
                     </a>
                     <a href="{% url 'game' game.id %}?tab=decrees" {% if tab == 'decrees' %}aria-current="page"{% endif %}>
-                        <span>{% translate "Décrets" %}{% if view.sealed_count %} <span class="seal-count">({{ view.sealed_count }})</span>{% endif %}</span><small>{% translate "Ordres et ouvrages" %}</small>
+                        <span>{% translate "Décrets" %}{% if view.sealed_count %} <span class="seal-count">({{ view.sealed_count }})</span>{% endif %}</span>
                     </a>
-                    <a href="{% url 'game' game.id %}?tab=letters" {% if tab == 'letters' %}aria-current="page"{% endif %}>
-                        <span>{% translate "Correspondance" %}</span><small>{% translate "Récits et nouvelles" %}</small>
-                    </a>
+                    <a href="{% url 'game' game.id %}?tab=constructions" {% if tab == 'constructions' %}aria-current="page"{% endif %}><span>{% translate "Constructions" %}</span></a>
+                    <a href="{% url 'game' game.id %}?tab=wars" {% if tab == 'wars' %}aria-current="page"{% endif %}><span>{% translate "Guerres" %}</span></a>
+                    <a href="{% url 'game' game.id %}?tab=letters" {% if tab == 'letters' %}aria-current="page"{% endif %}><span>{% translate "Rapports" %}</span></a>
                 </nav>
                 {% if view %}
                     <div class="resource-ribbon" aria-label="{% translate "Les moyens libres de votre maison" %}">

@@ -48,10 +48,17 @@ with sync_playwright() as playwright:
         expect(
             page.get_by_role(
                 "heading",
-                name="The lands under your seal" if en else "Les terres sous votre sceau",
+                name="News of your reign" if en else "Les nouvelles du règne",
             )
         ).to_be_visible()
         game_url = page.url
+        expect(page.locator("#recent-letters")).to_be_visible()
+        expect(page.locator("#upcoming-heading")).to_be_visible()
+        assert page.locator(".house-accounts").count() == 0
+        assert page.locator(".bookmarks a").count() == 5
+        page.locator('.bookmarks a[href$="?tab=constructions"]').click()
+        expect(page.get_by_role("heading", name="Constructions", exact=True)).to_be_visible()
+        page.goto(game_url)
         assert page.locator("article.city-entry").count() == 3
         assert page.locator(".sidebar, .stats-strip, svg, img, table").count() == 0
         assert page.locator(".city-entry details").count() == 0
@@ -115,6 +122,10 @@ with sync_playwright() as playwright:
             expect(page.locator(".dateline")).to_contain_text(
                 f"Moon {moon + 1}" if en else f"Lune {moon + 1}"
             )
+        page.locator('.bookmarks a[href$="?tab=wars"]').click()
+        expect(
+            page.get_by_role("heading", name="Wars" if en else "Guerres", exact=True)
+        ).to_be_visible()
         page.locator('.bookmarks a[href$="?tab=letters"]').click()
         for title in (
             ("Return to Namar", "Successful raid at Sefra")
@@ -153,6 +164,8 @@ with sync_playwright() as playwright:
                 "",
                 "?tab=city&city=c2",
                 "?tab=letters",
+                "?tab=constructions",
+                "?tab=wars",
                 "?tab=decrees&action=expedition",
             ):
                 page.goto(game_url + suffix)

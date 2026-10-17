@@ -3172,3 +3172,81 @@ msgstr ""
 
 msgid "Étendez votre autorité, une lune après l’autre."
 msgstr "Extend your authority, one moon at a time."
+
+msgid "Les nouvelles du règne"
+msgstr "News of your reign"
+
+msgid "Constructions"
+msgstr "Constructions"
+
+msgid "Guerres"
+msgstr "Wars"
+
+msgid "Rapports"
+msgstr "Reports"
+
+msgid "Vue d’ensemble"
+msgstr "Overview"
+
+msgid "Votre règne commence. Aucun événement n’a encore été consigné. Préparez vos premiers décrets, puis clôturez la lune pour les mettre en mouvement."
+msgstr "Your reign begins. No events have been recorded yet. Prepare your first decrees, then close the Moon to set them in motion."
+
+msgid "Tous les rapports"
+msgstr "All reports"
+
+msgid "Les prochaines échéances"
+msgstr "Coming next"
+
+msgid "Ces échéances attendent la reprise du calendrier."
+msgstr "These events await the resumption of the calendar."
+
+msgid "Préparer un décret"
+msgstr "Prepare a decree"
+
+msgid "Armement achevé"
+msgstr "Equipment completed"
+
+msgid "Combat prévu"
+msgstr "Combat expected"
+
+msgid "Retour prévu"
+msgstr "Return expected"
+
+msgid "Versement de la récolte"
+msgstr "Harvest payment"
+
+msgid "Retrouvez ici les chantiers et les projets d’armement en cours. Les dates indiquent leur achèvement ; les équipes restent engagées jusque-là."
+msgstr "Follow active construction and equipment projects here. Dates indicate completion; teams remain committed until then."
+
+msgid "Les travaux en cours"
+msgstr "Work in progress"
+
+msgid "Achèvement prévu à la lune <strong>%(v0)s</strong>."
+msgstr "Completion expected at Moon <strong>%(v0)s</strong>."
+
+msgid "Armement"
+msgstr "Equipment"
+
+msgid "Aucun chantier ni projet d’armement en cours."
+msgstr "No construction or equipment projects in progress."
+
+msgid "Un décret scellé attend la clôture avant de démarrer. Retrouvez-le parmi vos décrets."
+msgstr "Sealed decrees start at the closing of the Moon. Find them on the Decrees page."
+
+msgid "Préparer un chantier"
+msgstr "Plan construction"
+
+msgid "Consulter les décrets scellés"
+msgstr "View sealed decrees"
+
+msgid "Suivez vos expéditions, leurs combats et leurs retours. Les effectifs et les réserves des maisons rivales demeurent secrets."
+msgstr "Follow your expeditions, battles and returns. Rival houses’ forces and reserves remain secret."
+
+msgid "Aucune expédition en route."
+msgstr "No expeditions on the road."
+
+msgid "Préparer une expédition"
+msgstr "Plan an expedition"
+
+msgid "Votre règne commence. Préparez vos premiers décrets, puis clôturez la lune pour les mettre en mouvement."
+msgstr "Your reign begins. Prepare your first decrees, then close the Moon to set them in motion."
