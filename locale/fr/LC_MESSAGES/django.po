@@ -2095,3 +2095,51 @@ msgstr "Fidèles libres"
 
 msgid "Oasis voisines :"
 msgstr "Oasis voisines :"
+
+msgid "Atelier d’armes"
+msgstr "Atelier d’armes"
+
+msgid "Forge de la cité"
+msgstr "Forge de la cité"
+
+msgid "Forge des maîtres"
+msgstr "Forge des maîtres"
+
+msgid "Cultures de l’oasis"
+msgstr "Cultures de l’oasis"
+
+msgid "Premiers canaux"
+msgstr "Premiers canaux"
+
+msgid "Réseau de canaux"
+msgstr "Réseau de canaux"
+
+msgid "Grenier de la cité"
+msgstr "Grenier de la cité"
+
+msgid "Grand grenier"
+msgstr "Grand grenier"
+
+msgid "Silos de réserve"
+msgstr "Silos de réserve"
+
+msgid "Cité ouverte"
+msgstr "Cité ouverte"
+
+msgid "Enceinte de terre crue"
+msgstr "Enceinte de terre crue"
+
+msgid "%(name)s : <strong>%(cost)s Mesures</strong> ; <strong>%(duration)s lunes</strong>."
+msgstr "%(name)s : <strong>%(cost)s Mesures</strong> ; <strong>%(duration)s lunes</strong>."
+
+msgid "%(name)s, %(cost)s Mesures et %(duration)s lunes de travaux"
+msgstr "%(name)s, %(cost)s Mesures et %(duration)s lunes de travaux"
+
+msgid "<strong>%(name)s</strong> : <strong>%(equipment)s</strong> pour les Fidèles de cette cité."
+msgstr "<strong>%(name)s</strong> : <strong>%(equipment)s</strong> pour les Fidèles de cette cité."
+
+msgid "Cette forge fournit l’armement de toute votre maison."
+msgstr "Cette forge fournit l’armement de toute votre maison."
+
+msgid "Aucun nouvel ouvrage ne peut être entrepris ici pour le moment."
+msgstr "Aucun nouvel ouvrage ne peut être entrepris ici pour le moment."

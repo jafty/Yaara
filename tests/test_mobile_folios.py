@@ -153,7 +153,8 @@ def test_legacy_forge_http(user):
     client = Client()
     client.force_login(user)
     page = client.get(reverse("game", args=[game.id]), {"tab": "constructions"})
-    assert b"action=equipment" in page.content
+    assert b'id="work-equipment"' in page.content
+    assert b'name="kind" value="equipment"' in page.content
     assert b'id="work-forge"' not in page.content
     preview = client.post(reverse("preview", args=[game.id]), {"kind": "equipment"})
     assert preview.status_code == 200

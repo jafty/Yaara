@@ -3,7 +3,7 @@
 from . import engine
 from .calendar import closed_moon, closing_moon
 from .messages import Message
-from .narration import work_effect
+from .narration import work_effect, work_name
 from .rules import ACTION_LABELS, EQUIPMENT_LABELS, EXPEDITION_PRICES, RuleError, rule_family
 
 STATUS_LABELS = {
@@ -75,6 +75,7 @@ def player_view(state, actor):
                     "irrigation": city["irrigation"],
                     "storage": city["storage"],
                     "forge": city.get("forge", 0),
+                    "forge_name": work_name("forge", engine.city_equipment(state, city)),
                     "equipment": EQUIPMENT_LABELS[engine.city_equipment(state, city)],
                     "busy": city["id"] in busy,
                     "deaths": city["military_deaths"] + city["civilian_deaths"],
@@ -173,6 +174,7 @@ def player_view(state, actor):
                         "cost": task["cost"],
                         "duration": task["duration"],
                         "level": task["level"],
+                        "work_name": work_name(kind, task["level"]),
                         "busy": city["id"] in busy,
                     }
                 )
@@ -188,6 +190,7 @@ def player_view(state, actor):
                 "prices": [
                     {
                         "level": level,
+                        "name": work_name(kind, level),
                         "cost": cost,
                         "duration": duration,
                         "effect": work_effect(kind, level),
@@ -203,6 +206,21 @@ def player_view(state, actor):
         and state["players"][actor]["equipment"] < 2
     ):
         equipment_quote = engine.equipment_spec(state, actor)
+    equipment_available = bool(equipment_quote) and not engine.equipment_busy(state, actor)
+    if not engine.local_forges(state) and rule_family(state["rules"]).equipment:
+        available_actions.append(
+            {
+                "kind": "equipment",
+                "label": ACTION_LABELS["forge"],
+                "equipment": EQUIPMENT_LABELS[state["players"][actor]["equipment"]],
+                "selectable": equipment_available,
+                "prices": [
+                    {**equipment_quote, "name": work_name("forge", equipment_quote["level"])}
+                ]
+                if equipment_quote
+                else [],
+            }
+        )
     return {
         "month": state["month"],
         "open_moon": upcoming,
@@ -219,10 +237,7 @@ def player_view(state, actor):
         "equipment": EQUIPMENT_LABELS[state["players"][actor]["equipment"]],
         "local_forges": engine.local_forges(state),
         "equipment_quote": equipment_quote,
-        "equipment_available": not engine.local_forges(state)
-        and rule_family(state["rules"]).equipment
-        and state["players"][actor]["equipment"] < 2
-        and not engine.equipment_busy(state, actor),
+        "equipment_available": equipment_available,
         "equipment_work": [
             {"finish_month": work["finish_month"]}
             for work in state["works"]

@@ -250,7 +250,6 @@ strong {
   padding: 1.1rem 0;
 }
 .city-entry h3,
-.decree-choice h3,
 .order-entry h3,
 .letter-entry h3 {
   margin-top: 0;
@@ -433,9 +432,6 @@ input[type="number"] {
   margin-top: 0;
   font-size: 0.9rem;
 }
-.work-choices {
-  margin-top: 0;
-}
 .work-price {
   display: block;
   font-size: 0.8rem;
@@ -445,8 +441,9 @@ input[type="number"] {
 .work-selection > summary {
   padding: 0;
 }
-.work-selection > summary h3 {
+.work-selection > summary h2 {
   display: inline;
+  font-size: 1.13rem;
 }
 .work-selection > .decree-form {
   margin-top: 1rem;

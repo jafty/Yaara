@@ -14,7 +14,6 @@
             <p class="cost-hint">{% blocktranslate with raid_base=view.expedition_prices.raid.base raid_person=view.expedition_prices.raid.per_person raid_min=view.raid_minimum capture_base=view.expedition_prices.capture.base capture_person=view.expedition_prices.capture.per_person capture_min=view.capture_minimum %}Pillage : {{ raid_base }} Mesures + {{ raid_person }} par Fidèle, au moins {{ raid_min }} Fidèles.<br>Capture : {{ capture_base }} Mesures + {{ capture_person }} par Fidèle, au moins {{ capture_min }} Fidèles.{% endblocktranslate %}</p>
             <a class="dictate-link" href="?tab=decrees&action=expedition">{% translate "Dicter l’ordre d’une expédition" %} →</a>
         </section>
-        {% include 'simulation/realm_equipment.html' %}
     {% endif %}
     <p class="aside-text">{% if view.cancellable %}{% translate "Avant la clôture, un décret peut être retiré. Pour le modifier, il faut le rédiger de nouveau ; sa priorité sur la cible sera perdue." %}{% else %}{% translate "En V0, un sceau est définitif. Aucun décret confirmé ne peut être annulé." %}{% endif %} {% translate "Après le départ, ni rappel ni remboursement ne sont possibles." %}</p>
 {% else %}<p>{% translate "Je ne peux recevoir de nouveaux décrets tant que le calendrier est suspendu ou le règne achevé." %}</p>{% endif %}

@@ -1,5 +1,11 @@
 # Implementation decisions
 
+## 2026-10-19 · One list of named works
+
+- The Works title introduces one shared building list; remove the repeated “Les ouvrages de vos cités” heading. Local forges and legacy realm-equipment forges use the same choice markup and existing decree form. Remove the dedicated realm-equipment section and its obsolete partial. Legacy forge choices still send `equipment` commands with their original realm scope, quotes and availability; no saved rules or reports change.
+- Replace numeric upgrade captions with shared names: Premiers canaux / Réseau de canaux, Grand grenier / Silos de réserve, Enceinte de terre crue / Grande enceinte, Forge de la cité / Forge des maîtres. Repairs identify the existing wall being restored. City checklists name each intended building so mixed upgrade batches remain clear. City forge folios use Atelier d’armes for ordinary equipment, then the same two forge names.
+- Names are pure narration values localized through both catalogs. Costs, durations and effects stay explicit and unchanged; names do not expose numerical combativity or opponent infrastructure. Keep the list readable when paused or finished, while hiding command forms. Reuse the existing work-choice and decree-form components, and remove obsolete heading styles together with their markup.
+
 ## 2026-10-19 · Contextual expedition atlas and clean presentation
 
 - Replace the fixed circular atlas with stable irregular public positions, including interior settlements. This is schematic geography shared by all reigns, not a per-game random layout. Remove road edges from the drawing; the contextual panel lists actual connected neighbours. New reigns use `map_version=2`: fifteen roads, including six interior links, instead of the nine-road ring. Rotational symmetry gives every realm five initially reachable rival cities, compared with two on the ring, and the same distribution of two- and four-road cities. Friendly connected components still determine eligible origins. The mesh is a fixed, symmetric gameplay default rather than an untested random generator. Existing snapshots keep their exact saved roads, including those without a map marker; no migration rewrites a running war. Expedition timing is unchanged.

@@ -389,7 +389,9 @@ def test_projection_orders(version):
     assert [o["id"] for o in view["orders"]] == ["own"]
     assert view["orders"][0]["can_cancel"] == (version == "V1")
     assert [a["kind"] for a in view["work_actions"]] == (
-        ["irrigation", "storage", "walls", "repair"] if version == "V1" else ["irrigation", "walls"]
+        ["irrigation", "storage", "walls", "repair", "equipment"]
+        if version == "V1"
+        else ["irrigation", "walls"]
     )
 
 

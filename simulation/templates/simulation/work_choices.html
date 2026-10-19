@@ -1,15 +1,17 @@
 {% load i18n %}
-<section class="chapter-section work-choices" aria-labelledby="works-heading">
-    <h2 id="works-heading">{% translate "Les ouvrages de vos cités" %}</h2>
+<section class="work-choices" aria-label="{% translate 'Les ouvrages de vos cités' %}">
     <p class="aside-text">{% translate "Choisissez un ouvrage, puis une ou plusieurs cités. Un seul sceau réserve tout le lot ; chaque cité mobilise ses propres équipes." %}</p>
     {% for action in view.work_actions %}
         <article class="decree-choice">
             <details class="work-selection" id="work-{{ action.kind }}" {% if city_requested %}open{% endif %}>
-                <summary><h3>{{ action.label }}</h3>{% for price in action.prices %}<span class="work-price">{% blocktranslate with v0=price.level v1=price.cost v2=price.duration %}Niveau {{ v0 }} : <strong>{{ v1 }} Mesures</strong> ; <strong>{{ v2 }} lunes</strong>.{% endblocktranslate %}</span>{% endfor %}</summary>
-                {% for price in action.prices %}<p class="cost-hint">{{ price.effect }}</p>{% endfor %}
+                <summary><h2>{{ action.label }}</h2>{% for price in action.prices %}<span class="work-price">{% blocktranslate with name=price.name cost=price.cost duration=price.duration %}{{ name }} : <strong>{{ cost }} Mesures</strong> ; <strong>{{ duration }} lunes</strong>.{% endblocktranslate %}</span>{% endfor %}</summary>
+                {% for price in action.prices %}{% if price.effect %}<p class="cost-hint">{{ price.effect }}</p>{% endif %}{% endfor %}
+                {% if action.kind == 'equipment' %}<p>{{ action.equipment }}. {% translate "Cette forge fournit l’armement de toute votre maison." %}</p>{% endif %}
                 {% if action.kind == 'forge' %}<p class="aside-text">{% translate "La forge équipe les Fidèles de cette cité et ses futurs habitants. Chaque cité conserve son propre équipement." %}</p>{% endif %}
+                {% if not view.finished and not view.eliminated and not game.paused %}
                 {% if action.selectable %}{% include 'simulation/decree_form.html' with inline=True %}
-                {% else %}<p class="aside-text">{% translate "Aucune équipe ne peut recevoir cet ouvrage pour le moment." %}</p>{% endif %}
+                {% else %}<p class="aside-text">{% translate "Aucun nouvel ouvrage ne peut être entrepris ici pour le moment." %}</p>{% endif %}
+                {% endif %}
             </details>
         </article>
     {% endfor %}

@@ -391,6 +391,26 @@ upgrade-keeps-damage-and-repair-restores-existing-level
 v0-confirmation-is-final
 wall-damage/repair-preserves-level
 wall-damage/upgrade-preserves-damage
+work-forge-folio-name/en-0
+work-forge-folio-name/en-1
+work-forge-folio-name/en-2
+work-forge-folio-name/fr-0
+work-forge-folio-name/fr-1
+work-forge-folio-name/fr-2
+work-legacy-forge-choice/0-False
+work-legacy-forge-choice/1-False
+work-legacy-forge-choice/1-True
+work-legacy-forge-choice/2-False
+work-named-upgrades/forge-1-Forge de la cit\xe9-600000-8
+work-named-upgrades/forge-2-Forge des ma\xeetres-1400000-14
+work-named-upgrades/irrigation-1-Premiers canaux-2400000-6
+work-named-upgrades/irrigation-2-R\xe9seau de canaux-4800000-12
+work-named-upgrades/repair-1-Enceinte de terre crue-240000-3
+work-named-upgrades/repair-2-Grande enceinte-1920000-6
+work-named-upgrades/storage-1-Grand grenier-500000-4
+work-named-upgrades/storage-2-Silos de r\xe9serve-1200000-8
+work-named-upgrades/walls-1-Enceinte de terre crue-1200000-8
+work-named-upgrades/walls-2-Grande enceinte-9600000-20
 work-quote/irrigation-0-2400000-6
 work-quote/irrigation-1-4800000-12
 work-quote/repair-1-240000-3
@@ -399,4 +419,12 @@ work-quote/storage-0-500000-4
 work-quote/storage-1-1200000-8
 work-quote/walls-0-1200000-8
 work-quote/walls-1-9600000-20
+work-readonly-list/finished-1
+work-readonly-list/finished-2
+work-readonly-list/paused-1
+work-readonly-list/paused-2
+work-single-list/1-en
+work-single-list/1-fr
+work-single-list/2-en
+work-single-list/2-fr
 zero-contribution-ignored

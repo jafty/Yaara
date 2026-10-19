@@ -3379,3 +3379,51 @@ msgstr "Available warriors"
 
 msgid "Oasis voisines :"
 msgstr "Neighbouring oases:"
+
+msgid "Atelier d’armes"
+msgstr "Weapons workshop"
+
+msgid "Forge de la cité"
+msgstr "City forge"
+
+msgid "Forge des maîtres"
+msgstr "Master smiths’ forge"
+
+msgid "Cultures de l’oasis"
+msgstr "Oasis fields"
+
+msgid "Premiers canaux"
+msgstr "First canals"
+
+msgid "Réseau de canaux"
+msgstr "Canal network"
+
+msgid "Grenier de la cité"
+msgstr "City granary"
+
+msgid "Grand grenier"
+msgstr "Great granary"
+
+msgid "Silos de réserve"
+msgstr "Reserve silos"
+
+msgid "Cité ouverte"
+msgstr "Open city"
+
+msgid "Enceinte de terre crue"
+msgstr "Mud-brick wall"
+
+msgid "%(name)s : <strong>%(cost)s Mesures</strong> ; <strong>%(duration)s lunes</strong>."
+msgstr "%(name)s: <strong>%(cost)s Measures</strong>; <strong>%(duration)s Moons</strong>."
+
+msgid "%(name)s, %(cost)s Mesures et %(duration)s lunes de travaux"
+msgstr "%(name)s, %(cost)s Measures and %(duration)s Moons of work"
+
+msgid "<strong>%(name)s</strong> : <strong>%(equipment)s</strong> pour les Fidèles de cette cité."
+msgstr "<strong>%(name)s</strong>: <strong>%(equipment)s</strong> for the warriors of this city."
+
+msgid "Cette forge fournit l’armement de toute votre maison."
+msgstr "This forge supplies weapons to your entire realm."
+
+msgid "Aucun nouvel ouvrage ne peut être entrepris ici pour le moment."
+msgstr "No new work can be undertaken here at present."

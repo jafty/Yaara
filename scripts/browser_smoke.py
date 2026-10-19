@@ -60,6 +60,16 @@ with sync_playwright() as playwright:
         expect(
             page.get_by_role("heading", name="Works" if en else "Chantiers", exact=True)
         ).to_be_visible()
+        assert page.locator("#works-heading").count() == 0
+        expect(page.locator("#work-storage summary")).to_contain_text(
+            "Great granary" if en else "Grand grenier"
+        )
+        expect(page.locator("#work-forge summary")).to_contain_text(
+            "City forge" if en else "Forge de la cité"
+        )
+        assert "Level " not in page.locator(".work-choices").inner_text()
+        assert "Niveau " not in page.locator(".work-choices").inner_text()
+        page.screenshot(path=str(artifacts / f"works-named-{language}.png"), full_page=True)
         page.goto(game_url)
         assert page.locator("article.city-entry").count() == 3
         assert page.locator(".sidebar, .stats-strip, img, table").count() == 0

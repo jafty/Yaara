@@ -3,6 +3,34 @@
 from .messages import message
 from .rules import CAPACITIES
 
+WORK_NAMES = {
+    "forge": [
+        message("Atelier d’armes"),
+        message("Forge de la cité"),
+        message("Forge des maîtres"),
+    ],
+    "irrigation": [
+        message("Cultures de l’oasis"),
+        message("Premiers canaux"),
+        message("Réseau de canaux"),
+    ],
+    "storage": [
+        message("Grenier de la cité"),
+        message("Grand grenier"),
+        message("Silos de réserve"),
+    ],
+    "walls": [
+        message("Cité ouverte"),
+        message("Enceinte de terre crue"),
+        message("Grande enceinte"),
+    ],
+}
+WORK_NAMES["repair"] = WORK_NAMES["walls"]
+
+
+def work_name(kind, level):
+    return WORK_NAMES[kind][level]
+
 
 def number(value):
     obj = message(f"{value:,}".replace(",", "\u202f"))

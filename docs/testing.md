@@ -141,3 +141,7 @@ Independent bilingual HTTP cases cover the three navigation destinations, active
 Independent cases cover stable irregular public geography, bilingual default/own/reachable/unreachable city panels, native raid/capture preselection, and commands hidden for engaged, paused, finished and eliminated states. The existing public-map case now requires no drawn road edges and verifies privacy. The browser journey selects a city in the atlas, checks capture preselection, completes the existing raid journey, and exercises map selection and raid preselection with JavaScript disabled at 320px in both languages. Resource icons retain accessible translated names.
 
 The geography revision separately specifies each realm's five initial targets on the fifteen-road mesh, all connected friendly origins, road uniqueness and maximum degree, plus unchanged legacy-ring projection without a version marker. Existing combat/calendar fixtures explicitly use map version one to preserve their original outcomes; new UI and browser cases exercise version two.
+
+## Named works and merged forge list
+
+Independent cases specify each named upgrade and repair with its exact quote, legacy forge availability at ordinary/reinforced/complete equipment and while busy, bilingual city-forge names, one shared work list for both forge rule versions, and read-only lists for paused/finished reigns. The browser journey checks the single Works heading and named granary/forge captions before its existing batch preview/seal/cancel and no-JavaScript paths.
