@@ -1,5 +1,14 @@
 # Implementation decisions
 
+## 2026-10-19 · Verification proportional to affected behavior
+
+- Replace the blanket full-local-suite-before-every-push rule with three local verification levels: Presentation, Behavior and Full, specified in `docs/testing.md` and referenced by `AGENTS.md`. Choose by affected behavior and risk, not diff size. Focused runs still use real PostgreSQL where relevant, independent regression cases, full catalog collection and failure-on-skip. Native-core changes retain complete logic-only 100% statement/branch coverage; high-risk boundaries and unclear impact require the full local checkpoint.
+- Shared layout, navigation, forms and JavaScript changes retain browser verification. The existing bilingual browser journey remains whole for now; no focused browser runner is claimed. CI continues running all existing layers, coverage and browser checks on every push and PR with PostgreSQL 17 and 18. Report selected local scope and CI/deployment evidence separately.
+
+## 2026-10-19 · Current destination in the bottom menu
+
+- Highlight Council, Expeditions or Works only when its own folio is displayed. Help, onboarding, reports, city folios, Decrees and read-only decree previews keep all three navigation items neutral. Draft return paths still use their originating section; that routing does not imply an active menu destination.
+
 ## 2026-10-19 · Scannable manuscript information
 
 - The header keeps the full, wrapping chronicle title and compact resources. Help and the Council calendar/closure-review link live below the folio, above the footer; the three persistent destinations remain. A running automatic calendar has its own small Moon banner below the header, with a decorative crescent, countdown and a persistent exact UTC deadline. Without JavaScript the exact deadline remains readable; waiting, paused and finished reigns have no running banner.

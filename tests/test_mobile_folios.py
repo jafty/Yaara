@@ -21,9 +21,11 @@ pytestmark = [pytest.mark.integration, pytest.mark.usefixtures("test_static_stor
     "tab,active",
     [
         ("domain", "domain"),
-        ("city", "domain"),
-        ("letters", "domain"),
-        ("decrees", "domain"),
+        ("city", None),
+        ("letters", None),
+        ("decrees", None),
+        ("help", None),
+        ("prologue", None),
         ("constructions", "constructions"),
         ("wars", "wars"),
     ],
@@ -40,8 +42,9 @@ def test_navigation(user, tab, active, language):
     html = page.content.decode()
     nav = re.search(r'<nav class="bookmarks".*?</nav>', html, re.S).group()
     assert len(re.findall(r"<a\b", nav)) == 3
-    assert len(re.findall('aria-current="page"', nav)) == 1
-    assert f'data-section="{active}" aria-current="page"' in nav
+    assert len(re.findall('aria-current="page"', nav)) == (1 if active else 0)
+    if active:
+        assert f'data-section="{active}" aria-current="page"' in nav
     assert 'data-icon="blades"' in nav
     assert ("Council" if language == "en" else "Conseil") in nav
     ribbon = re.search(r'<div class="resource-ribbon".*?</div>', html, re.S).group()

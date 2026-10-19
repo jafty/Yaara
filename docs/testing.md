@@ -4,7 +4,7 @@
 
 Independent audit cases cover versioned yields at every level, saved economies without a marker, exact local affordability, atomic batch and expedition shortfalls, per-origin fixed-fee rounding, local debits and cancellation, each realm's two initial frontiers, further reach after capture, engagement ownership without hidden identifiers, and defender reports with public identity and survivor-dependent estimates. Existing cases explicitly select the old economy/map where they protect saved rules rather than new-game defaults.
 
-HTTP acceptance cases cover idempotent authorized calendar start, POST-only mutation, cron execution without a browser and repeated-run safety, full-report anchors, news-first Council accounts with a jump link, and closure-review links on the main folios. Browser journeys exercise the new local-funding shortfall, two-target geography and batch workflows in both languages with JavaScript, no JavaScript, narrow screens and enlarged text. The full core coverage and PostgreSQL checkpoints remain mandatory.
+HTTP acceptance cases cover idempotent authorized calendar start, POST-only mutation, cron execution without a browser and repeated-run safety, full-report anchors, news-first Council accounts with a jump link, and closure-review links on the main folios. Browser journeys exercise the new local-funding shortfall, two-target geography and batch workflows in both languages with JavaScript, no JavaScript, narrow screens and enlarged text. CI retains the full core coverage and PostgreSQL checkpoints; local selection follows the verification levels below.
 
 The owner's policy is a standing requirement. Its basis is the design dossier, ยง26, plus the explicit requirement for one logical test per use-case variation. Conversation and test code are English; player-facing copy supports French and English, with canonical French engine messages preserved.
 
@@ -14,7 +14,7 @@ The owner's policy is a standing requirement. Its basis is the design dossier, ย
 2. Write one independently collected logical test per variation. Parameter rows are separate cases with readable IDs. Several assertions may establish one outcome and its invariants; do not split one outcome into a test per assertion.
 3. For new or corrected behavior, define the expected contract before implementing it. A failing regression is useful evidence when correcting a defect. Implement the smallest coherent solution and rerun the cases. Actual red-green baby steps and deliberately naive intermediate implementations are not required; do not manufacture failures when adding coverage for existing correct behavior.
 4. Refactor only for a concrete benefit: clearer rules, less duplication, easier isolation, or an observed defect. AI does not make a test/code pair automatically correct. Both can share a mistaken assumption; compare expected results with the source and retain cross-cutting invariants.
-5. Run affected checks during development, then all test layers before every push. Add the new IDs to the reviewed case catalog and inspect its diff. Summarize behavior changes and actual verification.
+5. Run affected checks during development, then the applicable local verification level before pushing. Keep the full CI checkpoint on every push and PR. Add the new IDs to the reviewed case catalog and inspect its diff. Summarize behavior changes and actual verification.
 
 Existing tests can be reorganized without manufacturing a red phase or breaking working code. The initial implementation's historical test-first ordering cannot be established retroactively. New regressions must follow the sequence above.
 
@@ -102,7 +102,42 @@ structured facts and stable identifiers for rule outcomes; add explicit
 translation tests instead of loosening old expectations or making core tests
 depend on the active browser language.
 
-## Every push
+## Local verification levels
+
+The owner's 2026-10-19 follow-up replaces the blanket full-local-suite requirement with risk-based local verification. Choose by affected behavior, not line count or perceived coding difficulty. State the chosen level and the tests run in the delivery summary. Mixed changes use the highest applicable level; unclear impact, unexpected failures or a broad refactor escalate to the full checkpoint. Fix failures before pushing.
+
+| Level | Applies to | Local checks before pushing |
+| --- | --- | --- |
+| Presentation | Templates, CSS, display-only navigation, translations and documentation; no game rules, authorization or persistence behavior changes | Lint/format, full case-catalog collection, affected HTTP/presentation cases on real PostgreSQL. Compile catalogs for copy changes. Run the browser smoke for layout, navigation, forms or JavaScript changes. Documentation-only edits need relevant consistency checks rather than invented behavior tests. |
+| Behavior | Native game rules, projections, narration or application behavior with bounded impact, without a high-risk boundary below | Presentation checks where relevant, the complete database-free core suite with 100% statement/branch coverage, and affected integration/journey cases on real PostgreSQL. Run browser smoke when player flows change. |
+| Full | Schema/migrations, transaction boundaries, locking/concurrency, authorization/privacy, calendar/scheduler behavior, dependencies, runtime/deployment or CI/check infrastructure; changes with unclear reach | The complete local checkpoint below, including the real PostgreSQL suite and bilingual browser smoke. |
+
+Existing test layers and one-case-per-variation traceability stay unchanged. Add independent regression cases for changed behavior; presentation work needs no invented simulation cases. Pure-core iteration still uses `uv run pytest -q -m logic`. A small display fix does not require rerunning unaffected simulation coverage locally.
+
+All code levels run these inexpensive checks:
+
+```bash
+uv run ruff check .
+uv run ruff format --check .
+uv run pytest --collect-only -q --check-case-catalog
+```
+
+Then run the explicitly selected cases. For example, the bottom-menu display fix uses:
+
+```bash
+# DATABASE_URL points to a disposable real PostgreSQL database.
+uv run pytest -q tests/test_mobile_folios.py -k navigation --require-postgresql --fail-on-skip
+# With the local application running:
+uv run python scripts/browser_smoke.py
+```
+
+Check the full catalog in its separate full-collection command: passing a test file together with `--check-case-catalog` correctly reports all uncollected files as missing. Use `--fail-on-skip` for selected executions. Do not treat unexecuted tests as passes. Review case-catalog changes whenever variations change.
+
+The browser smoke currently runs one complete bilingual journey. Keep it for shared layout/navigation/forms/JavaScript changes; a future focused browser split must preserve the full CI journey. Do not introduce a second browser framework or claim a focused run exists until it is implemented.
+
+For the behavior level, add the independent core coverage gate from the preceding section, then explicitly select affected application and journey tests. No automatic file-to-test inference is used: inspect shared callers, rejection paths and boundaries to choose cases, escalating when coverage of the impact is uncertain.
+
+## Full local checkpoint and every CI push
 
 With `DATABASE_URL` pointing to a disposable PostgreSQL database whose user can create test databases:
 
@@ -120,7 +155,7 @@ uv run python scripts/browser_smoke.py
 
 CI runs all layers on pushes and PRs against PostgreSQL 17 and 18, and uploads the case report even on failure. Required runs reject SQLite, skipped cases and expected failures. Never report a skipped PostgreSQL check as passed. Record the database versions actually verified locally; CI results are separate evidence.
 
-During iteration, `uv run pytest -q -m logic` is the fast pure-core loop. It does not replace the full push checkpoint. Presentation-only changes need no invented game-logic tests, but all existing layers still run before pushing.
+The full checkpoint is mandatory locally for the Full level and in CI on every push and PR. Presentation and Behavior changes may push after their applicable local checks; report CI results separately from local evidence. The existing CI workflow remains unchanged and still executes every layer on PostgreSQL 17 and 18.
 
 ## Evidence from this compliance pass
 
@@ -168,4 +203,4 @@ The browser journey traverses the complete prologue in both languages, checks ev
 
 ## Review remarks
 
-Independent cases reproduce empty-granary 30-person raid allocation and exact affordability, every twelve-road border adjacency, both territory tilings, failed preparation/confirmation and signed-draft reopening, retained native form costs, prologue action order, report return links, and five/ten-minute calendar boundaries including exact marks, fractional seconds, hour rollover and pause/resume. The bilingual browser journey checks Council link gaps, live Hamilton shares and shortfalls, failed capture recovery, report return links and the explicit aligned start. Core coverage and the full PostgreSQL push checkpoint remain required.
+Independent cases reproduce empty-granary 30-person raid allocation and exact affordability, every twelve-road border adjacency, both territory tilings, failed preparation/confirmation and signed-draft reopening, retained native form costs, prologue action order, report return links, and five/ten-minute calendar boundaries including exact marks, fractional seconds, hour rollover and pause/resume. The bilingual browser journey checks Council link gaps, live Hamilton shares and shortfalls, failed capture recovery, report return links and the explicit aligned start. Core coverage and the full PostgreSQL checkpoint remain required in CI and for the Full local level.

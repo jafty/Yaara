@@ -44,6 +44,12 @@ def scannable_layout(page):
     assert title.evaluate("el => el.scrollWidth <= el.clientWidth")
     assert title.evaluate("el => getComputedStyle(el).whiteSpace") == "normal"
     assert page.locator('.reign-header a[href*="tab="]').count() == 0
+    tab = page.evaluate("new URL(location.href).searchParams.get('tab') || 'domain'")
+    expected = tab if tab in ("domain", "wars", "constructions") else None
+    active = page.locator('.bookmarks a[aria-current="page"]')
+    expect(active).to_have_count(1 if expected else 0)
+    if expected:
+        expect(active).to_have_attribute("data-section", expected)
     for selector in (".council-links a", ".guide-index a"):
         links = page.locator(selector).all()
         for first, second in zip(links, links[1:]):
@@ -178,9 +184,7 @@ with sync_playwright() as playwright:
         expect(page.locator(".decree-reading")).to_contain_text(
             "reinforced equipment" if en else "équipement renforcé"
         )
-        expect(page.locator('.bookmarks a[aria-current="page"]')).to_have_attribute(
-            "data-section", "constructions"
-        )
+        expect(page.locator('.bookmarks a[aria-current="page"]')).to_have_count(0)
         page.locator(".wax-seal").click()
         expect(page.locator(".resource-ribbon")).to_contain_text(
             "600,000" if en else "600\u00a0000"

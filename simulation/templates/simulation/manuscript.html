@@ -38,13 +38,13 @@
             </aside>
         {% endif %}
         <nav class="bookmarks" aria-label="{% translate "Les feuillets de votre règne" %}">
-            <a href="{% url 'game' game.id %}" data-section="domain" {% if nav_section == 'domain' %}aria-current="page"{% endif %}>
+            <a href="{% url 'game' game.id %}" data-section="domain" {% if tab == 'domain' %}aria-current="page"{% endif %}>
                 {% include 'simulation/nav_icon.html' with icon='council' %}<span>{% translate "Conseil" %}</span>
             </a>
-            <a href="{% url 'game' game.id %}?tab=wars" data-section="wars" {% if nav_section == 'wars' %}aria-current="page"{% endif %}>
+            <a href="{% url 'game' game.id %}?tab=wars" data-section="wars" {% if tab == 'wars' %}aria-current="page"{% endif %}>
                 {% include 'simulation/nav_icon.html' with icon='blades' %}<span>{% translate "Expéditions" %}</span>
             </a>
-            <a href="{% url 'game' game.id %}?tab=constructions" data-section="constructions" {% if nav_section == 'constructions' %}aria-current="page"{% endif %}>
+            <a href="{% url 'game' game.id %}?tab=constructions" data-section="constructions" {% if tab == 'constructions' %}aria-current="page"{% endif %}>
                 {% include 'simulation/nav_icon.html' with icon='works' %}<span>{% translate "Chantiers" %}</span>
             </a>
         </nav>
