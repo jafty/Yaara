@@ -1,4 +1,5 @@
 {% load i18n %}
+{% if action %}<p class="back-link"><a href="?tab=constructions" data-works-return>← {% translate "Tous les chantiers" %}</a></p>{% endif %}
 {% if action and not view.finished and not view.eliminated and not game.paused %}
     {% include 'simulation/decree_form.html' %}
 {% else %}

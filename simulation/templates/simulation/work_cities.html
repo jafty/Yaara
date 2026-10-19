@@ -1,15 +1,22 @@
 {% load i18n l10n %}
 {% for city in action.cities %}
-    {% if interactive %}<label class="city-choice{% if not city.available %} disabled{% endif %}" data-work-status="{{ city.status }}">
-        <input type="checkbox" name="cities" value="{{ city.id }}" data-cost="{{ city.cost|unlocalize }}" data-shortfall="{{ city.shortfall|unlocalize }}" {% if not city.available %}disabled{% elif city.id in selected_cities or city_requested and selected.id == city.id %}checked{% endif %}>
-    {% else %}<div class="city-choice" data-work-status="{{ city.status }}">{% endif %}
-        <span class="work-city-details">
+    <div class="city-choice{% if interactive and not city.available %} disabled{% endif %}" data-work-status="{{ city.status }}">
+        {% if interactive %}<label class="work-city-heading">
+            <input type="checkbox" name="cities" value="{{ city.id }}" data-cost="{{ city.cost|unlocalize }}" data-shortfall="{{ city.shortfall|unlocalize }}" {% if not city.available %}disabled{% elif city.id in selected_cities or city_requested and selected.id == city.id %}checked{% endif %}>
             <strong>{{ city.name }}</strong>
-            <span class="work-transition">{{ city.current_name }}{% if city.current_damaged %} ({% translate "endommagée" %}){% endif %}{% if city.work_name %} → {{ city.work_name }}{% endif %}</span>
-            {% if city.benefit %}<span class="work-benefit">{{ city.benefit }}</span>{% endif %}
-            {% if city.work_name %}<span class="cost-hint">{% blocktranslate with cost=city.cost duration=city.duration %}{{ cost }} Mesures · {{ duration }} lunes{% endblocktranslate %}</span>{% endif %}
-            {% if view.local_funding and city.work_name %}<span class="cost-hint">{% blocktranslate with amount=city.available_stock %}Disponible dans ce grenier : {{ amount }} Mesures.{% endblocktranslate %}{% if city.shortfall %} {% blocktranslate with amount=city.shortfall %}Il manque {{ amount }} Mesures dans cette cité.{% endblocktranslate %}{% endif %}</span>{% endif %}
-            {% if city.reason %}<span class="work-reason">{{ city.reason }}</span>{% endif %}
-        </span>
-    {% if interactive %}</label>{% else %}</div>{% endif %}
+        </label>{% else %}<strong class="work-city-heading">{{ city.name }}</strong>{% endif %}
+        <div class="work-city-details">
+            <p class="work-transition">{{ city.current_name }}{% if city.current_damaged %} ({% translate "endommagée" %}){% endif %}{% if city.work_name %} → {{ city.work_name }}{% endif %}</p>
+            {% if city.benefit %}<p class="work-benefit">{{ city.benefit }}</p>{% endif %}
+            {% if city.work_name %}
+                <dl class="work-facts">
+                    {% include 'simulation/ledger_fact.html' with icon='grain' caption=_('Coût') value=city.cost unit=_('Mesures') %}
+                    {% include 'simulation/ledger_fact.html' with icon='moon' caption=_('Durée') value=city.duration unit=_('lunes') %}
+                    {% if view.local_funding %}{% include 'simulation/ledger_fact.html' with caption=_('Disponible') value=city.available_stock unit=_('Mesures') %}{% endif %}
+                </dl>
+                {% if view.local_funding and city.shortfall %}<p class="work-shortfall">{% blocktranslate with amount=city.shortfall %}Il manque {{ amount }} Mesures dans cette cité.{% endblocktranslate %}</p>{% endif %}
+            {% endif %}
+            {% if city.reason %}<p class="work-reason">{{ city.reason }}</p>{% endif %}
+        </div>
+    </div>
 {% endfor %}

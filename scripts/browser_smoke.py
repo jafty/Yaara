@@ -19,6 +19,8 @@ def no_overflow(page):
         "The page overflows horizontally"
     )
     readable_hierarchy(page)
+    if page.locator(".book-title").count():
+        scannable_layout(page)
 
 
 def readable_hierarchy(page):
@@ -34,6 +36,23 @@ def readable_hierarchy(page):
         assert min(sizes["headings"]) > max(sizes["body"]), sizes
     if sizes["disclosures"] and sizes["body"]:
         assert min(sizes["disclosures"]) >= max(sizes["body"]), sizes
+
+
+def scannable_layout(page):
+    """The title remains readable and secondary actions stay below the folio."""
+    title = page.locator(".book-title")
+    assert title.evaluate("el => el.scrollWidth <= el.clientWidth")
+    assert title.evaluate("el => getComputedStyle(el).whiteSpace") == "normal"
+    assert page.locator('.reign-header a[href*="tab="]').count() == 0
+    for selector in (".council-links a", ".guide-index a"):
+        links = page.locator(selector).all()
+        for first, second in zip(links, links[1:]):
+            a, b = first.bounding_box(), second.bounding_box()
+            assert abs(a["x"] - b["x"]) < 1
+            assert b["y"] >= a["y"] + a["height"]
+    for note in page.locator(".notice, .marginal-note, .unsealed-leaf").all():
+        assert note.evaluate("el => getComputedStyle(el).borderLeftWidth") == "0px"
+        assert note.evaluate("el => getComputedStyle(el).boxShadow") != "none"
 
 
 with sync_playwright() as playwright:
@@ -113,6 +132,7 @@ with sync_playwright() as playwright:
         for first, second in zip(links, links[1:]):
             a, b = first.bounding_box(), second.bounding_box()
             assert b["x"] >= a["x"] + a["width"] + 10 or b["y"] >= a["y"] + a["height"]
+        expect(page.locator(".ledger-summary dt")).to_have_count(3)
         assert page.locator(".house-accounts").count() == 0
         assert page.locator(".bookmarks a").count() == 3
         page.locator('.bookmarks a[href$="?tab=constructions"]').click()
@@ -128,6 +148,11 @@ with sync_playwright() as playwright:
         )
         assert "Level " not in page.locator(".work-choices").inner_text()
         assert "Niveau " not in page.locator(".work-choices").inner_text()
+        # A specific work has a native return path to the complete Works list.
+        page.goto(game_url + "?tab=constructions&action=storage")
+        page.locator("[data-works-return]").focus()
+        page.keyboard.press("Enter")
+        expect(page.locator(".work-choices")).to_be_visible()
         readable_hierarchy(page)
         page.evaluate("document.documentElement.style.fontSize = '125%'")
         readable_hierarchy(page)
@@ -360,6 +385,9 @@ with sync_playwright() as playwright:
             ):
                 page.goto(game_url + suffix)
                 no_overflow(page)
+                page.evaluate("document.documentElement.style.fontSize = '125%'")
+                no_overflow(page)
+                page.evaluate("document.documentElement.style.removeProperty('font-size')")
                 assert page.locator(".reign-header").bounding_box()["height"] < 130
                 assert (
                     page.locator("body").evaluate("el => parseFloat(getComputedStyle(el).fontSize)")
@@ -368,6 +396,8 @@ with sync_playwright() as playwright:
                 if suffix == "?tab=constructions":
                     storage = page.locator("#work-storage")
                     storage.locator(":scope > summary").click()
+                    for facts in storage.locator(".work-facts").all():
+                        expect(facts.locator("dt")).to_have_count(3)
                     for choice in storage.locator(".city-choice").all():
                         assert choice.bounding_box()["height"] >= 44
                         assert (
@@ -499,6 +529,27 @@ with sync_playwright() as playwright:
         assert started["game"]["deadline"] and started["view"]["open_moon"] == 1
         deadline = datetime.fromisoformat(started["game"]["deadline"])
         assert deadline.minute % 10 == 0 and deadline.second == deadline.microsecond == 0
+        expect(page.locator(".moon-banner [data-deadline]")).to_be_visible()
+        expect(page.locator('.moon-banner [data-icon="moon"]')).to_be_visible()
+        expect(page.locator(".moon-banner time")).to_contain_text("UTC")
+        for width in (320, 390):
+            page.set_viewport_size({"width": width, "height": 844})
+            no_overflow(page)
+            page.evaluate("document.documentElement.style.fontSize = '125%'")
+            no_overflow(page)
+            page.evaluate("document.documentElement.style.removeProperty('font-size')")
+        page.screenshot(path=str(artifacts / f"moon-banner-{language}.png"), full_page=True)
+        native_clock = browser.new_context(
+            storage_state=context.storage_state(),
+            java_script_enabled=False,
+            viewport={"width": 320, "height": 844},
+        )
+        native_clock_page = native_clock.new_page()
+        native_clock_page.goto(automatic_url)
+        expect(native_clock_page.locator(".moon-banner time")).to_contain_text("UTC")
+        no_overflow(native_clock_page)
+        native_clock.close()
+        assert page.locator(".reign-header [data-deadline]").count() == 0
         page.reload()
         assert (
             page.request.get(automatic_url + "state/").json()["game"]["deadline"]

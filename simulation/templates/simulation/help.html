@@ -1,5 +1,5 @@
 {% load i18n %}
-<nav class="guide-index" aria-label="{% translate "Dans ce guide" %}"><a href="#victory">{% translate "Votre but" %}</a><a href="#resources">{% translate "Vos ressources" %}</a><a href="#orders">{% translate "Vos ordres" %}</a><a href="#buildings">{% translate "Les ouvrages" %}</a><a href="#expeditions">{% translate "Les expéditions" %}</a><a href="#calendar">{% translate "Les lunes" %}</a></nav>
+<nav class="guide-index" aria-label="{% translate "Dans ce guide" %}"><ol><li><a href="#victory">{% translate "Votre but" %}</a></li><li><a href="#resources">{% translate "Vos ressources" %}</a></li><li><a href="#orders">{% translate "Vos ordres" %}</a></li><li><a href="#buildings">{% translate "Les ouvrages" %}</a></li><li><a href="#expeditions">{% translate "Les expéditions" %}</a></li><li><a href="#calendar">{% translate "Les lunes" %}</a></li></ol></nav>
 <p>{% translate "Votre règne avance de lune en lune. Pendant la lune ouverte, préparez et scellez vos ordres. La clôture les fait entrer en vigueur et résout les travaux, voyages et combats arrivés à échéance." %}</p><p>{% translate "Le prélèvement s’accumule automatiquement chaque lune et entre aux greniers toutes les douze lunes. Aucun ordre de collecte n’est nécessaire." %}</p>
 <section id="victory"><h2>{% translate "Votre but" %}</h2>
 {% include 'simulation/game_goal.html' %}</section>

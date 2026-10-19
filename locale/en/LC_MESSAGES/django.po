@@ -3829,3 +3829,30 @@ msgstr "This city’s share: %(charge)s Measures; available: %(available)s."
 
 msgid "Il manque %(amount)s Mesures pour cette expédition. Aucun moyen n’est réservé."
 msgstr "This expedition is short of %(amount)s Measures. No resources are reserved."
+
+msgid "Les repères du livre"
+msgstr "Book references"
+
+msgid "La prochaine lune sera close à"
+msgstr "The next Moon closes at"
+
+msgid "Coût"
+msgstr "Cost"
+
+msgid "Durée"
+msgstr "Duration"
+
+msgid "lunes"
+msgstr "Moons"
+
+msgid "Tous les chantiers"
+msgstr "All works"
+
+msgid "Mesures réservées"
+msgstr "Reserved Measures"
+
+msgid "Prélèvement en préparation"
+msgstr "Accruing levy"
+
+msgid "Mesures, encore indisponibles"
+msgstr "Measures, not yet available"

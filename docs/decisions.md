@@ -1,5 +1,12 @@
 # Implementation decisions
 
+## 2026-10-19 · Scannable manuscript information
+
+- The header keeps the full, wrapping chronicle title and compact resources. Help and the Council calendar/closure-review link live below the folio, above the footer; the three persistent destinations remain. A running automatic calendar has its own small Moon banner below the header, with a decorative crescent, countdown and a persistent exact UTC deadline. Without JavaScript the exact deadline remains readable; waiting, paused and finished reigns have no running banner.
+- Council shortcuts use one aligned icon-and-label row per action. The guide index is a numbered vertical list following its section order. Both keep complete link labels, native keyboard navigation and 44px targets at narrow widths and enlarged text.
+- Work checklists separate each city's selection heading, building transition, benefit, labelled cost/duration/available-funds facts, shortage and team status. Council account totals reuse the same fact component. Shortages remain explicit; no money, batch-selection, eligibility or timing rules change. Individual work forms link back to all Works, including saved Decrees URLs.
+- Notices, marginal scribe notes and unsealed drafts share pale yellow paper, no border and a small shadow. Literary letters and decree prose remain intact. Both translation catalogs cover the new labels. Browser checks cover aligned lists, untruncated titles, structured figures, native return navigation, note styling and the running/no-JavaScript calendar banner alongside the existing bilingual journeys.
+
 ## 2026-10-19 · Review remarks: forms, atlas and clock boundaries
 
 - Continue/Enter Council appears above Begin reign throughout the prologue. Council action links wrap with a real gap; each complete report returns to Council. Current copy uses « Fidèles disponibles » and « Pillez pour le butin ou capturez… » in both catalogs; archived reports stay immutable.

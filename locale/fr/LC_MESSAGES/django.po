@@ -2545,3 +2545,30 @@ msgstr "Part de cette cité : %(charge)s Mesures ; disponibles : %(available)s."
 
 msgid "Il manque %(amount)s Mesures pour cette expédition. Aucun moyen n’est réservé."
 msgstr "Il manque %(amount)s Mesures pour cette expédition. Aucun moyen n’est réservé."
+
+msgid "Les repères du livre"
+msgstr "Les repères du livre"
+
+msgid "La prochaine lune sera close à"
+msgstr "La prochaine lune sera close à"
+
+msgid "Coût"
+msgstr "Coût"
+
+msgid "Durée"
+msgstr "Durée"
+
+msgid "lunes"
+msgstr "lunes"
+
+msgid "Tous les chantiers"
+msgstr "Tous les chantiers"
+
+msgid "Mesures réservées"
+msgstr "Mesures réservées"
+
+msgid "Prélèvement en préparation"
+msgstr "Prélèvement en préparation"
+
+msgid "Mesures, encore indisponibles"
+msgstr "Mesures, encore indisponibles"

@@ -13,7 +13,13 @@ legend { margin-bottom: .4rem; }
 .language-switch select { display: inline; width: auto; padding: .25rem; font-size: inherit; }
 .skip-link { position: fixed; top: .5rem; left: .5rem; padding: .5rem; background: white; color: #222; transform: translateY(-150%); z-index: 20; }
 .skip-link:focus { transform: translateY(0); }
-.notice { border-left: 2px solid var(--accent); padding: .7rem 1rem; }
+.notice, .marginal-note, .unsealed-leaf {
+  background: #f7edcf;
+  border: 0;
+  box-shadow: 0 2px 5px #51401d14;
+  padding: .8rem 1rem;
+}
+.notice > :last-child, .marginal-note > :last-child, .unsealed-leaf > :last-child { margin-bottom: 0; }
 .notice.error, .errorlist { color: #852419; }
 .notices { margin-top: 1.5rem; }
 

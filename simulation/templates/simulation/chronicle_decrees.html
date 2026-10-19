@@ -5,7 +5,8 @@
     <ol class="decree-steps"><li>{% translate "Valider la sélection" %}</li><li>{% translate "Confirmer et sceller l’ordre" %}</li></ol>
     {% if selected.owned and city_requested %}<p class="marginal-note">{% blocktranslate with v0=selected.name %}Vous préparez un décret pour <strong>{{ v0 }}</strong>. Sa case est précochée ; vous pouvez choisir d’autres cités.{% endblocktranslate %}</p>{% endif %}
     {% if action %}
-        <p class="reading-links"><a href="?tab=decrees{% if city_requested %}&city={{ selected.id }}{% endif %}">← {% translate "Revenir aux décrets" %}</a></p>
+        {% if action.kind == 'expedition' %}<p class="reading-links"><a href="?tab=decrees{% if city_requested %}&amp;city={{ selected.id }}{% endif %}">← {% translate "Revenir aux décrets" %}</a></p>
+        {% else %}<p class="back-link"><a href="?tab=constructions" data-works-return>← {% translate "Tous les chantiers" %}</a></p>{% endif %}
         {% include 'simulation/decree_form.html' %}
     {% else %}
         {% include 'simulation/work_choices.html' %}

@@ -14,10 +14,12 @@
         <a class="skip-link" href="#main">{% translate "Aller au récit" %}</a>
         <header class="reign-header">
             <div class="book book-heading">
-                <div class="book-identity"><a class="book-world" href="{% url 'home' %}">Yaara</a><p class="book-title">{{ game.title }}</p><a class="help-link" href="{% url 'game' game.id %}?tab=help">{% translate "Comment jouer" %}</a>{% if view and not view.finished %}<a class="help-link" href="{% url 'game' game.id %}?tab=domain#turn-page">{% if game.awaiting_start %}{% translate "Commencer" %}{% elif game.mode == 'manual' %}{% translate "Clore la lune…" %}{% else %}{% translate "Calendrier" %}{% endif %}</a>{% endif %}</div>
+                <div class="book-identity">
+                    <a class="book-world" href="{% url 'home' %}">Yaara</a>
+                    <p class="book-title">{{ game.title }}</p>
+                </div>
                 {% if view %}
                     <div class="resource-ribbon" aria-label="{% translate "Les moyens libres de votre maison" %}">
-                    {% if game.mode == 'scheduled' and game.deadline %}<span data-deadline="{{ game.deadline|date:'c' }}">{{ game.deadline|date:'H:i' }} UTC</span>{% endif %}
                         <span class="resource-value" title="{% translate 'Mesures libres' %}">{% include 'simulation/nav_icon.html' with icon='grain' %}<strong>{{ view.available_stock }}</strong><span class="visually-hidden">{% translate 'Mesures libres' %}</span></span>
                         <span class="resource-value" title="{% translate 'Fidèles disponibles' %}">{% include 'simulation/nav_icon.html' with icon='warrior' %}<strong>{{ view.available_fideles }}</strong><span class="visually-hidden">{% translate 'Fidèles disponibles' %}</span></span>
                         {% if not view.finished %}<span>{% blocktranslate with v0=view.harvest_in %}Récolte dans <strong>{{ v0 }} lunes</strong>{% endblocktranslate %}</span>{% endif %}
@@ -26,6 +28,15 @@
                 {% endif %}
             </div>
         </header>
+        {% if game.mode == 'scheduled' and game.deadline and not game.paused and not view.finished %}
+            <aside class="moon-banner" aria-label="{% translate 'Calendrier' %}">
+                <div class="book moon-status">
+                    {% include 'simulation/nav_icon.html' with icon='moon' %}
+                    <span data-deadline="{{ game.deadline|date:'c' }}">{% translate "La prochaine lune sera close à" %}</span>
+                    <time datetime="{{ game.deadline|date:'c' }}">{{ game.deadline|date:'H:i' }} UTC</time>
+                </div>
+            </aside>
+        {% endif %}
         <nav class="bookmarks" aria-label="{% translate "Les feuillets de votre règne" %}">
             <a href="{% url 'game' game.id %}" data-section="domain" {% if nav_section == 'domain' %}aria-current="page"{% endif %}>
                 {% include 'simulation/nav_icon.html' with icon='council' %}<span>{% translate "Conseil" %}</span>
@@ -42,6 +53,10 @@
                 {% if messages %}<div class="notices" aria-live="polite">{% for message in messages %}<p class="notice {{ message.tags }}">{{ message }}</p>{% endfor %}</div>{% endif %}
                 {% block content %}{% endblock %}
             </main>
+            <nav class="folio-tools" aria-label="{% translate 'Les repères du livre' %}">
+                <a href="{% url 'game' game.id %}?tab=help">{% include 'simulation/nav_icon.html' with icon='book' %}{% translate "Comment jouer" %}</a>
+                {% if view and not view.finished %}<a href="{% url 'game' game.id %}?tab=domain#turn-page">{% include 'simulation/nav_icon.html' with icon='moon' %}{% if game.awaiting_start %}{% translate "Commencer" %}{% elif game.mode == 'manual' %}{% translate "Clore la lune…" %}{% else %}{% translate "Calendrier" %}{% endif %}</a>{% endif %}
+            </nav>
             <footer class="book-footer">
                 <p><a href="{% url 'home' %}">{% translate "Refermer ce livre" %}</a>{% if view %} · {% blocktranslate with v0=view.rules %}Règles {{ v0 }}{% endblocktranslate %}{% endif %}</p>
                 {% include 'simulation/language_switch.html' %}
