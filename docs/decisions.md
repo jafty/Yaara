@@ -1,5 +1,9 @@
 # Implementation decisions
 
+## 2026-10-19 · Council news versus sealing receipts
+
+- Council omits `order` letters titled « Décret scellé », including existing unstructured archives. They acknowledge reservations already visible in the sealed-order register, rather than a departure or payment. The full letter archive retains every original receipt unchanged. Departure, cancellation and invalidation remain visible events; distinct orders and other event kinds are never merged by title or Moon. This is a display filter, with no change to confirmation, persistence or simulation.
+- Mixed-equipment raid letters retain their existing survivor-dependent observations: enough surviving defenders can describe varied attacker equipment, but neither side receives a numerical combativity score. Equipment tiers do not create separate battle letters. This revision does not change those combat or narration rules.
 ## 2026-10-19 · Raid cash accounts and forge clarification
 
 - Keep military raid outcomes unchanged. New attacker battle letters recall the paid order total and every saved city funding share, then compare the carried loot with that expense as a provisional gain, deficit or break-even result. A successful raid can therefore be visibly cash-negative. Saved funding is authoritative for both local and legacy pooled economies; never reconstruct costs from current stocks or surviving headcounts.

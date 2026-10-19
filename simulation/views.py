@@ -149,7 +149,8 @@ def desk(request, game_id):
     reports = Report.objects.filter(game=game, recipient=actor)
     news_month = view["closed_moon"] or game.state["month"]
     if tab != "letters":
-        reports = reports.filter(month=news_month)
+        # The order register already shows reservations; keep receipts in the archive.
+        reports = reports.filter(month=news_month).exclude(kind="order", title="Décret scellé")
     constructions = [
         {**work, "city": city["name"], "city_id": city["id"]}
         for city in view["owned_cities"]

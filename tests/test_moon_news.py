@@ -1,6 +1,7 @@
 """Council news, compact dates and local preparation accounts."""
 
 import re
+from uuid import uuid4
 
 import pytest
 from django.test import Client
@@ -11,6 +12,77 @@ from simulation.models import Report
 from tests.cases import case
 
 pytestmark = [pytest.mark.integration, pytest.mark.usefixtures("test_static_storage")]
+
+
+@case(
+    "council-sealing-receipts",
+    "Owner: Council omits sealing receipts while retaining departure, withdrawal and invalidation news and the immutable full archive",
+)
+@pytest.mark.parametrize("language", ["fr", "en"])
+@pytest.mark.parametrize("status", ["sealed", "departed", "cancelled", "invalidated"])
+@pytest.mark.parametrize("original_archive", [False, True], ids=["structured", "original"])
+def test_sealing_receipts(user, language, status, original_archive):
+    game = services.create_game(user, "Receipt news", opponents="passive")
+    moon = 1 if status == "sealed" else 30
+    game.state["month"] = moon
+    game.save()
+    order = services.confirm(
+        user, game.id, {"kind": "raid", "target": "c4", "contributions": {"c3": 20}}, uuid4(), moon
+    )
+    receipt = Report.objects.get(game=game, title="Décret scellé")
+    if original_archive:
+        receipt.content = {}
+        receipt.save()
+    if status == "cancelled":
+        services.cancel(user, game.id, order["id"])
+    elif status == "invalidated":
+        game.refresh_from_db()
+        game.state["cities"]["c3"]["stock"] = 0
+        game.save()
+    if status != "sealed":
+        services.tick(game.id, moon, user)
+    before = list(Report.objects.filter(game=game).values())
+    client = Client()
+    client.force_login(user)
+    client.cookies["django_language"] = language
+    page = client.get(reverse("game", args=[game.id]))
+    news = page.context["reports"]
+    assert receipt.pk not in [report["id"] for report in news]
+    expected = {
+        "sealed": None,
+        "departed": "Votre décret entre en vigueur",
+        "cancelled": "Décret retiré",
+        "invalidated": "Ordre invalidé",
+    }[status]
+    if expected:
+        event = Report.objects.get(game=game, title=expected)
+        assert event.pk in [report["id"] for report in news]
+    else:
+        assert page.context["view"]["sealed_count"] == 1
+        assert "70" in page.content.decode() and 'id="orders-heading"' in page.content.decode()
+    archive = client.get(reverse("game", args=[game.id]), {"tab": "letters"})
+    assert f'id="report-{receipt.pk}"' in archive.content.decode()
+    assert list(Report.objects.filter(game=game).values()) == before
+
+
+@case(
+    "council-receipt-kind-guard",
+    "Owner: suppress only sealing order receipts, not unrelated event titles",
+)
+def test_receipt_kind_guard(user):
+    game = services.create_game(user, "Guard", opponents="passive")
+    event = Report.objects.create(
+        game=game,
+        recipient="p1",
+        month=1,
+        kind="work",
+        title="Décret scellé",
+        body="Distinct work event",
+    )
+    client = Client()
+    client.force_login(user)
+    page = client.get(reverse("game", args=[game.id]))
+    assert event.pk in [report["id"] for report in page.context["reports"]]
 
 
 @case("council-complete-moon-news", "Owner: preview every last-Moon event without a count limit")
