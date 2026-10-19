@@ -3448,3 +3448,69 @@ msgstr "Borders are schematic; reach follows the roads. Every expedition follows
 
 msgid "Il manque %(amount)s Mesures pour cet ouvrage."
 msgstr "%(amount)s Measures missing for this work."
+
+msgid "Conduire l’eau aux cultures et accroître le prélèvement."
+msgstr "Bring water to the fields and increase the levy."
+
+msgid "Préserver davantage de grain lorsque vient la récolte."
+msgstr "Preserve more grain when the harvest comes."
+
+msgid "Abriter la garnison derrière une enceinte plus sûre."
+msgstr "Shelter the garrison behind stronger walls."
+
+msgid "Rendre à l’enceinte sa protection perdue."
+msgstr "Restore the wall’s lost protection."
+
+msgid "Mieux armer les Fidèles de chaque cité."
+msgstr "Better equip the warriors of each city."
+
+msgid "Mieux armer les Fidèles de toute votre maison."
+msgstr "Better equip the warriors of your entire realm."
+
+msgid "Le prélèvement s’accumule chaque lune et n’entre au grenier qu’à la récolte. Seuls les habitants présents y contribuent ; les hommes partis en expédition n’y ajoutent rien jusqu’à leur retour."
+msgstr "The levy accumulates each Moon and enters the granary only at harvest. Only inhabitants who are present contribute; men away on expeditions add nothing until they return."
+
+msgid "Agrandir le grenier ne crée pas de grain. La capacité reste propre à chaque cité ; un surplus de récolte ou de butin qui ne peut y tenir est perdu."
+msgstr "Enlarging a granary creates no grain. Capacity belongs to each city; harvest or loot that cannot fit is lost."
+
+msgid "L’enceinte protège la garnison locale contre les captures, sans renforcer les secours. Elle ne protège pas contre le pillage des villages."
+msgstr "The wall protects the local garrison against capture without strengthening relief forces. It does not protect against raids on the villages."
+
+msgid "La réparation restaure l’enceinte existante sans l’agrandir. Une enceinte endommagée doit être réparée avant de pouvoir être renforcée."
+msgstr "Repair restores the existing wall without enlarging it. A damaged wall must be repaired before it can be strengthened."
+
+msgid "Chaque cité conserve son propre armement, qui équipe aussi ses futurs habitants. La forge suit la cité si elle change de maître. Les expéditions déjà parties conservent leur équipement."
+msgstr "Each city keeps its own equipment, also used by future inhabitants. Its forge follows the city if it changes rulers. Departed expeditions keep their equipment."
+
+msgid "Ce règne conserve un armement commun à toute la maison, y compris ses futurs habitants. Le devis dépend de sa population actuelle. Les expéditions déjà parties conservent leur équipement."
+msgstr "This reign retains shared equipment for the entire realm, including future inhabitants. The quote depends on its current population. Departed expeditions keep their equipment."
+
+msgid "Impôt par habitant présent : {before} → {after} Mesures par lune."
+msgstr "Levy per inhabitant present: {before} → {after} Measures per Moon."
+
+msgid "Capacité du grenier : {before} → {after} Mesures."
+msgstr "Granary capacity: {before} → {after} Measures."
+
+msgid "Armement : {before} → {after}."
+msgstr "Equipment: {before} → {after}."
+
+msgid "L’enceinte retrouvera toute sa protection, sans être agrandie."
+msgstr "The wall will regain its full protection without being enlarged."
+
+msgid "Cet ouvrage est achevé."
+msgstr "This building is complete."
+
+msgid "Chantier en cours : {work}, jusqu’à la lune {moon}."
+msgstr "Work in progress: {work}, until Moon {moon}."
+
+msgid "Un décret scellé réserve déjà ces équipes."
+msgstr "A sealed decree already reserves these teams."
+
+msgid "Le conseil des bâtisseurs"
+msgstr "The builders’ counsel"
+
+msgid "%(cost)s Mesures · %(duration)s lunes"
+msgstr "%(cost)s Measures · %(duration)s Moons"
+
+msgid "Cette cité n’a pas d’enceinte à réparer."
+msgstr "This city has no wall to repair."

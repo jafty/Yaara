@@ -1,0 +1,14 @@
+{% load i18n l10n %}
+{% for city in action.cities %}
+    {% if interactive %}<label class="city-choice{% if not city.available %} disabled{% endif %}" data-work-status="{{ city.status }}">
+        <input type="checkbox" name="cities" value="{{ city.id }}" data-cost="{{ city.cost|unlocalize }}" {% if not city.available %}disabled{% elif city_requested and selected.id == city.id %}checked{% endif %}>
+    {% else %}<div class="city-choice" data-work-status="{{ city.status }}">{% endif %}
+        <span class="work-city-details">
+            <strong>{{ city.name }}</strong>
+            <span class="work-transition">{{ city.current_name }}{% if city.current_damaged %} ({% translate "endommagée" %}){% endif %}{% if city.work_name %} → {{ city.work_name }}{% endif %}</span>
+            {% if city.benefit %}<span class="work-benefit">{{ city.benefit }}</span>{% endif %}
+            {% if city.work_name %}<span class="cost-hint">{% blocktranslate with cost=city.cost duration=city.duration %}{{ cost }} Mesures · {{ duration }} lunes{% endblocktranslate %}</span>{% endif %}
+            {% if city.reason %}<span class="work-reason">{{ city.reason }}</span>{% endif %}
+        </span>
+    {% if interactive %}</label>{% else %}</div>{% endif %}
+{% endfor %}

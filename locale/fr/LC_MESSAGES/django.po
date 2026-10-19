@@ -2164,3 +2164,69 @@ msgstr "Les frontières sont indicatives ; la portée suit les routes. Toute exp
 
 msgid "Il manque %(amount)s Mesures pour cet ouvrage."
 msgstr "Il manque %(amount)s Mesures pour cet ouvrage."
+
+msgid "Conduire l’eau aux cultures et accroître le prélèvement."
+msgstr "Conduire l’eau aux cultures et accroître le prélèvement."
+
+msgid "Préserver davantage de grain lorsque vient la récolte."
+msgstr "Préserver davantage de grain lorsque vient la récolte."
+
+msgid "Abriter la garnison derrière une enceinte plus sûre."
+msgstr "Abriter la garnison derrière une enceinte plus sûre."
+
+msgid "Rendre à l’enceinte sa protection perdue."
+msgstr "Rendre à l’enceinte sa protection perdue."
+
+msgid "Mieux armer les Fidèles de chaque cité."
+msgstr "Mieux armer les Fidèles de chaque cité."
+
+msgid "Mieux armer les Fidèles de toute votre maison."
+msgstr "Mieux armer les Fidèles de toute votre maison."
+
+msgid "Le prélèvement s’accumule chaque lune et n’entre au grenier qu’à la récolte. Seuls les habitants présents y contribuent ; les hommes partis en expédition n’y ajoutent rien jusqu’à leur retour."
+msgstr "Le prélèvement s’accumule chaque lune et n’entre au grenier qu’à la récolte. Seuls les habitants présents y contribuent ; les hommes partis en expédition n’y ajoutent rien jusqu’à leur retour."
+
+msgid "Agrandir le grenier ne crée pas de grain. La capacité reste propre à chaque cité ; un surplus de récolte ou de butin qui ne peut y tenir est perdu."
+msgstr "Agrandir le grenier ne crée pas de grain. La capacité reste propre à chaque cité ; un surplus de récolte ou de butin qui ne peut y tenir est perdu."
+
+msgid "L’enceinte protège la garnison locale contre les captures, sans renforcer les secours. Elle ne protège pas contre le pillage des villages."
+msgstr "L’enceinte protège la garnison locale contre les captures, sans renforcer les secours. Elle ne protège pas contre le pillage des villages."
+
+msgid "La réparation restaure l’enceinte existante sans l’agrandir. Une enceinte endommagée doit être réparée avant de pouvoir être renforcée."
+msgstr "La réparation restaure l’enceinte existante sans l’agrandir. Une enceinte endommagée doit être réparée avant de pouvoir être renforcée."
+
+msgid "Chaque cité conserve son propre armement, qui équipe aussi ses futurs habitants. La forge suit la cité si elle change de maître. Les expéditions déjà parties conservent leur équipement."
+msgstr "Chaque cité conserve son propre armement, qui équipe aussi ses futurs habitants. La forge suit la cité si elle change de maître. Les expéditions déjà parties conservent leur équipement."
+
+msgid "Ce règne conserve un armement commun à toute la maison, y compris ses futurs habitants. Le devis dépend de sa population actuelle. Les expéditions déjà parties conservent leur équipement."
+msgstr "Ce règne conserve un armement commun à toute la maison, y compris ses futurs habitants. Le devis dépend de sa population actuelle. Les expéditions déjà parties conservent leur équipement."
+
+msgid "Impôt par habitant présent : {before} → {after} Mesures par lune."
+msgstr "Impôt par habitant présent : {before} → {after} Mesures par lune."
+
+msgid "Capacité du grenier : {before} → {after} Mesures."
+msgstr "Capacité du grenier : {before} → {after} Mesures."
+
+msgid "Armement : {before} → {after}."
+msgstr "Armement : {before} → {after}."
+
+msgid "L’enceinte retrouvera toute sa protection, sans être agrandie."
+msgstr "L’enceinte retrouvera toute sa protection, sans être agrandie."
+
+msgid "Cet ouvrage est achevé."
+msgstr "Cet ouvrage est achevé."
+
+msgid "Chantier en cours : {work}, jusqu’à la lune {moon}."
+msgstr "Chantier en cours : {work}, jusqu’à la lune {moon}."
+
+msgid "Un décret scellé réserve déjà ces équipes."
+msgstr "Un décret scellé réserve déjà ces équipes."
+
+msgid "Le conseil des bâtisseurs"
+msgstr "Le conseil des bâtisseurs"
+
+msgid "%(cost)s Mesures · %(duration)s lunes"
+msgstr "%(cost)s Mesures · %(duration)s lunes"
+
+msgid "Cette cité n’a pas d’enceinte à réparer."
+msgstr "Cette cité n’a pas d’enceinte à réparer."

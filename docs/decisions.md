@@ -1,5 +1,12 @@
 # Implementation decisions
 
+## 2026-10-19 · Construction transitions, benefits and type hierarchy
+
+- Keep one Works page and its atomic multi-city decree. Each building summary carries a short purpose; expanding it shows every owned city, its current building → next building, the specific economic or qualitative military improvement, cost and duration. Completed buildings stay listed without a fictitious quote; blocked repairs and prerequisites have explicit reasons.
+- Busy cities retain their prospective upgrade and benefit. Active teams show the building under construction and its finish Moon; a sealed reservation is identified separately. When all cities are busy, complete, paused or finished, use the same city-row component as a read-only list, without a misleading order form. The server's ownership, affordability, team and upgrade checks remain authoritative.
+- Put longer explanations under “Le conseil des bâtisseurs”: annual receipt of accrued levies, local granary overflow, walls versus raids/relief, restoration versus enlargement, and forge scope/frozen expedition equipment. Economic before/after values remain exact. Military improvements stay qualitative and private to the owner. Earlier realm-forge saves keep their shared rule and benefit description. No balance, archived report or stored state changes.
+- Use relative body sizing and a larger explicit heading scale, including plain disclosure titles. City names, transitions, benefits and status notes have distinct sizes below their section heading. Browser checks compare computed visible heading/body sizes at normal and enlarged text settings, in both languages and on narrow screens. This revision adds no illustrations or separate building pages.
+
 ## 2026-10-19 · Territories, readable atlas states and compact pages
 
 - Each city has a fixed clipped Voronoi territory around its existing public map position. These irregular cells tile the schematic sheet and stay attached to the city on capture. Clicking anywhere in a territory opens its city panel. Borders are decorative geography: road topology alone determines reach, and the map explicitly says so. No save, travel, ownership or combat rule is changed.

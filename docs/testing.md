@@ -149,3 +149,7 @@ Independent cases specify each named upgrade and repair with its exact quote, le
 ## Territory map, density and forge affordability
 
 Independent cases specify bounded territory polygons around every city, complete sheet coverage, stable borders on capture, all viewers on legacy/mesh roads, and bilingual committed-target markers for both own and rival cities. Forge cases cover one Measure below, exactly at and above affordability, plus visible/disabled translated submit controls. The browser journey checks keyboard city selection, marker states, 320px/390px account/lobby/game overflow, 16px text and 44px checklist targets, alongside its existing no-JavaScript paths. A separate local Chromium reproduction verifies a legacy forge shortfall and successful read-only preview at exact funds.
+
+## Mixed-stage construction choices and benefits
+
+Independent cases cover ordinary/enlarged/completed granaries in one list, active and sealed team commitments, repair prerequisites and absent/intact walls, exact economic changes and qualitative military benefits, an atomic 1,700,000-Measure mixed-stage batch, and bilingual read-only completed/busy lists. The browser journey completes one granary and reserves another city's forge to check mixed choices, visible benefits and optional builder advice. Computed typography checks ensure visible body text stays smaller than headings, including with enlarged text, and no-JavaScript batch previews remain covered.

@@ -23,7 +23,7 @@
 - Never send hidden opponent state or numerical combativity to the browser. Reports are immutable recipient-specific projections.
 - Commands: `uv sync --frozen`, `uv run python manage.py migrate`, `uv run pytest --require-postgresql --fail-on-skip --check-case-catalog`, `uv run ruff check .`, `uv run python manage.py runserver`.
 - Run PostgreSQL tests with `DATABASE_URL` pointing to a disposable database whose user can create test databases. Browser smoke: `uv run python scripts/browser_smoke.py` against a local running server.
-- Keep HTML and CSS clean: no duplicate rules, dead styles, or appended override patches. Edit the owning component and its existing styles deliberately; reuse shared templates and components wherever practical. Remove obsolete markup and selectors together, and verify responsive, keyboard and no-JavaScript behavior when relevant.
+- Keep HTML and CSS clean: no duplicate rules, dead styles, or appended override patches. Edit the owning component and its existing styles deliberately; reuse shared templates and components wherever practical. Remove obsolete markup and selectors together, and verify responsive, keyboard and no-JavaScript behavior when relevant. Maintain a clear heading/body type hierarchy and verify it with enlarged text as well as default sizes.
 - Keep each change coherent and playable. No extra agent framework or distributed architecture is needed. Summarize behavior, checks, and remaining limitations after changes.
 - Give each collected variation a stable `@case` ID and requirement; review updates to `tests/case_ids.txt`. Refactor only for a concrete benefit. See `docs/testing.md` for native stubs, report generation and the complete push checkpoint.
 

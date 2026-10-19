@@ -17,7 +17,7 @@ body {
   background: var(--paper);
   color: var(--ink);
   font:
-    16px/1.5 Georgia,
+    1rem/1.5 Georgia,
     "Times New Roman",
     serif;
   -webkit-font-smoothing: antialiased;
@@ -196,8 +196,8 @@ h2 {
   margin: 1.25rem 0 0.6rem;
 }
 h3,
-.work-selection > summary h2 {
-  font-size: 1.05rem;
+.work-title {
+  font-size: 1.1rem;
   margin: 0.9rem 0 0.4rem;
 }
 p {
@@ -267,7 +267,7 @@ summary {
   cursor: pointer;
   min-height: 44px;
   padding: 0.45rem 0;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
 }
 summary::marker {
   color: var(--muted);
@@ -433,6 +433,41 @@ input[type="number"] {
   margin-top: 0;
   font-size: 0.9rem;
 }
+.work-purpose {
+  display: block;
+  margin: 0.2rem 0 0 1rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+.work-city-details {
+  min-width: 0;
+  font-size: 0.9rem;
+}
+.work-city-details > strong {
+  display: block;
+  font-size: 1rem;
+}
+.work-transition,
+.work-benefit,
+.work-reason {
+  display: block;
+}
+.work-benefit {
+  margin-top: 0.2rem;
+  font-size: 0.9rem;
+}
+.work-reason {
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--muted);
+}
+.work-city-details .cost-hint {
+  margin: 0.15rem 0;
+  font-size: 0.85rem;
+}
+.work-advice {
+  margin-top: 0.6rem;
+}
 .work-price {
   display: block;
   font-size: 0.8rem;
@@ -442,7 +477,7 @@ input[type="number"] {
 .work-selection > summary {
   padding: 0;
 }
-.work-selection > summary h2 {
+.work-title {
   display: inline;
 }
 .work-selection > .decree-form {

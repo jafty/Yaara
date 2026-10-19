@@ -19,7 +19,9 @@
             {% if view.equipment_shortfall %}<p class="cost-hint">{% blocktranslate with amount=view.equipment_shortfall %}Il manque {{ amount }} Mesures pour cet ouvrage.{% endblocktranslate %}</p>{% endif %}
             <button class="primary-action" type="submit" {% if view.equipment_shortfall %}disabled{% endif %}>{% translate "Faire relire ce décret" %}</button>
         {% else %}<input type="hidden" name="kind" value="{{ action.kind }}">
-            <fieldset><legend>{% translate "Que ces travaux soient entrepris…" %}</legend>{% for city in action.cities %}<label class="city-choice {% if city.busy %}disabled{% endif %}"><input type="checkbox" name="cities" value="{{ city.id }}" data-cost="{{ city.cost|unlocalize }}" {% if city.busy %}disabled{% elif city_requested and selected.id == city.id %}checked{% endif %}><span><strong>{{ city.name }}</strong> : {% if city.busy %}{% translate "les équipes sont déjà engagées" %}{% else %}{% blocktranslate with name=city.work_name cost=city.cost duration=city.duration %}{{ name }}, {{ cost }} Mesures et {{ duration }} lunes de travaux{% endblocktranslate %}{% endif %}.</span></label>{% endfor %}</fieldset>
+            <fieldset><legend>{% translate "Que ces travaux soient entrepris…" %}</legend>
+                {% include 'simulation/work_cities.html' with interactive=True %}
+            </fieldset>
             <div class="batch-controls" hidden>
                 <button type="button" data-select-cities>{% translate "Choisir toutes les cités disponibles" %}</button>
                 <button type="button" data-clear-cities>{% translate "Effacer ce choix" %}</button>

@@ -3,7 +3,7 @@
 from . import engine
 from .calendar import closed_moon, closing_moon
 from .messages import Message
-from .narration import work_effect, work_name
+from .narration import WORK_ADVICE, WORK_PURPOSES, work_benefit, work_effect, work_name
 from .rules import ACTION_LABELS, EQUIPMENT_LABELS, EXPEDITION_PRICES, RuleError, rule_family
 
 STATUS_LABELS = {
@@ -97,6 +97,7 @@ def player_view(state, actor):
                     "works": [
                         {
                             "label": ACTION_LABELS[work["kind"]],
+                            "name": work_name(work["kind"], work["level"]),
                             "finish_month": work["finish_month"],
                             "start_month": work["start_month"],
                             "progress": min(
@@ -181,28 +182,68 @@ def player_view(state, actor):
             continue
         options = []
         for city in engine.owned_cities(state, actor):
+            current = city["walls"] if kind == "repair" else city[kind]
+            option = {
+                "id": city["id"],
+                "name": city["name"],
+                "current_name": work_name(kind, current),
+                "current_damaged": kind in ("walls", "repair") and city["damaged"],
+                "work_name": "",
+                "cost": 0,
+                "duration": 0,
+                "level": current,
+                "busy": city["id"] in busy,
+                "available": False,
+                "benefit": "",
+                "reason": "",
+            }
             try:
                 task = engine.work_spec(state, city, kind)
-                options.append(
-                    {
-                        "id": city["id"],
-                        "name": city["name"],
-                        "cost": task["cost"],
-                        "duration": task["duration"],
-                        "level": task["level"],
-                        "work_name": work_name(kind, task["level"]),
-                        "busy": city["id"] in busy,
-                    }
+            except RuleError as error:
+                complete = current == rule_family(state["rules"]).max_level and kind != "repair"
+                reason = error.args[0]
+                if complete:
+                    reason = Message("Cet ouvrage est achevé.")
+                elif kind == "repair" and not current:
+                    reason = Message("Cette cité n’a pas d’enceinte à réparer.")
+                option.update(status="completed" if complete else "unavailable", reason=reason)
+            else:
+                option.update(
+                    cost=task["cost"],
+                    duration=task["duration"],
+                    level=task["level"],
+                    work_name=work_name(kind, task["level"]),
+                    benefit=work_benefit(kind, current, task["level"]),
+                    available=not option["busy"],
+                    status="busy" if option["busy"] else "available",
                 )
-            except RuleError:
-                continue
-        prices = sorted({(city["level"], city["cost"], city["duration"]) for city in options})
+                if option["busy"]:
+                    active_works = by_id[city["id"]]["works"]
+                    option["reason"] = (
+                        Message(
+                            "Chantier en cours : {work}, jusqu’à la lune {moon}.",
+                            work=active_works[0]["name"],
+                            moon=active_works[0]["finish_month"],
+                        )
+                        if active_works
+                        else Message("Un décret scellé réserve déjà ces équipes.")
+                    )
+            options.append(option)
+        prices = sorted(
+            {
+                (city["level"], city["cost"], city["duration"])
+                for city in options
+                if city["work_name"]
+            }
+        )
         available_actions.append(
             {
                 "kind": kind,
                 "label": ACTION_LABELS[kind],
                 "cities": options,
-                "selectable": any(not city["busy"] for city in options),
+                "selectable": any(city["available"] for city in options),
+                "purpose": WORK_PURPOSES[kind],
+                "advice": WORK_ADVICE[kind],
                 "prices": [
                     {
                         "level": level,
@@ -228,7 +269,14 @@ def player_view(state, actor):
             {
                 "kind": "equipment",
                 "label": ACTION_LABELS["forge"],
+                "purpose": WORK_PURPOSES["equipment"],
+                "advice": WORK_ADVICE["equipment"],
                 "equipment": EQUIPMENT_LABELS[state["players"][actor]["equipment"]],
+                "benefit": work_benefit(
+                    "forge", state["players"][actor]["equipment"], equipment_quote["level"]
+                )
+                if equipment_quote
+                else "",
                 "selectable": equipment_available,
                 "prices": [
                     {**equipment_quote, "name": work_name("forge", equipment_quote["level"])}

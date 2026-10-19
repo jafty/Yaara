@@ -1,7 +1,7 @@
 """French presentation vocabulary; no simulation state or hidden information."""
 
 from .messages import message
-from .rules import CAPACITIES
+from .rules import CAPACITIES, EQUIPMENT_LABELS
 
 WORK_NAMES = {
     "forge": [
@@ -45,6 +45,61 @@ WORK_PHRASES = {
     "walls": [message("Ériger une enceinte de terre crue"), message("Élever une grande enceinte")],
     "repair": [message("Réparer l’enceinte de terre crue"), message("Réparer la grande enceinte")],
 }
+
+
+WORK_PURPOSES = {
+    "irrigation": message("Conduire l’eau aux cultures et accroître le prélèvement."),
+    "storage": message("Préserver davantage de grain lorsque vient la récolte."),
+    "walls": message("Abriter la garnison derrière une enceinte plus sûre."),
+    "repair": message("Rendre à l’enceinte sa protection perdue."),
+    "forge": message("Mieux armer les Fidèles de chaque cité."),
+    "equipment": message("Mieux armer les Fidèles de toute votre maison."),
+}
+
+WORK_ADVICE = {
+    "irrigation": message(
+        "Le prélèvement s’accumule chaque lune et n’entre au grenier qu’à la récolte. Seuls les habitants présents y contribuent ; les hommes partis en expédition n’y ajoutent rien jusqu’à leur retour."
+    ),
+    "storage": message(
+        "Agrandir le grenier ne crée pas de grain. La capacité reste propre à chaque cité ; un surplus de récolte ou de butin qui ne peut y tenir est perdu."
+    ),
+    "walls": message(
+        "L’enceinte protège la garnison locale contre les captures, sans renforcer les secours. Elle ne protège pas contre le pillage des villages."
+    ),
+    "repair": message(
+        "La réparation restaure l’enceinte existante sans l’agrandir. Une enceinte endommagée doit être réparée avant de pouvoir être renforcée."
+    ),
+    "forge": message(
+        "Chaque cité conserve son propre armement, qui équipe aussi ses futurs habitants. La forge suit la cité si elle change de maître. Les expéditions déjà parties conservent leur équipement."
+    ),
+    "equipment": message(
+        "Ce règne conserve un armement commun à toute la maison, y compris ses futurs habitants. Le devis dépend de sa population actuelle. Les expéditions déjà parties conservent leur équipement."
+    ),
+}
+
+
+def work_benefit(kind, current, target):
+    if kind == "irrigation":
+        return message(
+            "Impôt par habitant présent : {before} → {after} Mesures par lune.",
+            before=number(100 + 100 * current),
+            after=number(100 + 100 * target),
+        )
+    if kind == "storage":
+        return message(
+            "Capacité du grenier : {before} → {after} Mesures.",
+            before=number(CAPACITIES[current]),
+            after=number(CAPACITIES[target]),
+        )
+    if kind == "forge":
+        return message(
+            "Armement : {before} → {after}.",
+            before=EQUIPMENT_LABELS[current],
+            after=EQUIPMENT_LABELS[target],
+        )
+    if kind == "repair":
+        return message("L’enceinte retrouvera toute sa protection, sans être agrandie.")
+    return work_effect(kind, target)
 
 
 def work_phrase(kind, level):

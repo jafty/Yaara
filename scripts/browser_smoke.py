@@ -17,6 +17,22 @@ def no_overflow(page):
     assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth"), (
         "The page overflows horizontally"
     )
+    readable_hierarchy(page)
+
+
+def readable_hierarchy(page):
+    sizes = page.locator("main").evaluate("""root => {
+      const visible = selector => [...root.querySelectorAll(selector)]
+        .filter(el => el.getClientRects().length && getComputedStyle(el).visibility !== 'hidden')
+        .map(el => parseFloat(getComputedStyle(el).fontSize));
+      return {headings: visible('h1, h2, h3, [role="heading"]'),
+              body: visible('p, legend, .work-transition, .work-benefit, .work-reason'),
+              disclosures: visible('summary')};
+    }""")
+    if sizes["headings"] and sizes["body"]:
+        assert min(sizes["headings"]) > max(sizes["body"]), sizes
+    if sizes["disclosures"] and sizes["body"]:
+        assert min(sizes["disclosures"]) >= max(sizes["body"]), sizes
 
 
 with sync_playwright() as playwright:
@@ -73,14 +89,18 @@ with sync_playwright() as playwright:
             page.get_by_role("heading", name="Works" if en else "Chantiers", exact=True)
         ).to_be_visible()
         assert page.locator("#works-heading").count() == 0
-        expect(page.locator("#work-storage summary")).to_contain_text(
+        expect(page.locator("#work-storage > summary")).to_contain_text(
             "Great granary" if en else "Grand grenier"
         )
-        expect(page.locator("#work-forge summary")).to_contain_text(
+        expect(page.locator("#work-forge > summary")).to_contain_text(
             "City forge" if en else "Forge de la cité"
         )
         assert "Level " not in page.locator(".work-choices").inner_text()
         assert "Niveau " not in page.locator(".work-choices").inner_text()
+        readable_hierarchy(page)
+        page.evaluate("document.documentElement.style.fontSize = '125%'")
+        readable_hierarchy(page)
+        page.evaluate("document.documentElement.style.removeProperty('font-size')")
         page.screenshot(path=str(artifacts / f"works-named-{language}.png"), full_page=True)
         page.goto(game_url)
         assert page.locator("article.city-entry").count() == 3
@@ -92,7 +112,7 @@ with sync_playwright() as playwright:
         page.locator('.bookmarks a[href$="?tab=constructions"]').click()
         # Local forges keep the same atomic multi-city draft/seal/cancel workflow.
         forge = page.locator("#work-forge")
-        forge.locator("summary").click()
+        forge.locator(":scope > summary").click()
         forge.locator('input[value="c1"]').check()
         forge.locator('input[value="c2"]').check()
         expect(forge.locator("[data-work-cost]")).to_have_text(
@@ -114,7 +134,7 @@ with sync_playwright() as playwright:
             "1,800,000" if en else "1\u00a0800\u00a0000"
         )
         canals = page.locator("#work-irrigation")
-        canals.locator("summary").click()
+        canals.locator(":scope > summary").click()
         canals.locator('input[value="c1"]').check()
         expect(canals.locator("[data-budget-note]")).to_have_text(
             "This work needs 600,000 more Measures."
@@ -122,7 +142,7 @@ with sync_playwright() as playwright:
             else "Il manque 600\u202f000 Mesures pour cet ouvrage."
         )
         work = page.locator("#work-storage")
-        work.locator("summary").click()
+        work.locator(":scope > summary").click()
         work.locator("[data-select-cities]").click()
         expect(work.locator("[data-city-count]")).to_have_text("3")
         expect(work.locator("[data-work-cost]")).to_have_text(
@@ -235,6 +255,39 @@ with sync_playwright() as playwright:
         expect(page.locator('#work-storage input[value="c1"]')).not_to_be_checked()
         page.goto(game_url + "?tab=city&city=c4")
         assert page.locator("[data-local-accounts]").count() == 0
+        # Complete one granary, then reserve another city's teams for a forge.
+        # Storage now mixes completed infrastructure, ordinary granaries and busy teams.
+        page.goto(game_url + "?tab=constructions")
+        storage = page.locator("#work-storage")
+        storage.locator(":scope > summary").click()
+        storage.locator('input[value="c1"]').check()
+        storage.locator('button[type="submit"]').click()
+        page.locator(".wax-seal").click()
+        for _ in range(5):
+            page.locator('.bookmarks a[data-section="domain"]').click()
+            page.locator("#turn-page button.primary-action").click()
+        page.goto(game_url + "?tab=constructions")
+        forge = page.locator("#work-forge")
+        forge.locator(":scope > summary").click()
+        forge.locator('input[value="c2"]').check()
+        forge.locator('button[type="submit"]').click()
+        page.locator(".wax-seal").click()
+        storage = page.locator("#work-storage")
+        storage.locator(":scope > summary").click()
+        expect(storage.locator('input[value="c2"]')).to_be_disabled()
+        expect(storage.locator('input[value="c1"]')).to_be_enabled()
+        expect(storage.locator(".work-transition").first).to_have_text(
+            "Great granary → Reserve silos" if en else "Grand grenier → Silos de réserve"
+        )
+        expect(storage.locator(".work-benefit").first).to_contain_text(
+            "3,600,000 → 6,000,000" if en else "3\u202f600\u202f000 → 6\u202f000\u202f000"
+        )
+        storage.locator(".work-advice > summary").click()
+        expect(storage.locator(".work-advice p")).to_contain_text(
+            "creates no grain" if en else "ne crée pas de grain"
+        )
+        readable_hierarchy(page)
+        page.screenshot(path=str(artifacts / f"works-mixed-desktop-{language}.png"), full_page=True)
         for width in (390, 320):
             page.set_viewport_size({"width": width, "height": 844})
             for suffix in (
@@ -254,7 +307,7 @@ with sync_playwright() as playwright:
                 )
                 if suffix == "?tab=constructions":
                     storage = page.locator("#work-storage")
-                    storage.locator("summary").click()
+                    storage.locator(":scope > summary").click()
                     for choice in storage.locator(".city-choice").all():
                         assert choice.bounding_box()["height"] >= 44
                         assert (
@@ -287,7 +340,7 @@ with sync_playwright() as playwright:
         plain_page = plain.new_page()
         plain_page.goto(game_url + "?tab=constructions")
         plain_forge = plain_page.locator("#work-forge")
-        plain_forge.locator("summary").click()
+        plain_forge.locator(":scope > summary").click()
         plain_forge.locator('input[value="c1"]').check()
         plain_forge.locator('button[type="submit"]').click()
         expect(plain_page.locator(".unsealed-leaf")).to_be_visible()
