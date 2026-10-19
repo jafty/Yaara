@@ -145,3 +145,7 @@ The geography revision separately specifies each realm's five initial targets on
 ## Named works and merged forge list
 
 Independent cases specify each named upgrade and repair with its exact quote, legacy forge availability at ordinary/reinforced/complete equipment and while busy, bilingual city-forge names, one shared work list for both forge rule versions, and read-only lists for paused/finished reigns. The browser journey checks the single Works heading and named granary/forge captions before its existing batch preview/seal/cancel and no-JavaScript paths.
+
+## Territory map, density and forge affordability
+
+Independent cases specify bounded territory polygons around every city, complete sheet coverage, stable borders on capture, all viewers on legacy/mesh roads, and bilingual committed-target markers for both own and rival cities. Forge cases cover one Measure below, exactly at and above affordability, plus visible/disabled translated submit controls. The browser journey checks keyboard city selection, marker states, 320px/390px account/lobby/game overflow, 16px text and 44px checklist targets, alongside its existing no-JavaScript paths. A separate local Chromium reproduction verifies a legacy forge shortfall and successful read-only preview at exact funds.

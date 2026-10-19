@@ -4,7 +4,8 @@
     <section id="map-context" class="map-context" aria-live="polite" aria-labelledby="context-title">
         {% if city_requested %}
             <h2 id="context-title">{{ selected.name }}</h2>
-            <p>{{ selected.owner_name }} · {{ selected.wall_label }}{% if selected.damaged %}, {% translate "endommagée" %}{% endif %}.</p>
+            <p class="map-status">{% include 'simulation/map_status.html' with city=selected %}</p>
+            <p><span class="house-seal house-{{ selected.owner }}" aria-hidden="true">{% include 'simulation/house_mark.html' with owner=selected.owner %}</span> {{ selected.owner_name }} · {{ selected.wall_label }}{% if selected.damaged %}, {% translate "endommagée" %}{% endif %}.</p>
             <p class="context-neighbors">{% translate "Oasis voisines :" %} {% for city in neighbors %}<a href="?tab=wars&amp;city={{ city.id }}#map-context">{{ city.name }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}.</p>
             {% if selected.owned %}
                 <p>{% blocktranslate with count=selected.available_fideles %}{{ count }} Fidèles libres de recevoir vos ordres.{% endblocktranslate %}</p>

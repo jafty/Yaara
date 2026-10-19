@@ -29,6 +29,20 @@ ATLAS_POSITIONS = (
 )
 
 
+# Fixed clipped Voronoi cells; borders are illustrative, never road adjacency.
+ATLAS_TERRITORIES = (
+    "0.0,0.0 226.6,0.0 203.9,143.7 0.0,211.7",
+    "226.6,0.0 393.9,0.0 415.4,115.6 282.7,235.7 203.9,143.7",
+    "393.9,0.0 680.0,0.0 680.0,139.5 501.1,186.5 415.4,115.6",
+    "0.0,249.7 0.0,211.7 203.9,143.7 282.7,235.7 284.0,256.6 198.4,345.5",
+    "284.0,256.6 282.7,235.7 415.4,115.6 501.1,186.5 468.4,310.3 414.0,338.9",
+    "680.0,139.5 680.0,412.5 468.4,310.3 501.1,186.5",
+    "205.7,500.0 0.0,500.0 0.0,249.7 198.4,345.5",
+    "381.0,500.0 205.7,500.0 198.4,345.5 284.0,256.6 414.0,338.9",
+    "680.0,412.5 680.0,500.0 381.0,500.0 414.0,338.9 468.4,310.3",
+)
+
+
 def player_view(state, actor):
     closed = closed_moon(state)
     upcoming = closing_moon(state)
@@ -54,6 +68,7 @@ def player_view(state, actor):
             "engaged": city["id"] in targets,
             "x": ATLAS_POSITIONS[index][0],
             "y": ATLAS_POSITIONS[index][1],
+            "territory": ATLAS_TERRITORIES[index],
         }
         if public["owned"]:
             away = engine.absent(state, city["id"])
@@ -135,6 +150,7 @@ def player_view(state, actor):
     attack_targets = []
     for city in cities:
         eligible = engine.eligible_origins(state, actor, city["id"])
+        city["reachable"] = bool(eligible)
         if eligible:
             attack_targets.append(
                 {
@@ -237,6 +253,9 @@ def player_view(state, actor):
         "equipment": EQUIPMENT_LABELS[state["players"][actor]["equipment"]],
         "local_forges": engine.local_forges(state),
         "equipment_quote": equipment_quote,
+        "equipment_shortfall": max(
+            0, equipment_quote.get("cost", 0) - sum(city["available_stock"] for city in owned)
+        ),
         "equipment_available": equipment_available,
         "equipment_work": [
             {"finish_month": work["finish_month"]}

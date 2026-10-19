@@ -10,12 +10,14 @@
                 {% for city in view.owned_cities %}<label class="contribution" data-origin="{{ city.id }}"><span>{{ city.name }}<small>{% blocktranslate with v0=city.available_fideles %}{{ v0 }} Fidèles libres de partir.{% endblocktranslate %}<span class="origin-note"></span></small></span><span class="manpower-input"><input type="number" name="men_{{ city.id }}" value="0" min="0" max="{{ city.available_fideles }}" inputmode="numeric" aria-label="{% blocktranslate with v0=city.name %}Fidèles de {{ v0 }}{% endblocktranslate %}"> {% translate "Fidèles" %}</span></label>{% endfor %}</fieldset>
             <p class="expedition-summary" aria-live="polite">{% translate "Effectif réuni :" %} <strong id="army-total">0</strong>. {% translate "Prix :" %} <strong id="army-cost">{{ view.expedition_prices.raid.base }}</strong> {% translate "Mesures" %}.</p>
             <p class="aside-text" id="mission-help"></p>
-            <button type="submit">{% translate "Faire relire l’ordre d’expédition" %}</button>
+            <button class="primary-action" type="submit">{% translate "Faire relire l’ordre d’expédition" %}</button>
             {{ attack_origins|json_script:'attack-origins' }}
             {{ view.expedition_prices|json_script:'expedition-prices' }}
         {% elif action.kind == 'equipment' %}<input type="hidden" name="kind" value="equipment">
             <p>{% translate "La forge équipera aussi les populations qui rejoindront votre maison. Le devis fixe le prix selon la population actuelle." %}</p>
-            <p>{% blocktranslate with v0=view.equipment_quote.cost v1=view.equipment_quote.duration %}<strong>{{ v0 }} Mesures</strong> ; <strong>{{ v1 }} lunes</strong>.{% endblocktranslate %}</p><button type="submit">{% translate "Faire relire ce décret" %}</button>
+            {% if not inline %}<p>{% blocktranslate with v0=view.equipment_quote.cost v1=view.equipment_quote.duration %}<strong>{{ v0 }} Mesures</strong> ; <strong>{{ v1 }} lunes</strong>.{% endblocktranslate %}</p>{% endif %}
+            {% if view.equipment_shortfall %}<p class="cost-hint">{% blocktranslate with amount=view.equipment_shortfall %}Il manque {{ amount }} Mesures pour cet ouvrage.{% endblocktranslate %}</p>{% endif %}
+            <button class="primary-action" type="submit" {% if view.equipment_shortfall %}disabled{% endif %}>{% translate "Faire relire ce décret" %}</button>
         {% else %}<input type="hidden" name="kind" value="{{ action.kind }}">
             <fieldset><legend>{% translate "Que ces travaux soient entrepris…" %}</legend>{% for city in action.cities %}<label class="city-choice {% if city.busy %}disabled{% endif %}"><input type="checkbox" name="cities" value="{{ city.id }}" data-cost="{{ city.cost|unlocalize }}" {% if city.busy %}disabled{% elif city_requested and selected.id == city.id %}checked{% endif %}><span><strong>{{ city.name }}</strong> : {% if city.busy %}{% translate "les équipes sont déjà engagées" %}{% else %}{% blocktranslate with name=city.work_name cost=city.cost duration=city.duration %}{{ name }}, {{ cost }} Mesures et {{ duration }} lunes de travaux{% endblocktranslate %}{% endif %}.</span></label>{% endfor %}</fieldset>
             <div class="batch-controls" hidden>
@@ -24,6 +26,6 @@
                 <p class="cost-hint" aria-live="polite">{% translate "Cités retenues :" %} <strong data-city-count>0</strong> · {% translate "Prix total :" %} <strong data-work-cost>0</strong> {% translate "Mesures" %}.</p>
                 <p class="cost-hint" data-budget-note aria-live="polite"></p>
             </div>
-            <button type="submit" {% if not action.selectable %}disabled{% endif %}>{% translate "Faire relire ce décret" %}</button>
+            <button class="primary-action" type="submit" {% if not action.selectable %}disabled{% endif %}>{% translate "Faire relire ce décret" %}</button>
         {% endif %}
     </form></section>

@@ -158,3 +158,50 @@ def test_readonly_list(user, forge_version, state):
     assert 'class="work-choices"' in html
     assert "data-work-form" not in html
     assert 'name="kind" value="equipment"' not in html
+
+
+@pytest.mark.logic
+@case(
+    "work-legacy-shortfall",
+    "Forge usability: the available realm funds determine an exact shortfall",
+)
+@pytest.mark.parametrize("funds,shortfall", [(1799999, 1), (1800000, 0), (1800001, 0)])
+def test_legacy_shortfall(funds, shortfall):
+    """Given a realm forge quote with {funds} free Measures.
+    When the work list is projected.
+    Then its explicit missing amount is {shortfall} and no funds are reserved.
+    """
+    state = engine.new_state(forge_version=1)
+    for city in state["cities"].values():
+        if city["owner"] == "p1":
+            city["stock"] = funds if city["id"] == "c1" else 0
+    assert player_view(state, "p1")["equipment_shortfall"] == shortfall
+    assert not state["orders"]
+
+
+@pytest.mark.integration
+@pytest.mark.usefixtures("test_static_storage")
+@case(
+    "work-legacy-submit-visible",
+    "Forge usability: always show the action and explain insufficient funds",
+)
+@pytest.mark.parametrize("language", ["fr", "en"])
+@pytest.mark.parametrize("affordable", [False, True])
+def test_legacy_submit_visible(user, language, affordable):
+    game = services.create_game(user, "Forge funds", forge_version=1, opponents="passive")
+    if not affordable:
+        game.state["cities"]["c1"]["stock"] = 599999
+        game.save()
+    client = Client()
+    client.force_login(user)
+    client.cookies["django_language"] = language
+    html = client.get(reverse("game", args=[game.id]), {"tab": "constructions"}).content.decode()
+    form = next(
+        form for form in re.findall(r"<form\b.*?</form>", html, re.S) if 'value="equipment"' in form
+    )
+    button = re.search(r"<button\b.*?</button>", form, re.S).group()
+    assert 'type="submit"' in button and "primary-action" in button
+    assert ("disabled" in button) != affordable
+    if not affordable:
+        assert ("1 Measures" if language == "en" else "1 Mesures") in form
+        assert ("missing" if language == "en" else "Il manque") in form

@@ -1,5 +1,12 @@
 # Implementation decisions
 
+## 2026-10-19 · Territories, readable atlas states and compact pages
+
+- Each city has a fixed clipped Voronoi territory around its existing public map position. These irregular cells tile the schematic sheet and stay attached to the city on capture. Clicking anywhere in a territory opens its city panel. Borders are decorative geography: road topology alone determines reach, and the map explicitly says so. No save, travel, ownership or combat rule is changed.
+- Territory washes and borders use burnt earth, ochre and olive. Each house also has a consistent I/II/III seal, repeated in its city markers, legend and selected-city panel, so ownership does not depend on colour. Shared marker markup shows a double ring for your cities, a diamond for reachable rival cities, a simple circle beyond reach, and a dashed outer ring for an engaged target. The legend and accessible link names state these meanings; committed targets keep their warning even when they belong to the viewer. Reachability is projected using the same saved-road calculation as the expedition form.
+- Use a 16px reading size with a 1.5 line-height, smaller headings and tighter paragraph, section and form spacing. Compact the account, lobby and game pages together, while preserving 44px native control/navigation targets and the existing responsive reading column. Change owning style rules; remove redundant mobile overrides and obsolete hit-circle styles. Shared components handle markers, house seals and status text.
+- Older realm-forge quotes now show an exact shortfall and a visible, disabled preparation button when unaffordable. At equality the action is enabled. The duplicated inline price is removed; all decree preparation buttons use the existing restrained bordered action style. The server still validates every quote, and no resources are reserved by displaying it.
+
 ## 2026-10-19 · One list of named works
 
 - The Works title introduces one shared building list; remove the repeated “Les ouvrages de vos cités” heading. Local forges and legacy realm-equipment forges use the same choice markup and existing decree form. Remove the dedicated realm-equipment section and its obsolete partial. Legacy forge choices still send `equipment` commands with their original realm scope, quotes and availability; no saved rules or reports change.

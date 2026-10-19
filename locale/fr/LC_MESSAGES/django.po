@@ -2143,3 +2143,24 @@ msgstr "Cette forge fournit l’armement de toute votre maison."
 
 msgid "Aucun nouvel ouvrage ne peut être entrepris ici pour le moment."
 msgstr "Aucun nouvel ouvrage ne peut être entrepris ici pour le moment."
+
+msgid "Chaque cité possède un territoire teinté aux couleurs de sa maison. Les sceaux identifient les propriétaires. Double cercle : votre domaine ; losange : cité à portée ; cercle simple : hors de portée ; pointillés : expédition engagée."
+msgstr "Chaque cité possède un territoire teinté aux couleurs de sa maison. Les sceaux identifient les propriétaires. Double cercle : votre domaine ; losange : cité à portée ; cercle simple : hors de portée ; pointillés : expédition engagée."
+
+msgid "Votre domaine"
+msgstr "Votre domaine"
+
+msgid "À portée"
+msgstr "À portée"
+
+msgid "Hors de portée"
+msgstr "Hors de portée"
+
+msgid "Lire la carte"
+msgstr "Lire la carte"
+
+msgid "Les frontières sont indicatives ; la portée suit les routes. Toute expédition suit le même calendrier."
+msgstr "Les frontières sont indicatives ; la portée suit les routes. Toute expédition suit le même calendrier."
+
+msgid "Il manque %(amount)s Mesures pour cet ouvrage."
+msgstr "Il manque %(amount)s Mesures pour cet ouvrage."

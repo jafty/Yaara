@@ -3427,3 +3427,24 @@ msgstr "This forge supplies weapons to your entire realm."
 
 msgid "Aucun nouvel ouvrage ne peut être entrepris ici pour le moment."
 msgstr "No new work can be undertaken here at present."
+
+msgid "Chaque cité possède un territoire teinté aux couleurs de sa maison. Les sceaux identifient les propriétaires. Double cercle : votre domaine ; losange : cité à portée ; cercle simple : hors de portée ; pointillés : expédition engagée."
+msgstr "Each city has territory shaded in its house’s colours. Seals identify the owners. Double circle: your realm; diamond: a city within reach; single circle: out of reach; dashed ring: a committed expedition."
+
+msgid "Votre domaine"
+msgstr "Your realm"
+
+msgid "À portée"
+msgstr "Within reach"
+
+msgid "Hors de portée"
+msgstr "Out of reach"
+
+msgid "Lire la carte"
+msgstr "Reading the map"
+
+msgid "Les frontières sont indicatives ; la portée suit les routes. Toute expédition suit le même calendrier."
+msgstr "Borders are schematic; reach follows the roads. Every expedition follows the same calendar."
+
+msgid "Il manque %(amount)s Mesures pour cet ouvrage."
+msgstr "%(amount)s Measures missing for this work."

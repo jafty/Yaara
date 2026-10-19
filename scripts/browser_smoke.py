@@ -1,6 +1,7 @@
 """Real bilingual browser journeys against a disposable local server/database."""
 
 import os
+import re
 import secrets
 import shutil
 from pathlib import Path
@@ -31,6 +32,10 @@ with sync_playwright() as playwright:
         username = "browser_" + secrets.token_hex(5)
         password = secrets.token_urlsafe(24)
         page.goto(base_url + "/accounts/signup/")
+        for width in (390, 320):
+            page.set_viewport_size({"width": width, "height": 844})
+            no_overflow(page)
+        page.set_viewport_size({"width": 1440, "height": 1100})
         page.locator("#id_username").fill(username)
         page.locator("#id_password1").fill(password)
         page.locator("#id_password2").fill(password)
@@ -41,7 +46,14 @@ with sync_playwright() as playwright:
             )
         ).to_be_visible()
         assert page.locator(".sidebar").count() == 1
+        for width in (390, 320):
+            page.set_viewport_size({"width": width, "height": 844})
+            no_overflow(page)
         page.goto(base_url + "/games/new/")
+        for width in (390, 320):
+            page.set_viewport_size({"width": width, "height": 844})
+            no_overflow(page)
+        page.set_viewport_size({"width": 1440, "height": 1100})
         page.locator("#id_title").fill("The Amber Chronicles" if en else "Les chroniques d’Ambre")
         page.locator("#id_opponents").select_option("passive")
         page.locator(".game-setup button").click()
@@ -152,8 +164,16 @@ with sync_playwright() as playwright:
         expect(page.locator(".orders-register")).to_contain_text("Cancelled" if en else "Annulé")
         page.locator('.bookmarks a[data-section="wars"]').click()
         assert page.locator(".map-city").count() == 9
+        assert page.locator(".map-territory").count() == 9
+        assert page.locator('[data-map-state="owned"]').count() == 3
+        assert page.locator('[data-map-state="reachable"]').count() == 5
+        assert page.locator('[data-map-state="unreachable"]').count() == 1
+        expect(page.locator('.map-city[href*="city=c6"]')).to_have_attribute(
+            "aria-label", re.compile("Out of reach" if en else "Hors de portée")
+        )
         assert page.locator(".map-road").count() == 0
-        page.locator('.map-city[href*="city=c4"]').click()
+        page.locator('.map-city[href*="city=c4"]').focus()
+        page.keyboard.press("Enter")
         assert page.locator("[data-local-accounts]").count() == 0
         expect(page.locator("#map-context")).to_contain_text("Sefra")
         page.screenshot(path=str(artifacts / f"map-context-desktop-{language}.png"), full_page=True)
@@ -168,7 +188,7 @@ with sync_playwright() as playwright:
             page.get_by_role("heading", name="The people committed" if en else "Les hommes engagés")
         ).to_be_visible()
         page.locator(".wax-seal").click()
-        assert page.locator(".map-engaged").count() == 1
+        assert page.locator('[data-map-state="engaged"]').count() == 1
         page.screenshot(path=str(artifacts / f"decrees-desktop-{language}.png"), full_page=True)
         for moon in range(1, 4):
             page.locator('.bookmarks a[data-section="domain"]').click()
@@ -228,6 +248,18 @@ with sync_playwright() as playwright:
                 page.goto(game_url + suffix)
                 no_overflow(page)
                 assert page.locator(".reign-header").bounding_box()["height"] < 130
+                assert (
+                    page.locator("body").evaluate("el => parseFloat(getComputedStyle(el).fontSize)")
+                    == 16
+                )
+                if suffix == "?tab=constructions":
+                    storage = page.locator("#work-storage")
+                    storage.locator("summary").click()
+                    for choice in storage.locator(".city-choice").all():
+                        assert choice.bounding_box()["height"] >= 44
+                        assert (
+                            choice.evaluate("el => parseFloat(getComputedStyle(el).fontSize)") <= 16
+                        )
                 for link in page.locator(".bookmarks a").all():
                     box = link.bounding_box()
                     assert box["height"] >= 44 and box["width"] >= 44

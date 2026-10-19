@@ -1,0 +1,1 @@
+{% load i18n %}{% if city.engaged %}{% translate "Expédition engagée" %}{% elif city.owned %}{% translate "Votre domaine" %}{% elif city.reachable %}{% translate "À portée" %}{% else %}{% translate "Hors de portée" %}{% endif %}

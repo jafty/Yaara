@@ -20,6 +20,18 @@ annual-recruitment/at-ceiling
 annual-recruitment/one-vacancy
 annual-recruitment/recruitment-cap
 annual-recruitment/v0-no-growth
+atlas-captured-territory
+atlas-marker-states/own-city-engaged-en
+atlas-marker-states/own-city-engaged-fr
+atlas-marker-states/rival-engaged-en
+atlas-marker-states/rival-engaged-fr
+atlas-route-state/p1-1
+atlas-route-state/p1-2
+atlas-route-state/p2-1
+atlas-route-state/p2-2
+atlas-route-state/p3-1
+atlas-route-state/p3-2
+atlas-territory-geometry
 bilingual-saved-report/english
 bilingual-saved-report/french
 bot-hidden-state-independent
@@ -401,6 +413,13 @@ work-legacy-forge-choice/0-False
 work-legacy-forge-choice/1-False
 work-legacy-forge-choice/1-True
 work-legacy-forge-choice/2-False
+work-legacy-shortfall/1799999-1
+work-legacy-shortfall/1800000-0
+work-legacy-shortfall/1800001-0
+work-legacy-submit-visible/False-en
+work-legacy-submit-visible/False-fr
+work-legacy-submit-visible/True-en
+work-legacy-submit-visible/True-fr
 work-named-upgrades/forge-1-Forge de la cit\xe9-600000-8
 work-named-upgrades/forge-2-Forge des ma\xeetres-1400000-14
 work-named-upgrades/irrigation-1-Premiers canaux-2400000-6
