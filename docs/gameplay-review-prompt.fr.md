@@ -8,6 +8,12 @@ Lecture du 19 octobre 2026, sur la branche de déploiement récupérée depuis l
 
 Les sections « Fonctionnement vérifié » décrivent les nouvelles parties par défaut. Les sauvegardes peuvent conserver des règles antérieures. Les observations du joueur et les propositions sont séparées des faits implémentés.
 
+### Maintien de cette référence
+
+Ce document est une référence vivante du fonctionnement du jeu. Toute modification du cœur affectant les règles décrites doit le mettre à jour dans le même changement : faits, paramètres, exemples calculés, compatibilité et référence de révision. Une simple réorganisation interne sans effet sur le comportement nécessite de vérifier son exactitude, pas d'inventer une modification documentaire.
+
+Les réponses aux questions de règles, d'économie, d'équilibrage ou de fonctionnement doivent s'appuyer sur ce document lorsque pertinent, en vérifiant le code applicable et les paramètres des sauvegardes concernées. En cas d'écart, signaler et corriger la documentation. Les propositions et observations historiques restent identifiées comme telles ; elles ne deviennent pas des règles implémentées par leur seule présence ici. Ces obligations figurent aussi dans [AGENTS.md](../AGENTS.md).
+
 Sources principales : [moteur](../simulation/engine.py), [paramètres et formules](../simulation/rules.py), [calendrier](../simulation/calendar.py), [services applicatifs](../simulation/services.py), [décisions](decisions.md). Le [dossier historique](design-source.fr.md) contient des propositions et des valeurs dépassées : notamment, sa progression agricole 100/200/300 ne décrit pas la nouvelle économie 100/130/200.
 
 ## Fonctionnement vérifié : cadre et calendrier
