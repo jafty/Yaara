@@ -329,8 +329,9 @@ strong {
   margin-top: 0;
 }
 .prologue-navigation {
-  justify-content: space-between;
+  justify-content: flex-start;
   margin-top: 1.25rem;
+  margin-bottom: 0.75rem;
 }
 .plain-disclosure {
   border-bottom: 1px solid var(--rule);
@@ -496,8 +497,16 @@ input[type="number"] {
   margin: 0;
 }
 .council-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.25rem;
   margin-top: 0;
   font-size: 0.9rem;
+}
+.council-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
 }
 .work-purpose {
   display: block;

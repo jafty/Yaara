@@ -165,3 +165,7 @@ Independent cases cover ordinary/enlarged/completed granaries in one list, activ
 Independent bilingual HTTP cases cover creation-only prologue redirects, each of the four read-only pages, invalid page bounds, membership protection, contextual V0/V1 and manual/scheduled guidance, the unchanged running automatic clock, local available-versus-total city balances, and the validate/review/seal reservation boundary for works, legacy equipment and expeditions. The existing Council ordering case now requires the compact ledger before news.
 
 The browser journey traverses the complete prologue in both languages, checks every page at 320px/390px and enlarged text, and checks guide and replay pages with the existing responsive hierarchy assertions. Native guide/replay/previous/skip/city-folio navigation also runs with JavaScript disabled alongside the existing batch and expedition journeys.
+
+## Review remarks
+
+Independent cases reproduce empty-granary 30-person raid allocation and exact affordability, every twelve-road border adjacency, both territory tilings, failed preparation/confirmation and signed-draft reopening, retained native form costs, prologue action order, report return links, and five/ten-minute calendar boundaries including exact marks, fractional seconds, hour rollover and pause/resume. The bilingual browser journey checks Council link gaps, live Hamilton shares and shortfalls, failed capture recovery, report return links and the explicit aligned start. Core coverage and the full PostgreSQL push checkpoint remain required.

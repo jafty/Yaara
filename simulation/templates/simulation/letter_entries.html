@@ -2,5 +2,5 @@
 {% for report in reports %}<article class="letter-entry" id="report-{{ report.id }}">
     <p class="letter-date">{% blocktranslate with v0=report.month %}Lune {{ v0 }}{% endblocktranslate %}{% if report.original_archive %} · {% translate "Archive originale en français" %}{% endif %}</p>
     <h3>{{ report.title }}</h3>
-    <div class="letter-text"><p>{% if compact %}{{ report.body|truncatewords:35 }}{% else %}{{ report.body }}{% endif %}</p>{% if compact %}<p><a href="?tab=letters#report-{{ report.id }}">{% translate "Lire le rapport complet" %} →</a></p>{% else %}<p class="signature">{% blocktranslate with v0=report.month %}Consigné par votre scribe à la lune {{ v0 }}.{% endblocktranslate %}</p>{% endif %}</div>
+    <div class="letter-text"><p>{% if compact %}{{ report.body|truncatewords:35 }}{% else %}{{ report.body }}{% endif %}</p>{% if compact %}<p><a href="?tab=letters#report-{{ report.id }}">{% translate "Lire le rapport complet" %} →</a></p>{% else %}<p class="signature">{% blocktranslate with v0=report.month %}Consigné par votre scribe à la lune {{ v0 }}.{% endblocktranslate %}</p><p class="reading-links"><a href="?tab=domain">← {% translate "Retour au conseil" %}</a></p>{% endif %}</div>
 </article>{% empty %}<p>{% translate "Le scribe n’a rien de nouveau à consigner." %}</p>{% endfor %}

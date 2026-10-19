@@ -1,4 +1,5 @@
 import uuid
+from urllib.parse import urlencode
 
 from django.conf import settings
 from django.contrib import messages
@@ -20,7 +21,7 @@ from .models import Game, Report
 from .narration import work_effect, work_phrase
 from .presentation import localize, report_view
 from .projections import player_view
-from .rules import ACTION_LABELS, RuleError
+from .rules import ACTION_LABELS, EXPEDITION_PRICES, RuleError, allocate
 
 
 @require_GET
@@ -97,6 +98,7 @@ def metadata(game):
         "interval_minutes": game.interval_minutes,
         "revision": game.revision,
         "awaiting_start": game.state.get("awaiting_start", False),
+        "clock_aligned": game.state.get("clock_aligned", False),
     }
 
 
@@ -105,6 +107,18 @@ def metadata(game):
 def desk(request, game_id):
     game, actor = authorized_game(request, game_id)
     view = localize(player_view(game.state, actor))
+    for city in view["owned_cities"]:
+        try:
+            city["contribution"] = max(0, int(request.GET.get(f"men_{city['id']}", "0")))
+        except ValueError:
+            city["contribution"] = 0
+    mission_kind = "capture" if request.GET.get("mission") == "capture" else "raid"
+    price = EXPEDITION_PRICES[mission_kind]
+    contributions = {city["id"]: city["contribution"] for city in view["owned_cities"]}
+    fees = allocate(price["base"], contributions)
+    for city in view["owned_cities"]:
+        city["expedition_charge"] = fees[city["id"]] + city["contribution"] * price["per_person"]
+        city["expedition_shortfall"] = max(0, city["expedition_charge"] - city["available_stock"])
     tab = request.GET.get("tab", "domain")
     if tab not in (
         "domain",
@@ -231,7 +245,10 @@ def desk(request, game_id):
             "selected_target": next(
                 (target for target in view["attack_targets"] if target["id"] == city_id), None
             ),
-            "mission_kind": "capture" if request.GET.get("mission") == "capture" else "raid",
+            "mission_kind": mission_kind,
+            "expedition_total": sum(contributions.values()),
+            "expedition_cost": price["base"] + sum(contributions.values()) * price["per_person"],
+            "selected_cities": request.GET.getlist("cities"),
             "constructions": constructions,
             "construction_count": len(constructions) + len(view["equipment_work"]),
             "milestones": milestones,
@@ -254,10 +271,29 @@ def state_view(request, game_id):
     return JsonResponse({"game": metadata(game), "view": localize(player_view(game.state, actor))})
 
 
+def order_form_url(game, spec):
+    """Return only to a local, known action; the query is an unsealed selection."""
+    kind = spec.get("kind")
+    query = {"tab": "decrees"}
+    if kind in ("raid", "capture"):
+        query = {"tab": "wars", "action": "expedition", "mission": kind}
+        if spec.get("target") in game.state["cities"]:
+            query["city"] = spec["target"]
+        query.update(
+            (f"men_{city}", count)
+            for city, count in spec.get("contributions", {}).items()
+            if city in game.state["cities"]
+        )
+    elif kind in ACTION_LABELS:
+        query = {"tab": "constructions", "action": kind, "cities": spec.get("cities", [])}
+    return reverse("game", args=[game.id]) + "?" + urlencode(query, doseq=True)
+
+
 @login_required
 @require_http_methods(["GET", "POST"])
 def preview_order(request, game_id):
     game, actor = authorized_game(request, game_id)
+    spec = {}
     if request.method == "GET":
         payload = request.GET.get("payload", "")
         try:
@@ -266,18 +302,21 @@ def preview_order(request, game_id):
                 data["game_id"] != str(game_id)
                 or data["user_id"] != request.user.pk
                 or data["actor"] != actor
-                or data["revision"] != game.revision
-                or data["month"] != game.state["month"]
             ):
                 raise signing.BadSignature
-            services.check_window(game, data["month"])
             spec = data["spec"]
+            if data["revision"] != game.revision or data["month"] != game.state["month"]:
+                raise signing.BadSignature
+            services.check_window(game, data["month"])
             order = engine.prepare_order(game.state, actor, spec, data["request_id"])
-        except (signing.BadSignature, KeyError, ValueError):
+        except (signing.BadSignature, KeyError, ValueError) as error:
             messages.error(
-                request, _("Ce devis n’est plus valable. Préparez à nouveau votre décret.")
+                request,
+                localize(error.args[0])
+                if isinstance(error, RuleError)
+                else _("Ce devis n’est plus valable. Préparez à nouveau votre décret."),
             )
-            return redirect(f"/games/{game_id}/?tab=decrees")
+            return redirect(order_form_url(game, spec))
     else:
         kind = request.POST.get("kind", "")
         spec = {"kind": kind}
@@ -290,7 +329,8 @@ def preview_order(request, game_id):
                 }
             except ValueError:
                 messages.error(request, _("Les effectifs doivent être des nombres entiers."))
-                return redirect(f"/games/{game_id}/?tab=decrees")
+                spec.update(target=request.POST.get("target"))
+                return redirect(order_form_url(game, spec))
             spec.update({"target": request.POST.get("target"), "contributions": contributions})
         elif kind != "equipment":
             spec["cities"] = request.POST.getlist("cities")
@@ -298,7 +338,7 @@ def preview_order(request, game_id):
             game, actor, order, request_id = services.quote(request.user, game_id, spec)
         except RuleError as error:
             messages.error(request, localize(error.args[0]))
-            return redirect(f"/games/{game_id}/?tab=decrees")
+            return redirect(order_form_url(game, spec))
         payload = signing.dumps(
             {
                 "game_id": str(game.id),
@@ -360,12 +400,13 @@ def preview_order(request, game_id):
 @login_required
 @require_POST
 def confirm_order(request, game_id):
-    authorized_game(request, game_id)
-    destination = "decrees"
+    game, actor = authorized_game(request, game_id)
+    destination = order_form_url(game, {})
     try:
         data = signing.loads(request.POST.get("payload", ""), salt="yaara-order", max_age=3600)
         if data["game_id"] != str(game_id) or data["user_id"] != request.user.pk:
             raise signing.BadSignature
+        destination = order_form_url(game, data["spec"])
         order = services.confirm(
             request.user,
             game_id,
@@ -374,7 +415,11 @@ def confirm_order(request, game_id):
             data["month"],
             data["revision"],
         )
-        destination = "wars" if order["kind"] in ("raid", "capture") else "constructions"
+        destination = (
+            reverse("game", args=[game_id])
+            + "?tab="
+            + ("wars" if order["kind"] in ("raid", "capture") else "constructions")
+        )
         messages.success(
             request,
             _(
@@ -388,7 +433,7 @@ def confirm_order(request, game_id):
             if isinstance(error, RuleError)
             else _("Ce devis n’est plus valable. Préparez à nouveau votre décret."),
         )
-    return redirect(f"/games/{game_id}/?tab={destination}")
+    return redirect(destination)
 
 
 @login_required

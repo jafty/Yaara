@@ -2506,3 +2506,42 @@ msgstr "Commencer"
 
 msgid "Les ouvrages réalisés ici profitent à cette cité. Son grenier seul en finance les travaux."
 msgstr "Les ouvrages réalisés ici profitent à cette cité. Son grenier seul en finance les travaux."
+
+msgid "%(v0)s Fidèles disponibles."
+msgstr "%(v0)s Fidèles disponibles."
+
+msgid "%(count)s Fidèles disponibles."
+msgstr "%(count)s Fidèles disponibles."
+
+msgid "Fidèles disponibles"
+msgstr "Fidèles disponibles"
+
+msgid "Le scribe pose deux comptes devant vous : les Mesures des greniers et les Fidèles disponibles. Ces guerriers sont aussi des habitants : absents, ils ne défendent plus leur cité et ne produisent plus d’impôt."
+msgstr "Le scribe pose deux comptes devant vous : les Mesures des greniers et les Fidèles disponibles. Ces guerriers sont aussi des habitants : absents, ils ne défendent plus leur cité et ne produisent plus d’impôt."
+
+msgid "Dans « Expéditions », choisissez une cité sur la carte. Son feuillet indique son maître, ses fortifications et votre portée. Pillez pour le butin ou capturez pour étendre votre autorité. Les rapports vous renseigneront sur les rencontres ; les forces rivales restent secrètes."
+msgstr "Dans « Expéditions », choisissez une cité sur la carte. Son feuillet indique son maître, ses fortifications et votre portée. Pillez pour le butin ou capturez pour étendre votre autorité. Les rapports vous renseigneront sur les rencontres ; les forces rivales restent secrètes."
+
+msgid "Retour au conseil"
+msgstr "Retour au conseil"
+
+msgid "Une lune se clôt toutes les cinq minutes : à :00, :05, :10, :15, :20, :25, :30, :35, :40, :45, :50 et :55 de chaque heure."
+msgstr "Une lune se clôt toutes les cinq minutes : à :00, :05, :10, :15, :20, :25, :30, :35, :40, :45, :50 et :55 de chaque heure."
+
+msgid "Une lune se clôt toutes les dix minutes : à :00, :10, :20, :30, :40 et :50 de chaque heure."
+msgstr "Une lune se clôt toutes les dix minutes : à :00, :10, :20, :30, :40 et :50 de chaque heure."
+
+msgid "Le règne commence dès votre sceau ; la première lune se clôt au prochain repère et peut donc être plus courte."
+msgstr "Le règne commence dès votre sceau ; la première lune se clôt au prochain repère et peut donc être plus courte."
+
+msgid "Après une pause, la reprise conserve le temps restant et rejoint le premier repère qui le permet."
+msgstr "Après une pause, la reprise conserve le temps restant et rejoint le premier repère qui le permet."
+
+msgid "Pillage : %(raid_base)s Mesures + %(raid_person)s par Fidèle. Capture : %(capture_base)s Mesures + %(capture_person)s par Fidèle."
+msgstr "Pillage : %(raid_base)s Mesures + %(raid_person)s par Fidèle. Capture : %(capture_base)s Mesures + %(capture_person)s par Fidèle."
+
+msgid "Part de cette cité : %(charge)s Mesures ; disponibles : %(available)s."
+msgstr "Part de cette cité : %(charge)s Mesures ; disponibles : %(available)s."
+
+msgid "Il manque %(amount)s Mesures pour cette expédition. Aucun moyen n’est réservé."
+msgstr "Il manque %(amount)s Mesures pour cette expédition. Aucun moyen n’est réservé."

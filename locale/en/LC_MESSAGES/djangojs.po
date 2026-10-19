@@ -74,3 +74,12 @@ msgstr "After reservation: %(amount)s Measures available."
 
 msgid "Il manque %(amount)s Mesures dans les cités choisies."
 msgstr "The selected cities need %(amount)s more Measures."
+
+msgid "Part de cette cité : %(charge)s Mesures ; disponibles : %(available)s."
+msgstr "This city’s share: %(charge)s Measures; available: %(available)s."
+
+msgid "Il manque %(amount)s Mesures dans cette cité."
+msgstr "This city is short of %(amount)s Measures."
+
+msgid "Il manque %(amount)s Mesures pour cette expédition. Aucun moyen n’est réservé."
+msgstr "This expedition is short of %(amount)s Measures. No resources are reserved."

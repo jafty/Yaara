@@ -1,0 +1,4 @@
+{% load i18n %}
+{% if game.awaiting_start or game.clock_aligned %}
+<p class="aside-text calendar-cadence">{% if game.interval_minutes == 5 %}{% translate "Une lune se clôt toutes les cinq minutes : à :00, :05, :10, :15, :20, :25, :30, :35, :40, :45, :50 et :55 de chaque heure." %}{% else %}{% translate "Une lune se clôt toutes les dix minutes : à :00, :10, :20, :30, :40 et :50 de chaque heure." %}{% endif %} {% if game.awaiting_start %}{% translate "Le règne commence dès votre sceau ; la première lune se clôt au prochain repère et peut donc être plus courte." %}{% else %}{% translate "Après une pause, la reprise conserve le temps restant et rejoint le premier repère qui le permet." %}{% endif %}</p>
+{% endif %}

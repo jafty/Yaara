@@ -4,6 +4,7 @@ import os
 import re
 import secrets
 import shutil
+from datetime import datetime
 from pathlib import Path
 
 from playwright.sync_api import expect, sync_playwright
@@ -108,6 +109,10 @@ with sync_playwright() as playwright:
         ).to_be_visible()
         expect(page.locator("#recent-letters")).to_be_visible()
         expect(page.locator("#upcoming-heading")).to_be_visible()
+        links = page.locator(".council-links a").all()
+        for first, second in zip(links, links[1:]):
+            a, b = first.bounding_box(), second.bounding_box()
+            assert b["x"] >= a["x"] + a["width"] + 10 or b["y"] >= a["y"] + a["height"]
         assert page.locator(".house-accounts").count() == 0
         assert page.locator(".bookmarks a").count() == 3
         page.locator('.bookmarks a[href$="?tab=constructions"]').click()
@@ -226,7 +231,30 @@ with sync_playwright() as playwright:
         page.locator('[data-expedition-kind="capture"]').click()
         expect(page.locator("#mission-kind")).to_have_value("capture")
         expect(page.locator("#mission-target")).to_have_value("c4")
+        for origin in ("c1", "c2", "c3"):
+            page.locator(f'input[name="men_{origin}"]').fill("30")
+        expect(page.locator("[data-expedition-budget]")).to_contain_text(
+            "short" if en else "Il manque"
+        )
+        page.locator(".expedition-form button").click()
+        expect(page.locator("#mission-kind")).to_have_value("capture")
+        expect(page.locator("#mission-target")).to_have_value("c4")
+        expect(page.locator('input[name="men_c1"]')).to_have_value("30")
+        assert "tab=wars" in page.url and "action=expedition" in page.url
         page.locator("#mission-kind").select_option("raid")
+        for origin in ("c1", "c2", "c3"):
+            page.locator(f'input[name="men_{origin}"]').fill("10")
+        expect(page.locator("#army-cost")).to_have_text("95,000" if en else "95\u202f000")
+        for origin, amount in (
+            ("c1", "31,667" if en else "31\u202f667"),
+            ("c2", "31,667" if en else "31\u202f667"),
+            ("c3", "31,666" if en else "31\u202f666"),
+        ):
+            expect(page.locator(f'[data-origin="{origin}"] .origin-funding')).to_contain_text(
+                amount
+            )
+        page.locator('input[name="men_c1"]').fill("0")
+        page.locator('input[name="men_c2"]').fill("0")
         page.locator('input[name="men_c3"]').fill("45")
         expect(page.locator("#army-cost")).to_contain_text("132,500" if en else "132\u202f500")
         page.locator(".expedition-form button").click()
@@ -248,6 +276,10 @@ with sync_playwright() as playwright:
         ).to_be_visible()
         page.locator('.bookmarks a[data-section="domain"]').click()
         page.locator('a[href="?tab=letters"]').click()
+        assert (
+            page.locator('.letter-entry a[href="?tab=domain"]').count()
+            == page.locator(".letter-entry").count()
+        )
         for title in (
             ("Return to Namar", "Successful raid at Sefra")
             if en
@@ -403,7 +435,51 @@ with sync_playwright() as playwright:
         expect(plain_page.locator("#mission-target")).to_have_value("c4")
         expect(plain_page.locator("#mission-kind")).to_have_value("raid")
         plain.close()
-        # Automatic reigns wait through onboarding, then start a full interval.
+        # Reproduce the owner's three empty granaries after funding three local forges.
+        page.goto(base_url + "/games/new/")
+        page.locator("#id_title").fill("Empty granaries")
+        page.locator("#id_opponents").select_option("passive")
+        page.locator(".game-setup button").click()
+        empty_url = page.url.split("?")[0]
+        page.goto(empty_url + "?tab=constructions")
+        forge = page.locator("#work-forge")
+        forge.locator(":scope > summary").click()
+        forge.locator("[data-select-cities]").click()
+        forge.locator('button[type="submit"]').click()
+        page.locator(".wax-seal").click()
+        page.goto(empty_url)
+        page.locator("#turn-page button.primary-action").click()
+        page.goto(empty_url + "?tab=wars&action=expedition&city=c4")
+        for origin in ("c1", "c2", "c3"):
+            page.locator(f'input[name="men_{origin}"]').fill("10")
+        expect(page.locator("#army-cost")).to_have_text("95,000" if en else "95\u202f000")
+        expect(page.locator("[data-expedition-budget]")).to_contain_text(
+            "95,000" if en else "95\u202f000"
+        )
+        page.locator(".expedition-form button").click()
+        expect(page.locator(".notices")).to_contain_text("Qasr")
+        expect(page.locator('input[name="men_c1"]')).to_have_value("10")
+        assert "action=expedition" in page.url
+        empty = page.request.get(empty_url + "state/").json()["view"]
+        assert empty["available_stock"] == 0 and empty["sealed_count"] == 0
+        native = browser.new_context(
+            storage_state=context.storage_state(),
+            java_script_enabled=False,
+            viewport={"width": 320, "height": 844},
+        )
+        native_page = native.new_page()
+        native_page.goto(page.url)
+        expect(native_page.locator("#army-total")).to_have_text("30")
+        expect(native_page.locator("#army-cost")).to_have_text("95,000" if en else "95\u00a0000")
+        assert native_page.locator(".origin-funding").count() == 3
+        native_page.locator(".expedition-form button").click()
+        expect(native_page.locator('input[name="men_c3"]')).to_have_value("10")
+        no_overflow(native_page)
+        native_page.screenshot(
+            path=str(artifacts / f"empty-granaries-{language}.png"), full_page=True
+        )
+        native.close()
+        # Automatic reigns wait through onboarding, then join wall-clock boundaries.
         page.goto(base_url + "/games/new/")
         page.locator("#id_title").fill("Automatic opening")
         page.locator("#id_opponents").select_option("passive")
@@ -413,10 +489,16 @@ with sync_playwright() as playwright:
         assert page.locator("[data-deadline]").count() == 0
         waiting = page.request.get(automatic_url + "state/").json()
         assert waiting["game"]["awaiting_start"] and waiting["game"]["paused"]
+        next_box = page.locator("[data-prologue-next]").bounding_box()
+        start_box = page.locator('.prologue-leaf form[action$="/start/"] button').bounding_box()
+        assert next_box["y"] + next_box["height"] <= start_box["y"]
+        expect(page.locator(".calendar-cadence")).to_contain_text(":00, :10")
         page.locator('.prologue-leaf form[action$="/start/"] button').click()
         started = page.request.get(automatic_url + "state/").json()
         assert not started["game"]["awaiting_start"] and not started["game"]["paused"]
         assert started["game"]["deadline"] and started["view"]["open_moon"] == 1
+        deadline = datetime.fromisoformat(started["game"]["deadline"])
+        assert deadline.minute % 10 == 0 and deadline.second == deadline.microsecond == 0
         page.reload()
         assert (
             page.request.get(automatic_url + "state/").json()["game"]["deadline"]

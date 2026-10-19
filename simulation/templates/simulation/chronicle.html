@@ -17,7 +17,7 @@
     {% elif view.eliminated %}<p class="marginal-note">{% translate "Aucune cité ne reconnaît plus votre autorité. Je continuerai pourtant de tenir ce livre jusqu’à la fin du règne." %}</p>
     {% elif game.paused %}<p class="marginal-note">{% translate "Le calendrier est suspendu. Reprenez-le avant de dicter de nouveaux ordres." %}</p>{% endif %}
     {% if tab == 'domain' %}
-        <p class="reading-links council-links"><a href="?tab=constructions">{% translate "Préparer un chantier" %} →</a> · <a href="?tab=wars&amp;action=expedition">{% translate "Préparer une expédition" %} →</a> · <a href="#orders-heading">{% translate "Consulter les décrets scellés" %} →</a></p>
+        <p class="reading-links council-links"><a href="?tab=constructions">{% translate "Préparer un chantier" %} →</a><a href="?tab=wars&amp;action=expedition">{% translate "Préparer une expédition" %} →</a><a href="#orders-heading">{% translate "Consulter les décrets scellés" %} →</a></p>
         <p class="reading-links"><a href="#city-ledgers">{% translate "Les comptes de vos cités" %} ↓</a></p>
         <section class="briefing-news" aria-labelledby="recent-letters">
             <h2 id="recent-letters">{% translate "Les dernières nouvelles" %}</h2>

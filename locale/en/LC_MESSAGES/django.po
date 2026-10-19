@@ -3790,3 +3790,42 @@ msgstr "Begin"
 
 msgid "Les ouvrages réalisés ici profitent à cette cité. Son grenier seul en finance les travaux."
 msgstr "Works carried out here benefit this city. Only its granary funds the construction."
+
+msgid "%(v0)s Fidèles disponibles."
+msgstr "%(v0)s Faithful available."
+
+msgid "%(count)s Fidèles disponibles."
+msgstr "%(count)s Faithful available."
+
+msgid "Fidèles disponibles"
+msgstr "Faithful available"
+
+msgid "Le scribe pose deux comptes devant vous : les Mesures des greniers et les Fidèles disponibles. Ces guerriers sont aussi des habitants : absents, ils ne défendent plus leur cité et ne produisent plus d’impôt."
+msgstr "The scribe sets two accounts before you: Measures in the granaries and available Faithful. These warriors are also inhabitants: while away, they neither defend their city nor produce tax."
+
+msgid "Dans « Expéditions », choisissez une cité sur la carte. Son feuillet indique son maître, ses fortifications et votre portée. Pillez pour le butin ou capturez pour étendre votre autorité. Les rapports vous renseigneront sur les rencontres ; les forces rivales restent secrètes."
+msgstr "In Expeditions, choose a city on the map. Its folio shows its ruler, fortifications and your reach. Raid for loot or capture to extend your authority. Reports will tell you about encounters; rival forces remain secret."
+
+msgid "Retour au conseil"
+msgstr "Return to Council"
+
+msgid "Une lune se clôt toutes les cinq minutes : à :00, :05, :10, :15, :20, :25, :30, :35, :40, :45, :50 et :55 de chaque heure."
+msgstr "A Moon closes every five minutes: at :00, :05, :10, :15, :20, :25, :30, :35, :40, :45, :50 and :55 of each hour."
+
+msgid "Une lune se clôt toutes les dix minutes : à :00, :10, :20, :30, :40 et :50 de chaque heure."
+msgstr "A Moon closes every ten minutes: at :00, :10, :20, :30, :40 and :50 of each hour."
+
+msgid "Le règne commence dès votre sceau ; la première lune se clôt au prochain repère et peut donc être plus courte."
+msgstr "The reign begins when you give your seal; the first Moon closes at the next mark and may therefore be shorter."
+
+msgid "Après une pause, la reprise conserve le temps restant et rejoint le premier repère qui le permet."
+msgstr "After a pause, resuming preserves the remaining time and uses the first mark that allows it."
+
+msgid "Pillage : %(raid_base)s Mesures + %(raid_person)s par Fidèle. Capture : %(capture_base)s Mesures + %(capture_person)s par Fidèle."
+msgstr "Raid: %(raid_base)s Measures + %(raid_person)s per Faithful. Capture: %(capture_base)s Measures + %(capture_person)s per Faithful."
+
+msgid "Part de cette cité : %(charge)s Mesures ; disponibles : %(available)s."
+msgstr "This city’s share: %(charge)s Measures; available: %(available)s."
+
+msgid "Il manque %(amount)s Mesures pour cette expédition. Aucun moyen n’est réservé."
+msgstr "This expedition is short of %(amount)s Measures. No resources are reserved."

@@ -3,6 +3,7 @@
 import secrets
 import uuid
 from datetime import timedelta
+from datetime import timezone as datetime_timezone
 
 from django.contrib.auth import get_user_model
 from django.core.exceptions import PermissionDenied
@@ -279,6 +280,8 @@ def toggle_pause(user, game_id):
         raise RuleError(message("Commencez le règne pour ouvrir la première lune."))
     if game.paused:
         game.deadline = timezone.now() + timedelta(seconds=max(1, game.remaining_seconds))
+        if game.state.get("clock_aligned"):
+            game.deadline = aligned_deadline(game.deadline, game.interval_minutes, inclusive=True)
         game.paused = False
     else:
         if game.deadline <= timezone.now():
@@ -302,8 +305,18 @@ def start_calendar(user, game_id):
     if game.state.get("awaiting_start"):
         game.state["awaiting_start"] = False
         game.paused = False
-        game.deadline = timezone.now() + timedelta(minutes=game.interval_minutes)
+        game.state["clock_aligned"] = True
+        game.deadline = aligned_deadline(timezone.now(), game.interval_minutes)
         persist(game)
+
+
+def aligned_deadline(instant, interval_minutes, *, inclusive=False):
+    instant = instant.astimezone(datetime_timezone.utc)
+    boundary = instant.replace(second=0, microsecond=0)
+    boundary -= timedelta(minutes=boundary.minute % interval_minutes)
+    if boundary < instant or not inclusive:
+        boundary += timedelta(minutes=interval_minutes)
+    return boundary
 
 
 def quote(user, game_id, spec):

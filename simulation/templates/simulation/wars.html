@@ -8,7 +8,7 @@
             <p><span class="house-seal house-{{ selected.owner }}" aria-hidden="true">{% include 'simulation/house_mark.html' with owner=selected.owner %}</span> {{ selected.owner_name }} · {{ selected.wall_label }}{% if selected.damaged %}, {% translate "endommagée" %}{% endif %}.</p>
             <p class="context-neighbors">{% translate "Oasis voisines :" %} {% for city in neighbors %}<a href="?tab=wars&amp;city={{ city.id }}#map-context">{{ city.name }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}.</p>
             {% if selected.owned %}
-                <p>{% blocktranslate with count=selected.available_fideles %}{{ count }} Fidèles libres de recevoir vos ordres.{% endblocktranslate %}</p>
+                <p>{% blocktranslate with count=selected.available_fideles %}{{ count }} Fidèles disponibles.{% endblocktranslate %}</p>
                 <p><a href="?tab=city&amp;city={{ selected.id }}">{% translate "Les comptes de la cité" %} →</a></p>
             {% elif selected.engaged %}
                 <p>{% if selected.own_engagement %}{% translate "Vous avez déjà engagé une expédition vers cette cité." %}{% else %}{% translate "Une expédition d’une autre maison réserve déjà cette cité." %}{% endif %}</p>

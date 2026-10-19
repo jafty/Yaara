@@ -75,18 +75,59 @@ if (targetSelect) {
     document.querySelector("#expedition-prices").textContent,
   );
   const kind = document.querySelector("#mission-kind");
+  const form = targetSelect.closest("form");
   const rows = [...document.querySelectorAll(".contribution")];
   const format = new Intl.NumberFormat(document.documentElement.lang);
   const updateTotals = () => {
+    const counts = rows.map(row => {
+      const value = Number(row.querySelector("input").value || 0);
+      return Number.isSafeInteger(value) && value > 0 ? value : 0;
+    });
     const total = rows.reduce(
-      (sum, row) => sum + Number(row.querySelector("input").value || 0),
+      (sum, row, index) => sum + counts[index],
       0,
     );
     const price = prices[kind.value];
+    const cost = price.base + total * price.per_person;
     document.querySelector("#army-total").textContent = format.format(total);
     document.querySelector("#army-cost").textContent = format.format(
-      price.base + total * price.per_person,
+      cost,
     );
+    // Match the server's whole-Measure Hamilton allocation and city-ID tie order.
+    const fees = counts.map(count => total ? Math.floor(price.base * count / total) : 0);
+    const ranked = rows.map((row, index) => ({
+      index, id: row.dataset.origin,
+      remainder: total ? (price.base * counts[index]) % total : 0,
+    })).sort((a, b) => b.remainder - a.remainder || a.id.localeCompare(b.id));
+    if (total) {
+      const remaining = price.base - fees.reduce((sum, fee) => sum + fee, 0);
+      ranked.slice(0, remaining).forEach(row => { fees[row.index] += 1; });
+    }
+    let shortfall = 0;
+    rows.forEach((row, index) => {
+      const note = row.querySelector(".origin-funding");
+      if (!note) return;
+      const charge = fees[index] + counts[index] * price.per_person;
+      const available = Number(row.dataset.freeStock);
+      const missing = Math.max(0, charge - available);
+      shortfall += missing;
+      note.textContent = interpolate(
+        gettext("Part de cette cité : %(charge)s Mesures ; disponibles : %(available)s."),
+        { charge: format.format(charge), available: format.format(available) }, true,
+      ) + (missing ? " " + interpolate(
+        gettext("Il manque %(amount)s Mesures dans cette cité."),
+        { amount: format.format(missing) }, true,
+      ) : "");
+    });
+    if (form.dataset.localFunding !== "true") {
+      shortfall = Math.max(0, cost - Number(form.dataset.freeStock));
+    }
+    form.querySelector("[data-expedition-budget]").textContent = shortfall
+      ? interpolate(
+          gettext("Il manque %(amount)s Mesures pour cette expédition. Aucun moyen n’est réservé."),
+          { amount: format.format(shortfall) }, true,
+        )
+      : "";
     document.querySelector("#mission-help").textContent = interpolate(
       gettext(
         "Il faut au moins %(minimum)s Fidèles. Départ à la clôture de cette lune, combat à la suivante, retour une lune après le combat. Le butin ne sera disponible qu’au retour.",

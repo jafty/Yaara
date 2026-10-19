@@ -1,5 +1,12 @@
 # Implementation decisions
 
+## 2026-10-19 · Review remarks: forms, atlas and clock boundaries
+
+- Continue/Enter Council appears above Begin reign throughout the prologue. Council action links wrap with a real gap; each complete report returns to Council. Current copy uses « Fidèles disponibles » and « Pillez pour le butin ou capturez… » in both catalogs; archived reports stay immutable.
+- Failed preparation, signed-draft reopening and confirmation return to the corresponding expedition or work form with the unsealed target, mission, headcounts or city checklist in its query. They reserve nothing. The expedition form displays fixed and per-person prices, each origin’s exact Hamilton share, free funds and local shortage, with live updates and native retry rendering. The reported 30-person raid costs 95,000 Measures: equal contingents pay 31,667 / 31,667 / 31,666. Empty granaries correctly reject it; no price or financing rule changes.
+- The twelve-road map uses a new fixed Voronoi layout: all saved roads join shared territory borders, each starting house forms a triangle, and the three rival bridges are short. Older map versions retain their schematic layout; all saved road networks, ownership and eligibility rules remain authoritative.
+- Starting a waiting automatic reign opens Moon 1 immediately and sets its first closure to the next strict UTC five/ten-minute boundary. The first Moon may be shorter, as stated before starting. Following deadlines advance from stored boundaries; resuming rounds up after preserving the remaining time. Only calendars explicitly started with this revision carry `clock_aligned`; running legacy calendars retain their deadlines and pause behavior. The schedule is visible in the prologue, guide and Council, and the exact next UTC closure stays alongside the countdown. Cron may process it slightly later; server deadlines remain authoritative.
+
 ## 2026-10-19 · Approved audit: local economy and deliberate frontiers
 
 - New reigns use `economy_version=2`: present-resident yields are 100 / 130 / 200 Measures per Moon. Existing prices, durations, annual receipt, growth and local capacity remain unchanged. Missing/version-one economy markers preserve 100 / 200 / 300 and proportional pooled financing, including accepted funding plans. No running game is migrated or silently rebalanced.

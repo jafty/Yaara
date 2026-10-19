@@ -12,3 +12,12 @@ msgstr "Après réservation : %(amount)s Mesures libres."
 
 msgid "Il manque %(amount)s Mesures dans les cités choisies."
 msgstr "Il manque %(amount)s Mesures dans les cités choisies."
+
+msgid "Part de cette cité : %(charge)s Mesures ; disponibles : %(available)s."
+msgstr "Part de cette cité : %(charge)s Mesures ; disponibles : %(available)s."
+
+msgid "Il manque %(amount)s Mesures dans cette cité."
+msgstr "Il manque %(amount)s Mesures dans cette cité."
+
+msgid "Il manque %(amount)s Mesures pour cette expédition. Aucun moyen n’est réservé."
+msgstr "Il manque %(amount)s Mesures pour cette expédition. Aucun moyen n’est réservé."

@@ -29,6 +29,7 @@
 <section id="calendar">{% if game.mode == 'manual' %}<h2>{% translate "Clore chaque lune manuellement" %}</h2>
 <p>{% translate "Prenez vos décisions, puis utilisez « Clore la lune » au conseil. Vous pouvez aussi ne donner aucun ordre. La clôture avance les ouvrages, les expéditions et le prélèvement." %}</p>
 {% else %}<h2>{% translate "Le calendrier automatique" %}</h2>
+{% include 'simulation/calendar_cadence.html' %}
 <p>{% translate "Chaque échéance affichée clôt une lune, même sans nouvel ordre. Vous pouvez suspendre le calendrier au conseil, puis le reprendre : la suspension retarde aussi les ouvrages et les expéditions." %}</p>
 <p>{% translate "La lecture ne suspend pas le calendrier automatique." %}</p>
 {% endif %}</section>

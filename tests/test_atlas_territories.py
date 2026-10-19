@@ -13,12 +13,15 @@ from tests.cases import case
 
 @pytest.mark.logic
 @case("atlas-territory-geometry", "Owner: nine stable territories tile the map around their cities")
-def test_territory_geometry():
-    """Given the public nine-city world.
+@pytest.mark.parametrize("map_version", [2, 3])
+def test_territory_geometry(map_version):
+    """Given the public nine-city world with map version {map_version}.
     When its territory outlines are projected.
     Then each city lies in its own bounded polygon and the territories cover the sheet.
     """
-    cities = player_view(engine.new_state(economy_version=1, map_version=2), "p1")["cities"]
+    cities = player_view(engine.new_state(economy_version=1, map_version=map_version), "p1")[
+        "cities"
+    ]
     area = 0
     for city in cities:
         points = [tuple(map(float, point.split(","))) for point in city["territory"].split()]
