@@ -18,4 +18,12 @@ def report_view(report):
         "title": render(report.content["title"], language) if report.content else report.title,
         "body": render(report.content["body"], language) if report.content else report.body,
         "original_archive": not report.content,
+        "icon": {
+            "battle": "blades",
+            "return": "return",
+            "work": "works",
+            "harvest": "grain",
+            "sovereignty": "council",
+            "result": "council",
+        }.get(report.kind, "book"),
     }

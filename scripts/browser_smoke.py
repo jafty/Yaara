@@ -43,6 +43,8 @@ def scannable_layout(page):
     title = page.locator(".book-title")
     assert title.evaluate("el => el.scrollWidth <= el.clientWidth")
     assert title.evaluate("el => getComputedStyle(el).whiteSpace") == "normal"
+    expect(page.locator('.resource-ribbon [data-icon="moon"]')).to_have_count(1)
+    expect(page.locator(".resource-ribbon .resource-value")).to_have_count(3)
     assert page.locator('.reign-header a[href*="tab="]').count() == 0
     tab = page.evaluate("new URL(location.href).searchParams.get('tab') || 'domain'")
     expected = tab if tab in ("domain", "wars", "constructions") else None

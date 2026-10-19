@@ -2572,3 +2572,18 @@ msgstr "Prélèvement en préparation"
 
 msgid "Mesures, encore indisponibles"
 msgstr "Mesures, encore indisponibles"
+
+msgid "Lune"
+msgstr "Lune"
+
+msgid "Les contingents sont rentrés"
+msgstr "Les contingents sont rentrés"
+
+msgid "Les nouvelles de la lune %(v0)s"
+msgstr "Les nouvelles de la lune %(v0)s"
+
+msgid "Le prélèvement s’accumule à chaque clôture et reste indisponible jusqu’au versement, à la clôture de la lune %(v0)s. Ce montant n’est pas une prévision de la récolte finale."
+msgstr "Le prélèvement s’accumule à chaque clôture et reste indisponible jusqu’au versement, à la clôture de la lune %(v0)s. Ce montant n’est pas une prévision de la récolte finale."
+
+msgid "J’ai réuni les lettres qui vous sont destinées. Chacune garde sa date ; les observations d’hier ne décrivent pas nécessairement les forces d’aujourd’hui."
+msgstr "J’ai réuni les lettres qui vous sont destinées. Chacune garde sa date ; les observations d’hier ne décrivent pas nécessairement les forces d’aujourd’hui."

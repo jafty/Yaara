@@ -1,5 +1,12 @@
 # Implementation decisions
 
+## 2026-10-19 · Moon news and local levy accounts
+
+- Replace the resource ribbon's harvest countdown with the current absolute Moon number and the shared crescent icon. Finished reigns show their final closed Moon. Keep the exact automatic closure banner and the harvest milestone in Council.
+- Council previews every recipient-authorized report from the last closed Moon, without a count limit; before the first closure it shows Moon 1's opening letters. A quiet Moon does not repeat older news. Date the news heading and retain full-report links. The letter archive has no arbitrary hundred-letter cutoff, so every preview can reach its full letter. Report kinds carry decorative shared icons alongside their readable titles.
+- New return letters group all surviving origin contingents of one expedition by their current recipient. Preserve each city's exact survivors, deposited loot and overflow in separate paragraphs. Different expeditions and different recipients keep separate letters; an origin without survivors adds no empty news, and an annihilated expedition produces one loss letter. No target identity or another recipient's accounts are added. Existing archived reports are never rewritten; troop, loot and ownership rules are unchanged.
+- Council lists each city's already accrued levy beside its available funds, stock and team status. Explain the next annual payment Moon and distinguish accrued, unavailable Measures from a forecast of the final harvest. The levy still accrues at closure and is paid at Moons 12, 24, 36 and so on, subject to local capacity; no forecasting or transfer rule is introduced.
+
 ## 2026-10-19 · Verification proportional to affected behavior
 
 - Replace the blanket full-local-suite-before-every-push rule with three local verification levels: Presentation, Behavior and Full, specified in `docs/testing.md` and referenced by `AGENTS.md`. Choose by affected behavior and risk, not diff size. Focused runs still use real PostgreSQL where relevant, independent regression cases, full catalog collection and failure-on-skip. Native-core changes retain complete logic-only 100% statement/branch coverage; high-risk boundaries and unclear impact require the full local checkpoint.

@@ -290,6 +290,12 @@ strong {
 .letter-entry h3 {
   margin-top: 0;
 }
+.letter-entry h3 .nav-icon {
+  width: 1em;
+  height: 1em;
+  margin-right: 0.4em;
+  vertical-align: -0.1em;
+}
 .decree-choice p:last-child,
 .order-entry p:last-child {
   margin-bottom: 0.3rem;
@@ -315,7 +321,7 @@ strong {
 }
 .ledger-figures {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.5rem;
   margin: 0;
   font-size: 0.85rem;

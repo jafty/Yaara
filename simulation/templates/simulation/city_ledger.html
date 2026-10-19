@@ -6,6 +6,7 @@
         {% include 'simulation/ledger_fact.html' with icon='' caption=_('Mesures réservées') value=view.reserved_stock unit=_('Mesures') %}
         {% include 'simulation/ledger_fact.html' with icon='' caption=_('Prélèvement en préparation') value=view.tax unit=_('Mesures, encore indisponibles') %}
     </dl>
+    {% if not view.finished %}<p class="aside-text">{% blocktranslate with v0=view.harvest_moon %}Le prélèvement s’accumule à chaque clôture et reste indisponible jusqu’au versement, à la clôture de la lune {{ v0 }}. Ce montant n’est pas une prévision de la récolte finale.{% endblocktranslate %}</p>{% endif %}
     {% if view.local_funding %}<p>{% translate "Chaque cité finance ses travaux. Les cités qui fournissent une expédition en paient les frais ; aucun autre grenier ne contribue." %}</p>{% else %}<p>{% translate "Les dépenses sont réparties automatiquement entre les greniers de votre maison. Les réserves restent locales pour les pillages et le stockage." %}</p>{% endif %}
     <ul class="city-ledger">{% for city in view.owned_cities %}
         <li class="city-entry" id="city-{{ city.id }}">
@@ -13,6 +14,7 @@
             <dl class="ledger-figures">
                 <div><dt>{% translate "Grenier" %}</dt><dd>{{ city.stock }} / {{ city.capacity }}</dd></div>
                 <div><dt>{% translate "Disponible" %}</dt><dd>{{ city.available_stock }}</dd></div>
+                <div><dt>{% translate "Prélèvement en préparation" %}</dt><dd>{{ city.tax }}</dd></div>
                 <div><dt>{% translate "Équipes" %}</dt><dd>{% if city.busy %}{% translate "Occupées" %}{% else %}{% translate "Libres" %}{% endif %}</dd></div>
             </dl>
         </li>

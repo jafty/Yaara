@@ -921,23 +921,30 @@ def return_expeditions(state, events):
         if mission["status"] == "completed" or mission["return_month"] > state["month"]:
             continue
         shares = allocate(mission["loot"], mission["cohorts"])
+        accounts = {}
         for city_id, survivors in mission["cohorts"].items():
             city = state["cities"][city_id]
             city["fideles"] += survivors
             deposited = min(shares[city_id], capacity(city) - city["stock"])
             city["stock"] += deposited
-            report(
-                events,
-                city["owner"],
-                "return",
-                message("Retour à {p0}", p0=city["name"]),
-                message(
+            if survivors:
+                account = message(
                     "J’ai fait inscrire le retour de {p0} Fidèles à {p1}. Ils rejoignent les présents de leur cité d’origine. {p2}",
                     p0=survivors,
                     p1=city["name"],
                     p2=returned_loot(deposited, shares[city_id] - deposited),
-                ),
-            )
+                )
+                recipient = city["owner"]
+                if recipient in accounts:
+                    accounts[recipient]["title"] = message("Les contingents sont rentrés")
+                    accounts[recipient]["body"] += "\n\n" + account
+                else:
+                    accounts[recipient] = {
+                        "title": message("Retour à {p0}", p0=city["name"]),
+                        "body": account,
+                    }
+        for recipient, account in accounts.items():
+            report(events, recipient, "return", account["title"], account["body"])
         if not sum(mission["cohorts"].values()):
             report(
                 events,

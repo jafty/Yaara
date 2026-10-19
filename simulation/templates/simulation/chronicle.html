@@ -20,7 +20,7 @@
         <p class="reading-links council-links"><a href="?tab=constructions">{% include 'simulation/nav_icon.html' with icon='works' %}<span>{% translate "Préparer un chantier" %}</span> →</a><a href="?tab=wars&amp;action=expedition">{% include 'simulation/nav_icon.html' with icon='blades' %}<span>{% translate "Préparer une expédition" %}</span> →</a><a href="#orders-heading">{% include 'simulation/nav_icon.html' with icon='book' %}<span>{% translate "Consulter les décrets scellés" %}</span> →</a></p>
         <p class="reading-links"><a href="#city-ledgers">{% translate "Les comptes de vos cités" %} ↓</a></p>
         <section class="briefing-news" aria-labelledby="recent-letters">
-            <h2 id="recent-letters">{% translate "Les dernières nouvelles" %}</h2>
+            <h2 id="recent-letters">{% blocktranslate with v0=news_moon %}Les nouvelles de la lune {{ v0 }}{% endblocktranslate %}</h2>
             {% if not view.closed_moon %}<p>{% translate "Votre règne commence. Le conseil rassemble vos nouvelles et vos engagements. Confiez vos premiers ouvrages aux cités ou préparez une expédition." %}</p>{% endif %}
             {% include 'simulation/letter_entries.html' with compact=True %}
             <p class="reading-links"><a href="?tab=letters">{% translate "Tous les rapports" %} →</a></p>
@@ -45,7 +45,7 @@
     {% elif tab == 'decrees' %}{% include 'simulation/chronicle_decrees.html' %}
     {% else %}
         <p class="salutation">{% translate "Monseigneur," %}</p>
-        <p>{% translate "J’ai réuni les cent dernières lettres qui vous sont destinées. Chacune garde sa date ; les observations d’hier ne décrivent pas nécessairement les forces d’aujourd’hui." %}</p>
+        <p>{% translate "J’ai réuni les lettres qui vous sont destinées. Chacune garde sa date ; les observations d’hier ne décrivent pas nécessairement les forces d’aujourd’hui." %}</p>
         <section class="correspondence" aria-label="{% translate "Les lettres de votre maison" %}">{% include 'simulation/letter_entries.html' %}</section>
     {% endif %}
     {% if tab == 'domain' or tab == 'decrees' %}{% include 'simulation/turn_closing.html' %}{% endif %}

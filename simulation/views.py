@@ -146,7 +146,10 @@ def desk(request, game_id):
     if selected is None:
         selected = next(iter(view["owned_cities"]), view["cities"][0])
     # Reports are immutable per-recipient records; never infer access from current ownership.
-    reports = Report.objects.filter(game=game, recipient=actor)[: 100 if tab == "letters" else 4]
+    reports = Report.objects.filter(game=game, recipient=actor)
+    news_month = view["closed_moon"] or game.state["month"]
+    if tab != "letters":
+        reports = reports.filter(month=news_month)
     constructions = [
         {**work, "city": city["name"], "city_id": city["id"]}
         for city in view["owned_cities"]
@@ -234,6 +237,7 @@ def desk(request, game_id):
             else "domain",
             "selected": selected,
             "reports": [report_view(report) for report in reports],
+            "news_moon": max(1, news_month),
             "action": action,
             "section_orders": [
                 order

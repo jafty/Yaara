@@ -3856,3 +3856,18 @@ msgstr "Accruing levy"
 
 msgid "Mesures, encore indisponibles"
 msgstr "Measures, not yet available"
+
+msgid "Lune"
+msgstr "Moon"
+
+msgid "Les contingents sont rentrés"
+msgstr "The contingents have returned"
+
+msgid "Les nouvelles de la lune %(v0)s"
+msgstr "News from Moon %(v0)s"
+
+msgid "Le prélèvement s’accumule à chaque clôture et reste indisponible jusqu’au versement, à la clôture de la lune %(v0)s. Ce montant n’est pas une prévision de la récolte finale."
+msgstr "The levy accrues at each closure and remains unavailable until payment at the close of Moon %(v0)s. This amount is not a forecast of the final harvest."
+
+msgid "J’ai réuni les lettres qui vous sont destinées. Chacune garde sa date ; les observations d’hier ne décrivent pas nécessairement les forces d’aujourd’hui."
+msgstr "I have gathered the letters addressed to you. Each keeps its date; yesterday’s observations do not necessarily describe today’s forces."
