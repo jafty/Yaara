@@ -1,0 +1,14 @@
+{% load i18n %}
+<section class="chapter-section" aria-labelledby="city-ledgers">
+    <h2 id="city-ledgers">{% translate "Vos cités" %}</h2>
+    <ul class="city-ledger">{% for city in view.owned_cities %}
+        <li class="city-entry" id="city-{{ city.id }}">
+            <h3><a href="?tab=city&amp;city={{ city.id }}">{{ city.name }} →</a></h3>
+            <dl class="ledger-figures">
+                <div><dt>{% translate "Grenier" %}</dt><dd>{{ city.stock }} / {{ city.capacity }}</dd></div>
+                <div><dt>{% translate "Disponible" %}</dt><dd>{{ city.available_stock }}</dd></div>
+                <div><dt>{% translate "Équipes" %}</dt><dd>{% if city.busy %}{% translate "Occupées" %}{% else %}{% translate "Libres" %}{% endif %}</dd></div>
+            </dl>
+        </li>
+    {% empty %}<li>{% translate "Aucune cité ne demeure sous votre sceau." %}</li>{% endfor %}</ul>
+</section>

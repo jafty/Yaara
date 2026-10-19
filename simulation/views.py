@@ -9,6 +9,7 @@ from django.core.exceptions import PermissionDenied
 from django.db import connection
 from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_GET, require_http_methods, require_POST
 
@@ -76,7 +77,7 @@ def new_game(request):
         except RuleError as error:
             form.add_error(None, localize(error.args[0]))
         else:
-            return redirect("game", game_id=game.id)
+            return redirect(reverse("game", args=[game.id]) + "?tab=prologue")
     return render(request, "simulation/new_game.html", {"form": form})
 
 
@@ -104,8 +105,25 @@ def desk(request, game_id):
     game, actor = authorized_game(request, game_id)
     view = localize(player_view(game.state, actor))
     tab = request.GET.get("tab", "domain")
-    if tab not in ("domain", "decrees", "constructions", "wars", "letters", "city"):
+    if tab not in (
+        "domain",
+        "decrees",
+        "constructions",
+        "wars",
+        "letters",
+        "city",
+        "help",
+        "prologue",
+    ):
         raise Http404
+    prologue_page = 1
+    if tab == "prologue":
+        try:
+            prologue_page = int(request.GET.get("page", "1"))
+        except ValueError as error:
+            raise Http404 from error
+        if not 1 <= prologue_page <= 4:
+            raise Http404
     city_id = request.GET.get("city")
     selected = next((city for city in view["cities"] if city["id"] == city_id), None)
     if selected is None and (city_id is not None or tab == "city"):
@@ -191,6 +209,9 @@ def desk(request, game_id):
             "game": metadata(game),
             "view": view,
             "tab": tab,
+            "prologue_page": prologue_page,
+            "prologue_previous": prologue_page - 1,
+            "prologue_next": prologue_page + 1,
             "nav_section": "wars"
             if action_kind == "expedition" or tab == "wars"
             else "constructions"

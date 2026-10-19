@@ -1,0 +1,6 @@
+{% load i18n %}
+<section class="chapter-section" aria-labelledby="standings-heading"><h2 id="standings-heading">{% translate "Les prétendants au trône" %}</h2>
+        {% for rank in view.ranking %}<p>{% blocktranslate with v0=rank.name v1=rank.cities v2=rank.rank %}<strong>{{ v0 }}</strong> gouverne <strong>{{ v1 }} cités</strong> et figure au <strong>rang {{ v2 }}</strong>.{% endblocktranslate %}</p>{% endfor %}
+        <p>{% translate "À la fin du règne, le nombre de cités prime ; la population départage les égalités. Les populations rivales restent secrètes." %}</p>
+        <p>{% translate "Le rang tient déjà compte du départage par population. Deux maisons ayant autant de cités peuvent donc occuper des rangs différents ; un même rang indique une égalité complète." %}</p>
+</section>

@@ -14,7 +14,7 @@
         <a class="skip-link" href="#main">{% translate "Aller au récit" %}</a>
         <header class="reign-header">
             <div class="book book-heading">
-                <div class="book-identity"><a class="book-world" href="{% url 'home' %}">Yaara</a><p class="book-title">{{ game.title }}</p></div>
+                <div class="book-identity"><a class="book-world" href="{% url 'home' %}">Yaara</a><p class="book-title">{{ game.title }}</p><a class="help-link" href="{% url 'game' game.id %}?tab=help">{% translate "Comment jouer" %}</a></div>
                 {% if view %}
                     <div class="resource-ribbon" aria-label="{% translate "Les moyens libres de votre maison" %}">
                     {% if game.mode == 'scheduled' and game.deadline %}<span data-deadline="{{ game.deadline|date:'c' }}">{{ game.deadline|date:'H:i' }} UTC</span>{% endif %}

@@ -2230,3 +2230,186 @@ msgstr "%(cost)s Mesures · %(duration)s lunes"
 
 msgid "Cette cité n’a pas d’enceinte à réparer."
 msgstr "Cette cité n’a pas d’enceinte à réparer."
+
+msgid "Dans ce guide"
+msgstr "Dans ce guide"
+
+msgid "Votre but"
+msgstr "Votre but"
+
+msgid "Vos ressources"
+msgstr "Vos ressources"
+
+msgid "Vos ordres"
+msgstr "Vos ordres"
+
+msgid "Les ouvrages"
+msgstr "Les ouvrages"
+
+msgid "Les expéditions"
+msgstr "Les expéditions"
+
+msgid "Les lunes"
+msgstr "Les lunes"
+
+msgid "Les Mesures sont vos réserves de nourriture. Chaque cité possède son grenier : le conseil affiche son stock, sa capacité et sa part encore disponible. Les fonds promis aux décrets scellés restent dans le stock, mais ne sont plus disponibles."
+msgstr "Les Mesures sont vos réserves de nourriture. Chaque cité possède son grenier : le conseil affiche son stock, sa capacité et sa part encore disponible. Les fonds promis aux décrets scellés restent dans le stock, mais ne sont plus disponibles."
+
+msgid "Les dépenses sont réparties entre les fonds libres de vos cités. Les pillages et les limites de stockage concernent chaque grenier séparément. Agrandir un grenier augmente sa capacité, sans créer de nourriture."
+msgstr "Les dépenses sont réparties entre les fonds libres de vos cités. Les pillages et les limites de stockage concernent chaque grenier séparément. Agrandir un grenier augmente sa capacité, sans créer de nourriture."
+
+msgid "Les Fidèles font partie des habitants. Partis en expédition, ils ne défendent plus leur cité et ne contribuent plus à son impôt jusqu’à leur retour. L’impôt se prépare chaque lune et est versé toutes les douze lunes."
+msgstr "Les Fidèles font partie des habitants. Partis en expédition, ils ne défendent plus leur cité et ne contribuent plus à son impôt jusqu’à leur retour. L’impôt se prépare chaque lune et est versé toutes les douze lunes."
+
+msgid "Consulter vos greniers"
+msgstr "Consulter vos greniers"
+
+msgid "Choisissez vos cités ou vos hommes, puis « Valider la sélection ». La page suivante récapitule le prix, les dates et les conséquences : rien n’est encore réservé. « Confirmer et sceller l’ordre » engage les moyens annoncés. La clôture de la lune fait entrer le décret en vigueur."
+msgstr "Choisissez vos cités ou vos hommes, puis « Valider la sélection ». La page suivante récapitule le prix, les dates et les conséquences : rien n’est encore réservé. « Confirmer et sceller l’ordre » engage les moyens annoncés. La clôture de la lune fait entrer le décret en vigueur."
+
+msgid "Retirer un ordre scellé"
+msgstr "Retirer un ordre scellé"
+
+msgid "Avant la clôture, retirez un décret depuis son registre pour libérer ses moyens. Après le départ d’une expédition, aucun rappel n’est possible."
+msgstr "Avant la clôture, retirez un décret depuis son registre pour libérer ses moyens. Après le départ d’une expédition, aucun rappel n’est possible."
+
+msgid "La confirmation est définitive"
+msgstr "La confirmation est définitive"
+
+msgid "Dans ces règles V0, un décret scellé ne peut pas être annulé. Vérifiez soigneusement sa relecture."
+msgstr "Dans ces règles V0, un décret scellé ne peut pas être annulé. Vérifiez soigneusement sa relecture."
+
+msgid "Chaque cité dispose d’une équipe : un chantier ou un décret de travaux scellé l’occupe. Une seule sélection peut réunir plusieurs cités, même à des stades différents. Chaque ligne indique l’état actuel, l’ouvrage proposé, son bénéfice, son prix et sa durée. Les bénéfices commencent à l’achèvement."
+msgstr "Chaque cité dispose d’une équipe : un chantier ou un décret de travaux scellé l’occupe. Une seule sélection peut réunir plusieurs cités, même à des stades différents. Chaque ligne indique l’état actuel, l’ouvrage proposé, son bénéfice, son prix et sa durée. Les bénéfices commencent à l’achèvement."
+
+msgid "Les canaux améliorent le prélèvement ; les enceintes protègent la cité lors des captures, sans abriter les villages d’un raid. Une enceinte endommagée peut être réparée."
+msgstr "Les canaux améliorent le prélèvement ; les enceintes protègent la cité lors des captures, sans abriter les villages d’un raid. Une enceinte endommagée peut être réparée."
+
+msgid "Chaque cité peut recevoir une forge. Ses armes bénéficient à toute votre maison ; perdre ou gagner une forge par capture transfère son bénéfice au nouveau propriétaire."
+msgstr "Chaque cité peut recevoir une forge. Ses armes bénéficient à toute votre maison ; perdre ou gagner une forge par capture transfère son bénéfice au nouveau propriétaire."
+
+msgid "Dans ce règne ancien, la forge équipe toute la maison et conserve son chantier distinct des équipes des cités."
+msgstr "Dans ce règne ancien, la forge équipe toute la maison et conserve son chantier distinct des équipes des cités."
+
+msgid "Un raid cherche du butin dans les villages ; une capture cherche à prendre la cité. Les bordures de la carte représentent des territoires, pas les routes : les mentions de portée indiquent les cibles accessibles par vos possessions reliées. Une seule attaque peut être engagée vers une cible."
+msgstr "Un raid cherche du butin dans les villages ; une capture cherche à prendre la cité. Les bordures de la carte représentent des territoires, pas les routes : les mentions de portée indiquent les cibles accessibles par vos possessions reliées. Une seule attaque peut être engagée vers une cible."
+
+msgid "La carte montre les propriétaires et les fortifications publiques. Les forces et les stocks rivaux restent secrets ; vos rapports gardent les observations du jour où ils ont été écrits. Le devis annonce départ, combat et retour prévu. Un siège peut prolonger l’expédition."
+msgstr "La carte montre les propriétaires et les fortifications publiques. Les forces et les stocks rivaux restent secrets ; vos rapports gardent les observations du jour où ils ont été écrits. Le devis annonce départ, combat et retour prévu. Un siège peut prolonger l’expédition."
+
+msgid "Clore chaque lune manuellement"
+msgstr "Clore chaque lune manuellement"
+
+msgid "Prenez vos décisions, puis utilisez « Clore la lune » au conseil. Vous pouvez aussi ne donner aucun ordre. La clôture avance les ouvrages, les expéditions et le prélèvement."
+msgstr "Prenez vos décisions, puis utilisez « Clore la lune » au conseil. Vous pouvez aussi ne donner aucun ordre. La clôture avance les ouvrages, les expéditions et le prélèvement."
+
+msgid "Le calendrier automatique"
+msgstr "Le calendrier automatique"
+
+msgid "Chaque échéance affichée clôt une lune, même sans nouvel ordre. Vous pouvez suspendre le calendrier au conseil, puis le reprendre : la suspension retarde aussi les ouvrages et les expéditions."
+msgstr "Chaque échéance affichée clôt une lune, même sans nouvel ordre. Vous pouvez suspendre le calendrier au conseil, puis le reprendre : la suspension retarde aussi les ouvrages et les expéditions."
+
+msgid "La lecture ne suspend pas le calendrier automatique."
+msgstr "La lecture ne suspend pas le calendrier automatique."
+
+msgid "Relire les premiers pas"
+msgstr "Relire les premiers pas"
+
+msgid "Au matin, le scribe ouvre un livre vierge. Au-delà des murs, les oasis attendent vos décisions. Vos cités vous nourrissent ; vos voisins ont les mêmes ambitions que vous."
+msgstr "Au matin, le scribe ouvre un livre vierge. Au-delà des murs, les oasis attendent vos décisions. Vos cités vous nourrissent ; vos voisins ont les mêmes ambitions que vous."
+
+msgid "Du grain et des hommes"
+msgstr "Du grain et des hommes"
+
+msgid "Le scribe pose deux comptes devant vous : les Mesures des greniers et les Fidèles libres de partir. Ces guerriers sont aussi des habitants : absents, ils ne défendent plus leur cité et ne produisent plus d’impôt."
+msgstr "Le scribe pose deux comptes devant vous : les Mesures des greniers et les Fidèles libres de partir. Ces guerriers sont aussi des habitants : absents, ils ne défendent plus leur cité et ne produisent plus d’impôt."
+
+msgid "Les greniers restent propres à chaque cité ; vos dépenses puisent dans leurs fonds libres. L’impôt s’accumule chaque lune, mais la récolte ne remplit les greniers que toutes les douze lunes. Au conseil, « Vos cités » ouvre leurs comptes détaillés."
+msgstr "Les greniers restent propres à chaque cité ; vos dépenses puisent dans leurs fonds libres. L’impôt s’accumule chaque lune, mais la récolte ne remplit les greniers que toutes les douze lunes. Au conseil, « Vos cités » ouvre leurs comptes détaillés."
+
+msgid "Un ordre prend forme"
+msgstr "Un ordre prend forme"
+
+msgid "Vos bâtisseurs attendent. Dans « Chantiers », chaque proposition expose son bénéfice, son prix et sa durée. Choisissez plusieurs cités à la fois : leurs équipes ne peuvent mener qu’un ouvrage chacune."
+msgstr "Vos bâtisseurs attendent. Dans « Chantiers », chaque proposition expose son bénéfice, son prix et sa durée. Choisissez plusieurs cités à la fois : leurs équipes ne peuvent mener qu’un ouvrage chacune."
+
+msgid "« Valider la sélection » vous mène à la relecture, sans rien réserver. Vérifiez les termes ; « Confirmer et sceller l’ordre » engage ensuite les fonds et les équipes ou les hommes annoncés. Les bénéfices d’un ouvrage viennent à son achèvement."
+msgstr "« Valider la sélection » vous mène à la relecture, sans rien réserver. Vérifiez les termes ; « Confirmer et sceller l’ordre » engage ensuite les fonds et les équipes ou les hommes annoncés. Les bénéfices d’un ouvrage viennent à son achèvement."
+
+msgid "Au-delà des murailles"
+msgstr "Au-delà des murailles"
+
+msgid "Dans « Expéditions », choisissez une cité sur la carte. Son feuillet indique son maître, ses fortifications et votre portée. Pillez pour le butin, capturez pour étendre votre autorité. Les rapports vous renseigneront sur les rencontres ; les forces rivales restent secrètes."
+msgstr "Dans « Expéditions », choisissez une cité sur la carte. Son feuillet indique son maître, ses fortifications et votre portée. Pillez pour le butin, capturez pour étendre votre autorité. Les rapports vous renseigneront sur les rencontres ; les forces rivales restent secrètes."
+
+msgid "Quand vos décisions sont prises, revenez au conseil pour clore la lune. Vous pouvez laisser passer une lune sans donner d’ordre. Le scribe avancera les ouvrages et les voyages."
+msgstr "Quand vos décisions sont prises, revenez au conseil pour clore la lune. Vous pouvez laisser passer une lune sans donner d’ordre. Le scribe avancera les ouvrages et les voyages."
+
+msgid "Le règne avance aux échéances du calendrier affichées en haut du livre. Pour prendre votre temps, suspendez-le au conseil ; reprenez-le lorsque vous êtes prêt."
+msgstr "Le règne avance aux échéances du calendrier affichées en haut du livre. Pour prendre votre temps, suspendez-le au conseil ; reprenez-le lorsque vous êtes prêt."
+
+msgid "Les pages du prologue"
+msgstr "Les pages du prologue"
+
+msgid "Feuillet précédent"
+msgstr "Feuillet précédent"
+
+msgid "Poursuivre"
+msgstr "Poursuivre"
+
+msgid "Ouvrir le conseil"
+msgstr "Ouvrir le conseil"
+
+msgid "Passer le prologue"
+msgstr "Passer le prologue"
+
+msgid "Comment jouer"
+msgstr "Comment jouer"
+
+msgid "Premiers pas"
+msgstr "Premiers pas"
+
+msgid "Les prétendants au trône"
+msgstr "Les prétendants au trône"
+
+msgid "Vos cités"
+msgstr "Vos cités"
+
+msgid "Grenier"
+msgstr "Grenier"
+
+msgid "Disponible"
+msgstr "Disponible"
+
+msgid "Équipes"
+msgstr "Équipes"
+
+msgid "Occupées"
+msgstr "Occupées"
+
+msgid "Libres"
+msgstr "Libres"
+
+msgid "Valider la sélection"
+msgstr "Valider la sélection"
+
+msgid "Vous pourrez vérifier le récapitulatif avant de confirmer. Aucun moyen n’est réservé."
+msgstr "Vous pourrez vérifier le récapitulatif avant de confirmer. Aucun moyen n’est réservé."
+
+msgid "Vérifier votre ordre"
+msgstr "Vérifier votre ordre"
+
+msgid "Confirmer et sceller l’ordre"
+msgstr "Confirmer et sceller l’ordre"
+
+msgid "Votre règne dure %(moons)s lunes. À son terme, la maison qui possède le plus de cités l’emporte. La population totale départage les égalités ; une égalité complète partage le premier rang."
+msgstr "Votre règne dure %(moons)s lunes. À son terme, la maison qui possède le plus de cités l’emporte. La population totale départage les égalités ; une égalité complète partage le premier rang."
+
+msgid "Réunir toutes les cités sous votre sceau donne une victoire immédiate."
+msgstr "Réunir toutes les cités sous votre sceau donne une victoire immédiate."
+
+msgid "Feuillet %(page)s sur 4"
+msgstr "Feuillet %(page)s sur 4"
+
+msgid "Il faut au moins %(raid)s Fidèles pour un raid, %(capture)s pour une capture. Le formulaire précise les cités capables de fournir les hommes."
+msgstr "Il faut au moins %(raid)s Fidèles pour un raid, %(capture)s pour une capture. Le formulaire précise les cités capables de fournir les hommes."

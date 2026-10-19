@@ -6,7 +6,7 @@
             {% if view.finished %}{% blocktranslate with v0=view.closed_moon %}Au terme de la lune {{ v0 }}{% endblocktranslate %}
             {% else %}{% blocktranslate with v0=view.open_moon v1=view.year %}Lune {{ v0 }}, année {{ v1 }}{% endblocktranslate %}<span class="visually-hidden">{% translate "Ouverte à vos ordres" %}{% if view.closed_moon %} · {% blocktranslate with v0=view.closed_moon %}Comptes arrêtés à la lune {{ v0 }}{% endblocktranslate %}{% endif %}</span>{% endif %}
         </p>
-        <h1>{% if tab == 'domain' %}{% translate "Le conseil de votre maison" %}{% elif tab == 'city' %}{% blocktranslate with v0=selected.name %}Le feuillet de {{ v0 }}{% endblocktranslate %}{% elif tab == 'decrees' %}{% translate "Ce que vous dicterez" %}{% elif tab == 'constructions' %}{% translate "Chantiers" %}{% elif tab == 'wars' %}{% translate "Expéditions" %}{% else %}{% translate "Rapports" %}{% endif %}</h1>
+        <h1>{% if tab == 'domain' %}{% translate "Le conseil de votre maison" %}{% elif tab == 'city' %}{% blocktranslate with v0=selected.name %}Le feuillet de {{ v0 }}{% endblocktranslate %}{% elif tab == 'decrees' %}{% translate "Ce que vous dicterez" %}{% elif tab == 'constructions' %}{% translate "Chantiers" %}{% elif tab == 'wars' %}{% translate "Expéditions" %}{% elif tab == 'help' %}{% translate "Comment jouer" %}{% elif tab == 'prologue' %}{% translate "Premiers pas" %}{% else %}{% translate "Rapports" %}{% endif %}</h1>
         <p class="visually-hidden">{% blocktranslate with v0=view.realm %}Au service de {{ v0 }}.{% endblocktranslate %}</p>
     </header>
     {% if view.finished %}
@@ -22,6 +22,7 @@
             <p>{% blocktranslate with free=view.available_stock reserved=view.reserved_stock tax=view.tax %}<strong>{{ free }} Mesures</strong> libres ; <strong>{{ reserved }}</strong> réservées.<br>Prélèvement en préparation : <strong>{{ tax }} Mesures</strong>, encore indisponibles.{% endblocktranslate %}</p>
             <p>{% translate "Les dépenses sont réparties automatiquement entre les greniers de votre maison. Les réserves restent locales pour les pillages et le stockage." %}</p>
         </div></details>
+        {% include 'simulation/city_ledger.html' %}
         <section class="briefing-news" aria-labelledby="recent-letters">
             <h2 id="recent-letters">{% translate "Les dernières nouvelles" %}</h2>
             {% if not view.closed_moon %}<p>{% translate "Votre règne commence. Le conseil rassemble vos nouvelles et vos engagements. Confiez vos premiers ouvrages aux cités ou préparez une expédition." %}</p>{% endif %}
@@ -37,18 +38,10 @@
             </li>{% endfor %}</ol>
             {% if not view.eliminated and not game.paused %}<p class="reading-links"><a href="?tab=decrees">{% translate "Préparer un décret" %} →</a></p>{% endif %}
         </section>{% endif %}
-        <section class="chapter-section" aria-labelledby="city-ledgers">
-            <h2 id="city-ledgers">{% translate "Les feuillets des cités" %}</h2>
-            {% for city in view.owned_cities %}
-                <article class="city-entry" id="city-{{ city.id }}">
-                    <h3><a href="?tab=city&city={{ city.id }}">{{ city.name }} <span aria-hidden="true">→</span></a></h3>
-                    <p>{% blocktranslate with v0=city.population v1=city.available_fideles v2=city.stock v3=city.capacity %}<strong>{{ v0 }} habitants</strong> ; <strong>{{ v1 }} Fidèles</strong> libres.<br>Le grenier abrite <strong>{{ v2 }}</strong> Mesures sur <strong>{{ v3 }}</strong>.{% endblocktranslate %}<br>
-                        {% if city.busy %}{% translate "Les équipes sont engagées." %}{% else %}{% translate "Les équipes sont libres." %}{% endif %} {{ city.wall_label }}{% if city.damaged %}, {% translate "endommagée" %}{% endif %}.</p>
-                </article>
-            {% empty %}<p>{% translate "Aucune cité ne demeure sous votre sceau." %}</p>{% endfor %}
-        </section>
-        {% include 'simulation/world_notes.html' %}
+        {% include 'simulation/standings.html' %}
         {% include 'simulation/orders_register.html' %}
+    {% elif tab == 'help' %}{% include 'simulation/help.html' %}
+    {% elif tab == 'prologue' %}{% include 'simulation/prologue.html' %}
     {% elif tab == 'city' %}{% include 'simulation/city_folio.html' %}
     {% elif tab == 'constructions' %}{% include 'simulation/constructions.html' %}
     {% elif tab == 'wars' %}{% include 'simulation/wars.html' %}

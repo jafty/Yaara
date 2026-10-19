@@ -2,7 +2,7 @@
 <p class="salutation">{% translate "Monseigneur," %}</p>
 {% if not view.finished and not view.eliminated and not game.paused %}
     <p>{% translate "Choisissez votre intention, relisez le brouillon, puis scellez votre décret pour réserver les moyens annoncés." %}</p>
-    <ol class="decree-steps"><li>{% translate "Dicter" %}</li><li>{% translate "Relire et sceller" %}</li></ol>
+    <ol class="decree-steps"><li>{% translate "Valider la sélection" %}</li><li>{% translate "Confirmer et sceller l’ordre" %}</li></ol>
     {% if selected.owned and city_requested %}<p class="marginal-note">{% blocktranslate with v0=selected.name %}Vous préparez un décret pour <strong>{{ v0 }}</strong>. Sa case est précochée ; vous pouvez choisir d’autres cités.{% endblocktranslate %}</p>{% endif %}
     {% if action %}
         <p class="reading-links"><a href="?tab=decrees{% if city_requested %}&city={{ selected.id }}{% endif %}">← {% translate "Revenir aux décrets" %}</a></p>

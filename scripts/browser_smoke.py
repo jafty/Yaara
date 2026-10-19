@@ -26,7 +26,7 @@ def readable_hierarchy(page):
         .filter(el => el.getClientRects().length && getComputedStyle(el).visibility !== 'hidden')
         .map(el => parseFloat(getComputedStyle(el).fontSize));
       return {headings: visible('h1, h2, h3, [role="heading"]'),
-              body: visible('p, legend, .work-transition, .work-benefit, .work-reason'),
+              body: visible('p, legend, .ledger-figures dt, .ledger-figures dd, .work-transition, .work-benefit, .work-reason'),
               disclosures: visible('summary')};
     }""")
     if sizes["headings"] and sizes["body"]:
@@ -74,12 +74,38 @@ with sync_playwright() as playwright:
         page.locator("#id_opponents").select_option("passive")
         page.locator(".game-setup button").click()
         expect(
+            page.get_by_role("heading", name="First steps" if en else "Premiers pas")
+        ).to_be_visible()
+        game_url = page.url.split("?")[0]
+        for leaf in range(1, 5):
+            expect(page.locator("[data-prologue-page]")).to_have_attribute(
+                "data-prologue-page", str(leaf)
+            )
+            for width in (320, 390):
+                page.set_viewport_size({"width": width, "height": 844})
+                no_overflow(page)
+                page.evaluate("document.documentElement.style.fontSize = '125%'")
+                no_overflow(page)
+                page.evaluate("document.documentElement.style.removeProperty('font-size')")
+            if leaf == 2:
+                for selected_language in ("fr" if en else "en", language):
+                    page.locator("#language").select_option(selected_language)
+                    page.locator(".language-switch button").click()
+                    expect(page.locator("[data-prologue-page]")).to_have_attribute(
+                        "data-prologue-page", "2"
+                    )
+            if leaf < 4:
+                page.locator("[data-prologue-next]").focus()
+                page.keyboard.press("Enter")
+            else:
+                page.screenshot(path=str(artifacts / f"prologue-{language}.png"), full_page=True)
+                page.locator("[data-prologue-enter]").click()
+        page.set_viewport_size({"width": 1440, "height": 1100})
+        expect(
             page.get_by_role(
-                "heading",
-                name="Your house council" if en else "Le conseil de votre maison",
+                "heading", name="Your house council" if en else "Le conseil de votre maison"
             )
         ).to_be_visible()
-        game_url = page.url
         expect(page.locator("#recent-letters")).to_be_visible()
         expect(page.locator("#upcoming-heading")).to_be_visible()
         assert page.locator(".house-accounts").count() == 0
@@ -103,7 +129,7 @@ with sync_playwright() as playwright:
         page.evaluate("document.documentElement.style.removeProperty('font-size')")
         page.screenshot(path=str(artifacts / f"works-named-{language}.png"), full_page=True)
         page.goto(game_url)
-        assert page.locator("article.city-entry").count() == 3
+        assert page.locator(".city-entry").count() == 3
         assert page.locator(".sidebar, .stats-strip, img, table").count() == 0
         assert page.locator(".city-entry details").count() == 0
         expect(page.locator("body")).to_have_css("background-color", "rgb(253, 251, 247)")
@@ -294,6 +320,8 @@ with sync_playwright() as playwright:
                 "",
                 "?tab=city&city=c2",
                 "?tab=letters",
+                "?tab=help",
+                "?tab=prologue&page=3",
                 "?tab=constructions",
                 "?tab=wars",
                 "?tab=decrees&action=expedition",
@@ -338,6 +366,18 @@ with sync_playwright() as playwright:
             viewport={"width": 320, "height": 844},
         )
         plain_page = plain.new_page()
+        plain_page.goto(game_url + "?tab=help")
+        expect(plain_page.locator("#victory")).to_be_visible()
+        no_overflow(plain_page)
+        plain_page.locator("[data-prologue-replay]").click()
+        plain_page.locator("[data-prologue-next]").click()
+        expect(plain_page.locator("[data-prologue-page]")).to_have_attribute(
+            "data-prologue-page", "2"
+        )
+        plain_page.locator("[data-prologue-previous]").click()
+        plain_page.locator("[data-prologue-skip]").click()
+        plain_page.locator('.city-entry a[href*="city=c1"]').click()
+        expect(plain_page.locator("[data-local-accounts]")).to_be_visible()
         plain_page.goto(game_url + "?tab=constructions")
         plain_forge = plain_page.locator("#work-forge")
         plain_forge.locator(":scope > summary").click()
@@ -364,5 +404,5 @@ with sync_playwright() as playwright:
         context.close()
     browser.close()
 print(
-    "Browser smoke passed in French and English: three destinations, public map, local batch forges, affordability, select-all/clear, city folios, draft/seal/cancel, raid/return, translated letters, privacy, compact mobile header, touch targets, logout/login."
+    "Browser smoke passed in French and English: skippable prologue, rules reference, city ledger, three destinations, public map, local batch forges, affordability, select-all/clear, city folios, draft/seal/cancel, raid/return, translated letters, privacy, compact mobile header, touch targets, logout/login."
 )

@@ -3514,3 +3514,186 @@ msgstr "%(cost)s Measures · %(duration)s Moons"
 
 msgid "Cette cité n’a pas d’enceinte à réparer."
 msgstr "This city has no wall to repair."
+
+msgid "Dans ce guide"
+msgstr "In this guide"
+
+msgid "Votre but"
+msgstr "Your goal"
+
+msgid "Vos ressources"
+msgstr "Your resources"
+
+msgid "Vos ordres"
+msgstr "Your orders"
+
+msgid "Les ouvrages"
+msgstr "Buildings"
+
+msgid "Les expéditions"
+msgstr "Expeditions"
+
+msgid "Les lunes"
+msgstr "The Moons"
+
+msgid "Les Mesures sont vos réserves de nourriture. Chaque cité possède son grenier : le conseil affiche son stock, sa capacité et sa part encore disponible. Les fonds promis aux décrets scellés restent dans le stock, mais ne sont plus disponibles."
+msgstr "Measures are your food reserves. Each city has its own granary: the Council shows its stock, capacity and remaining available share. Funds promised to sealed orders remain in stock but are no longer available."
+
+msgid "Les dépenses sont réparties entre les fonds libres de vos cités. Les pillages et les limites de stockage concernent chaque grenier séparément. Agrandir un grenier augmente sa capacité, sans créer de nourriture."
+msgstr "Expenses are shared between your cities’ free funds. Raids and storage limits affect each granary separately. Enlarging a granary increases its capacity without creating food."
+
+msgid "Les Fidèles font partie des habitants. Partis en expédition, ils ne défendent plus leur cité et ne contribuent plus à son impôt jusqu’à leur retour. L’impôt se prépare chaque lune et est versé toutes les douze lunes."
+msgstr "The Faithful are part of the population. While away on an expedition, they neither defend their city nor contribute to its tax until their return. Tax accrues each Moon and is paid every twelve Moons."
+
+msgid "Consulter vos greniers"
+msgstr "Inspect your granaries"
+
+msgid "Choisissez vos cités ou vos hommes, puis « Valider la sélection ». La page suivante récapitule le prix, les dates et les conséquences : rien n’est encore réservé. « Confirmer et sceller l’ordre » engage les moyens annoncés. La clôture de la lune fait entrer le décret en vigueur."
+msgstr "Choose your cities or troops, then “Validate selection”. The next page reviews the price, dates and consequences: nothing is reserved yet. “Confirm and seal the order” commits the stated resources. Closing the Moon puts the decree into effect."
+
+msgid "Retirer un ordre scellé"
+msgstr "Withdraw a sealed order"
+
+msgid "Avant la clôture, retirez un décret depuis son registre pour libérer ses moyens. Après le départ d’une expédition, aucun rappel n’est possible."
+msgstr "Before closure, withdraw a decree from its register to release its resources. Once an expedition departs, it cannot be recalled."
+
+msgid "La confirmation est définitive"
+msgstr "Confirmation is final"
+
+msgid "Dans ces règles V0, un décret scellé ne peut pas être annulé. Vérifiez soigneusement sa relecture."
+msgstr "Under these V0 rules, a sealed decree cannot be cancelled. Check its review carefully."
+
+msgid "Chaque cité dispose d’une équipe : un chantier ou un décret de travaux scellé l’occupe. Une seule sélection peut réunir plusieurs cités, même à des stades différents. Chaque ligne indique l’état actuel, l’ouvrage proposé, son bénéfice, son prix et sa durée. Les bénéfices commencent à l’achèvement."
+msgstr "Each city has one team: an active work or sealed building decree occupies it. One selection can include several cities, even at different stages. Each row shows the current state, proposed work, benefit, price and duration. Benefits begin at completion."
+
+msgid "Les canaux améliorent le prélèvement ; les enceintes protègent la cité lors des captures, sans abriter les villages d’un raid. Une enceinte endommagée peut être réparée."
+msgstr "Canals improve tax yield; walls protect the city during captures but do not shelter villages from raids. Damaged walls can be repaired."
+
+msgid "Chaque cité peut recevoir une forge. Ses armes bénéficient à toute votre maison ; perdre ou gagner une forge par capture transfère son bénéfice au nouveau propriétaire."
+msgstr "Each city can receive a forge. Its weapons benefit your whole house; losing or gaining a forge through capture transfers its benefit to the new owner."
+
+msgid "Dans ce règne ancien, la forge équipe toute la maison et conserve son chantier distinct des équipes des cités."
+msgstr "In this older reign, the forge equips the whole house and keeps its work separate from city teams."
+
+msgid "Un raid cherche du butin dans les villages ; une capture cherche à prendre la cité. Les bordures de la carte représentent des territoires, pas les routes : les mentions de portée indiquent les cibles accessibles par vos possessions reliées. Une seule attaque peut être engagée vers une cible."
+msgstr "A raid seeks loot in the villages; a capture seeks control of the city. Map borders represent territories rather than roads: reach labels identify targets accessible through your connected holdings. Only one attack can be committed against a target."
+
+msgid "La carte montre les propriétaires et les fortifications publiques. Les forces et les stocks rivaux restent secrets ; vos rapports gardent les observations du jour où ils ont été écrits. Le devis annonce départ, combat et retour prévu. Un siège peut prolonger l’expédition."
+msgstr "The map shows owners and public fortifications. Rival troops and stocks remain secret; reports preserve observations from the day they were written. The review gives departure, combat and expected return dates. A siege may prolong an expedition."
+
+msgid "Clore chaque lune manuellement"
+msgstr "Manually close each Moon"
+
+msgid "Prenez vos décisions, puis utilisez « Clore la lune » au conseil. Vous pouvez aussi ne donner aucun ordre. La clôture avance les ouvrages, les expéditions et le prélèvement."
+msgstr "Make your decisions, then use “Close the Moon” on the Council. You can also give no orders. Closure advances works, expeditions and tax accrual."
+
+msgid "Le calendrier automatique"
+msgstr "The automatic calendar"
+
+msgid "Chaque échéance affichée clôt une lune, même sans nouvel ordre. Vous pouvez suspendre le calendrier au conseil, puis le reprendre : la suspension retarde aussi les ouvrages et les expéditions."
+msgstr "Each displayed deadline closes a Moon, even without a new order. You can pause the calendar on the Council, then resume it: pausing also delays works and expeditions."
+
+msgid "La lecture ne suspend pas le calendrier automatique."
+msgstr "Reading does not pause the automatic calendar."
+
+msgid "Relire les premiers pas"
+msgstr "Read the first steps again"
+
+msgid "Au matin, le scribe ouvre un livre vierge. Au-delà des murs, les oasis attendent vos décisions. Vos cités vous nourrissent ; vos voisins ont les mêmes ambitions que vous."
+msgstr "At dawn, the scribe opens a blank book. Beyond the walls, the oases await your decisions. Your cities sustain you; your neighbours share your ambitions."
+
+msgid "Du grain et des hommes"
+msgstr "Grain and people"
+
+msgid "Le scribe pose deux comptes devant vous : les Mesures des greniers et les Fidèles libres de partir. Ces guerriers sont aussi des habitants : absents, ils ne défendent plus leur cité et ne produisent plus d’impôt."
+msgstr "The scribe sets two accounts before you: Measures in the granaries and Faithful free to depart. These warriors are also inhabitants: while away, they neither defend their city nor produce tax."
+
+msgid "Les greniers restent propres à chaque cité ; vos dépenses puisent dans leurs fonds libres. L’impôt s’accumule chaque lune, mais la récolte ne remplit les greniers que toutes les douze lunes. Au conseil, « Vos cités » ouvre leurs comptes détaillés."
+msgstr "Each city keeps its own granary; your expenses draw on their free funds. Tax accrues each Moon, but harvest only fills the granaries every twelve Moons. On the Council, “Your cities” opens their detailed accounts."
+
+msgid "Un ordre prend forme"
+msgstr "An order takes shape"
+
+msgid "Vos bâtisseurs attendent. Dans « Chantiers », chaque proposition expose son bénéfice, son prix et sa durée. Choisissez plusieurs cités à la fois : leurs équipes ne peuvent mener qu’un ouvrage chacune."
+msgstr "Your builders await. Under “Works”, each proposal explains its benefit, price and duration. Choose several cities at once: each team can undertake only one work."
+
+msgid "« Valider la sélection » vous mène à la relecture, sans rien réserver. Vérifiez les termes ; « Confirmer et sceller l’ordre » engage ensuite les fonds et les équipes ou les hommes annoncés. Les bénéfices d’un ouvrage viennent à son achèvement."
+msgstr "“Validate selection” takes you to review without reserving anything. Check the terms; “Confirm and seal the order” then commits the stated funds and teams or troops. A work brings benefits once completed."
+
+msgid "Au-delà des murailles"
+msgstr "Beyond the walls"
+
+msgid "Dans « Expéditions », choisissez une cité sur la carte. Son feuillet indique son maître, ses fortifications et votre portée. Pillez pour le butin, capturez pour étendre votre autorité. Les rapports vous renseigneront sur les rencontres ; les forces rivales restent secrètes."
+msgstr "Under “Expeditions”, choose a city on the map. Its folio shows its ruler, fortifications and your reach. Raid for loot, capture to extend your authority. Reports tell you about encounters; rival forces remain secret."
+
+msgid "Quand vos décisions sont prises, revenez au conseil pour clore la lune. Vous pouvez laisser passer une lune sans donner d’ordre. Le scribe avancera les ouvrages et les voyages."
+msgstr "Once your decisions are made, return to the Council to close the Moon. You may let a Moon pass without giving orders. The scribe will advance works and journeys."
+
+msgid "Le règne avance aux échéances du calendrier affichées en haut du livre. Pour prendre votre temps, suspendez-le au conseil ; reprenez-le lorsque vous êtes prêt."
+msgstr "The reign advances at the calendar deadlines shown at the top of the book. To take your time, pause it on the Council; resume when you are ready."
+
+msgid "Les pages du prologue"
+msgstr "Prologue pages"
+
+msgid "Feuillet précédent"
+msgstr "Previous page"
+
+msgid "Poursuivre"
+msgstr "Continue"
+
+msgid "Ouvrir le conseil"
+msgstr "Open the Council"
+
+msgid "Passer le prologue"
+msgstr "Skip the prologue"
+
+msgid "Comment jouer"
+msgstr "How to play"
+
+msgid "Premiers pas"
+msgstr "First steps"
+
+msgid "Les prétendants au trône"
+msgstr "Claimants to the throne"
+
+msgid "Vos cités"
+msgstr "Your cities"
+
+msgid "Grenier"
+msgstr "Granary"
+
+msgid "Disponible"
+msgstr "Available"
+
+msgid "Équipes"
+msgstr "Teams"
+
+msgid "Occupées"
+msgstr "Busy"
+
+msgid "Libres"
+msgstr "Free"
+
+msgid "Valider la sélection"
+msgstr "Validate selection"
+
+msgid "Vous pourrez vérifier le récapitulatif avant de confirmer. Aucun moyen n’est réservé."
+msgstr "You can review the summary before confirming. No resources are reserved."
+
+msgid "Vérifier votre ordre"
+msgstr "Review your order"
+
+msgid "Confirmer et sceller l’ordre"
+msgstr "Confirm and seal the order"
+
+msgid "Votre règne dure %(moons)s lunes. À son terme, la maison qui possède le plus de cités l’emporte. La population totale départage les égalités ; une égalité complète partage le premier rang."
+msgstr "Your reign lasts %(moons)s Moons. At its end, the house holding the most cities wins. Total population breaks ties; a complete tie shares first place."
+
+msgid "Réunir toutes les cités sous votre sceau donne une victoire immédiate."
+msgstr "Bringing every city under your seal gives an immediate victory."
+
+msgid "Feuillet %(page)s sur 4"
+msgstr "Page %(page)s of 4"
+
+msgid "Il faut au moins %(raid)s Fidèles pour un raid, %(capture)s pour une capture. Le formulaire précise les cités capables de fournir les hommes."
+msgstr "A raid requires at least %(raid)s Faithful, a capture %(capture)s. The form identifies cities able to supply troops."

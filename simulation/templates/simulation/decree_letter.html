@@ -1,11 +1,11 @@
 {% extends 'simulation/manuscript.html' %}{% load i18n %}
 {% block title %}{% translate "Le décret à sceller · Yaara" %}{% endblock %}
 {% block content %}
-    <header class="chapter-heading"><p class="dateline">{% blocktranslate with v0=view.open_moon %}Lune {{ v0 }} · Relu avant l’apposition du sceau{% endblocktranslate %}</p><h1>{{ label }}</h1></header>
+    <header class="chapter-heading"><p class="dateline">{% blocktranslate with v0=view.open_moon %}Lune {{ v0 }} · Relu avant l’apposition du sceau{% endblocktranslate %}</p><h1>{% translate "Vérifier votre ordre" %}</h1><p class="aside-text">{{ label }}</p></header>
     <section class="decree-reading">
         <div class="unsealed-leaf" role="status"><h2>{% translate "Brouillon sans sceau" %}</h2>
             <p>{% blocktranslate with v0=order.cost %}Aucun fonds, homme ou chantier n’est encore réservé. Relisez les termes, puis apposez votre sceau pour engager <strong>{{ v0 }} Mesures</strong>.{% endblocktranslate %}</p>
-            <p class="decree-steps">{% translate "Dicter · Relire · Sceller" %}</p>
+            <p class="decree-steps">{% translate "Valider la sélection" %} · {% translate "Confirmer et sceller l’ordre" %}</p>
         </div>
         <p class="salutation">{% translate "Monseigneur, voici les termes que j’ai couchés pour vous." %}</p>
         <p>{% blocktranslate with v0=order.cost v1=order.execute_month %}Que l’on consacre <strong>{{ v0 }} Mesures</strong> à cet ordre. Le sceau les réservera ; elles seront dépensées à son entrée en vigueur, lors de la clôture de la <strong>lune {{ v1 }}</strong>.{% endblocktranslate %}</p>
@@ -17,7 +17,7 @@
         <h2>{% translate "La part demandée aux greniers" %}</h2><p>{% translate "Le prix est partagé selon les fonds libres de chaque cité. Ce partage sera conservé avec le décret." %}</p>
         {% for item in funding %}<p class="decree-clause">{% blocktranslate with v0=item.name v1=item.amount %}Du grenier de <strong>{{ v0 }}</strong>, <strong>{{ v1 }} Mesures</strong>.{% endblocktranslate %}</p>{% endfor %}
         <p class="marginal-note">{% if cancellable %}{% translate "Avant la clôture, vous pourrez retirer le décret et libérer les moyens promis. Après le départ, les frais seront définitivement dépensés." %}{% else %}{% translate "En V0, le sceau rend cet ordre définitif. Aucune annulation ne sera possible." %}{% endif %}</p>
-        <form method="post" action="{% url 'confirm' game.id %}" data-busy-form>{% csrf_token %}<input type="hidden" name="payload" value="{{ payload }}"><button class="primary-action wax-seal" type="submit">{% translate "Sceller ce décret" %} · {% blocktranslate with v0=order.cost %}Réserver {{ v0 }} Mesures{% endblocktranslate %}</button></form>
+        <form method="post" action="{% url 'confirm' game.id %}" data-busy-form>{% csrf_token %}<input type="hidden" name="payload" value="{{ payload }}"><button class="primary-action wax-seal" type="submit">{% translate "Confirmer et sceller l’ordre" %} · {% blocktranslate with v0=order.cost %}Réserver {{ v0 }} Mesures{% endblocktranslate %}</button></form>
         <p class="reading-links"><a href="{% url 'game' game.id %}?tab={{ nav_section }}{% if target %}&amp;action=expedition{% endif %}">{% translate "Reprendre la plume sans rien engager" %} →</a></p>
     </section>
 {% endblock %}

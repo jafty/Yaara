@@ -1,4 +1,4 @@
-"""The opening folio prioritizes events and deadlines over repeated accounts."""
+"""The opening folio exposes city accounts alongside events and deadlines."""
 
 import uuid
 
@@ -14,7 +14,7 @@ pytestmark = [pytest.mark.integration, pytest.mark.usefixtures("test_static_stor
 
 @case(
     "overview-first-reign",
-    "UX: a fresh reign opens with news, next steps and no repeated house accounts",
+    "Owner: the Council opens with a city ledger, news, next steps and no repeated house accounts",
 )
 @pytest.mark.parametrize("language", ["fr", "en"])
 def test_overview_first_reign(user, language):
@@ -27,7 +27,7 @@ def test_overview_first_reign(user, language):
     assert page.status_code == 200
     assert 'id="recent-letters"' in content
     assert 'id="upcoming-heading"' in content
-    assert content.index('id="recent-letters"') < content.index('id="city-ledgers"')
+    assert content.index('id="city-ledgers"') < content.index('id="recent-letters"')
     assert 'class="house-accounts"' not in content
     assert len(page.context["milestones"]) == 1
     assert page.context["milestones"][0]["moon"] == 12

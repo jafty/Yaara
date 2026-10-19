@@ -11,8 +11,3 @@
         {% endif %}
     {% else %}<p>{% translate "Ce livre est achevé. Vous pouvez le relire ou commencer un autre règne." %}</p>{% endif %}
 </section>
-<details class="plain-disclosure rules-help"><summary>{% translate "Demander au scribe de rappeler les usages du règne" %}</summary><div class="unfolded">
-    <p>{% translate "L’impôt s’accumule à chaque lune et entre dans les greniers toutes les douze lunes. Les dépenses sont réparties entre leurs fonds libres. Les ouvrages portent leur fruit à leur achèvement." %}</p>
-    <p>{% translate "Les Fidèles font partie des habitants. Ceux qui partent cessent de défendre leur origine et de produire de l’impôt jusqu’à leur retour. Une seule attaque peut être engagée vers une cité." %}</p>
-    <p>{% blocktranslate with v0=view.reign_months %}Le règne dure {{ v0 }} lunes. Posséder toutes les cités donne une victoire immédiate.{% endblocktranslate %}</p>
-</div></details>

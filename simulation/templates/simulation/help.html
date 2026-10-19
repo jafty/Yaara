@@ -1,0 +1,34 @@
+{% load i18n %}
+<nav class="guide-index" aria-label="{% translate "Dans ce guide" %}"><a href="#victory">{% translate "Votre but" %}</a><a href="#resources">{% translate "Vos ressources" %}</a><a href="#orders">{% translate "Vos ordres" %}</a><a href="#buildings">{% translate "Les ouvrages" %}</a><a href="#expeditions">{% translate "Les expéditions" %}</a><a href="#calendar">{% translate "Les lunes" %}</a></nav>
+<section id="victory"><h2>{% translate "Votre but" %}</h2>
+{% include 'simulation/game_goal.html' %}</section>
+<section id="resources"><h2>{% translate "Vos ressources" %}</h2>
+<p>{% translate "Les Mesures sont vos réserves de nourriture. Chaque cité possède son grenier : le conseil affiche son stock, sa capacité et sa part encore disponible. Les fonds promis aux décrets scellés restent dans le stock, mais ne sont plus disponibles." %}</p>
+<p>{% translate "Les dépenses sont réparties entre les fonds libres de vos cités. Les pillages et les limites de stockage concernent chaque grenier séparément. Agrandir un grenier augmente sa capacité, sans créer de nourriture." %}</p>
+<p>{% translate "Les Fidèles font partie des habitants. Partis en expédition, ils ne défendent plus leur cité et ne contribuent plus à son impôt jusqu’à leur retour. L’impôt se prépare chaque lune et est versé toutes les douze lunes." %}</p>
+<p class="reading-links"><a href="?tab=domain#city-ledgers">{% translate "Consulter vos greniers" %} →</a></p></section>
+<section id="orders"><h2>{% translate "Vos ordres" %}</h2>
+<p>{% translate "Choisissez vos cités ou vos hommes, puis « Valider la sélection ». La page suivante récapitule le prix, les dates et les conséquences : rien n’est encore réservé. « Confirmer et sceller l’ordre » engage les moyens annoncés. La clôture de la lune fait entrer le décret en vigueur." %}</p>
+{% if view.cancellable %}<h2>{% translate "Retirer un ordre scellé" %}</h2>
+<p>{% translate "Avant la clôture, retirez un décret depuis son registre pour libérer ses moyens. Après le départ d’une expédition, aucun rappel n’est possible." %}</p>
+{% else %}<h2>{% translate "La confirmation est définitive" %}</h2>
+<p>{% translate "Dans ces règles V0, un décret scellé ne peut pas être annulé. Vérifiez soigneusement sa relecture." %}</p>
+{% endif %}</section>
+<section id="buildings"><h2>{% translate "Les ouvrages" %}</h2>
+<p>{% translate "Chaque cité dispose d’une équipe : un chantier ou un décret de travaux scellé l’occupe. Une seule sélection peut réunir plusieurs cités, même à des stades différents. Chaque ligne indique l’état actuel, l’ouvrage proposé, son bénéfice, son prix et sa durée. Les bénéfices commencent à l’achèvement." %}</p>
+<p>{% translate "Les canaux améliorent le prélèvement ; les enceintes protègent la cité lors des captures, sans abriter les villages d’un raid. Une enceinte endommagée peut être réparée." %}</p>
+{% if view.rules == 'V1' %}{% if view.local_forges %}<p>{% translate "Chaque cité peut recevoir une forge. Ses armes bénéficient à toute votre maison ; perdre ou gagner une forge par capture transfère son bénéfice au nouveau propriétaire." %}</p>
+{% else %}<p>{% translate "Dans ce règne ancien, la forge équipe toute la maison et conserve son chantier distinct des équipes des cités." %}</p>
+{% endif %}{% endif %}</section>
+<section id="expeditions"><h2>{% translate "Les expéditions" %}</h2>
+<p>{% translate "Un raid cherche du butin dans les villages ; une capture cherche à prendre la cité. Les bordures de la carte représentent des territoires, pas les routes : les mentions de portée indiquent les cibles accessibles par vos possessions reliées. Une seule attaque peut être engagée vers une cible." %}</p>
+<p>{% blocktranslate with raid=view.raid_minimum capture=view.capture_minimum %}Il faut au moins {{ raid }} Fidèles pour un raid, {{ capture }} pour une capture. Le formulaire précise les cités capables de fournir les hommes.{% endblocktranslate %}</p>
+<p>{% translate "La carte montre les propriétaires et les fortifications publiques. Les forces et les stocks rivaux restent secrets ; vos rapports gardent les observations du jour où ils ont été écrits. Le devis annonce départ, combat et retour prévu. Un siège peut prolonger l’expédition." %}</p>
+</section>
+<section id="calendar">{% if game.mode == 'manual' %}<h2>{% translate "Clore chaque lune manuellement" %}</h2>
+<p>{% translate "Prenez vos décisions, puis utilisez « Clore la lune » au conseil. Vous pouvez aussi ne donner aucun ordre. La clôture avance les ouvrages, les expéditions et le prélèvement." %}</p>
+{% else %}<h2>{% translate "Le calendrier automatique" %}</h2>
+<p>{% translate "Chaque échéance affichée clôt une lune, même sans nouvel ordre. Vous pouvez suspendre le calendrier au conseil, puis le reprendre : la suspension retarde aussi les ouvrages et les expéditions." %}</p>
+<p>{% translate "La lecture ne suspend pas le calendrier automatique." %}</p>
+{% endif %}</section>
+<p class="reading-links"><a href="?tab=prologue" data-prologue-replay>{% translate "Relire les premiers pas" %} →</a></p>

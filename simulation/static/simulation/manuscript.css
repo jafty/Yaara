@@ -44,7 +44,10 @@ button:hover {
   border-color: currentColor;
 }
 .primary-action {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
   text-decoration: none;
   border: 1px solid #948576;
   padding: 0.4rem 0.8rem;
@@ -81,6 +84,7 @@ button:hover {
   gap: 1rem;
 }
 .book-title {
+  flex: 1;
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -89,6 +93,13 @@ button:hover {
   color: var(--muted);
   font-size: 0.8rem;
   margin: 0;
+}
+.help-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: 0.8rem;
+  white-space: nowrap;
 }
 .bookmarks {
   position: fixed;
@@ -255,10 +266,70 @@ strong {
 .letter-entry h3 {
   margin-top: 0;
 }
-.city-entry p:last-child,
 .decree-choice p:last-child,
 .order-entry p:last-child {
   margin-bottom: 0.3rem;
+}
+.city-ledger {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.city-ledger .city-entry {
+  display: grid;
+  grid-template-columns: 7rem minmax(0, 1fr);
+  align-items: center;
+  gap: 0.75rem;
+}
+.city-ledger h3 {
+  margin: 0;
+}
+.city-ledger h3 a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+.ledger-figures {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 0.5rem;
+  margin: 0;
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+}
+.ledger-figures dt {
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+.ledger-figures dd {
+  margin: 0;
+}
+.guide-index,
+.prologue-navigation {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1.25rem;
+}
+.guide-index a,
+.prologue-navigation a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+.guide-index {
+  font-size: 0.9rem;
+  border-bottom: 1px solid var(--rule);
+}
+.prologue-leaf {
+  padding-block: 0.75rem;
+}
+.prologue-leaf h2 {
+  margin-top: 0;
+}
+.prologue-navigation {
+  justify-content: space-between;
+  margin-top: 1.25rem;
 }
 .plain-disclosure {
   border-bottom: 1px solid var(--rule);
@@ -287,9 +358,6 @@ summary::marker {
 .route-list li {
   break-inside: avoid;
 }
-.geography-entry {
-  font-size: 0.9rem;
-}
 .letter-date {
   font-size: 0.75rem;
   color: var(--muted);
@@ -309,9 +377,6 @@ summary::marker {
 }
 .sealed-summary {
   font-size: 0.95rem;
-}
-.rules-help {
-  font-size: 0.9rem;
 }
 .decree-steps {
   display: flex;
@@ -642,6 +707,10 @@ input[type="number"] {
   }
 }
 @media (max-width: 600px) {
+  .city-ledger .city-entry {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.2rem;
+  }
   .book {
     width: calc(100% - 2rem);
   }

@@ -153,3 +153,9 @@ Independent cases specify bounded territory polygons around every city, complete
 ## Mixed-stage construction choices and benefits
 
 Independent cases cover ordinary/enlarged/completed granaries in one list, active and sealed team commitments, repair prerequisites and absent/intact walls, exact economic changes and qualitative military benefits, an atomic 1,700,000-Measure mixed-stage batch, and bilingual read-only completed/busy lists. The browser journey completes one granary and reserves another city's forge to check mixed choices, visible benefits and optional builder advice. Computed typography checks ensure visible body text stays smaller than headings, including with enlarged text, and no-JavaScript batch previews remain covered.
+
+## First steps and discoverable accounts
+
+Independent bilingual HTTP cases cover creation-only prologue redirects, each of the four read-only pages, invalid page bounds, membership protection, contextual V0/V1 and manual/scheduled guidance, the unchanged running automatic clock, local available-versus-total city balances, and the validate/review/seal reservation boundary for works, legacy equipment and expeditions. The existing Council ordering case now requires the compact ledger before news.
+
+The browser journey traverses the complete prologue in both languages, checks every page at 320px/390px and enlarged text, and checks guide and replay pages with the existing responsive hierarchy assertions. Native guide/replay/previous/skip/city-folio navigation also runs with JavaScript disabled alongside the existing batch and expedition journeys.
