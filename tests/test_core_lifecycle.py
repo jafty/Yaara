@@ -362,7 +362,7 @@ def test_ranking(variation, order, ranks):
     When players are ranked.
     Then city count then population produce actor order {order} and shared ranks {ranks}.
     """
-    state = engine.new_state(calendar_version=1)
+    state = engine.new_state(calendar_version=1, map_version=1)
     if variation == "population":
         state["cities"]["c4"]["population"] += 1
     if variation == "cities":

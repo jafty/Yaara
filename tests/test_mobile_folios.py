@@ -48,7 +48,7 @@ def test_navigation(user, tab, active, language):
 
 @case(
     "folio-public-map",
-    "Owner UX: a parchment schematic links public cities and actual roads without private data",
+    "Owner UX: a schematic opens city context without roads or private data",
 )
 @pytest.mark.parametrize("language", ["fr", "en"])
 def test_map(user, language):
@@ -62,9 +62,9 @@ def test_map(user, language):
     html = page.content.decode()
     atlas = re.search(r'<figure class="realm-map".*?</figure>', html, re.S).group()
     assert atlas.count('class="map-city') == 9
-    assert atlas.count('class="map-road"') == 9
+    assert 'class="map-road"' not in atlas
     assert "Qasr" in atlas and "Sefra" in atlas
-    assert "tab=city&amp;city=c4" in atlas
+    assert "tab=wars&amp;city=c4#map-context" in atlas
     assert "1234567" not in html and "1\u00a0234\u00a0567" not in html
     assert all(
         "equipment" not in city for city in page.context["view"]["cities"] if not city["owned"]
@@ -158,3 +158,72 @@ def test_legacy_forge_http(user):
     preview = client.post(reverse("preview", args=[game.id]), {"kind": "equipment"})
     assert preview.status_code == 200
     assert preview.context["order"]["cost"] == 1_800_000
+
+
+@case("folio-map-context", "Owner UX: city selection keeps the atlas and offers only valid actions")
+@pytest.mark.parametrize("language", ["fr", "en"])
+@pytest.mark.parametrize("city", [None, "c1", "c4", "c6"])
+def test_map_context(user, language, city):
+    game = services.create_game(user, "Atlas context", opponents="passive")
+    client = Client()
+    client.force_login(user)
+    client.cookies["django_language"] = language
+    query = {"tab": "wars"}
+    if city:
+        query["city"] = city
+    page = client.get(reverse("game", args=[game.id]), query)
+    html = page.content.decode()
+    assert 'id="map-context"' in html
+    assert html.count('class="map-city') == 9
+    assert 'class="map-road"' not in html
+    assert 'class="primary-action" href="?tab=wars' not in html
+    assert ('data-expedition-kind="raid"' in html) == (city == "c4")
+    assert ('data-expedition-kind="capture"' in html) == (city == "c4")
+    if city == "c1":
+        assert "tab=city&amp;city=c1" in html
+    if city == "c6":
+        assert ("beyond our borders" if language == "en" else "hors de nos frontières") in html
+
+
+@case("folio-map-order", "Owner UX: contextual raid or capture preselects target and kind natively")
+@pytest.mark.parametrize("kind", ["raid", "capture"])
+def test_map_order(user, kind):
+    game = services.create_game(user, "Atlas order", opponents="passive")
+    client = Client()
+    client.force_login(user)
+    response = client.get(
+        reverse("game", args=[game.id]),
+        {"tab": "wars", "city": "c4", "action": "expedition", "mission": kind},
+    )
+    html = response.content.decode()
+    assert f'value="{kind}" selected' in html
+    assert 'value="c4" selected' in html
+    assert 'class="map-sheet"' in html
+
+
+@case("folio-map-unavailable", "Owner UX: engaged or paused targets offer no expedition command")
+@pytest.mark.parametrize("unavailable", ["engaged", "paused", "finished", "eliminated"])
+def test_map_unavailable(user, unavailable):
+    game = services.create_game(user, "Unavailable", opponents="passive")
+    if unavailable == "engaged":
+        engine.confirm_order(
+            game.state,
+            "p1",
+            {"kind": "raid", "target": "c4", "contributions": {"c3": 45}},
+            str(uuid.uuid4()),
+        )
+    elif unavailable == "paused":
+        game.paused = True
+    elif unavailable == "finished":
+        game.state["month"] = 120
+        engine.advance_month(game.state, game.seed)
+    else:
+        for city in game.state["cities"].values():
+            city["owner"] = "p2"
+    game.save()
+    client = Client()
+    client.force_login(user)
+    html = client.get(
+        reverse("game", args=[game.id]), {"tab": "wars", "city": "c4"}
+    ).content.decode()
+    assert "data-expedition-kind" not in html

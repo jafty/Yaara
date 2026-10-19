@@ -2062,3 +2062,36 @@ msgstr "La forge fournira un équipement renforcé aux Fidèles de cette cité, 
 
 msgid "La forge fournira un équipement supérieur aux Fidèles de cette cité, y compris aux nouveaux habitants. Les expéditions déjà parties conserveront leur équipement."
 msgstr "La forge fournira un équipement supérieur aux Fidèles de cette cité, y compris aux nouveaux habitants. Les expéditions déjà parties conserveront leur équipement."
+
+msgid "Carte des oasis de Yaara"
+msgstr "Carte des oasis de Yaara"
+
+msgid "Les cités de votre maison portent un double cercle. Les pointillés signalent une expédition engagée. Choisissez une cité pour consulter ses fortifications et donner vos ordres."
+msgstr "Les cités de votre maison portent un double cercle. Les pointillés signalent une expédition engagée. Choisissez une cité pour consulter ses fortifications et donner vos ordres."
+
+msgid "Les distances sont symboliques ; toute expédition suit le même calendrier."
+msgstr "Les distances sont symboliques ; toute expédition suit le même calendrier."
+
+msgid "%(count)s Fidèles libres de recevoir vos ordres."
+msgstr "%(count)s Fidèles libres de recevoir vos ordres."
+
+msgid "Cette oasis est hors de nos frontières. Nos hommes doivent pouvoir la rejoindre par nos terres."
+msgstr "Cette oasis est hors de nos frontières. Nos hommes doivent pouvoir la rejoindre par nos terres."
+
+msgid "Aux frontières du domaine"
+msgstr "Aux frontières du domaine"
+
+msgid "Monseigneur, choisissez une oasis sur la carte. Ses fortifications et les ordres possibles seront consignés ici."
+msgstr "Monseigneur, choisissez une oasis sur la carte. Ses fortifications et les ordres possibles seront consignés ici."
+
+msgid "Un raid vise les réserves ; une attaque cherche à prendre la cité. Les hommes partis ne défendent plus leurs foyers jusqu’au retour."
+msgstr "Un raid vise les réserves ; une attaque cherche à prendre la cité. Les hommes partis ne défendent plus leurs foyers jusqu’au retour."
+
+msgid "Mesures libres"
+msgstr "Mesures libres"
+
+msgid "Fidèles libres"
+msgstr "Fidèles libres"
+
+msgid "Oasis voisines :"
+msgstr "Oasis voisines :"

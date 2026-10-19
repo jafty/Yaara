@@ -23,7 +23,7 @@ pytestmark = pytest.mark.journey
     "Design §26.2–26.3: additional journey — raid departure absence death and return reconcile",
 )
 def test_raid_departure_absence_death_and_return_reconcile():
-    state = new_state("V0", opponents="passive", calendar_version=1)
+    state = new_state("V0", opponents="passive", calendar_version=1, map_version=1)
     state["cities"]["c4"]["stock"] = 1_200_000
     confirm_order(
         state, "p1", {"kind": "raid", "target": "c4", "contributions": {"c3": 45}}, "raid"
@@ -114,7 +114,7 @@ def test_relief_keeps_its_command_when_both_frontier_origins_are_captured():
     "Design §26.2–26.3: additional journey — raid resource conservation including loot in transit",
 )
 def test_raid_resource_conservation_including_loot_in_transit():
-    state = new_state("V0", opponents="passive", calendar_version=1)
+    state = new_state("V0", opponents="passive", calendar_version=1, map_version=1)
     initial = sum(city["stock"] for city in state["cities"].values())
     confirm_order(
         state, "p1", {"kind": "raid", "target": "c4", "contributions": {"c3": 45}}, "raid"
@@ -160,7 +160,7 @@ def test_upgrade_keeps_damage_and_repair_restores_existing_level():
 @pytest.mark.parametrize("version", ["V0", "V1"])
 @pytest.mark.parametrize("seed", ["desert", "oasis", "clay"])
 def test_full_reigns_are_deterministic_and_conserve_population(version, seed):
-    state = new_state(version, calendar_version=1)
+    state = new_state(version, calendar_version=1, map_version=1)
     state["players"]["p1"]["bot"] = True
     replica = deepcopy(state)
     for game in (state, replica):

@@ -16,8 +16,6 @@
         {% if selected.deaths %}<p>{% blocktranslate with v0=selected.deaths %}Depuis le début du règne, <strong>{{ v0 }} habitants</strong> ont perdu la vie.{% endblocktranslate %}</p>{% endif %}
         {% if not view.finished and not view.eliminated and not game.paused %}<p class="reading-links"><a href="?tab=decrees&city={{ selected.id }}">{% blocktranslate with v0=selected.name %}Dicter un décret pour {{ v0 }}{% endblocktranslate %} →</a></p>{% endif %}
     </section>
-{% else %}
-    <p>{% translate "Nos registres ne révèlent ni les effectifs ni les réserves de cette maison. Les lettres de vos hommes conservent les seules observations que nous ayons reçues." %}</p>
 {% endif %}
 <section class="chapter-section"><h2>{% translate "Les routes de cette oasis" %}</h2>
     <ul class="route-list">{% for city in neighbors %}<li><a href="?tab=city&city={{ city.id }}">{{ city.name }} →</a></li>{% endfor %}</ul>

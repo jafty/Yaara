@@ -1,10 +1,31 @@
 {% load i18n %}
-{% if not view.finished and not view.eliminated and not game.paused %}
-    {% if action %}{% include 'simulation/decree_form.html' %}
-    {% else %}<p class="reading-links"><a class="primary-action" href="?tab=wars&amp;action=expedition">{% translate "Préparer une expédition" %} →</a></p>{% endif %}
+<div class="expedition-atlas">
+    {% include 'simulation/realm_map.html' %}
+    <section id="map-context" class="map-context" aria-live="polite" aria-labelledby="context-title">
+        {% if city_requested %}
+            <h2 id="context-title">{{ selected.name }}</h2>
+            <p>{{ selected.owner_name }} · {{ selected.wall_label }}{% if selected.damaged %}, {% translate "endommagée" %}{% endif %}.</p>
+            <p class="context-neighbors">{% translate "Oasis voisines :" %} {% for city in neighbors %}<a href="?tab=wars&amp;city={{ city.id }}#map-context">{{ city.name }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}.</p>
+            {% if selected.owned %}
+                <p>{% blocktranslate with count=selected.available_fideles %}{{ count }} Fidèles libres de recevoir vos ordres.{% endblocktranslate %}</p>
+                <p><a href="?tab=city&amp;city={{ selected.id }}">{% translate "Les comptes de la cité" %} →</a></p>
+            {% elif selected.engaged %}
+                <p>{% translate "Une expédition est déjà engagée vers cette cité." %}</p>
+            {% elif selected_target %}
+                {% if not view.finished and not view.eliminated and not game.paused %}
+                    <p class="context-actions"><a data-expedition-kind="raid" href="?tab=wars&amp;city={{ selected.id }}&amp;action=expedition&amp;mission=raid#expedition-order">{% translate "Piller les villages" %} →</a><a data-expedition-kind="capture" href="?tab=wars&amp;city={{ selected.id }}&amp;action=expedition&amp;mission=capture#expedition-order">{% translate "Capturer la cité" %} →</a></p>
+                {% endif %}
+            {% else %}<p>{% translate "Cette oasis est hors de nos frontières. Nos hommes doivent pouvoir la rejoindre par nos terres." %}</p>{% endif %}
+        {% else %}
+            <h2 id="context-title">{% translate "Aux frontières du domaine" %}</h2>
+            <p>{% translate "Monseigneur, choisissez une oasis sur la carte. Ses fortifications et les ordres possibles seront consignés ici." %}</p>
+            <p class="aside-text">{% translate "Un raid vise les réserves ; une attaque cherche à prendre la cité. Les hommes partis ne défendent plus leurs foyers jusqu’au retour." %}</p>
+        {% endif %}
+    </section>
+</div>
+{% if not view.finished and not view.eliminated and not game.paused and action %}
+    <div id="expedition-order">{% include 'simulation/decree_form.html' with inline=True %}</div>
 {% endif %}
-{% include 'simulation/realm_map.html' %}
 {% include 'simulation/missions.html' %}
 {% if not view.missions %}<p>{% translate "Aucune expédition en route." %}</p>{% endif %}
 {% include 'simulation/orders_register.html' %}
-{% include 'simulation/world_notes.html' %}

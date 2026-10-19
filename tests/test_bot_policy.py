@@ -14,7 +14,9 @@ pytestmark = pytest.mark.logic
 @pytest.fixture
 def bot_state(monkeypatch):
     monkeypatch.setattr(engine, "random_stream", FixedRandom())
-    state = engine.new_state(opponents="passive", calendar_version=1, forge_version=1)
+    state = engine.new_state(
+        opponents="passive", calendar_version=1, forge_version=1, map_version=1
+    )
     state["players"]["p1"]["bot"] = True
     return state
 

@@ -30,7 +30,7 @@ def test_invalid_configuration(options):
     Then configuration is rejected.
     """
     with pytest.raises(RuleError, match="version" if "version" in options else "configuration"):
-        engine.new_state(**options, calendar_version=1)
+        engine.new_state(**options, calendar_version=1, map_version=1)
 
 
 @case("configuration-supported", "Rules §1–3: offered durations and passive/active opponents")
@@ -42,7 +42,11 @@ def test_configuration(months, opponents):
     Then nine cities and 9000 people are created with the selected bot policy.
     """
     state = engine.new_state(
-        reign_months=months, opponents=opponents, player_name="Test house", calendar_version=1
+        reign_months=months,
+        opponents=opponents,
+        player_name="Test house",
+        calendar_version=1,
+        map_version=1,
     )
     assert state["config"]["reign_months"] == months
     assert state["players"]["p1"]["name"] == "Test house"
@@ -194,7 +198,7 @@ def test_unknown_work():
     When a quote is requested.
     Then the unknown work is rejected.
     """
-    state = engine.new_state(calendar_version=1)
+    state = engine.new_state(calendar_version=1, map_version=1)
     with pytest.raises(RuleError, match="n’existe pas"):
         engine.work_spec(state, state["cities"]["c1"], "unknown")
 

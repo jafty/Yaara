@@ -154,7 +154,7 @@ def test_stranger_cannot_command_game(user, game, command):
 @pytest.mark.parametrize("route", ["game", "state"])
 def test_other_game_is_private(user, route):
     stranger = get_user_model().objects.create_user("stranger")
-    other = services.create_game(stranger, "Private", calendar_version=1)
+    other = services.create_game(stranger, "Private", calendar_version=1, map_version=1)
     client = Client()
     client.force_login(user)
     assert client.get(reverse(route, args=[other.id])).status_code == 403
@@ -267,7 +267,7 @@ def test_stale_preview_rejects_without_extra_reservation(user, game):
 )
 def test_scheduled_calendar(user, clock, scenario):
     game = services.create_game(
-        user, "Timed", mode="scheduled", opponents="passive", calendar_version=1
+        user, "Timed", mode="scheduled", opponents="passive", calendar_version=1, map_version=1
     )
     if scenario == "manual-forbidden":
         with pytest.raises(PermissionDenied):
@@ -319,6 +319,7 @@ def test_calendar_command_resolves_only_due_games(user, clock, scenario):
         mode="manual" if scenario == "manual" else "scheduled",
         opponents="passive",
         calendar_version=1,
+        map_version=1,
     )
     if scenario == "due":
         Game.objects.filter(pk=game.pk).update(deadline=clock() - timedelta(seconds=2))
@@ -356,7 +357,9 @@ def concurrent_calls(callables):
 def test_postgres_competing_confirmations(user, scenario):
     if connection.vendor != "postgresql":
         pytest.skip("Requires real PostgreSQL row locks")
-    game = services.create_game(user, "Concurrent", opponents="passive", calendar_version=1)
+    game = services.create_game(
+        user, "Concurrent", opponents="passive", calendar_version=1, map_version=1
+    )
     if scenario == "spend":
         specs = [{"kind": "walls", "cities": ["c1"]}, {"kind": "walls", "cities": ["c2"]}]
     elif scenario == "slot":
@@ -398,7 +401,12 @@ def test_postgres_two_ticks_pay_harvest_once(user):
     if connection.vendor != "postgresql":
         pytest.skip("Requires real PostgreSQL row locks")
     game = services.create_game(
-        user, "Concurrent ticks", version="V0", opponents="passive", calendar_version=1
+        user,
+        "Concurrent ticks",
+        version="V0",
+        opponents="passive",
+        calendar_version=1,
+        map_version=1,
     )
     for month in range(1, 12):
         services.tick(game.id, month, user)
@@ -419,7 +427,9 @@ def test_postgres_two_ticks_pay_harvest_once(user):
 def test_deadline_is_checked_after_waiting_for_postgres_lock(user):
     if connection.vendor != "postgresql":
         pytest.skip("Requires real PostgreSQL row locks")
-    game = services.create_game(user, "Deadline", mode="scheduled", calendar_version=1)
+    game = services.create_game(
+        user, "Deadline", mode="scheduled", calendar_version=1, map_version=1
+    )
     started = threading.Event()
 
     def command():

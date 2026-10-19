@@ -1,13 +1,12 @@
 {% load i18n l10n %}
 <figure class="realm-map" aria-labelledby="map-caption">
-    <figcaption id="map-caption"><h2>{% translate "Les oasis de Yaara" %}</h2><p class="aside-text">{% translate "Une esquisse des cités et de leurs routes. Choisissez une oasis pour ouvrir son feuillet." %}</p></figcaption>
+    <figcaption id="map-caption" class="visually-hidden">{% translate "Les oasis de Yaara" %}</figcaption>
     <div class="map-frame">
-        <svg class="map-sheet" viewBox="0 0 680 450" aria-labelledby="map-title map-description">
-            <title id="map-title">{% translate "Carte des cités et des routes" %}</title>
-            <desc id="map-description">{% translate "Les traits relient les oasis voisines. Les cités de votre maison portent un double cercle. Les pointillés signalent une expédition engagée." %}</desc>
-            {% for link in view.links %}<line class="map-road" x1="{{ link.first.x|unlocalize }}" y1="{{ link.first.y|unlocalize }}" x2="{{ link.second.x|unlocalize }}" y2="{{ link.second.y|unlocalize }}"/>{% endfor %}
+        <svg class="map-sheet" viewBox="0 0 680 500" aria-labelledby="map-title map-description">
+            <title id="map-title">{% translate "Carte des oasis de Yaara" %}</title>
+            <desc id="map-description">{% translate "Les cités de votre maison portent un double cercle. Les pointillés signalent une expédition engagée. Choisissez une cité pour consulter ses fortifications et donner vos ordres." %}</desc>
             {% for city in view.cities %}
-                <a class="map-city house-{{ city.owner }}{% if city.owned %} map-owned{% endif %}{% if city.engaged %} map-engaged{% endif %}" href="?tab=city&amp;city={{ city.id }}" aria-label="{{ city.name }} · {{ city.owner_name }} · {{ city.wall_label }}{% if city.engaged %} · {% translate 'Expédition engagée' %}{% endif %}">
+                <a class="map-city house-{{ city.owner }}{% if city.owned %} map-owned{% endif %}{% if city.engaged %} map-engaged{% endif %}" href="?tab=wars&amp;city={{ city.id }}#map-context" {% if city_requested and selected.id == city.id %}aria-current="location"{% endif %} aria-label="{{ city.name }} · {{ city.owner_name }} · {{ city.wall_label }}{% if city.engaged %} · {% translate 'Expédition engagée' %}{% endif %}">
                     <g transform="translate({{ city.x|unlocalize }} {{ city.y|unlocalize }})">
                         <circle class="map-hit" r="54"/>
                         <circle class="map-marker" r="18"/>
@@ -20,5 +19,5 @@
         </svg>
     </div>
     <ul class="map-legend" aria-label="{% translate 'Les maisons de Yaara' %}">{% for rank in view.ranking %}<li class="house-{{ rank.actor }}"><span aria-hidden="true">{% if rank.own %}◎{% else %}○{% endif %}</span> {{ rank.name }}</li>{% endfor %}</ul>
-    <p class="aside-text">{% translate "Les routes seules sont représentées ; les distances ne déterminent pas la durée des expéditions. Les forces et les réserves rivales restent secrètes." %}</p>
+    <p class="aside-text">{% translate "Les distances sont symboliques ; toute expédition suit le même calendrier." %}</p>
 </figure>

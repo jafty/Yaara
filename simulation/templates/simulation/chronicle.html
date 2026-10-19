@@ -1,13 +1,13 @@
 {% extends 'simulation/manuscript.html' %}{% load i18n %}
 {% block title %}{{ view.realm }} · Yaara{% endblock %}
 {% block content %}
-    <header class="chapter-heading">
+    <header class="chapter-heading compact-heading">
         <p class="dateline">
             {% if view.finished %}{% blocktranslate with v0=view.closed_moon %}Au terme de la lune {{ v0 }}{% endblocktranslate %}
-            {% else %}{% blocktranslate with v0=view.open_moon v1=view.year %}Lune {{ v0 }}, année {{ v1 }}{% endblocktranslate %}<br><span>{% translate "Ouverte à vos ordres" %}{% if view.closed_moon %} · {% blocktranslate with v0=view.closed_moon %}Comptes arrêtés à la lune {{ v0 }}{% endblocktranslate %}{% endif %}</span>{% endif %}
+            {% else %}{% blocktranslate with v0=view.open_moon v1=view.year %}Lune {{ v0 }}, année {{ v1 }}{% endblocktranslate %}<span class="visually-hidden">{% translate "Ouverte à vos ordres" %}{% if view.closed_moon %} · {% blocktranslate with v0=view.closed_moon %}Comptes arrêtés à la lune {{ v0 }}{% endblocktranslate %}{% endif %}</span>{% endif %}
         </p>
         <h1>{% if tab == 'domain' %}{% translate "Le conseil de votre maison" %}{% elif tab == 'city' %}{% blocktranslate with v0=selected.name %}Le feuillet de {{ v0 }}{% endblocktranslate %}{% elif tab == 'decrees' %}{% translate "Ce que vous dicterez" %}{% elif tab == 'constructions' %}{% translate "Chantiers" %}{% elif tab == 'wars' %}{% translate "Expéditions" %}{% else %}{% translate "Rapports" %}{% endif %}</h1>
-        <p class="dedication">{% blocktranslate with v0=view.realm %}Au service de {{ v0 }}.{% endblocktranslate %}</p>
+        <p class="visually-hidden">{% blocktranslate with v0=view.realm %}Au service de {{ v0 }}.{% endblocktranslate %}</p>
     </header>
     {% if view.finished %}
         <section class="epilogue"><h2>{% translate "La dernière page du règne" %}</h2>

@@ -18,8 +18,8 @@
                 {% if view %}
                     <div class="resource-ribbon" aria-label="{% translate "Les moyens libres de votre maison" %}">
                     {% if game.mode == 'scheduled' and game.deadline %}<span data-deadline="{{ game.deadline|date:'c' }}">{{ game.deadline|date:'H:i' }} UTC</span>{% endif %}
-                        <span>{% blocktranslate with v0=view.available_stock %}<strong>{{ v0 }} Mesures</strong> libres{% endblocktranslate %}</span>
-                        <span>{% blocktranslate with v0=view.available_fideles %}<strong>{{ v0 }} Fidèles</strong> libres{% endblocktranslate %}</span>
+                        <span class="resource-value" title="{% translate 'Mesures libres' %}">{% include 'simulation/nav_icon.html' with icon='grain' %}<strong>{{ view.available_stock }}</strong><span class="visually-hidden">{% translate 'Mesures libres' %}</span></span>
+                        <span class="resource-value" title="{% translate 'Fidèles libres' %}">{% include 'simulation/nav_icon.html' with icon='warrior' %}<strong>{{ view.available_fideles }}</strong><span class="visually-hidden">{% translate 'Fidèles libres' %}</span></span>
                         {% if not view.finished %}<span>{% blocktranslate with v0=view.harvest_in %}Récolte dans <strong>{{ v0 }} lunes</strong>{% endblocktranslate %}</span>{% endif %}
                     </div>
                 {% endif %}

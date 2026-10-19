@@ -52,7 +52,7 @@ def test_storage_capacity(level, capacity):
     When its local capacity is consulted.
     Then it can hold {capacity} Measures.
     """
-    city = engine.new_state(calendar_version=1)["cities"]["c1"]
+    city = engine.new_state(calendar_version=1, map_version=1)["cities"]["c1"]
     city["storage"] = level
     assert engine.capacity(city) == capacity
 
@@ -66,7 +66,7 @@ def test_pooled_funding():
     When a 500000-Measure granary is confirmed.
     Then funding reserves 300000 and 200000 without spending the stocks.
     """
-    state = engine.new_state(calendar_version=1)
+    state = engine.new_state(calendar_version=1, map_version=1)
     state["cities"]["c1"]["stock"] = 600000
     state["cities"]["c2"].update(owner="p2", stock=0)
     state["cities"]["c3"]["stock"] = 400000
@@ -94,7 +94,7 @@ def test_annual_overflow(stock, tax, expected):
     When annual tax is collected.
     Then local stock becomes {expected} and overflow is discarded without moving it to another city.
     """
-    state = engine.new_state(calendar_version=1)
+    state = engine.new_state(calendar_version=1, map_version=1)
     state["month"] = 12
     state["cities"]["c1"].update(stock=stock, tax=tax)
     other = state["cities"]["c2"]["stock"]
@@ -124,7 +124,7 @@ def test_annual_recruitment(version, troops, expected_population, expected_troop
     When growth and recruitment are applied.
     Then population becomes {expected_population} and Faithful strength becomes {expected_troops}.
     """
-    state = engine.new_state(version, calendar_version=1)
+    state = engine.new_state(version, calendar_version=1, map_version=1)
     state["month"] = 12
     state["cities"]["c1"]["fideles"] = troops
     engine.annual_economy(state, [])
@@ -142,7 +142,7 @@ def test_monthly_yield(level, tax):
     When one month of tax accrues.
     Then accrued tax is {tax} and spendable stock remains unchanged.
     """
-    state = engine.new_state(calendar_version=1)
+    state = engine.new_state(calendar_version=1, map_version=1)
     state["month"] = 1
     state["cities"]["c1"]["irrigation"] = level
     engine.annual_economy(state, [])

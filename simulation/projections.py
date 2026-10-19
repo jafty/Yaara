@@ -1,7 +1,5 @@
 """Explicit allowlists of player-visible fields. Never serialize the aggregate."""
 
-import math
-
 from . import engine
 from .calendar import closed_moon, closing_moon
 from .messages import Message
@@ -17,6 +15,19 @@ STATUS_LABELS = {
     "invalidated": Message("Invalidé"),
 }
 
+# Public schematic geography; ownership and road topology never move settlements.
+ATLAS_POSITIONS = (
+    (115, 90),
+    (305, 120),
+    (520, 80),
+    (165, 240),
+    (400, 225),
+    (570, 270),
+    (95, 385),
+    (305, 375),
+    (500, 415),
+)
+
 
 def player_view(state, actor):
     closed = closed_moon(state)
@@ -27,7 +38,6 @@ def player_view(state, actor):
     busy = engine.busy_cities(state)
     cities = []
     for index, city in enumerate(state["cities"].values()):
-        angle = math.radians(index * 40 - 130)
         public = {
             "id": city["id"],
             "name": city["name"],
@@ -42,8 +52,8 @@ def player_view(state, actor):
             ][city["walls"]],
             "damaged": city["damaged"],
             "engaged": city["id"] in targets,
-            "x": round(340 + 244 * math.cos(angle), 1),
-            "y": round(225 + 154 * math.sin(angle), 1),
+            "x": ATLAS_POSITIONS[index][0],
+            "y": ATLAS_POSITIONS[index][1],
         }
         if public["owned"]:
             away = engine.absent(state, city["id"])

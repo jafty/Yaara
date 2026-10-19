@@ -27,7 +27,12 @@ def game(user):
 
     # Existing exact-date cases also protect compatibility with persisted reigns.
     return create_game(
-        user, "Le règne des tests", opponents="passive", calendar_version=1, forge_version=1
+        user,
+        "Le règne des tests",
+        opponents="passive",
+        calendar_version=1,
+        forge_version=1,
+        map_version=1,
     )
 
 

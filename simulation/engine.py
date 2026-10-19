@@ -50,6 +50,7 @@ def new_state(
     *,
     calendar_version=2,
     forge_version=2,
+    map_version=2,
 ):
     rule_family(version)
     if reign_months not in (24, 60, 120, 240) or opponents not in ("active", "passive"):
@@ -80,6 +81,7 @@ def new_state(
         "month": 1 if calendar_version == 2 else 0,
         "calendar_version": calendar_version,
         "forge_version": forge_version,
+        "map_version": map_version,
         "status": "active",
         "config": {"reign_months": reign_months, "raid_minimum": 20, "capture_minimum": 80},
         "players": {
@@ -93,7 +95,12 @@ def new_state(
             for index, name in enumerate(REALM_NAMES)
         },
         "cities": cities,
-        "links": [[f"c{index + 1}", f"c{(index + 1) % 9 + 1}"] for index in range(9)],
+        "links": [[f"c{index + 1}", f"c{(index + 1) % 9 + 1}"] for index in range(9)]
+        + (
+            [["c1", "c5"], ["c4", "c8"], ["c7", "c2"], ["c2", "c4"], ["c5", "c7"], ["c8", "c1"]]
+            if map_version == 2
+            else []
+        ),
         "orders": [],
         "works": [],
         "expeditions": [],

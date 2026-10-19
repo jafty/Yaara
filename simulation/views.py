@@ -206,6 +206,10 @@ def desk(request, game_id):
                 and (tab != "constructions" or order["kind"] not in ("raid", "capture"))
             ],
             "city_requested": city_id is not None,
+            "selected_target": next(
+                (target for target in view["attack_targets"] if target["id"] == city_id), None
+            ),
+            "mission_kind": "capture" if request.GET.get("mission") == "capture" else "raid",
             "constructions": constructions,
             "construction_count": len(constructions) + len(view["equipment_work"]),
             "milestones": milestones,

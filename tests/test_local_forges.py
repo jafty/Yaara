@@ -18,7 +18,7 @@ pytestmark = pytest.mark.logic
 @pytest.fixture
 def local_state(monkeypatch):
     monkeypatch.setattr(engine, "random_stream", FixedRandom())
-    state = engine.new_state(opponents="passive")
+    state = engine.new_state(opponents="passive", map_version=1)
     for city in state["cities"].values():
         city["stock"] = 2_400_000
     return state

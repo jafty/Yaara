@@ -140,12 +140,37 @@ button:hover {
   padding: 0.35rem 0 0.5rem;
   font-variant-numeric: tabular-nums;
 }
+.resource-value {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.resource-value .nav-icon {
+  width: 20px;
+  height: 20px;
+}
 main {
   padding-bottom: 2rem;
 }
 .chapter-heading {
   text-align: center;
   padding: 1.25rem 0 1rem;
+}
+.compact-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  flex-wrap: wrap;
+  text-align: left;
+  padding: 0.85rem 0;
+}
+.compact-heading .dateline {
+  order: 1;
+  margin: 0;
+}
+.compact-heading h1 {
+  font-size: clamp(1.4rem, 4vw, 1.8rem);
 }
 .dateline {
   color: var(--muted);
@@ -180,12 +205,6 @@ p {
 strong {
   font-weight: 600;
   font-variant-numeric: tabular-nums;
-}
-.dedication {
-  font-style: italic;
-  color: var(--muted);
-  font-size: 0.85rem;
-  margin: 0.5rem 0 0;
 }
 .salutation {
   font-style: italic;
@@ -451,10 +470,7 @@ input[type="number"] {
   font-variant-numeric: tabular-nums;
 }
 .realm-map {
-  margin: 1.5rem 0 2rem;
-}
-.realm-map h2 {
-  margin-top: 0;
+  margin: 0;
 }
 .map-frame {
   background: var(--map-paper);
@@ -463,11 +479,6 @@ input[type="number"] {
 .map-sheet {
   display: block;
   width: 100%;
-}
-.map-road {
-  stroke: #b5a68e;
-  stroke-width: 2;
-  stroke-dasharray: 5 5;
 }
 .map-city {
   color: var(--muted);
@@ -482,6 +493,9 @@ input[type="number"] {
   fill: var(--map-paper);
   stroke: currentColor;
   stroke-width: 2;
+}
+.map-city[aria-current] .map-marker {
+  stroke-width: 5;
 }
 .map-inner {
   fill: currentColor;
@@ -519,6 +533,42 @@ input[type="number"] {
   padding: 0;
   margin: 0.6rem 0;
   font-size: 0.8rem;
+}
+.expedition-atlas {
+  margin-bottom: 1.5rem;
+}
+.map-context {
+  padding: 1rem 0;
+  border-block: 1px solid var(--rule);
+  scroll-margin-top: 1rem;
+}
+.map-context h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.2rem;
+}
+.map-context p {
+  margin-bottom: 0.6rem;
+  font-size: 0.9rem;
+}
+.context-actions a {
+  display: block;
+  min-height: 44px;
+  padding-block: 0.4rem;
+}
+#expedition-order {
+  scroll-margin-top: 8rem;
+}
+@media (min-width: 700px) {
+  .expedition-atlas {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 13rem;
+    gap: 1.25rem;
+    align-items: start;
+  }
+  .map-context {
+    border-top: 0;
+    padding-top: 0;
+  }
 }
 @media (max-width: 600px) {
   body {

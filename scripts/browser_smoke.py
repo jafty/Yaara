@@ -142,12 +142,15 @@ with sync_playwright() as playwright:
         expect(page.locator(".orders-register")).to_contain_text("Cancelled" if en else "Annulé")
         page.locator('.bookmarks a[data-section="wars"]').click()
         assert page.locator(".map-city").count() == 9
-        assert page.locator(".map-road").count() == 9
-        page.locator('.map-city[href$="city=c4"]').click()
+        assert page.locator(".map-road").count() == 0
+        page.locator('.map-city[href*="city=c4"]').click()
         assert page.locator("[data-local-accounts]").count() == 0
-        page.locator('.bookmarks a[data-section="wars"]').click()
-        page.locator('a[href="?tab=wars&action=expedition"]').click()
-        page.locator("#mission-target").select_option("c4")
+        expect(page.locator("#map-context")).to_contain_text("Sefra")
+        page.screenshot(path=str(artifacts / f"map-context-desktop-{language}.png"), full_page=True)
+        page.locator('[data-expedition-kind="capture"]').click()
+        expect(page.locator("#mission-kind")).to_have_value("capture")
+        expect(page.locator("#mission-target")).to_have_value("c4")
+        page.locator("#mission-kind").select_option("raid")
         page.locator('input[name="men_c3"]').fill("45")
         expect(page.locator("#army-cost")).to_contain_text("132,500" if en else "132\u202f500")
         page.locator(".expedition-form button").click()
@@ -246,6 +249,16 @@ with sync_playwright() as playwright:
         plain_forge.locator('input[value="c1"]').check()
         plain_forge.locator('button[type="submit"]').click()
         expect(plain_page.locator(".unsealed-leaf")).to_be_visible()
+        plain_page.goto(game_url + "?tab=wars")
+        plain_page.locator('.map-city[href*="city=c4"]').click()
+        expect(plain_page.locator("#map-context")).to_contain_text("Sefra")
+        no_overflow(plain_page)
+        plain_page.screenshot(
+            path=str(artifacts / f"map-context-mobile-{language}.png"), full_page=True
+        )
+        plain_page.locator('[data-expedition-kind="raid"]').click()
+        expect(plain_page.locator("#mission-target")).to_have_value("c4")
+        expect(plain_page.locator("#mission-kind")).to_have_value("raid")
         plain.close()
         page.locator(".book-footer > form:last-child button").click()
         expect(page.locator("#id_username")).to_be_visible()

@@ -90,6 +90,7 @@ def create_game(
     player_name=message("La maison d’Ambre"),
     calendar_version=2,
     forge_version=2,
+    map_version=2,
 ):
     # Serialize account-level creation limits as well as each game's commands.
     get_user_model().objects.select_for_update().get(pk=user.pk)
@@ -106,6 +107,7 @@ def create_game(
         player_name,
         calendar_version=calendar_version,
         forge_version=forge_version,
+        map_version=map_version,
     )
     game = Game.objects.create(
         owner=user,

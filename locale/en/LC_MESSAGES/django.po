@@ -3346,3 +3346,36 @@ msgstr "The forge will provide reinforced equipment to this city’s Faithful, i
 
 msgid "La forge fournira un équipement supérieur aux Fidèles de cette cité, y compris aux nouveaux habitants. Les expéditions déjà parties conserveront leur équipement."
 msgstr "The forge will provide superior equipment to this city’s Faithful, including new inhabitants. Expeditions already underway will keep their equipment."
+
+msgid "Carte des oasis de Yaara"
+msgstr "Map of the oases of Yaara"
+
+msgid "Les cités de votre maison portent un double cercle. Les pointillés signalent une expédition engagée. Choisissez une cité pour consulter ses fortifications et donner vos ordres."
+msgstr "Your cities have a double circle. Dashed rings mark a committed expedition. Choose a city to inspect its fortifications and give your orders."
+
+msgid "Les distances sont symboliques ; toute expédition suit le même calendrier."
+msgstr "Distances are symbolic; every expedition follows the same calendar."
+
+msgid "%(count)s Fidèles libres de recevoir vos ordres."
+msgstr "%(count)s warriors available for your orders."
+
+msgid "Cette oasis est hors de nos frontières. Nos hommes doivent pouvoir la rejoindre par nos terres."
+msgstr "This oasis is beyond our borders. Our men must be able to reach it through our lands."
+
+msgid "Aux frontières du domaine"
+msgstr "At the borders of the realm"
+
+msgid "Monseigneur, choisissez une oasis sur la carte. Ses fortifications et les ordres possibles seront consignés ici."
+msgstr "My lord, choose an oasis on the map. Its fortifications and available orders will be recorded here."
+
+msgid "Un raid vise les réserves ; une attaque cherche à prendre la cité. Les hommes partis ne défendent plus leurs foyers jusqu’au retour."
+msgstr "A raid targets supplies; an attack aims to take the city. Departed men cannot defend their homes until they return."
+
+msgid "Mesures libres"
+msgstr "Available measures"
+
+msgid "Fidèles libres"
+msgstr "Available warriors"
+
+msgid "Oasis voisines :"
+msgstr "Neighbouring oases:"
