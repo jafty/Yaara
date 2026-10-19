@@ -65,3 +65,9 @@ msgstr ""
 
 msgid "Cette lune sera close dans %(duration)s."
 msgstr "This Moon closes in %(duration)s."
+
+msgid "Il manque %(amount)s Mesures pour cet ouvrage."
+msgstr "This work needs %(amount)s more Measures."
+
+msgid "Après réservation : %(amount)s Mesures libres."
+msgstr "After reservation: %(amount)s Measures available."

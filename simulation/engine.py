@@ -7,6 +7,7 @@ No function here imports Django, reads a clock, or accesses storage.
 import hashlib
 import random
 from copy import deepcopy
+from fractions import Fraction
 
 from .calendar import closed_moon, closing_moon, open_calendar
 from .messages import describe, message
@@ -48,6 +49,7 @@ def new_state(
     player_name=message("La maison d’Ambre"),
     *,
     calendar_version=2,
+    forge_version=2,
 ):
     rule_family(version)
     if reign_months not in (24, 60, 120, 240) or opponents not in ("active", "passive"):
@@ -66,6 +68,7 @@ def new_state(
             "irrigation": 0,
             "storage": 0,
             "walls": 0,
+            "forge": 0,
             "damaged": False,
             "raid_protected_until": 0,
             "military_deaths": 0,
@@ -76,6 +79,7 @@ def new_state(
         "rules": version,
         "month": 1 if calendar_version == 2 else 0,
         "calendar_version": calendar_version,
+        "forge_version": forge_version,
         "status": "active",
         "config": {"reign_months": reign_months, "raid_minimum": 20, "capture_minimum": 80},
         "players": {
@@ -178,6 +182,23 @@ def equipment_busy(state, actor):
     )
 
 
+def local_forges(state):
+    return state.get("forge_version", 1) == 2
+
+
+def city_equipment(state, city):
+    return city["forge"] if local_forges(state) else state["players"][city["owner"]]["equipment"]
+
+
+def mission_strength(mission):
+    if "cohort_equipment" in mission:
+        return sum(
+            count * mission["cohort_equipment"][origin]
+            for origin, count in mission["cohorts"].items()
+        )
+    return sum(mission["cohorts"].values()) * mission["combativity"]
+
+
 def ensure_actor(state, actor):
     if state["status"] != "active":
         raise RuleError(message("Le règne est terminé. Son résultat est désormais scellé."))
@@ -189,8 +210,10 @@ def work_spec(state, city, kind):
     rules = rule_family(state["rules"])
     if kind not in WORK_PRICES:
         raise RuleError(message("Ce chantier n’existe pas."))
-    if kind in ("storage", "repair") and not rules.storage:
+    if kind in ("storage", "repair", "forge") and not rules.storage:
         raise RuleError(message("Cette action appartient aux règles V1."))
+    if kind == "forge" and not local_forges(state):
+        raise RuleError(message("Ce règne conserve son projet d’armement commun."))
     if kind == "repair":
         if not city["walls"] or not city["damaged"]:
             raise RuleError(message("Cette enceinte ne nécessite aucune réparation."))
@@ -202,6 +225,8 @@ def work_spec(state, city, kind):
         if kind == "walls" and city["damaged"]:
             raise RuleError(message("Il faut réparer l’enceinte avant de la renforcer."))
     cost, duration = WORK_PRICES[kind][level - 1]
+    if kind == "forge":
+        cost = max(cost, (600 if level == 1 else 1400) * city["population"])
     return {"city": city["id"], "kind": kind, "level": level, "cost": cost, "duration": duration}
 
 
@@ -254,6 +279,8 @@ def prepare_order(state, actor, spec, order_id):
             order["tasks"].append(work_spec(state, city, kind))
         order["cost"] = sum(task["cost"] for task in order["tasks"])
     elif kind == "equipment":
+        if local_forges(state):
+            raise RuleError(message("Confiez la forge aux équipes d’une cité."))
         if not rules.equipment:
             raise RuleError(message("Les projets d’armement appartiennent aux règles V1."))
         player = state["players"][actor]
@@ -466,6 +493,11 @@ def depart_orders(state, events):
                     "return_month": state["month"] + 2,
                 }
             )
+            if local_forges(state):
+                state["expeditions"][-1]["cohort_equipment"] = {
+                    city_id: EQUIPMENT[city_equipment(state, state["cities"][city_id])]
+                    for city_id in order["contributions"]
+                }
         else:
             tasks = (
                 order["tasks"]
@@ -550,7 +582,7 @@ def relief_allocations(state, missions, priority):
         city = state["cities"][city_id]
         component = connected_component(state, city_id)
         threats = {
-            mission["id"]: sum(mission["cohorts"].values()) * mission["combativity"]
+            mission["id"]: mission_strength(mission)
             for mission in missions
             if mission["kind"] == "capture"
             and mission["target"] != city_id
@@ -567,18 +599,25 @@ def relief_allocations(state, missions, priority):
                     "mission": mission_id,
                     "actor": city["owner"],
                     "count": count,
-                    "combativity": EQUIPMENT[state["players"][city["owner"]]["equipment"]],
+                    "combativity": EQUIPMENT[city_equipment(state, city)],
                 }
             )
     for mission in missions:
         contributions = [item for item in proposals if item["mission"] == mission["id"]]
         if not contributions:
             continue
-        limit = (
-            sum(mission["cohorts"].values())
-            * mission["combativity"]
-            // contributions[0]["combativity"]
-        )
+        if local_forges(state) and len({item["combativity"] for item in contributions}) > 1:
+            strength = sum(item["count"] * item["combativity"] for item in contributions)
+            if strength > mission_strength(mission):
+                shares = allocate(
+                    mission_strength(mission),
+                    {item["origin"]: item["count"] * item["combativity"] for item in contributions},
+                    priority,
+                )
+                for item in contributions:
+                    item["count"] = shares[item["origin"]] // item["combativity"]
+            continue
+        limit = mission_strength(mission) // contributions[0]["combativity"]
         weights = {item["origin"]: item["count"] for item in contributions}
         if sum(weights.values()) > limit:
             split = allocate(limit, weights, priority)
@@ -611,7 +650,9 @@ def observation(enemy_count, own_survivors, equipment):
         "Nos survivants disent avoir rencontré entre {p0} et {p1} hommes, avec un {p2}. Je rapporte ce qu’ils ont vu à la date de cette lettre ; leur récit ne révèle pas les forces de tout le domaine adverse.",
         p0=lower,
         p1=lower + 19,
-        p2=EQUIPMENT_LABELS[equipment].lower(),
+        p2=message("ensemble d’équipements variés")
+        if equipment == "mixed"
+        else EQUIPMENT_LABELS[equipment].lower(),
     )
 
 
@@ -653,9 +694,13 @@ def resolve_combats(state, seed, events):
             )
             continue
         attackers = sum(mission["cohorts"].values())
-        defender_equipment = state["players"][defender]["equipment"]
+        defender_equipment = city_equipment(state, target)
         defense_combativity = EQUIPMENT[defender_equipment]
-        attacker_equipment = EQUIPMENT.index(mission["combativity"])
+        attack_strength = mission_strength(mission)
+        equipment_values = set(mission.get("cohort_equipment", {}).values())
+        attacker_equipment = (
+            "mixed" if len(equipment_values) > 1 else EQUIPMENT.index(attack_strength // attackers)
+        )
         if mission["kind"] == "raid":
             if state["month"] < target["raid_protected_until"]:
                 report(
@@ -674,7 +719,11 @@ def resolve_combats(state, seed, events):
             audit["encounters"][mission["id"]] = fraction
             encountered = max(1, target["fideles"] * fraction // 100) if target["fideles"] else 0
             result = raid_result(
-                attackers, mission["combativity"], encountered, defense_combativity, target["stock"]
+                attackers,
+                Fraction(attack_strength, attackers),
+                encountered,
+                defense_combativity,
+                target["stock"],
             )
             lose_attackers(state, mission, result.attacker_losses, priority)
             target["fideles"] -= result.defender_losses
@@ -722,6 +771,15 @@ def resolve_combats(state, seed, events):
             if item["mission"] == mission["id"] and item["actor"] == defender
         ]
         local = target["fideles"]
+        encountered_equipment = {item["combativity"] for item in support}
+        if local:
+            encountered_equipment.add(defense_combativity)
+        if encountered_equipment:
+            defender_equipment = (
+                "mixed"
+                if len(encountered_equipment) > 1
+                else EQUIPMENT.index(next(iter(encountered_equipment)))
+            )
         reinforcement = sum(item["count"] for item in support)
         relief_strength = sum(item["count"] * item["combativity"] for item in support)
         field = local * defense_combativity + relief_strength
@@ -733,7 +791,7 @@ def resolve_combats(state, seed, events):
         present_population = target["population"] - absent(state, target["id"]) - exported
         result = capture_result(
             rule_family(state["rules"]),
-            attackers * mission["combativity"],
+            attack_strength,
             field,
             fortified,
             target["stock"],
@@ -1010,7 +1068,10 @@ def bot_orders(state, seed):
                 if city["walls"] == 0:
                     proposals.append({"kind": "walls", "cities": [city["id"]]})
         if rule_family(state["rules"]).storage and wealth > 4_000_000:
-            proposals.append({"kind": "equipment"})
+            if local_forges(state):
+                proposals.extend({"kind": "forge", "cities": [city["id"]]} for city in cities)
+            else:
+                proposals.append({"kind": "equipment"})
             for city in cities:
                 proposals.append({"kind": "storage", "cities": [city["id"]]})
         if decision_month % 5 == 2:

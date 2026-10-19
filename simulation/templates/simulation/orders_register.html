@@ -1,0 +1,7 @@
+{% load i18n %}
+<section class="chapter-section orders-register" aria-labelledby="orders-heading"><h2 id="orders-heading">{% translate "Ce que porte déjà votre sceau" %}</h2>
+    {% for order in section_orders %}<article class="order-entry"><h3>{{ order.label }} · {{ order.destination }}</h3><p class="order-status">{{ order.status_label }}</p>
+        <p>{% blocktranslate with v0=order.cost v2=order.execute_month %}<strong>{{ v0 }} Mesures</strong>. Entrée en vigueur prévue à la lune <strong>{{ v2 }}</strong>.{% endblocktranslate %}</p>{% if order.men %}<p>{% blocktranslate with count=order.men %}Fidèles engagés : <strong>{{ count }}</strong>.{% endblocktranslate %}</p>{% endif %}
+        {% if order.status == 'confirmed' %}<p>{% translate "Les moyens sont réservés, sans être encore dépensés." %}</p>{% endif %}
+        {% if order.can_cancel and not game.paused %}<form method="post" action="{% url 'cancel' game.id order.id %}">{% csrf_token %}<input type="hidden" name="return_tab" value="{{ tab }}"><button type="submit">{% translate "Retirer ce décret" %}</button></form>{% endif %}</article>
+    {% empty %}<p>{% translate "Vous n’avez encore scellé aucun décret. Le premier mot vous appartient." %}</p>{% endfor %}</section>

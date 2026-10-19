@@ -1,6 +1,10 @@
 {% load i18n %}
-<p>{% translate "Suivez vos expéditions, leurs combats et leurs retours. Les effectifs et les réserves des maisons rivales demeurent secrets." %}</p>
+{% if not view.finished and not view.eliminated and not game.paused %}
+    {% if action %}{% include 'simulation/decree_form.html' %}
+    {% else %}<p class="reading-links"><a class="primary-action" href="?tab=wars&amp;action=expedition">{% translate "Préparer une expédition" %} →</a></p>{% endif %}
+{% endif %}
+{% include 'simulation/realm_map.html' %}
 {% include 'simulation/missions.html' %}
 {% if not view.missions %}<p>{% translate "Aucune expédition en route." %}</p>{% endif %}
-<p class="reading-links"><a href="?tab=decrees&action=expedition">{% translate "Préparer une expédition" %} →</a> · <a href="?tab=decrees#orders-heading">{% translate "Consulter les décrets scellés" %} →</a></p>
+{% include 'simulation/orders_register.html' %}
 {% include 'simulation/world_notes.html' %}

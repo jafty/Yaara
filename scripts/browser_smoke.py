@@ -48,24 +48,57 @@ with sync_playwright() as playwright:
         expect(
             page.get_by_role(
                 "heading",
-                name="News of your reign" if en else "Les nouvelles du règne",
+                name="Your house council" if en else "Le conseil de votre maison",
             )
         ).to_be_visible()
         game_url = page.url
         expect(page.locator("#recent-letters")).to_be_visible()
         expect(page.locator("#upcoming-heading")).to_be_visible()
         assert page.locator(".house-accounts").count() == 0
-        assert page.locator(".bookmarks a").count() == 5
+        assert page.locator(".bookmarks a").count() == 3
         page.locator('.bookmarks a[href$="?tab=constructions"]').click()
-        expect(page.get_by_role("heading", name="Constructions", exact=True)).to_be_visible()
+        expect(
+            page.get_by_role("heading", name="Works" if en else "Chantiers", exact=True)
+        ).to_be_visible()
         page.goto(game_url)
         assert page.locator("article.city-entry").count() == 3
-        assert page.locator(".sidebar, .stats-strip, svg, img, table").count() == 0
+        assert page.locator(".sidebar, .stats-strip, img, table").count() == 0
         assert page.locator(".city-entry details").count() == 0
-        expect(page.locator("body")).to_have_css("background-color", "rgb(255, 255, 255)")
+        expect(page.locator("body")).to_have_css("background-color", "rgb(253, 251, 247)")
         expect(page.locator(".dateline")).to_contain_text("Moon 1" if en else "Lune 1")
         page.screenshot(path=str(artifacts / f"domain-desktop-{language}.png"), full_page=True)
-        page.locator('.bookmarks a[href$="?tab=decrees"]').click()
+        page.locator('.bookmarks a[href$="?tab=constructions"]').click()
+        # Local forges keep the same atomic multi-city draft/seal/cancel workflow.
+        forge = page.locator("#work-forge")
+        forge.locator("summary").click()
+        forge.locator('input[value="c1"]').check()
+        forge.locator('input[value="c2"]').check()
+        expect(forge.locator("[data-work-cost]")).to_have_text(
+            "1,200,000" if en else "1\u202f200\u202f000"
+        )
+        forge.locator('button[type="submit"]').click()
+        expect(page.locator(".decree-reading")).to_contain_text(
+            "reinforced equipment" if en else "équipement renforcé"
+        )
+        expect(page.locator('.bookmarks a[aria-current="page"]')).to_have_attribute(
+            "data-section", "constructions"
+        )
+        page.locator(".wax-seal").click()
+        expect(page.locator(".resource-ribbon")).to_contain_text(
+            "600,000" if en else "600\u00a0000"
+        )
+        page.locator(".orders-register button").click()
+        expect(page.locator(".resource-ribbon")).to_contain_text(
+            "1,800,000" if en else "1\u00a0800\u00a0000"
+        )
+        canals = page.locator("#work-irrigation")
+        canals.locator("summary").click()
+        canals.locator('input[value="c1"]').check()
+        expect(canals.locator("[data-budget-note]")).to_have_text(
+            "This work needs 600,000 more Measures."
+            if en
+            else "Il manque 600\u202f000 Mesures pour cet ouvrage."
+        )
         work = page.locator("#work-storage")
         work.locator("summary").click()
         work.locator("[data-select-cities]").click()
@@ -107,7 +140,13 @@ with sync_playwright() as playwright:
         )
         page.locator(".orders-register button").click()
         expect(page.locator(".orders-register")).to_contain_text("Cancelled" if en else "Annulé")
-        page.locator('a[href="?tab=decrees&action=expedition"]').click()
+        page.locator('.bookmarks a[data-section="wars"]').click()
+        assert page.locator(".map-city").count() == 9
+        assert page.locator(".map-road").count() == 9
+        page.locator('.map-city[href$="city=c4"]').click()
+        assert page.locator("[data-local-accounts]").count() == 0
+        page.locator('.bookmarks a[data-section="wars"]').click()
+        page.locator('a[href="?tab=wars&action=expedition"]').click()
         page.locator("#mission-target").select_option("c4")
         page.locator('input[name="men_c3"]').fill("45")
         expect(page.locator("#army-cost")).to_contain_text("132,500" if en else "132\u202f500")
@@ -116,17 +155,20 @@ with sync_playwright() as playwright:
             page.get_by_role("heading", name="The people committed" if en else "Les hommes engagés")
         ).to_be_visible()
         page.locator(".wax-seal").click()
+        assert page.locator(".map-engaged").count() == 1
         page.screenshot(path=str(artifacts / f"decrees-desktop-{language}.png"), full_page=True)
         for moon in range(1, 4):
+            page.locator('.bookmarks a[data-section="domain"]').click()
             page.locator("#turn-page button.primary-action").click()
             expect(page.locator(".dateline")).to_contain_text(
                 f"Moon {moon + 1}" if en else f"Lune {moon + 1}"
             )
         page.locator('.bookmarks a[href$="?tab=wars"]').click()
         expect(
-            page.get_by_role("heading", name="Wars" if en else "Guerres", exact=True)
+            page.get_by_role("heading", name="Expeditions" if en else "Expéditions", exact=True)
         ).to_be_visible()
-        page.locator('.bookmarks a[href$="?tab=letters"]').click()
+        page.locator('.bookmarks a[data-section="domain"]').click()
+        page.locator('a[href="?tab=letters"]').click()
         for title in (
             ("Return to Namar", "Successful raid at Sefra")
             if en
@@ -147,6 +189,8 @@ with sync_playwright() as playwright:
         expect(page.locator(".correspondence")).to_contain_text(
             "J’ai fait inscrire le retour" if en else "I have recorded the return"
         )
+        page.locator("#language").select_option(language)
+        page.locator(".language-switch button").click()
         page.goto(game_url)
         state = page.request.get(game_url + "state/").json()
         assert "seed" not in state["game"]
@@ -170,9 +214,39 @@ with sync_playwright() as playwright:
             ):
                 page.goto(game_url + suffix)
                 no_overflow(page)
+                assert page.locator(".reign-header").bounding_box()["height"] < 130
+                for link in page.locator(".bookmarks a").all():
+                    box = link.bounding_box()
+                    assert box["height"] >= 44 and box["width"] >= 44
+                if suffix in ("", "?tab=constructions", "?tab=wars"):
+                    if suffix == "?tab=wars":
+                        for city in page.locator(".map-city").all():
+                            box = city.bounding_box()
+                            assert box["height"] >= 44 and box["width"] >= 44
+                    folio = {"": "council", "?tab=constructions": "works", "?tab=wars": "map"}[
+                        suffix
+                    ]
+                    page.screenshot(
+                        path=str(artifacts / f"{folio}-mobile-{width}-{language}.png"),
+                        full_page=True,
+                    )
             page.screenshot(
                 path=str(artifacts / f"decrees-mobile-{width}-{language}.png"), full_page=True
             )
+        # Native checklists and read-only previews also work without JavaScript.
+        plain = browser.new_context(
+            storage_state=context.storage_state(),
+            java_script_enabled=False,
+            viewport={"width": 320, "height": 844},
+        )
+        plain_page = plain.new_page()
+        plain_page.goto(game_url + "?tab=constructions")
+        plain_forge = plain_page.locator("#work-forge")
+        plain_forge.locator("summary").click()
+        plain_forge.locator('input[value="c1"]').check()
+        plain_forge.locator('button[type="submit"]').click()
+        expect(plain_page.locator(".unsealed-leaf")).to_be_visible()
+        plain.close()
         page.locator(".book-footer > form:last-child button").click()
         expect(page.locator("#id_username")).to_be_visible()
         page.locator("#id_username").fill(username)
@@ -182,5 +256,5 @@ with sync_playwright() as playwright:
         context.close()
     browser.close()
 print(
-    "Browser smoke passed in French and English: realm-wide batch works, select-all/clear, optional city folios, draft/seal/cancel, raid/return, translated saved letters, privacy, desktop/mobile, logout/login."
+    "Browser smoke passed in French and English: three destinations, public map, local batch forges, affordability, select-all/clear, city folios, draft/seal/cancel, raid/return, translated letters, privacy, compact mobile header, touch targets, logout/login."
 )

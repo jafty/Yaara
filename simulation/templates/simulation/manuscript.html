@@ -3,7 +3,7 @@
 <html lang="{{ current_language }}">
     <head>
         <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="theme-color" content="#ffffff">
+        <meta name="theme-color" content="#fdfbf7">
         <title>{% block title %}{{ game.title }} · Yaara{% endblock %}</title>
         <link rel="stylesheet" href="{% static 'simulation/common.css' %}">
         <link rel="stylesheet" href="{% static 'simulation/manuscript.css' %}">
@@ -14,30 +14,28 @@
         <a class="skip-link" href="#main">{% translate "Aller au récit" %}</a>
         <header class="reign-header">
             <div class="book book-heading">
-                <a class="book-world" href="{% url 'home' %}">Yaara</a>
-                <p class="book-title">{{ game.title }}</p>
-                <nav class="bookmarks" aria-label="{% translate "Les feuillets de votre règne" %}">
-                    <a href="{% url 'game' game.id %}" {% if tab == 'domain' or tab == 'city' %}aria-current="page"{% endif %}>
-                        <span>{% translate "Vue d’ensemble" %}</span>
-                    </a>
-                    <a href="{% url 'game' game.id %}?tab=decrees" {% if tab == 'decrees' %}aria-current="page"{% endif %}>
-                        <span>{% translate "Décrets" %}{% if view.sealed_count %} <span class="seal-count">({{ view.sealed_count }})</span>{% endif %}</span>
-                    </a>
-                    <a href="{% url 'game' game.id %}?tab=constructions" {% if tab == 'constructions' %}aria-current="page"{% endif %}><span>{% translate "Constructions" %}</span></a>
-                    <a href="{% url 'game' game.id %}?tab=wars" {% if tab == 'wars' %}aria-current="page"{% endif %}><span>{% translate "Guerres" %}</span></a>
-                    <a href="{% url 'game' game.id %}?tab=letters" {% if tab == 'letters' %}aria-current="page"{% endif %}><span>{% translate "Rapports" %}</span></a>
-                </nav>
+                <div class="book-identity"><a class="book-world" href="{% url 'home' %}">Yaara</a><p class="book-title">{{ game.title }}</p></div>
                 {% if view %}
                     <div class="resource-ribbon" aria-label="{% translate "Les moyens libres de votre maison" %}">
                     {% if game.mode == 'scheduled' and game.deadline %}<span data-deadline="{{ game.deadline|date:'c' }}">{{ game.deadline|date:'H:i' }} UTC</span>{% endif %}
                         <span>{% blocktranslate with v0=view.available_stock %}<strong>{{ v0 }} Mesures</strong> libres{% endblocktranslate %}</span>
                         <span>{% blocktranslate with v0=view.available_fideles %}<strong>{{ v0 }} Fidèles</strong> libres{% endblocktranslate %}</span>
                         {% if not view.finished %}<span>{% blocktranslate with v0=view.harvest_in %}Récolte dans <strong>{{ v0 }} lunes</strong>{% endblocktranslate %}</span>{% endif %}
-                        {% if not view.finished %}<a href="{% url 'game' game.id %}?tab={{ tab }}{% if selected %}&city={{ selected.id }}{% endif %}#turn-page">{% translate "Clore la lune" %} →</a>{% endif %}
                     </div>
                 {% endif %}
             </div>
         </header>
+        <nav class="bookmarks" aria-label="{% translate "Les feuillets de votre règne" %}">
+            <a href="{% url 'game' game.id %}" data-section="domain" {% if nav_section == 'domain' %}aria-current="page"{% endif %}>
+                {% include 'simulation/nav_icon.html' with icon='council' %}<span>{% translate "Conseil" %}</span>
+            </a>
+            <a href="{% url 'game' game.id %}?tab=wars" data-section="wars" {% if nav_section == 'wars' %}aria-current="page"{% endif %}>
+                {% include 'simulation/nav_icon.html' with icon='blades' %}<span>{% translate "Expéditions" %}</span>
+            </a>
+            <a href="{% url 'game' game.id %}?tab=constructions" data-section="constructions" {% if nav_section == 'constructions' %}aria-current="page"{% endif %}>
+                {% include 'simulation/nav_icon.html' with icon='works' %}<span>{% translate "Chantiers" %}</span>
+            </a>
+        </nav>
         <div class="book">
             <main id="main">
                 {% if messages %}<div class="notices" aria-live="polite">{% for message in messages %}<p class="notice {{ message.tags }}">{{ message }}</p>{% endfor %}</div>{% endif %}

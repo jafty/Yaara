@@ -20,8 +20,8 @@ pytestmark = [pytest.mark.integration, pytest.mark.usefixtures("test_static_stor
 @pytest.mark.parametrize(
     "language,heading",
     [
-        pytest.param("fr", "Les nouvelles du règne", id="french"),
-        pytest.param("en", "News of your reign", id="english"),
+        pytest.param("fr", "Le conseil de votre maison", id="french"),
+        pytest.param("en", "Your house council", id="english"),
     ],
 )
 def test_language_selection(user, game, language, heading):

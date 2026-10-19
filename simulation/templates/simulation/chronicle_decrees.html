@@ -1,41 +1,21 @@
 {% load i18n %}
 <p class="salutation">{% translate "Monseigneur," %}</p>
 {% if not view.finished and not view.eliminated and not game.paused %}
-    <p>{% translate "Dictez votre intention, puis relisez le brouillon. Seul votre sceau réserve les fonds, les hommes et les équipes. La clôture de la lune mettra les décrets scellés en mouvement." %}</p>
-    <ol class="decree-steps"><li>{% translate "Dicter" %}</li><li>{% translate "Relire et sceller" %}</li><li>{% translate "Clore la lune" %}</li></ol>
+    <p>{% translate "Choisissez votre intention, relisez le brouillon, puis scellez votre décret pour réserver les moyens annoncés." %}</p>
+    <ol class="decree-steps"><li>{% translate "Dicter" %}</li><li>{% translate "Relire et sceller" %}</li></ol>
     {% if selected.owned and city_requested %}<p class="marginal-note">{% blocktranslate with v0=selected.name %}Vous préparez un décret pour <strong>{{ v0 }}</strong>. Sa case est précochée ; vous pouvez choisir d’autres cités.{% endblocktranslate %}</p>{% endif %}
     {% if action %}
         <p class="reading-links"><a href="?tab=decrees{% if city_requested %}&city={{ selected.id }}{% endif %}">← {% translate "Revenir aux décrets" %}</a></p>
         {% include 'simulation/decree_form.html' %}
     {% else %}
-        <section class="chapter-section" aria-labelledby="works-heading"><h2 id="works-heading">{% translate "De la terre et des ouvrages" %}</h2>
-            <p>{% translate "Les équipes d’une cité conduisent un seul chantier à la fois. Le prix dépend du niveau de l’ouvrage ; le brouillon donnera le partage exact entre vos greniers." %}</p>
-            <p>{% translate "Un seul décret peut confier le même ouvrage à plusieurs cités. Choisissez-les ci-dessous, puis relisez et scellez une seule fois." %}</p>
-            {% for action in view.work_actions %}<article class="decree-choice"><h3>{{ action.label }}</h3>
-                <p>{% if action.kind == 'irrigation' %}{% translate "Les canaux augmentent l’impôt produit par les habitants présents, une fois achevés." %}{% elif action.kind == 'storage' %}{% translate "Un grenier agrandi conserve davantage de récolte. Sa capacité reste propre à la cité." %}{% elif action.kind == 'walls' %}{% translate "Les murs renforcent la garnison contre une capture ; ils ne protègent pas les villages d’un raid." %}{% else %}{% translate "La réparation rend à une enceinte endommagée sa protection." %}{% endif %}</p>
-                {% for price in action.prices %}<p class="cost-hint">{% blocktranslate with v0=price.level v1=price.cost v2=price.duration %}Niveau {{ v0 }} : <strong>{{ v1 }} Mesures</strong> ; <strong>{{ v2 }} lunes</strong>.{% endblocktranslate %} {{ price.effect }}</p>{% endfor %}
-                {% if action.selectable %}
-                    <details class="work-selection" id="work-{{ action.kind }}" {% if city_requested %}open{% endif %}>
-                        <summary>{% translate "Choisir les cités pour cet ouvrage" %}</summary>
-                        {% include 'simulation/decree_form.html' with inline=True %}
-                    </details>
-                {% else %}<p class="aside-text">{% translate "Aucune équipe ne peut recevoir cet ouvrage pour le moment." %}</p>{% endif %}
-            </article>{% endfor %}</section>
+        {% include 'simulation/work_choices.html' %}
         <section class="chapter-section" aria-labelledby="campaign-heading"><h2 id="campaign-heading">{% translate "Des hommes que l’on envoie" %}</h2>
             <p>{% translate "Les Fidèles partis ne défendent plus leur origine et ne contribuent plus à l’impôt jusqu’à leur retour. Le butin n’est utilisable qu’au retour." %}</p>
             <p class="cost-hint">{% blocktranslate with raid_base=view.expedition_prices.raid.base raid_person=view.expedition_prices.raid.per_person raid_min=view.raid_minimum capture_base=view.expedition_prices.capture.base capture_person=view.expedition_prices.capture.per_person capture_min=view.capture_minimum %}Pillage : {{ raid_base }} Mesures + {{ raid_person }} par Fidèle, au moins {{ raid_min }} Fidèles.<br>Capture : {{ capture_base }} Mesures + {{ capture_person }} par Fidèle, au moins {{ capture_min }} Fidèles.{% endblocktranslate %}</p>
             <a class="dictate-link" href="?tab=decrees&action=expedition">{% translate "Dicter l’ordre d’une expédition" %} →</a>
         </section>
-        {% if view.rules == 'V1' %}<section class="chapter-section"><h2>{% translate "Du travail de la forge" %}</h2>
-            <p>{{ view.equipment }}.</p>{% for work in view.equipment_work %}<p>{% blocktranslate with v0=work.finish_month %}Le projet doit s’achever à la lune <strong>{{ v0 }}</strong>.{% endblocktranslate %}</p>{% endfor %}
-            {% if view.equipment_available %}<p class="cost-hint">{% blocktranslate with v0=view.equipment_quote.cost v1=view.equipment_quote.duration %}<strong>{{ v0 }} Mesures</strong> ; <strong>{{ v1 }} lunes</strong>, selon notre population actuelle.{% endblocktranslate %}</p><a href="?tab=decrees&action=equipment">{% translate "Dicter le projet d’armement" %} →</a>{% endif %}
-        </section>{% endif %}
+        {% include 'simulation/realm_equipment.html' %}
     {% endif %}
     <p class="aside-text">{% if view.cancellable %}{% translate "Avant la clôture, un décret peut être retiré. Pour le modifier, il faut le rédiger de nouveau ; sa priorité sur la cible sera perdue." %}{% else %}{% translate "En V0, un sceau est définitif. Aucun décret confirmé ne peut être annulé." %}{% endif %} {% translate "Après le départ, ni rappel ni remboursement ne sont possibles." %}</p>
 {% else %}<p>{% translate "Je ne peux recevoir de nouveaux décrets tant que le calendrier est suspendu ou le règne achevé." %}</p>{% endif %}
-<section class="chapter-section orders-register" aria-labelledby="orders-heading"><h2 id="orders-heading">{% translate "Ce que porte déjà votre sceau" %}</h2>
-    {% for order in view.orders %}<article class="order-entry"><h3>{{ order.label }} · {{ order.destination }}</h3><p class="order-status">{{ order.status_label }}</p>
-        <p>{% blocktranslate with v0=order.cost v2=order.execute_month %}<strong>{{ v0 }} Mesures</strong>. Entrée en vigueur prévue à la lune <strong>{{ v2 }}</strong>.{% endblocktranslate %}</p>{% if order.men %}<p>{% blocktranslate with count=order.men %}Fidèles engagés : <strong>{{ count }}</strong>.{% endblocktranslate %}</p>{% endif %}
-        {% if order.status == 'confirmed' %}<p>{% translate "Les moyens sont réservés, sans être encore dépensés." %}</p>{% endif %}
-        {% if order.can_cancel and not game.paused %}<form method="post" action="{% url 'cancel' game.id order.id %}">{% csrf_token %}<button type="submit">{% translate "Retirer ce décret" %}</button></form>{% endif %}</article>
-    {% empty %}<p>{% translate "Vous n’avez encore scellé aucun décret. Le premier mot vous appartient." %}</p>{% endfor %}</section>
+{% include 'simulation/orders_register.html' %}

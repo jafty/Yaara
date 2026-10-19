@@ -1,5 +1,16 @@
 # Implementation decisions
 
+## 2026-10-19 · Three destinations, public atlas, local forges
+
+- The owner approved the usability audit with three corrections: Moon closure remains provisional, Expeditions uses crossed blades, and a simple map should preserve the role-playing atmosphere. This supersedes the earlier five-link navigation and illustrated-map prohibition for this restrained public schematic.
+- Council gathers news, accounts, commitments and standings; Expeditions combines preparation, movements and public geography; Works combines construction choices and progress. Three persistent icon-and-label links fit mobile safe areas. Keep existing folio/decree URLs for saved links. Reports are secondary Council reading. Manual closure and the scheduler retain their existing behavior; closure lives in Council rather than the resource ribbon or the main action sequence.
+- A keyboard-accessible SVG schematic on off-white paper draws only the actual public roads, cities, ownership and target engagement. Links open the existing authorized city folios. Own cities use a double ring, so ownership does not depend on color. The entire map fits narrow screens, with city hit areas of at least 44px at 320px viewport width. Distances are explicitly schematic and do not alter journey duration. There are no external map assets or inline CSS.
+- New snapshots carry `forge_version=2`. V1 forges are local city works, use the same team slot as other construction, permit one atomic multi-city preview/seal/cancellation, and follow the city and its current ruler on capture. A completed level equips the city's defenders, new inhabitants, relief and subsequent expeditions. Equipment remains qualitative in player projections; numerical combativity is never disclosed.
+- Retain the existing equipment levels and durations (8/14 Moons). Allocate the former three-city minimum proportionally: each city costs `max(600000, 600 * city_population)` for level one and `max(1400000, 1400 * city_population)` for level two. Thus improving three initial cities preserves the former total cost. This is a documented implementation default pending playtesting, with no rebalance of existing reigns.
+- Expeditions freeze each origin's equipment at departure and sum exact cohort strengths at combat. Uniform relief keeps the existing head-count allocation. Mixed relief is apportioned by strength with Hamilton allocation, then rounded down to whole people per origin, never exceeding the attack-strength cap. Reports describe mixed encountered equipment qualitatively.
+- Snapshots without the forge marker, or with version one, retain realm equipment, active projects, accepted quotes, departure equipment and original prices. No data migration rewrites their state or immutable report archives.
+- Shared work-choice, order-register, equipment and navigation partials avoid parallel markup. Both languages cover the new interface and local-forge narration. Live work totals show remaining funds or a shortfall; the server still validates the entire batch atomically.
+
 ## 2026-10-15 — First playable release
 
 The supplied French design dossier is retained verbatim as `design-source.fr.md`.

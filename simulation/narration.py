@@ -11,6 +11,7 @@ def number(value):
 
 
 WORK_PHRASES = {
+    "forge": [message("Aménager la forge de la cité"), message("Renforcer la forge de la cité")],
     "irrigation": [message("Aménager les premiers canaux"), message("Étendre le réseau de canaux")],
     "storage": [message("Agrandir le grenier"), message("Ériger des silos")],
     "walls": [message("Ériger une enceinte de terre crue"), message("Élever une grande enceinte")],
@@ -40,6 +41,7 @@ def returned_loot(deposited, overflow):
 
 
 COMPLETED_WORK_PHRASES = {
+    "forge": [message("ont aménagé la forge"), message("ont renforcé la forge")],
     "irrigation": [
         message("ont aménagé les premiers canaux"),
         message("ont étendu le réseau de canaux"),
@@ -61,6 +63,7 @@ def completed_work_phrase(kind, level):
 
 
 STARTED_ACTION_PHRASES = {
+    "forge": message("Les travaux des forges ont commencé."),
     "irrigation": message("Les travaux des canaux ont commencé."),
     "storage": message("Les travaux des greniers ont commencé."),
     "walls": message("Les travaux des fortifications ont commencé."),
@@ -72,6 +75,12 @@ STARTED_ACTION_PHRASES = {
 
 
 def work_effect(kind, level):
+    if kind == "forge":
+        return message(
+            "La forge fournira un équipement renforcé aux Fidèles de cette cité, y compris aux nouveaux habitants. Les expéditions déjà parties conserveront leur équipement."
+            if level == 1
+            else "La forge fournira un équipement supérieur aux Fidèles de cette cité, y compris aux nouveaux habitants. Les expéditions déjà parties conserveront leur équipement."
+        )
     if kind == "irrigation":
         return message(
             "Chaque habitant présent produira {yield_per_moon} Mesures d’impôt par lune.",

@@ -191,9 +191,20 @@ def desk(request, game_id):
             "game": metadata(game),
             "view": view,
             "tab": tab,
+            "nav_section": "wars"
+            if action_kind == "expedition" or tab == "wars"
+            else "constructions"
+            if tab == "constructions" or action_kind
+            else "domain",
             "selected": selected,
             "reports": [report_view(report) for report in reports],
             "action": action,
+            "section_orders": [
+                order
+                for order in view["orders"]
+                if (tab != "wars" or order["kind"] in ("raid", "capture"))
+                and (tab != "constructions" or order["kind"] not in ("raid", "capture"))
+            ],
             "city_requested": city_id is not None,
             "constructions": constructions,
             "construction_count": len(constructions) + len(view["equipment_work"]),
@@ -303,6 +314,7 @@ def preview_order(request, game_id):
             "label": localize(ACTION_LABELS[kind]),
             "view": localize(player_view(game.state, actor)),
             "tab": "decrees",
+            "nav_section": "wars" if kind in ("raid", "capture") else "constructions",
             "order": order,
             "target": city_names.get(order.get("target")),
             "funding": funding,
@@ -321,11 +333,12 @@ def preview_order(request, game_id):
 @require_POST
 def confirm_order(request, game_id):
     authorized_game(request, game_id)
+    destination = "decrees"
     try:
         data = signing.loads(request.POST.get("payload", ""), salt="yaara-order", max_age=3600)
         if data["game_id"] != str(game_id) or data["user_id"] != request.user.pk:
             raise signing.BadSignature
-        services.confirm(
+        order = services.confirm(
             request.user,
             game_id,
             data["spec"],
@@ -333,6 +346,7 @@ def confirm_order(request, game_id):
             data["month"],
             data["revision"],
         )
+        destination = "wars" if order["kind"] in ("raid", "capture") else "constructions"
         messages.success(
             request,
             _(
@@ -346,13 +360,16 @@ def confirm_order(request, game_id):
             if isinstance(error, RuleError)
             else _("Ce devis n’est plus valable. Préparez à nouveau votre décret."),
         )
-    return redirect(f"/games/{game_id}/?tab=decrees")
+    return redirect(f"/games/{game_id}/?tab={destination}")
 
 
 @login_required
 @require_POST
 def cancel_order(request, game_id, order_id):
     authorized_game(request, game_id)
+    destination = request.POST.get("return_tab", "decrees")
+    if destination not in ("domain", "decrees", "constructions", "wars"):
+        destination = "decrees"
     try:
         services.cancel(request.user, game_id, str(order_id))
         messages.success(
@@ -363,7 +380,7 @@ def cancel_order(request, game_id, order_id):
         )
     except RuleError as error:
         messages.error(request, localize(error.args[0]))
-    return redirect(f"/games/{game_id}/?tab=decrees")
+    return redirect(f"/games/{game_id}/?tab={destination}")
 
 
 @login_required

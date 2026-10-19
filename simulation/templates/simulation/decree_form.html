@@ -1,6 +1,6 @@
 {% load i18n l10n %}
 <section class="{% if not inline %}chapter-section {% endif %}decree-form">{% if not inline %}<h2>{{ action.label }}</h2>{% endif %}
-    <form method="post" action="{% url 'preview' game.id %}" {% if action.kind == 'expedition' %}class="expedition-form"{% elif action.kind != 'equipment' %}data-work-form{% endif %}>
+    <form method="post" action="{% url 'preview' game.id %}" {% if action.kind == 'expedition' %}class="expedition-form"{% elif action.kind != 'equipment' %}data-work-form data-free-stock="{{ view.available_stock|unlocalize }}"{% endif %}>
         {% csrf_token %}
         {% if action.kind == 'expedition' %}
             <p class="marginal-note">{% translate "Les Fidèles restent des habitants de leur cité. Une fois partis, ils cessent de défendre leur origine et de contribuer à l’impôt jusqu’à leur retour." %}</p>
@@ -22,6 +22,7 @@
                 <button type="button" data-select-cities>{% translate "Choisir toutes les cités disponibles" %}</button>
                 <button type="button" data-clear-cities>{% translate "Effacer ce choix" %}</button>
                 <p class="cost-hint" aria-live="polite">{% translate "Cités retenues :" %} <strong data-city-count>0</strong> · {% translate "Prix total :" %} <strong data-work-cost>0</strong> {% translate "Mesures" %}.</p>
+                <p class="cost-hint" data-budget-note aria-live="polite"></p>
             </div>
             <button type="submit" {% if not action.selectable %}disabled{% endif %}>{% translate "Faire relire ce décret" %}</button>
         {% endif %}

@@ -6,7 +6,7 @@
             {% if view.finished %}{% blocktranslate with v0=view.closed_moon %}Au terme de la lune {{ v0 }}{% endblocktranslate %}
             {% else %}{% blocktranslate with v0=view.open_moon v1=view.year %}Lune {{ v0 }}, année {{ v1 }}{% endblocktranslate %}<br><span>{% translate "Ouverte à vos ordres" %}{% if view.closed_moon %} · {% blocktranslate with v0=view.closed_moon %}Comptes arrêtés à la lune {{ v0 }}{% endblocktranslate %}{% endif %}</span>{% endif %}
         </p>
-        <h1>{% if tab == 'domain' %}{% translate "Les nouvelles du règne" %}{% elif tab == 'city' %}{% blocktranslate with v0=selected.name %}Le feuillet de {{ v0 }}{% endblocktranslate %}{% elif tab == 'decrees' %}{% translate "Ce que vous dicterez" %}{% elif tab == 'constructions' %}{% translate "Constructions" %}{% elif tab == 'wars' %}{% translate "Guerres" %}{% else %}{% translate "Rapports" %}{% endif %}</h1>
+        <h1>{% if tab == 'domain' %}{% translate "Le conseil de votre maison" %}{% elif tab == 'city' %}{% blocktranslate with v0=selected.name %}Le feuillet de {{ v0 }}{% endblocktranslate %}{% elif tab == 'decrees' %}{% translate "Ce que vous dicterez" %}{% elif tab == 'constructions' %}{% translate "Chantiers" %}{% elif tab == 'wars' %}{% translate "Expéditions" %}{% else %}{% translate "Rapports" %}{% endif %}</h1>
         <p class="dedication">{% blocktranslate with v0=view.realm %}Au service de {{ v0 }}.{% endblocktranslate %}</p>
     </header>
     {% if view.finished %}
@@ -17,9 +17,14 @@
     {% elif view.eliminated %}<p class="marginal-note">{% translate "Aucune cité ne reconnaît plus votre autorité. Je continuerai pourtant de tenir ce livre jusqu’à la fin du règne." %}</p>
     {% elif game.paused %}<p class="marginal-note">{% translate "Le calendrier est suspendu. Reprenez-le avant de dicter de nouveaux ordres." %}</p>{% endif %}
     {% if tab == 'domain' %}
+        <p class="reading-links council-links"><a href="?tab=constructions">{% translate "Préparer un chantier" %} →</a> · <a href="?tab=wars&amp;action=expedition">{% translate "Préparer une expédition" %} →</a> · <a href="#orders-heading">{% translate "Consulter les décrets scellés" %} →</a></p>
+        <details class="plain-disclosure"><summary>{% translate "Les comptes de votre maison" %}</summary><div class="unfolded">
+            <p>{% blocktranslate with free=view.available_stock reserved=view.reserved_stock tax=view.tax %}<strong>{{ free }} Mesures</strong> libres ; <strong>{{ reserved }}</strong> réservées.<br>Prélèvement en préparation : <strong>{{ tax }} Mesures</strong>, encore indisponibles.{% endblocktranslate %}</p>
+            <p>{% translate "Les dépenses sont réparties automatiquement entre les greniers de votre maison. Les réserves restent locales pour les pillages et le stockage." %}</p>
+        </div></details>
         <section class="briefing-news" aria-labelledby="recent-letters">
             <h2 id="recent-letters">{% translate "Les dernières nouvelles" %}</h2>
-            {% if not view.closed_moon %}<p>{% translate "Votre règne commence. Préparez vos premiers décrets, puis clôturez la lune pour les mettre en mouvement." %}</p>{% endif %}
+            {% if not view.closed_moon %}<p>{% translate "Votre règne commence. Le conseil rassemble vos nouvelles et vos engagements. Confiez vos premiers ouvrages aux cités ou préparez une expédition." %}</p>{% endif %}
             {% include 'simulation/letter_entries.html' with compact=True %}
             <p class="reading-links"><a href="?tab=letters">{% translate "Tous les rapports" %} →</a></p>
         </section>
@@ -43,6 +48,7 @@
             {% empty %}<p>{% translate "Aucune cité ne demeure sous votre sceau." %}</p>{% endfor %}
         </section>
         {% include 'simulation/world_notes.html' %}
+        {% include 'simulation/orders_register.html' %}
     {% elif tab == 'city' %}{% include 'simulation/city_folio.html' %}
     {% elif tab == 'constructions' %}{% include 'simulation/constructions.html' %}
     {% elif tab == 'wars' %}{% include 'simulation/wars.html' %}
@@ -52,5 +58,5 @@
         <p>{% translate "J’ai réuni les cent dernières lettres qui vous sont destinées. Chacune garde sa date ; les observations d’hier ne décrivent pas nécessairement les forces d’aujourd’hui." %}</p>
         <section class="correspondence" aria-label="{% translate "Les lettres de votre maison" %}">{% include 'simulation/letter_entries.html' %}</section>
     {% endif %}
-    {% include 'simulation/turn_closing.html' %}
+    {% if tab == 'domain' or tab == 'decrees' %}{% include 'simulation/turn_closing.html' %}{% endif %}
 {% endblock %}

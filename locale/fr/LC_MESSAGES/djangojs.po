@@ -1,0 +1,11 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: fr\n"
+
+
+msgid "Il manque %(amount)s Mesures pour cet ouvrage."
+msgstr "Il manque %(amount)s Mesures pour cet ouvrage."
+
+msgid "Après réservation : %(amount)s Mesures libres."
+msgstr "Après réservation : %(amount)s Mesures libres."

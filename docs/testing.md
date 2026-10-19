@@ -129,3 +129,9 @@ Existing exact-date cases explicitly select calendar version one, preserving the
 The browser smoke runs the full journey in both French and English, changes the language of the same stored letters, and checks 390px and 320px layouts. It uses real forms, CSRF, JavaScript cost estimates and persisted game state. Compile both catalogs before running it.
 
 The realm-wide batch regression starts directly on Decrees, selects two cities, checks the single read-only preview and seals one atomic order. Busy-team exclusion has its own HTTP case. Both browser languages exercise select-all, clear, live batch totals, one seal/cancellation for two cities, and optional city-folio preselection.
+
+## Local forge and mobile folio revision
+
+The 2026-10-19 cases specify city forge quotes at the population floor, equality and above it; version, ownership, team-slot, level and atomic affordability rejections; batch cancellation; frozen prices, completion and capture; mixed expedition strength frozen at departure; local raid/capture defense; mixed relief caps and qualitative encounter reports; private projections and ordinary bot commands. Existing realm-equipment cases explicitly select forge version one, protecting saved reigns rather than changing their expected rules.
+
+Independent bilingual HTTP cases cover the three navigation destinations, active state on secondary folios, public map privacy, local forge preview/seal and legacy snapshots with no forge marker. The browser journey additionally checks live affordability, a local forge batch, city map links, all nine cities fitting at 320px, 44px navigation/map hit areas, compact headers and native construction submission with JavaScript disabled. Screenshots are retained as local test artifacts; they do not replace assertions or the PostgreSQL checkpoint.

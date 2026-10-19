@@ -133,12 +133,14 @@ EQUIPMENT_LABELS = [
 WALLS = [Fraction(1), Fraction(8, 5), Fraction(3)]
 CAPACITIES = [2_400_000, 3_600_000, 6_000_000]
 WORK_PRICES = {
+    "forge": [(600_000, 8), (1_400_000, 14)],
     "irrigation": [(2_400_000, 6), (4_800_000, 12)],
     "storage": [(500_000, 4), (1_200_000, 8)],
     "walls": [(1_200_000, 8), (9_600_000, 20)],
     "repair": [(240_000, 3), (1_920_000, 6)],
 }
 ACTION_LABELS = {
+    "forge": message("Améliorer la forge"),
     "irrigation": message("Aménager les canaux"),
     "storage": message("Agrandir le stockage"),
     "walls": message("Renforcer les fortifications"),

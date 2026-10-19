@@ -64,6 +64,8 @@ def player_view(state, actor):
                     "yield": 100 + 100 * city["irrigation"],
                     "irrigation": city["irrigation"],
                     "storage": city["storage"],
+                    "forge": city.get("forge", 0),
+                    "equipment": EQUIPMENT_LABELS[engine.city_equipment(state, city)],
                     "busy": city["id"] in busy,
                     "deaths": city["military_deaths"] + city["civilian_deaths"],
                     "works": [
@@ -143,7 +145,11 @@ def player_view(state, actor):
         for row in (state["result"]["standings"] if state["result"] else engine.standings(state))
     ]
     available_actions = []
-    for kind in ("irrigation", "storage", "walls", "repair"):
+    for kind in ("irrigation", "storage", "walls", "repair", "forge"):
+        if kind == "forge" and (
+            not engine.local_forges(state) or not rule_family(state["rules"]).equipment
+        ):
+            continue
         if kind in ("storage", "repair") and not rule_family(state["rules"]).storage:
             continue
         options = []
@@ -181,7 +187,11 @@ def player_view(state, actor):
             }
         )
     equipment_quote = {}
-    if rule_family(state["rules"]).equipment and state["players"][actor]["equipment"] < 2:
+    if (
+        not engine.local_forges(state)
+        and rule_family(state["rules"]).equipment
+        and state["players"][actor]["equipment"] < 2
+    ):
         equipment_quote = engine.equipment_spec(state, actor)
     return {
         "month": state["month"],
@@ -197,8 +207,10 @@ def player_view(state, actor):
         "actor": actor,
         "realm": state["players"][actor]["name"],
         "equipment": EQUIPMENT_LABELS[state["players"][actor]["equipment"]],
+        "local_forges": engine.local_forges(state),
         "equipment_quote": equipment_quote,
-        "equipment_available": rule_family(state["rules"]).equipment
+        "equipment_available": not engine.local_forges(state)
+        and rule_family(state["rules"]).equipment
         and state["players"][actor]["equipment"] < 2
         and not engine.equipment_busy(state, actor),
         "equipment_work": [

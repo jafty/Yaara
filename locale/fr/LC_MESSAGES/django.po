@@ -1966,3 +1966,99 @@ msgstr "Préparer une expédition"
 
 msgid "Votre règne commence. Préparez vos premiers décrets, puis clôturez la lune pour les mettre en mouvement."
 msgstr "Votre règne commence. Préparez vos premiers décrets, puis clôturez la lune pour les mettre en mouvement."
+
+msgid "Conseil"
+msgstr "Conseil"
+
+msgid "Chantiers"
+msgstr "Chantiers"
+
+msgid "Expéditions"
+msgstr "Expéditions"
+
+msgid "Le conseil de votre maison"
+msgstr "Le conseil de votre maison"
+
+msgid "Améliorer la forge"
+msgstr "Améliorer la forge"
+
+msgid "Les ouvrages de vos cités"
+msgstr "Les ouvrages de vos cités"
+
+msgid "Choisissez un ouvrage, puis une ou plusieurs cités. Un seul sceau réserve tout le lot ; chaque cité mobilise ses propres équipes."
+msgstr "Choisissez un ouvrage, puis une ou plusieurs cités. Un seul sceau réserve tout le lot ; chaque cité mobilise ses propres équipes."
+
+msgid "Choisissez votre intention, relisez le brouillon, puis scellez votre décret pour réserver les moyens annoncés."
+msgstr "Choisissez votre intention, relisez le brouillon, puis scellez votre décret pour réserver les moyens annoncés."
+
+msgid "La forge équipe les Fidèles de cette cité et ses futurs habitants. Chaque cité conserve son propre équipement."
+msgstr "La forge équipe les Fidèles de cette cité et ses futurs habitants. Chaque cité conserve son propre équipement."
+
+msgid "Dicter · Relire · Sceller"
+msgstr "Dicter · Relire · Sceller"
+
+msgid "Votre règne commence. Le conseil rassemble vos nouvelles et vos engagements. Confiez vos premiers ouvrages aux cités ou préparez une expédition."
+msgstr "Votre règne commence. Le conseil rassemble vos nouvelles et vos engagements. Confiez vos premiers ouvrages aux cités ou préparez une expédition."
+
+msgid "<strong>%(free)s Mesures</strong> libres ; <strong>%(reserved)s</strong> réservées.<br>Prélèvement en préparation : <strong>%(tax)s Mesures</strong>, encore indisponibles."
+msgstr "<strong>%(free)s Mesures</strong> libres ; <strong>%(reserved)s</strong> réservées.<br>Prélèvement en préparation : <strong>%(tax)s Mesures</strong>, encore indisponibles."
+
+msgid "Les dépenses sont réparties automatiquement entre les greniers de votre maison. Les réserves restent locales pour les pillages et le stockage."
+msgstr "Les dépenses sont réparties automatiquement entre les greniers de votre maison. Les réserves restent locales pour les pillages et le stockage."
+
+msgid "Forge de niveau <strong>%(level)s</strong> : <strong>%(equipment)s</strong> pour les Fidèles de cette cité."
+msgstr "Forge de niveau <strong>%(level)s</strong> : <strong>%(equipment)s</strong> pour les Fidèles de cette cité."
+
+msgid "Le rang tient déjà compte du départage par population. Deux maisons ayant autant de cités peuvent donc occuper des rangs différents ; un même rang indique une égalité complète."
+msgstr "Le rang tient déjà compte du départage par population. Deux maisons ayant autant de cités peuvent donc occuper des rangs différents ; un même rang indique une égalité complète."
+
+msgid "Les oasis de Yaara"
+msgstr "Les oasis de Yaara"
+
+msgid "Une esquisse des cités et de leurs routes. Choisissez une oasis pour ouvrir son feuillet."
+msgstr "Une esquisse des cités et de leurs routes. Choisissez une oasis pour ouvrir son feuillet."
+
+msgid "Carte des cités et des routes"
+msgstr "Carte des cités et des routes"
+
+msgid "Les traits relient les oasis voisines. Les cités de votre maison portent un double cercle. Les pointillés signalent une expédition engagée."
+msgstr "Les traits relient les oasis voisines. Les cités de votre maison portent un double cercle. Les pointillés signalent une expédition engagée."
+
+msgid "Expédition engagée"
+msgstr "Expédition engagée"
+
+msgid "Les maisons de Yaara"
+msgstr "Les maisons de Yaara"
+
+msgid "Les routes seules sont représentées ; les distances ne déterminent pas la durée des expéditions. Les forces et les réserves rivales restent secrètes."
+msgstr "Les routes seules sont représentées ; les distances ne déterminent pas la durée des expéditions. Les forces et les réserves rivales restent secrètes."
+
+msgid "Ce règne conserve son projet d’armement commun."
+msgstr "Ce règne conserve son projet d’armement commun."
+
+msgid "Confiez la forge aux équipes d’une cité."
+msgstr "Confiez la forge aux équipes d’une cité."
+
+msgid "ensemble d’équipements variés"
+msgstr "ensemble d’équipements variés"
+
+msgid "Aménager la forge de la cité"
+msgstr "Aménager la forge de la cité"
+
+msgid "Renforcer la forge de la cité"
+msgstr "Renforcer la forge de la cité"
+
+msgid "ont aménagé la forge"
+msgstr "ont aménagé la forge"
+
+msgid "ont renforcé la forge"
+msgstr "ont renforcé la forge"
+
+msgid "Les travaux des forges ont commencé."
+msgstr "Les travaux des forges ont commencé."
+
+msgid "La forge fournira un équipement renforcé aux Fidèles de cette cité, y compris aux nouveaux habitants. Les expéditions déjà parties conserveront leur équipement."
+msgstr "La forge fournira un équipement renforcé aux Fidèles de cette cité, y compris aux nouveaux habitants. Les expéditions déjà parties conserveront leur équipement."
+
+msgid "La forge fournira un équipement supérieur aux Fidèles de cette cité, y compris aux nouveaux habitants. Les expéditions déjà parties conserveront leur équipement."
+msgstr "La forge fournira un équipement supérieur aux Fidèles de cette cité, y compris aux nouveaux habitants. Les expéditions déjà parties conserveront leur équipement."

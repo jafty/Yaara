@@ -89,6 +89,7 @@ def create_game(
     interval_minutes=10,
     player_name=message("La maison d’Ambre"),
     calendar_version=2,
+    forge_version=2,
 ):
     # Serialize account-level creation limits as well as each game's commands.
     get_user_model().objects.select_for_update().get(pk=user.pk)
@@ -99,7 +100,12 @@ def create_game(
     if mode not in ("manual", "scheduled") or interval_minutes not in (5, 10):
         raise RuleError(message("Ce calendrier n’est pas disponible."))
     state = engine.new_state(
-        version, reign_months, opponents, player_name, calendar_version=calendar_version
+        version,
+        reign_months,
+        opponents,
+        player_name,
+        calendar_version=calendar_version,
+        forge_version=forge_version,
     )
     game = Game.objects.create(
         owner=user,

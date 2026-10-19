@@ -1,0 +1,9 @@
+<svg class="nav-icon" data-icon="{{ icon }}" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+    {% if icon == 'blades' %}
+        <path d="m4 3 4 1 12 13-3 3L4 8 3 4Zm16 0-4 1-4 5m-3 3-5 5 3 3 5-5M3 15l6 6m6-18 6 6M2 22l3-3m14 0 3 3"/>
+    {% elif icon == 'council' %}
+        <path d="m3 8 9-5 9 5M4 9h16M6 10v8m6-8v8m6-8v8M3 21h18M4 18h16"/>
+    {% else %}
+        <path d="m14 3 7 7-3 3-3-3L5 20l-3-3L12 7 9 4l3-3m-2 13 8 8 3-3-8-8"/>
+    {% endif %}
+</svg>

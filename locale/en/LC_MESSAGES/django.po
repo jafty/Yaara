@@ -3250,3 +3250,99 @@ msgstr "Plan an expedition"
 
 msgid "Votre règne commence. Préparez vos premiers décrets, puis clôturez la lune pour les mettre en mouvement."
 msgstr "Your reign begins. Prepare your first decrees, then close the Moon to set them in motion."
+
+msgid "Conseil"
+msgstr "Council"
+
+msgid "Chantiers"
+msgstr "Works"
+
+msgid "Expéditions"
+msgstr "Expeditions"
+
+msgid "Le conseil de votre maison"
+msgstr "Your house council"
+
+msgid "Améliorer la forge"
+msgstr "Improve the forge"
+
+msgid "Les ouvrages de vos cités"
+msgstr "Works for your cities"
+
+msgid "Choisissez un ouvrage, puis une ou plusieurs cités. Un seul sceau réserve tout le lot ; chaque cité mobilise ses propres équipes."
+msgstr "Choose a work, then one or more cities. One seal reserves the whole order; each city commits its own teams."
+
+msgid "Choisissez votre intention, relisez le brouillon, puis scellez votre décret pour réserver les moyens annoncés."
+msgstr "Choose your intention, review the draft, then seal your decree to reserve the stated resources."
+
+msgid "La forge équipe les Fidèles de cette cité et ses futurs habitants. Chaque cité conserve son propre équipement."
+msgstr "The forge equips this city’s Faithful and future inhabitants. Each city retains its own equipment."
+
+msgid "Dicter · Relire · Sceller"
+msgstr "Dictate · Review · Seal"
+
+msgid "Votre règne commence. Le conseil rassemble vos nouvelles et vos engagements. Confiez vos premiers ouvrages aux cités ou préparez une expédition."
+msgstr "Your reign begins. The council gathers your news and commitments. Assign your first city works or prepare an expedition."
+
+msgid "<strong>%(free)s Mesures</strong> libres ; <strong>%(reserved)s</strong> réservées.<br>Prélèvement en préparation : <strong>%(tax)s Mesures</strong>, encore indisponibles."
+msgstr "<strong>%(free)s Measures</strong> available; <strong>%(reserved)s</strong> reserved.<br>Tax accruing: <strong>%(tax)s Measures</strong>, not yet available."
+
+msgid "Les dépenses sont réparties automatiquement entre les greniers de votre maison. Les réserves restent locales pour les pillages et le stockage."
+msgstr "Spending is shared automatically among your house’s granaries. Stocks remain local for raids and storage."
+
+msgid "Forge de niveau <strong>%(level)s</strong> : <strong>%(equipment)s</strong> pour les Fidèles de cette cité."
+msgstr "Level <strong>%(level)s</strong> forge: <strong>%(equipment)s</strong> for this city’s Faithful."
+
+msgid "Le rang tient déjà compte du départage par population. Deux maisons ayant autant de cités peuvent donc occuper des rangs différents ; un même rang indique une égalité complète."
+msgstr "Rank already includes the population tiebreaker. Houses with the same number of cities can therefore have different ranks; a shared rank means a complete tie."
+
+msgid "Les oasis de Yaara"
+msgstr "The oases of Yaara"
+
+msgid "Une esquisse des cités et de leurs routes. Choisissez une oasis pour ouvrir son feuillet."
+msgstr "A sketch of the cities and their roads. Choose an oasis to open its folio."
+
+msgid "Carte des cités et des routes"
+msgstr "Map of cities and roads"
+
+msgid "Les traits relient les oasis voisines. Les cités de votre maison portent un double cercle. Les pointillés signalent une expédition engagée."
+msgstr "Lines connect neighboring oases. Your house’s cities have a double circle. Dotted rings mark a committed expedition."
+
+msgid "Expédition engagée"
+msgstr "Expedition committed"
+
+msgid "Les maisons de Yaara"
+msgstr "The houses of Yaara"
+
+msgid "Les routes seules sont représentées ; les distances ne déterminent pas la durée des expéditions. Les forces et les réserves rivales restent secrètes."
+msgstr "Only roads are represented; distances do not determine expedition duration. Rival forces and stocks remain secret."
+
+msgid "Ce règne conserve son projet d’armement commun."
+msgstr "This reign retains its shared equipment project."
+
+msgid "Confiez la forge aux équipes d’une cité."
+msgstr "Assign the forge to a city’s teams."
+
+msgid "ensemble d’équipements variés"
+msgstr "assortment of equipment"
+
+msgid "Aménager la forge de la cité"
+msgstr "Establish the city forge"
+
+msgid "Renforcer la forge de la cité"
+msgstr "Improve the city forge"
+
+msgid "ont aménagé la forge"
+msgstr "have established the forge"
+
+msgid "ont renforcé la forge"
+msgstr "have improved the forge"
+
+msgid "Les travaux des forges ont commencé."
+msgstr "Work on the forges has begun."
+
+msgid "La forge fournira un équipement renforcé aux Fidèles de cette cité, y compris aux nouveaux habitants. Les expéditions déjà parties conserveront leur équipement."
+msgstr "The forge will provide reinforced equipment to this city’s Faithful, including new inhabitants. Expeditions already underway will keep their equipment."
+
+msgid "La forge fournira un équipement supérieur aux Fidèles de cette cité, y compris aux nouveaux habitants. Les expéditions déjà parties conserveront leur équipement."
+msgstr "The forge will provide superior equipment to this city’s Faithful, including new inhabitants. Expeditions already underway will keep their equipment."

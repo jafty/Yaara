@@ -1,0 +1,5 @@
+{% load i18n %}
+{% if view.rules == 'V1' and not view.local_forges %}<section class="chapter-section"><h2>{% translate "Du travail de la forge" %}</h2>
+            <p>{{ view.equipment }}.</p>{% for work in view.equipment_work %}<p>{% blocktranslate with v0=work.finish_month %}Le projet doit s’achever à la lune <strong>{{ v0 }}</strong>.{% endblocktranslate %}</p>{% endfor %}
+            {% if view.equipment_available and not view.finished and not view.eliminated and not game.paused %}<p class="cost-hint">{% blocktranslate with v0=view.equipment_quote.cost v1=view.equipment_quote.duration %}<strong>{{ v0 }} Mesures</strong> ; <strong>{{ v1 }} lunes</strong>, selon notre population actuelle.{% endblocktranslate %}</p><a href="?tab=decrees&action=equipment">{% translate "Dicter le projet d’armement" %} →</a>{% endif %}
+        </section>{% endif %}
