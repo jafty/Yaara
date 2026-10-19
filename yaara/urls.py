@@ -22,6 +22,7 @@ urlpatterns = [
     path("games/<uuid:game_id>/orders/<uuid:order_id>/cancel/", views.cancel_order, name="cancel"),
     path("games/<uuid:game_id>/advance/", views.advance, name="advance"),
     path("games/<uuid:game_id>/pause/", views.pause, name="pause"),
+    path("games/<uuid:game_id>/start/", views.start, name="start"),
 ]
 handler403 = partial(views.error_view, status=403)
 handler404 = partial(views.error_view, status=404)

@@ -41,7 +41,9 @@ def test_repair_effect_preserves_wall_level():
 )
 @pytest.mark.parametrize("language", ["fr", "en"])
 def test_bulk_decree_from_realm(user, language):
-    game = services.create_game(user, "Bulk works", opponents="passive", map_version=1)
+    game = services.create_game(
+        user, "Bulk works", opponents="passive", map_version=1, economy_version=1
+    )
     client = Client()
     client.force_login(user)
     client.cookies["django_language"] = language
@@ -76,7 +78,9 @@ def test_bulk_decree_from_realm(user, language):
     "City action directive: an inline batch excludes teams already reserved by another decree",
 )
 def test_bulk_decree_busy_city(user):
-    game = services.create_game(user, "Busy team", opponents="passive", map_version=1)
+    game = services.create_game(
+        user, "Busy team", opponents="passive", map_version=1, economy_version=1
+    )
     services.confirm(user, game.id, {"kind": "storage", "cities": ["c1"]}, uuid.uuid4(), 1)
     client = Client()
     client.force_login(user)
@@ -92,7 +96,7 @@ def test_first_moon():
     """Given a new passive reign.
     When its initial calendar is projected.
     Then Moon 1 is open and twelve closures remain before the first harvest."""
-    state = engine.new_state(opponents="passive", map_version=1)
+    state = engine.new_state(opponents="passive", map_version=1, economy_version=1)
     assert state["month"] == 1
     view = player_view(state, "p1")
     assert (view["open_moon"], view["closed_moon"], view["harvest_in"]) == (1, 0, 12)
@@ -108,7 +112,7 @@ def test_moon_departure():
     """Given a raid sealed during Moon 1.
     When that Moon closes.
     Then it departs in Moon 1, fights in Moon 2 and returns in Moon 3."""
-    state = engine.new_state(opponents="passive", map_version=1)
+    state = engine.new_state(opponents="passive", map_version=1, economy_version=1)
     order = engine.confirm_order(
         state, "p1", {"kind": "raid", "target": "c4", "contributions": {"c3": 45}}, "raid"
     )
@@ -129,7 +133,7 @@ def test_moon_harvest():
     """Given a new passive V0 reign.
     When twelve Moons close.
     Then exactly twelve tax intervals are paid and Moon 13 opens year two."""
-    state = engine.new_state("V0", opponents="passive", map_version=1)
+    state = engine.new_state("V0", opponents="passive", map_version=1, economy_version=1)
     for _ in range(11):
         engine.advance_month(state, "seed")
     assert state["cities"]["c1"]["stock"] == 600_000
@@ -148,7 +152,9 @@ def test_moon_finish():
     """Given a passive reign lasting twenty-four Moons.
     When twenty-four closures are processed.
     Then the result is fixed at Moon 24 with no remaining intervals."""
-    state = engine.new_state("V0", reign_months=24, opponents="passive", map_version=1)
+    state = engine.new_state(
+        "V0", reign_months=24, opponents="passive", map_version=1, economy_version=1
+    )
     for _ in range(24):
         engine.advance_month(state, "seed")
     view = player_view(state, "p1")
@@ -162,7 +168,9 @@ def test_legacy_calendar():
     """Given a save without a calendar-version marker.
     When an order is prepared and a month advances.
     Then the original zero-based admission and one-based departure timing remain intact."""
-    state = engine.new_state(calendar_version=1, opponents="passive", map_version=1)
+    state = engine.new_state(
+        calendar_version=1, opponents="passive", map_version=1, economy_version=1
+    )
     state.pop("calendar_version", None)
     assert state["month"] == 0
     order = engine.prepare_order(state, "p1", {"kind": "storage", "cities": ["c1"]}, "work")
@@ -177,8 +185,8 @@ def test_legacy_calendar():
     "UI revision: open-Moon dates preserve the established bot, economic and combat sequence",
 )
 def test_calendar_equivalence():
-    legacy = engine.new_state(reign_months=24, calendar_version=1, map_version=1)
-    current = engine.new_state(reign_months=24, map_version=1)
+    legacy = engine.new_state(reign_months=24, calendar_version=1, map_version=1, economy_version=1)
+    current = engine.new_state(reign_months=24, map_version=1, economy_version=1)
     for _ in range(24):
         engine.bot_orders(legacy, "calendar-equivalence")
         engine.bot_orders(current, "calendar-equivalence")
@@ -198,7 +206,9 @@ def test_calendar_equivalence():
     "UI revision: Moon 1 closure retries stay idempotent under the open-Moon calendar",
 )
 def test_moon_tick_retry(user):
-    game = services.create_game(user, "Moons", opponents="passive", map_version=1)
+    game = services.create_game(
+        user, "Moons", opponents="passive", map_version=1, economy_version=1
+    )
     first, executed = services.tick(game.id, 1, user)
     assert executed
     repeated, executed = services.tick(game.id, 1, user)
@@ -239,7 +249,9 @@ def test_city_folio_privacy(user, game, city, status, private):
     "language,title", [("fr", "Décret scellé"), ("en", "Decree sealed")], ids=["french", "english"]
 )
 def test_bilingual_saved_report(user, language, title):
-    game = services.create_game(user, "Bilingual", opponents="passive", map_version=1)
+    game = services.create_game(
+        user, "Bilingual", opponents="passive", map_version=1, economy_version=1
+    )
     services.confirm(user, game.id, {"kind": "storage", "cities": ["c1"]}, uuid.uuid4(), 1)
     stored = list(Report.objects.filter(game=game).values())
     client = Client()
@@ -262,7 +274,9 @@ def test_bilingual_saved_report(user, language, title):
     "UI revision: switching languages preserves an unsealed draft without reserving resources",
 )
 def test_draft_language_switch(user):
-    game = services.create_game(user, "Draft", opponents="passive", map_version=1)
+    game = services.create_game(
+        user, "Draft", opponents="passive", map_version=1, economy_version=1
+    )
     client = Client()
     client.force_login(user)
     response = client.post(
@@ -287,7 +301,9 @@ def test_draft_language_switch(user):
 )
 @pytest.mark.parametrize("scenario", ["foreign", "tampered", "stale"])
 def test_draft_reopen_rejected(user, scenario):
-    game = services.create_game(user, "Draft", opponents="passive", map_version=1)
+    game = services.create_game(
+        user, "Draft", opponents="passive", map_version=1, economy_version=1
+    )
     client = Client()
     client.force_login(user)
     response = client.post(
@@ -296,7 +312,9 @@ def test_draft_reopen_rejected(user, scenario):
     payload = response.context["payload"]
     target = game
     if scenario == "foreign":
-        target = services.create_game(user, "Other", opponents="passive", map_version=1)
+        target = services.create_game(
+            user, "Other", opponents="passive", map_version=1, economy_version=1
+        )
     elif scenario == "tampered":
         payload += "tampered"
     else:
@@ -316,7 +334,7 @@ def test_draft_reopen_rejected(user, scenario):
 @pytest.mark.parametrize("scenario", ["early", "due", "late", "paused"])
 def test_open_moon_scheduler(user, scenario):
     game = services.create_game(
-        user, "Scheduled", mode="scheduled", opponents="passive", map_version=1
+        user, "Scheduled", mode="scheduled", opponents="passive", map_version=1, economy_version=1
     )
     if scenario in ("due", "late"):
         game.deadline = timezone.now() - timedelta(seconds=2 if scenario == "due" else 1200)

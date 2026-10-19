@@ -1,0 +1,8 @@
+[build]
+builder = "DOCKERFILE"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+startCommand = "python manage.py tick_due"
+cronSchedule = "*/5 * * * *"
+restartPolicyType = "NEVER"

@@ -13,6 +13,7 @@ def localize(value):
 def report_view(report):
     language = get_language() or "fr"
     return {
+        "id": report.pk,
         "month": max(1, report.month),
         "title": render(report.content["title"], language) if report.content else report.title,
         "body": render(report.content["body"], language) if report.content else report.body,

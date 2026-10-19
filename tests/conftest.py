@@ -33,6 +33,7 @@ def game(user):
         calendar_version=1,
         forge_version=1,
         map_version=1,
+        economy_version=1,
     )
 
 

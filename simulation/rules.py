@@ -132,6 +132,12 @@ EQUIPMENT_LABELS = [
 ]
 WALLS = [Fraction(1), Fraction(8, 5), Fraction(3)]
 CAPACITIES = [2_400_000, 3_600_000, 6_000_000]
+
+
+def tax_yield(level, economy_version=1):
+    return ([100, 130, 200] if economy_version >= 2 else [100, 200, 300])[level]
+
+
 WORK_PRICES = {
     "forge": [(600_000, 8), (1_400_000, 14)],
     "irrigation": [(2_400_000, 6), (4_800_000, 12)],

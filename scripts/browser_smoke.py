@@ -163,9 +163,9 @@ with sync_playwright() as playwright:
         canals.locator(":scope > summary").click()
         canals.locator('input[value="c1"]').check()
         expect(canals.locator("[data-budget-note]")).to_have_text(
-            "This work needs 600,000 more Measures."
+            "The selected cities need 1,800,000 more Measures."
             if en
-            else "Il manque 600\u202f000 Mesures pour cet ouvrage."
+            else "Il manque 1\u202f800\u202f000 Mesures dans les cités choisies."
         )
         work = page.locator("#work-storage")
         work.locator(":scope > summary").click()
@@ -212,8 +212,8 @@ with sync_playwright() as playwright:
         assert page.locator(".map-city").count() == 9
         assert page.locator(".map-territory").count() == 9
         assert page.locator('[data-map-state="owned"]').count() == 3
-        assert page.locator('[data-map-state="reachable"]').count() == 5
-        assert page.locator('[data-map-state="unreachable"]').count() == 1
+        assert page.locator('[data-map-state="reachable"]').count() == 2
+        assert page.locator('[data-map-state="unreachable"]').count() == 4
         expect(page.locator('.map-city[href*="city=c6"]')).to_have_attribute(
             "aria-label", re.compile("Out of reach" if en else "Hors de portée")
         )
@@ -383,6 +383,14 @@ with sync_playwright() as playwright:
         plain_forge.locator(":scope > summary").click()
         plain_forge.locator('input[value="c1"]').check()
         plain_forge.locator('button[type="submit"]').click()
+        expect(plain_page.locator(".notices")).to_contain_text(
+            "The granary in Qasr needs" if en else "Le grenier de Qasr manque"
+        )
+        plain_page.goto(game_url + "?tab=constructions")
+        plain_storage = plain_page.locator("#work-storage")
+        plain_storage.locator(":scope > summary").click()
+        plain_storage.locator('input[value="c3"]').check()
+        plain_storage.locator('button[type="submit"]').click()
         expect(plain_page.locator(".unsealed-leaf")).to_be_visible()
         plain_page.goto(game_url + "?tab=wars")
         plain_page.locator('.map-city[href*="city=c4"]').click()
@@ -395,6 +403,25 @@ with sync_playwright() as playwright:
         expect(plain_page.locator("#mission-target")).to_have_value("c4")
         expect(plain_page.locator("#mission-kind")).to_have_value("raid")
         plain.close()
+        # Automatic reigns wait through onboarding, then start a full interval.
+        page.goto(base_url + "/games/new/")
+        page.locator("#id_title").fill("Automatic opening")
+        page.locator("#id_opponents").select_option("passive")
+        page.locator("#id_mode").select_option("scheduled")
+        page.locator(".game-setup button").click()
+        automatic_url = page.url.split("?")[0]
+        assert page.locator("[data-deadline]").count() == 0
+        waiting = page.request.get(automatic_url + "state/").json()
+        assert waiting["game"]["awaiting_start"] and waiting["game"]["paused"]
+        page.locator('.prologue-leaf form[action$="/start/"] button').click()
+        started = page.request.get(automatic_url + "state/").json()
+        assert not started["game"]["awaiting_start"] and not started["game"]["paused"]
+        assert started["game"]["deadline"] and started["view"]["open_moon"] == 1
+        page.reload()
+        assert (
+            page.request.get(automatic_url + "state/").json()["game"]["deadline"]
+            == started["game"]["deadline"]
+        )
         page.locator(".book-footer > form:last-child button").click()
         expect(page.locator("#id_username")).to_be_visible()
         page.locator("#id_username").fill(username)
@@ -404,5 +431,5 @@ with sync_playwright() as playwright:
         context.close()
     browser.close()
 print(
-    "Browser smoke passed in French and English: skippable prologue, rules reference, city ledger, three destinations, public map, local batch forges, affordability, select-all/clear, city folios, draft/seal/cancel, raid/return, translated letters, privacy, compact mobile header, touch targets, logout/login."
+    "Browser smoke passed in French and English: prologue and explicit automatic start, rules reference, city accounts, two-target frontiers, local funding and shortfalls, batch works, no-JavaScript previews, draft/seal/cancel, raid/return, translated letters, privacy, compact mobile header, enlarged text, touch targets, logout/login."
 )

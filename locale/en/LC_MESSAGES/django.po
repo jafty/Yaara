@@ -3697,3 +3697,96 @@ msgstr "Page %(page)s of 4"
 
 msgid "Il faut au moins %(raid)s Fidèles pour un raid, %(capture)s pour une capture. Le formulaire précise les cités capables de fournir les hommes."
 msgstr "A raid requires at least %(raid)s Faithful, a capture %(capture)s. The form identifies cities able to supply troops."
+
+msgid "Achèvement prévu à la clôture de la lune %(moon)s."
+msgstr "Completion expected when Moon %(moon)s closes."
+
+msgid "Annulé à la lune %(moon)s."
+msgstr "Cancelled in Moon %(moon)s."
+
+msgid "Ce décret n’a pu entrer en vigueur. Ses réservations sont libérées ; le motif figure dans les rapports."
+msgstr "This decree could not take effect. Its reservations are released; the reports explain why."
+
+msgid "Cette partie ne peut pas être commencée ainsi."
+msgstr "This game cannot be started this way."
+
+msgid "Chaque cité finance ses travaux. Les cités qui fournissent une expédition en paient les frais ; aucun autre grenier ne contribue."
+msgstr "Each city funds its works. Cities supplying an expedition pay its costs; no other granary contributes."
+
+msgid "Chaque cité finance ses travaux. Pour une expédition, chaque origine paie ses hommes et une part des frais fixes proportionnelle à son effectif. Aucun transfert entre greniers n’est possible."
+msgstr "Each city funds its works. For an expedition, each origin pays for its people and a share of the fixed fee proportional to its contingent. Transfers between granaries are unavailable."
+
+msgid "Chaque cité peut recevoir une forge. Ses armes équipent les habitants de cette cité ; perdre ou gagner une forge par capture transfère son bénéfice au nouveau propriétaire."
+msgstr "Each city can receive a forge. Its arms equip that city’s residents; capturing or losing a forge transfers its benefit to the new owner."
+
+msgid "Chaque origine paie ses hommes et sa part des frais fixes, proportionnelle aux effectifs envoyés. Le devis détaille les prélèvements ; les autres cités ne contribuent pas."
+msgstr "Each origin pays for its people and its share of the fixed fee, proportional to the contingent sent. The review details each charge; other cities do not contribute."
+
+msgid "Clore la lune…"
+msgstr "Close the Moon…"
+
+msgid "Commencer le règne"
+msgstr "Begin the reign"
+
+msgid "Commencez le règne pour ouvrir la première lune."
+msgstr "Begin the reign to open its first Moon."
+
+msgid "Consulter le calendrier"
+msgstr "Review the calendar"
+
+msgid "Disponible dans ce grenier : %(amount)s Mesures."
+msgstr "Available in this granary: %(amount)s Measures."
+
+msgid "Décret annulé avant son entrée en vigueur. Les réservations sont libérées."
+msgstr "Decree cancelled before taking effect. Its reservations are released."
+
+msgid "Entré en vigueur à la lune %(moon)s."
+msgstr "Took effect in Moon %(moon)s."
+
+msgid "Entrée en vigueur à la clôture de la lune %(moon)s."
+msgstr "Takes effect when Moon %(moon)s closes."
+
+msgid "Il manque %(amount)s Mesures dans cette cité."
+msgstr "This city needs %(amount)s more Measures."
+
+msgid "Le calendrier attend votre départ. Votre première lune commencera lorsque vous commencerez le règne."
+msgstr "The calendar awaits you. Your first Moon starts when you begin the reign."
+
+msgid "Le grenier de {city} manque de {shortfall} Mesures libres pour cet ordre."
+msgstr "The granary in {city} needs {shortfall} more free Measures for this order."
+
+msgid "Le prélèvement s’accumule automatiquement chaque lune et entre aux greniers toutes les douze lunes. Aucun ordre de collecte n’est nécessaire."
+msgstr "The levy accrues automatically each Moon and enters the granaries every twelve Moons. No collection order is needed."
+
+msgid "Le règne avance de lune en lune. Les ordres scellés prennent effet à la clôture. Chaque cité finance ses travaux ; les origines financent leurs expéditions. Le prélèvement est automatique et entre aux greniers toutes les douze lunes, sans ordre de collecte."
+msgstr "The reign advances Moon by Moon. Sealed orders take effect at closure. Each city funds its works; origins fund their expeditions. The levy is automatic and enters the granaries every twelve Moons, without a collection order."
+
+msgid "Les assaillants portaient le sceau de {house}. "
+msgstr "The attackers bore the seal of {house}. "
+
+msgid "Les comptes de vos cités"
+msgstr "Your cities’ accounts"
+
+msgid "Lire le rapport complet"
+msgstr "Read the full report"
+
+msgid "Travaux achevés à la lune %(moon)s."
+msgstr "Works completed in Moon %(moon)s."
+
+msgid "Une expédition d’une autre maison réserve déjà cette cité."
+msgstr "An expedition from another house already reserves this city."
+
+msgid "Votre règne avance de lune en lune. Pendant la lune ouverte, préparez et scellez vos ordres. La clôture les fait entrer en vigueur et résout les travaux, voyages et combats arrivés à échéance."
+msgstr "Your reign advances Moon by Moon. During the open Moon, prepare and seal your orders. Closure brings them into effect and resolves works, journeys and battles that are due."
+
+msgid "Vous avez déjà engagé une expédition vers cette cité."
+msgstr "You have already committed an expedition to this city."
+
+msgid "Les greniers restent propres à chaque cité ; vos dépenses puisent dans leurs fonds libres. L’impôt s’accumule chaque lune, mais la récolte ne remplit les greniers que toutes les douze lunes. Le conseil présente les comptes de chaque cité."
+msgstr "Each city keeps its granary; spending uses its free reserves. The levy accrues each Moon, but the harvest enters the granaries only every twelve Moons. Council presents each city’s accounts."
+
+msgid "Commencer"
+msgstr "Begin"
+
+msgid "Les ouvrages réalisés ici profitent à cette cité. Son grenier seul en finance les travaux."
+msgstr "Works carried out here benefit this city. Only its granary funds the construction."

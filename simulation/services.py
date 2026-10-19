@@ -90,7 +90,8 @@ def create_game(
     player_name=message("La maison d’Ambre"),
     calendar_version=2,
     forge_version=2,
-    map_version=2,
+    map_version=3,
+    economy_version=2,
 ):
     # Serialize account-level creation limits as well as each game's commands.
     get_user_model().objects.select_for_update().get(pk=user.pk)
@@ -108,7 +109,11 @@ def create_game(
         calendar_version=calendar_version,
         forge_version=forge_version,
         map_version=map_version,
+        economy_version=economy_version,
     )
+    awaiting_start = mode == "scheduled" and economy_version >= 2
+    if awaiting_start:
+        state["awaiting_start"] = True
     game = Game.objects.create(
         owner=user,
         title=title,
@@ -118,8 +123,9 @@ def create_game(
         interval_minutes=interval_minutes,
         remaining_seconds=interval_minutes * 60,
         deadline=timezone.now() + timedelta(minutes=interval_minutes)
-        if mode == "scheduled"
+        if mode == "scheduled" and not awaiting_start
         else None,
+        paused=awaiting_start,
     )
     Participant.objects.create(game=game, user=user, actor="p1")
     welcome = []
@@ -132,6 +138,13 @@ def create_game(
             "J’ai fait ouvrir les registres de vos trois cités. Leurs habitants reconnaissent votre autorité, mais il nous appartient encore de préparer les années qui viennent. Chaque cité gardera ses réserves ; pour vos dépenses, je demanderai à tous les greniers de contribuer selon leurs moyens. La première récolte nous sera versée au mois 12. D’ici là, je tiendrai compte des hommes partis et des ouvrages que vous aurez ordonnés."
         ),
     )
+    if economy_version >= 2:
+        welcome[0]["body"] = str(
+            message(
+                "Le règne avance de lune en lune. Les ordres scellés prennent effet à la clôture. Chaque cité finance ses travaux ; les origines financent leurs expéditions. Le prélèvement est automatique et entre aux greniers toutes les douze lunes, sans ordre de collecte."
+            )
+        )
+        welcome[0]["content"]["body"] = describe(message(welcome[0]["body"]))
     Report.objects.create(game=game, month=state["month"], **welcome[0])
     return game
 
@@ -262,6 +275,8 @@ def toggle_pause(user, game_id):
     membership(game, user)
     if game.owner_id != user.pk or game.mode != "scheduled" or game.state["status"] != "active":
         raise PermissionDenied(message("Cette partie ne peut pas être suspendue."))
+    if game.state.get("awaiting_start"):
+        raise RuleError(message("Commencez le règne pour ouvrir la première lune."))
     if game.paused:
         game.deadline = timezone.now() + timedelta(seconds=max(1, game.remaining_seconds))
         game.paused = False
@@ -276,6 +291,19 @@ def toggle_pause(user, game_id):
         game.deadline = None
         game.paused = True
     persist(game)
+
+
+@transaction.atomic
+def start_calendar(user, game_id):
+    game = Game.objects.select_for_update().get(pk=game_id)
+    membership(game, user)
+    if game.owner_id != user.pk or game.mode != "scheduled":
+        raise PermissionDenied(message("Cette partie ne peut pas être commencée ainsi."))
+    if game.state.get("awaiting_start"):
+        game.state["awaiting_start"] = False
+        game.paused = False
+        game.deadline = timezone.now() + timedelta(minutes=game.interval_minutes)
+        persist(game)
 
 
 def quote(user, game_id, spec):

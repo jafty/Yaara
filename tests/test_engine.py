@@ -29,7 +29,7 @@ def test_initial_capture_rejected_without_partial_reservations():
     When the unaffordable order is confirmed.
     Then the expense is rejected and the entire state remains unchanged.
     """
-    state = new_state(calendar_version=1, map_version=1)
+    state = new_state(calendar_version=1, map_version=1, economy_version=1)
     before = deepcopy(state)
     with pytest.raises(RuleError, match="dépense"):
         confirm_order(
@@ -40,7 +40,7 @@ def test_initial_capture_rejected_without_partial_reservations():
 
 @pytest.fixture
 def reserved_raid():
-    state = new_state(calendar_version=1, map_version=1)
+    state = new_state(calendar_version=1, map_version=1, economy_version=1)
     spec = {"kind": "raid", "target": "c4", "contributions": [["c3", 20], ["c3", 25]]}
     confirm_order(state, "p1", spec, "one")
     return state, spec
@@ -132,7 +132,7 @@ def test_v0_confirmation_is_final():
     When the player attempts cancellation.
     Then the final confirmation is rejected for cancellation.
     """
-    state = new_state("V0", calendar_version=1, map_version=1)
+    state = new_state("V0", calendar_version=1, map_version=1, economy_version=1)
     confirm_order(state, "p1", {"kind": "walls", "cities": ["c1"]}, "wall")
     with pytest.raises(RuleError, match="définitive"):
         cancel_order(state, "p1", "wall")
@@ -147,7 +147,7 @@ def test_unaffordable_batch_is_atomic():
     When the unaffordable batch is confirmed.
     Then the entire request is rejected without state mutation.
     """
-    state = new_state(calendar_version=1, map_version=1)
+    state = new_state(calendar_version=1, map_version=1, economy_version=1)
     before = deepcopy(state)
     with pytest.raises(RuleError):
         confirm_order(state, "p1", {"kind": "walls", "cities": ["c1", "c2"]}, "bad")
@@ -163,7 +163,7 @@ def test_affordable_batch_reserves_total_price():
     When the affordable batch is confirmed.
     Then 1000000 Measures are reserved and total stocks remain 5400000.
     """
-    state = new_state(calendar_version=1, map_version=1)
+    state = new_state(calendar_version=1, map_version=1, economy_version=1)
     confirm_order(state, "p1", {"kind": "storage", "cities": ["c1", "c2"]}, "batch")
     assert sum(reservations(state)[0].values()) == 1000000
     assert sum(city["stock"] for city in state["cities"].values()) == 5400000
@@ -178,7 +178,7 @@ def test_busy_work_slot_rejects_without_mutation():
     When a wall order requests the same teams.
     Then the conflict is rejected without changing the existing state.
     """
-    state = new_state(calendar_version=1, map_version=1)
+    state = new_state(calendar_version=1, map_version=1, economy_version=1)
     confirm_order(state, "p1", {"kind": "storage", "cities": ["c1", "c2"]}, "batch")
     before = deepcopy(state)
     with pytest.raises(RuleError, match="équipes"):
@@ -230,7 +230,7 @@ def test_disconnected_origins_must_touch_same_frontier(target, expected):
     When origins eligible to attack {target} are requested.
     Then only the components touching that frontier contribute: {expected}.
     """
-    state = new_state(calendar_version=1, map_version=1)
+    state = new_state(calendar_version=1, map_version=1, economy_version=1)
     state["cities"]["c2"]["owner"] = "p2"
     assert eligible_origins(state, "p1", target) == expected
 
@@ -245,7 +245,7 @@ def test_relief_allocation(scenario):
     When relief is allocated once from the pre-combat snapshot.
     Then origin budgets are split across fronts and capped by threat without redistribution.
     """
-    state = new_state(calendar_version=1, map_version=1)
+    state = new_state(calendar_version=1, map_version=1, economy_version=1)
     missions = [
         {
             "id": "a",
@@ -285,7 +285,9 @@ def test_captured_origin_receives_survivors_and_loot():
     When the return month is resolved.
     Then survivors and loot reach their origin and its current owner receives the report.
     """
-    state = new_state("V1", opponents="passive", calendar_version=1, map_version=1)
+    state = new_state(
+        "V1", opponents="passive", calendar_version=1, map_version=1, economy_version=1
+    )
     confirm_order(
         state, "p1", {"kind": "raid", "target": "c4", "contributions": {"c3": 45}}, "raid"
     )
@@ -309,7 +311,9 @@ def test_annual_growth_renewal_and_absent_ceiling():
     When annual growth and Faithful renewal are applied.
     Then population becomes 1005, present plus absent Faithful total 100, and accrued tax is paid.
     """
-    state = new_state("V1", opponents="passive", calendar_version=1, map_version=1)
+    state = new_state(
+        "V1", opponents="passive", calendar_version=1, map_version=1, economy_version=1
+    )
     for _ in range(11):
         advance_month(state, "seed")
     confirm_order(

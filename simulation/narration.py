@@ -1,7 +1,7 @@
 """French presentation vocabulary; no simulation state or hidden information."""
 
 from .messages import message
-from .rules import CAPACITIES, EQUIPMENT_LABELS
+from .rules import CAPACITIES, EQUIPMENT_LABELS, tax_yield
 
 WORK_NAMES = {
     "forge": [
@@ -78,12 +78,12 @@ WORK_ADVICE = {
 }
 
 
-def work_benefit(kind, current, target):
+def work_benefit(kind, current, target, economy_version=1):
     if kind == "irrigation":
         return message(
             "Impôt par habitant présent : {before} → {after} Mesures par lune.",
-            before=number(100 + 100 * current),
-            after=number(100 + 100 * target),
+            before=number(tax_yield(current, economy_version)),
+            after=number(tax_yield(target, economy_version)),
         )
     if kind == "storage":
         return message(
@@ -157,7 +157,7 @@ STARTED_ACTION_PHRASES = {
 }
 
 
-def work_effect(kind, level):
+def work_effect(kind, level, economy_version=1):
     if kind == "forge":
         return message(
             "La forge fournira un équipement renforcé aux Fidèles de cette cité, y compris aux nouveaux habitants. Les expéditions déjà parties conserveront leur équipement."
@@ -167,7 +167,7 @@ def work_effect(kind, level):
     if kind == "irrigation":
         return message(
             "Chaque habitant présent produira {yield_per_moon} Mesures d’impôt par lune.",
-            yield_per_moon=100 + 100 * level,
+            yield_per_moon=tax_yield(level, economy_version),
         )
     if kind == "storage":
         return message(

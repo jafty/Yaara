@@ -35,7 +35,7 @@ def test_named_upgrade(kind, level, name, cost, duration):
     When the available works are projected.
     Then the quote and city choice use the building name {name} with unchanged prices.
     """
-    state = engine.new_state(opponents="passive")
+    state = engine.new_state(opponents="passive", economy_version=1, map_version=2)
     city = state["cities"]["c1"]
     city["walls" if kind == "repair" else kind] = level if kind == "repair" else level - 1
     city["damaged"] = kind == "repair"
@@ -57,7 +57,7 @@ def test_legacy_forge_choice(level, busy):
     When the work list is projected.
     Then it contains one forge choice preserving realm scope and its availability.
     """
-    state = engine.new_state(forge_version=1)
+    state = engine.new_state(forge_version=1, economy_version=1, map_version=2)
     state["players"]["p1"]["equipment"] = level
     if busy:
         state["works"].append(
@@ -85,7 +85,12 @@ def test_legacy_forge_choice(level, busy):
 @pytest.mark.parametrize("forge_version", [1, 2])
 def test_single_list(user, language, forge_version):
     game = services.create_game(
-        user, "Named works", forge_version=forge_version, opponents="passive"
+        user,
+        "Named works",
+        forge_version=forge_version,
+        opponents="passive",
+        economy_version=1,
+        map_version=2,
     )
     client = Client()
     client.force_login(user)
@@ -113,7 +118,9 @@ def test_single_list(user, language, forge_version):
 @pytest.mark.parametrize("level", [0, 1, 2])
 @pytest.mark.parametrize("language", ["fr", "en"])
 def test_forge_folio_name(user, level, language):
-    game = services.create_game(user, "Forge folio", opponents="passive")
+    game = services.create_game(
+        user, "Forge folio", opponents="passive", economy_version=1, map_version=2
+    )
     game.state["cities"]["c1"]["forge"] = level
     game.save()
     client = Client()
@@ -141,7 +148,12 @@ def test_forge_folio_name(user, level, language):
 @pytest.mark.parametrize("state", ["paused", "finished"])
 def test_readonly_list(user, forge_version, state):
     game = services.create_game(
-        user, "Readonly works", forge_version=forge_version, opponents="passive"
+        user,
+        "Readonly works",
+        forge_version=forge_version,
+        opponents="passive",
+        economy_version=1,
+        map_version=2,
     )
     if state == "paused":
         game.paused = True
@@ -171,7 +183,7 @@ def test_legacy_shortfall(funds, shortfall):
     When the work list is projected.
     Then its explicit missing amount is {shortfall} and no funds are reserved.
     """
-    state = engine.new_state(forge_version=1)
+    state = engine.new_state(forge_version=1, economy_version=1, map_version=2)
     for city in state["cities"].values():
         if city["owner"] == "p1":
             city["stock"] = funds if city["id"] == "c1" else 0
@@ -188,7 +200,9 @@ def test_legacy_shortfall(funds, shortfall):
 @pytest.mark.parametrize("language", ["fr", "en"])
 @pytest.mark.parametrize("affordable", [False, True])
 def test_legacy_submit_visible(user, language, affordable):
-    game = services.create_game(user, "Forge funds", forge_version=1, opponents="passive")
+    game = services.create_game(
+        user, "Forge funds", forge_version=1, opponents="passive", economy_version=1, map_version=2
+    )
     if not affordable:
         game.state["cities"]["c1"]["stock"] = 599999
         game.save()

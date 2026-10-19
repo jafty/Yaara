@@ -9,3 +9,6 @@ msgstr "Il manque %(amount)s Mesures pour cet ouvrage."
 
 msgid "Après réservation : %(amount)s Mesures libres."
 msgstr "Après réservation : %(amount)s Mesures libres."
+
+msgid "Il manque %(amount)s Mesures dans les cités choisies."
+msgstr "Il manque %(amount)s Mesures dans les cités choisies."

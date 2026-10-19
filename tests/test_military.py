@@ -16,7 +16,9 @@ def fixed_random(monkeypatch):
 
 @pytest.fixture
 def raid(fixed_random):
-    state = engine.new_state("V0", opponents="passive", calendar_version=1, map_version=1)
+    state = engine.new_state(
+        "V0", opponents="passive", calendar_version=1, map_version=1, economy_version=1
+    )
     state["cities"]["c4"]["stock"] = 1200000
     engine.confirm_order(
         state, "p1", {"kind": "raid", "target": "c4", "contributions": {"c3": 45}}, "raid"
@@ -69,7 +71,9 @@ def test_prescribed_raid_defense(percentage, remaining, monkeypatch):
     Then the target retains {remaining} Faithful.
     """
     monkeypatch.setattr(engine, "random_stream", FixedRandom(percentage))
-    state = engine.new_state(opponents="passive", calendar_version=1, map_version=1)
+    state = engine.new_state(
+        opponents="passive", calendar_version=1, map_version=1, economy_version=1
+    )
     engine.confirm_order(
         state, "p1", {"kind": "raid", "target": "c4", "contributions": {"c3": 45}}, "raid"
     )

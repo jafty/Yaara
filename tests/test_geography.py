@@ -23,7 +23,7 @@ def test_mesh_frontiers(actor, expected):
     When {actor} considers its initial frontiers.
     Then five rival cities are reachable and all three friendly origins can contribute.
     """
-    state = engine.new_state()
+    state = engine.new_state(economy_version=1, map_version=2)
     assert state["map_version"] == 2
     assert len(state["links"]) == 15
     assert len({tuple(sorted(link)) for link in state["links"]}) == 15
@@ -41,7 +41,7 @@ def test_legacy_roads():
     When its frontier is projected.
     Then only its original two enemy neighbours are reachable and roads stay unchanged.
     """
-    state = engine.new_state(map_version=1)
+    state = engine.new_state(map_version=1, economy_version=1)
     state.pop("map_version")
     roads = [link[:] for link in state["links"]]
     assert {target["id"] for target in player_view(state, "p1")["attack_targets"]} == {"c4", "c9"}

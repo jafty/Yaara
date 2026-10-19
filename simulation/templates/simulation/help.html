@@ -1,10 +1,11 @@
 {% load i18n %}
 <nav class="guide-index" aria-label="{% translate "Dans ce guide" %}"><a href="#victory">{% translate "Votre but" %}</a><a href="#resources">{% translate "Vos ressources" %}</a><a href="#orders">{% translate "Vos ordres" %}</a><a href="#buildings">{% translate "Les ouvrages" %}</a><a href="#expeditions">{% translate "Les expéditions" %}</a><a href="#calendar">{% translate "Les lunes" %}</a></nav>
+<p>{% translate "Votre règne avance de lune en lune. Pendant la lune ouverte, préparez et scellez vos ordres. La clôture les fait entrer en vigueur et résout les travaux, voyages et combats arrivés à échéance." %}</p><p>{% translate "Le prélèvement s’accumule automatiquement chaque lune et entre aux greniers toutes les douze lunes. Aucun ordre de collecte n’est nécessaire." %}</p>
 <section id="victory"><h2>{% translate "Votre but" %}</h2>
 {% include 'simulation/game_goal.html' %}</section>
 <section id="resources"><h2>{% translate "Vos ressources" %}</h2>
 <p>{% translate "Les Mesures sont vos réserves de nourriture. Chaque cité possède son grenier : le conseil affiche son stock, sa capacité et sa part encore disponible. Les fonds promis aux décrets scellés restent dans le stock, mais ne sont plus disponibles." %}</p>
-<p>{% translate "Les dépenses sont réparties entre les fonds libres de vos cités. Les pillages et les limites de stockage concernent chaque grenier séparément. Agrandir un grenier augmente sa capacité, sans créer de nourriture." %}</p>
+<p>{% if view.local_funding %}{% translate "Chaque cité finance ses travaux. Pour une expédition, chaque origine paie ses hommes et une part des frais fixes proportionnelle à son effectif. Aucun transfert entre greniers n’est possible." %}{% else %}{% translate "Les dépenses sont réparties entre les fonds libres de vos cités. Les pillages et les limites de stockage concernent chaque grenier séparément. Agrandir un grenier augmente sa capacité, sans créer de nourriture." %}{% endif %}</p>
 <p>{% translate "Les Fidèles font partie des habitants. Partis en expédition, ils ne défendent plus leur cité et ne contribuent plus à son impôt jusqu’à leur retour. L’impôt se prépare chaque lune et est versé toutes les douze lunes." %}</p>
 <p class="reading-links"><a href="?tab=domain#city-ledgers">{% translate "Consulter vos greniers" %} →</a></p></section>
 <section id="orders"><h2>{% translate "Vos ordres" %}</h2>
@@ -17,7 +18,7 @@
 <section id="buildings"><h2>{% translate "Les ouvrages" %}</h2>
 <p>{% translate "Chaque cité dispose d’une équipe : un chantier ou un décret de travaux scellé l’occupe. Une seule sélection peut réunir plusieurs cités, même à des stades différents. Chaque ligne indique l’état actuel, l’ouvrage proposé, son bénéfice, son prix et sa durée. Les bénéfices commencent à l’achèvement." %}</p>
 <p>{% translate "Les canaux améliorent le prélèvement ; les enceintes protègent la cité lors des captures, sans abriter les villages d’un raid. Une enceinte endommagée peut être réparée." %}</p>
-{% if view.rules == 'V1' %}{% if view.local_forges %}<p>{% translate "Chaque cité peut recevoir une forge. Ses armes bénéficient à toute votre maison ; perdre ou gagner une forge par capture transfère son bénéfice au nouveau propriétaire." %}</p>
+{% if view.rules == 'V1' %}{% if view.local_forges %}<p>{% translate "Chaque cité peut recevoir une forge. Ses armes équipent les habitants de cette cité ; perdre ou gagner une forge par capture transfère son bénéfice au nouveau propriétaire." %}</p>
 {% else %}<p>{% translate "Dans ce règne ancien, la forge équipe toute la maison et conserve son chantier distinct des équipes des cités." %}</p>
 {% endif %}{% endif %}</section>
 <section id="expeditions"><h2>{% translate "Les expéditions" %}</h2>

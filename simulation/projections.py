@@ -4,7 +4,14 @@ from . import engine
 from .calendar import closed_moon, closing_moon
 from .messages import Message
 from .narration import WORK_ADVICE, WORK_PURPOSES, work_benefit, work_effect, work_name
-from .rules import ACTION_LABELS, EQUIPMENT_LABELS, EXPEDITION_PRICES, RuleError, rule_family
+from .rules import (
+    ACTION_LABELS,
+    EQUIPMENT_LABELS,
+    EXPEDITION_PRICES,
+    RuleError,
+    rule_family,
+    tax_yield,
+)
 
 STATUS_LABELS = {
     "confirmed": Message("Confirmé"),
@@ -66,6 +73,10 @@ def player_view(state, actor):
             ][city["walls"]],
             "damaged": city["damaged"],
             "engaged": city["id"] in targets,
+            "own_engagement": any(
+                order["id"] == targets.get(city["id"]) and order["actor"] == actor
+                for order in state["orders"]
+            ),
             "x": ATLAS_POSITIONS[index][0],
             "y": ATLAS_POSITIONS[index][1],
             "territory": ATLAS_TERRITORIES[index],
@@ -86,7 +97,7 @@ def player_view(state, actor):
                     "reserved_stock": funds[city["id"]],
                     "stock_percent": round(city["stock"] / engine.capacity(city) * 100),
                     "tax": city["tax"],
-                    "yield": 100 + 100 * city["irrigation"],
+                    "yield": tax_yield(city["irrigation"], state.get("economy_version", 1)),
                     "irrigation": city["irrigation"],
                     "storage": city["storage"],
                     "forge": city.get("forge", 0),
@@ -126,6 +137,16 @@ def player_view(state, actor):
                 "status_label": STATUS_LABELS[order["status"]],
                 "cost": order["cost"],
                 "execute_month": order["execute_month"],
+                "executed_month": order.get("executed_month", order["execute_month"]),
+                "cancelled_month": order.get("cancelled_month"),
+                "finish_month": max(
+                    (
+                        work["finish_month"]
+                        for work in state["works"]
+                        if work["order_id"] == order["id"]
+                    ),
+                    default=None,
+                ),
                 "can_cancel": rule_family(state["rules"]).cancellable
                 and order["status"] == "confirmed",
                 "destination": by_id[order["target"]]["name"]
@@ -193,6 +214,8 @@ def player_view(state, actor):
                 "duration": 0,
                 "level": current,
                 "busy": city["id"] in busy,
+                "available_stock": by_id[city["id"]]["available_stock"],
+                "shortfall": 0,
                 "available": False,
                 "benefit": "",
                 "reason": "",
@@ -213,9 +236,12 @@ def player_view(state, actor):
                     duration=task["duration"],
                     level=task["level"],
                     work_name=work_name(kind, task["level"]),
-                    benefit=work_benefit(kind, current, task["level"]),
+                    benefit=work_benefit(
+                        kind, current, task["level"], state.get("economy_version", 1)
+                    ),
                     available=not option["busy"],
                     status="busy" if option["busy"] else "available",
+                    shortfall=max(0, task["cost"] - option["available_stock"]),
                 )
                 if option["busy"]:
                     active_works = by_id[city["id"]]["works"]
@@ -250,7 +276,7 @@ def player_view(state, actor):
                         "name": work_name(kind, level),
                         "cost": cost,
                         "duration": duration,
-                        "effect": work_effect(kind, level),
+                        "effect": work_effect(kind, level, state.get("economy_version", 1)),
                     }
                     for level, cost, duration in prices
                 ],
@@ -300,6 +326,7 @@ def player_view(state, actor):
         "realm": state["players"][actor]["name"],
         "equipment": EQUIPMENT_LABELS[state["players"][actor]["equipment"]],
         "local_forges": engine.local_forges(state),
+        "local_funding": state.get("economy_version", 1) >= 2,
         "equipment_quote": equipment_quote,
         "equipment_shortfall": max(
             0, equipment_quote.get("cost", 0) - sum(city["available_stock"] for city in owned)

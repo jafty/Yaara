@@ -20,7 +20,9 @@ def test_opponent_city_fields_are_private(field):
     When the public projection is built.
     Then the private field {field} is absent.
     """
-    projection = player_view(engine.new_state(calendar_version=1, map_version=1), "p1")
+    projection = player_view(
+        engine.new_state(calendar_version=1, map_version=1, economy_version=1), "p1"
+    )
     enemy = next(city for city in projection["cities"] if city["id"] == "c4")
     assert field not in enemy
 
@@ -31,7 +33,9 @@ def test_ranking_hides_population():
     When a player reads the ranking projection.
     Then no opponent population is disclosed.
     """
-    projection = player_view(engine.new_state(calendar_version=1, map_version=1), "p1")
+    projection = player_view(
+        engine.new_state(calendar_version=1, map_version=1, economy_version=1), "p1"
+    )
     assert all("population" not in rank for rank in projection["ranking"])
 
 
@@ -45,7 +49,7 @@ def test_serialized_projection_hides_internal_state(secret):
     When the player projection is serialized.
     Then the internal value {secret} is absent.
     """
-    state = engine.new_state(calendar_version=1, map_version=1)
+    state = engine.new_state(calendar_version=1, map_version=1, economy_version=1)
     engine.confirm_order(
         state, "p2", {"kind": "raid", "target": "c3", "contributions": {"c4": 45}}, "secret-order"
     )
@@ -112,7 +116,7 @@ def test_organic_atlas():
     When their atlas is projected for different rulers.
     Then positions are stable, safely spaced and include interior settlements.
     """
-    state = engine.new_state(map_version=1)
+    state = engine.new_state(map_version=1, economy_version=1)
     first = player_view(state, "p1")
     second = player_view(state, "p2")
     points = [(city["x"], city["y"]) for city in first["cities"]]

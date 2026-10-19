@@ -1,7 +1,14 @@
 {% load i18n %}
 <section class="chapter-section orders-register" aria-labelledby="orders-heading"><h2 id="orders-heading">{% translate "Ce que porte déjà votre sceau" %}</h2>
     {% for order in section_orders %}<article class="order-entry"><h3>{{ order.label }} · {{ order.destination }}</h3><p class="order-status">{{ order.status_label }}</p>
-        <p>{% blocktranslate with v0=order.cost v2=order.execute_month %}<strong>{{ v0 }} Mesures</strong>. Entrée en vigueur prévue à la lune <strong>{{ v2 }}</strong>.{% endblocktranslate %}</p>{% if order.men %}<p>{% blocktranslate with count=order.men %}Fidèles engagés : <strong>{{ count }}</strong>.{% endblocktranslate %}</p>{% endif %}
+        <p><strong>{{ order.cost }} {% translate "Mesures" %}</strong>.</p>
+        {% if order.status == 'confirmed' %}<p>{% blocktranslate with moon=order.execute_month %}Entrée en vigueur à la clôture de la lune {{ moon }}.{% endblocktranslate %}</p>
+        {% elif order.status == 'cancelled' %}<p>{% translate "Décret annulé avant son entrée en vigueur. Les réservations sont libérées." %}{% if order.cancelled_month %} {% blocktranslate with moon=order.cancelled_month %}Annulé à la lune {{ moon }}.{% endblocktranslate %}{% endif %}</p>
+        {% elif order.status == 'invalidated' %}<p>{% translate "Ce décret n’a pu entrer en vigueur. Ses réservations sont libérées ; le motif figure dans les rapports." %}</p>
+        {% else %}<p>{% blocktranslate with moon=order.executed_month %}Entré en vigueur à la lune {{ moon }}.{% endblocktranslate %}</p>
+            {% if order.finish_month %}<p>{% if order.status == 'completed' %}{% blocktranslate with moon=order.finish_month %}Travaux achevés à la lune {{ moon }}.{% endblocktranslate %}{% else %}{% blocktranslate with moon=order.finish_month %}Achèvement prévu à la clôture de la lune {{ moon }}.{% endblocktranslate %}{% endif %}</p>{% endif %}
+        {% endif %}
+        {% if order.men %}<p>{% blocktranslate with count=order.men %}Fidèles engagés : <strong>{{ count }}</strong>.{% endblocktranslate %}</p>{% endif %}
         {% if order.status == 'confirmed' %}<p>{% translate "Les moyens sont réservés, sans être encore dépensés." %}</p>{% endif %}
         {% if order.can_cancel and not game.paused %}<form method="post" action="{% url 'cancel' game.id order.id %}">{% csrf_token %}<input type="hidden" name="return_tab" value="{{ tab }}"><button type="submit">{% translate "Retirer ce décret" %}</button></form>{% endif %}</article>
     {% empty %}<p>{% translate "Vous n’avez encore scellé aucun décret. Le premier mot vous appartient." %}</p>{% endfor %}</section>

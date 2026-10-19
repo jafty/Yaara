@@ -2413,3 +2413,96 @@ msgstr "Feuillet %(page)s sur 4"
 
 msgid "Il faut au moins %(raid)s Fidèles pour un raid, %(capture)s pour une capture. Le formulaire précise les cités capables de fournir les hommes."
 msgstr "Il faut au moins %(raid)s Fidèles pour un raid, %(capture)s pour une capture. Le formulaire précise les cités capables de fournir les hommes."
+
+msgid "Achèvement prévu à la clôture de la lune %(moon)s."
+msgstr "Achèvement prévu à la clôture de la lune %(moon)s."
+
+msgid "Annulé à la lune %(moon)s."
+msgstr "Annulé à la lune %(moon)s."
+
+msgid "Ce décret n’a pu entrer en vigueur. Ses réservations sont libérées ; le motif figure dans les rapports."
+msgstr "Ce décret n’a pu entrer en vigueur. Ses réservations sont libérées ; le motif figure dans les rapports."
+
+msgid "Cette partie ne peut pas être commencée ainsi."
+msgstr "Cette partie ne peut pas être commencée ainsi."
+
+msgid "Chaque cité finance ses travaux. Les cités qui fournissent une expédition en paient les frais ; aucun autre grenier ne contribue."
+msgstr "Chaque cité finance ses travaux. Les cités qui fournissent une expédition en paient les frais ; aucun autre grenier ne contribue."
+
+msgid "Chaque cité finance ses travaux. Pour une expédition, chaque origine paie ses hommes et une part des frais fixes proportionnelle à son effectif. Aucun transfert entre greniers n’est possible."
+msgstr "Chaque cité finance ses travaux. Pour une expédition, chaque origine paie ses hommes et une part des frais fixes proportionnelle à son effectif. Aucun transfert entre greniers n’est possible."
+
+msgid "Chaque cité peut recevoir une forge. Ses armes équipent les habitants de cette cité ; perdre ou gagner une forge par capture transfère son bénéfice au nouveau propriétaire."
+msgstr "Chaque cité peut recevoir une forge. Ses armes équipent les habitants de cette cité ; perdre ou gagner une forge par capture transfère son bénéfice au nouveau propriétaire."
+
+msgid "Chaque origine paie ses hommes et sa part des frais fixes, proportionnelle aux effectifs envoyés. Le devis détaille les prélèvements ; les autres cités ne contribuent pas."
+msgstr "Chaque origine paie ses hommes et sa part des frais fixes, proportionnelle aux effectifs envoyés. Le devis détaille les prélèvements ; les autres cités ne contribuent pas."
+
+msgid "Clore la lune…"
+msgstr "Clore la lune…"
+
+msgid "Commencer le règne"
+msgstr "Commencer le règne"
+
+msgid "Commencez le règne pour ouvrir la première lune."
+msgstr "Commencez le règne pour ouvrir la première lune."
+
+msgid "Consulter le calendrier"
+msgstr "Consulter le calendrier"
+
+msgid "Disponible dans ce grenier : %(amount)s Mesures."
+msgstr "Disponible dans ce grenier : %(amount)s Mesures."
+
+msgid "Décret annulé avant son entrée en vigueur. Les réservations sont libérées."
+msgstr "Décret annulé avant son entrée en vigueur. Les réservations sont libérées."
+
+msgid "Entré en vigueur à la lune %(moon)s."
+msgstr "Entré en vigueur à la lune %(moon)s."
+
+msgid "Entrée en vigueur à la clôture de la lune %(moon)s."
+msgstr "Entrée en vigueur à la clôture de la lune %(moon)s."
+
+msgid "Il manque %(amount)s Mesures dans cette cité."
+msgstr "Il manque %(amount)s Mesures dans cette cité."
+
+msgid "Le calendrier attend votre départ. Votre première lune commencera lorsque vous commencerez le règne."
+msgstr "Le calendrier attend votre départ. Votre première lune commencera lorsque vous commencerez le règne."
+
+msgid "Le grenier de {city} manque de {shortfall} Mesures libres pour cet ordre."
+msgstr "Le grenier de {city} manque de {shortfall} Mesures libres pour cet ordre."
+
+msgid "Le prélèvement s’accumule automatiquement chaque lune et entre aux greniers toutes les douze lunes. Aucun ordre de collecte n’est nécessaire."
+msgstr "Le prélèvement s’accumule automatiquement chaque lune et entre aux greniers toutes les douze lunes. Aucun ordre de collecte n’est nécessaire."
+
+msgid "Le règne avance de lune en lune. Les ordres scellés prennent effet à la clôture. Chaque cité finance ses travaux ; les origines financent leurs expéditions. Le prélèvement est automatique et entre aux greniers toutes les douze lunes, sans ordre de collecte."
+msgstr "Le règne avance de lune en lune. Les ordres scellés prennent effet à la clôture. Chaque cité finance ses travaux ; les origines financent leurs expéditions. Le prélèvement est automatique et entre aux greniers toutes les douze lunes, sans ordre de collecte."
+
+msgid "Les assaillants portaient le sceau de {house}. "
+msgstr "Les assaillants portaient le sceau de {house}. "
+
+msgid "Les comptes de vos cités"
+msgstr "Les comptes de vos cités"
+
+msgid "Lire le rapport complet"
+msgstr "Lire le rapport complet"
+
+msgid "Travaux achevés à la lune %(moon)s."
+msgstr "Travaux achevés à la lune %(moon)s."
+
+msgid "Une expédition d’une autre maison réserve déjà cette cité."
+msgstr "Une expédition d’une autre maison réserve déjà cette cité."
+
+msgid "Votre règne avance de lune en lune. Pendant la lune ouverte, préparez et scellez vos ordres. La clôture les fait entrer en vigueur et résout les travaux, voyages et combats arrivés à échéance."
+msgstr "Votre règne avance de lune en lune. Pendant la lune ouverte, préparez et scellez vos ordres. La clôture les fait entrer en vigueur et résout les travaux, voyages et combats arrivés à échéance."
+
+msgid "Vous avez déjà engagé une expédition vers cette cité."
+msgstr "Vous avez déjà engagé une expédition vers cette cité."
+
+msgid "Les greniers restent propres à chaque cité ; vos dépenses puisent dans leurs fonds libres. L’impôt s’accumule chaque lune, mais la récolte ne remplit les greniers que toutes les douze lunes. Le conseil présente les comptes de chaque cité."
+msgstr "Les greniers restent propres à chaque cité ; vos dépenses puisent dans leurs fonds libres. L’impôt s’accumule chaque lune, mais la récolte ne remplit les greniers que toutes les douze lunes. Le conseil présente les comptes de chaque cité."
+
+msgid "Commencer"
+msgstr "Commencer"
+
+msgid "Les ouvrages réalisés ici profitent à cette cité. Son grenier seul en finance les travaux."
+msgstr "Les ouvrages réalisés ici profitent à cette cité. Son grenier seul en finance les travaux."

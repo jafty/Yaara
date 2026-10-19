@@ -22,16 +22,21 @@ document.querySelectorAll("[data-work-form]").forEach((form) => {
       0,
     );
     const remaining = Number(form.dataset.freeStock) - total;
+    const shortfall = form.dataset.localFunding === "true"
+      ? selected.reduce((sum, input) => sum + Number(input.dataset.shortfall), 0)
+      : Math.max(0, -remaining);
     controls.querySelector("[data-city-count]").textContent = format.format(
       selected.length,
     );
     controls.querySelector("[data-work-cost]").textContent =
       format.format(total);
     controls.querySelector("[data-budget-note]").textContent =
-      remaining < 0
+      shortfall > 0
         ? interpolate(
-            gettext("Il manque %(amount)s Mesures pour cet ouvrage."),
-            { amount: format.format(-remaining) },
+            form.dataset.localFunding === "true"
+              ? gettext("Il manque %(amount)s Mesures dans les cités choisies.")
+              : gettext("Il manque %(amount)s Mesures pour cet ouvrage."),
+            { amount: format.format(shortfall) },
             true,
           )
         : interpolate(

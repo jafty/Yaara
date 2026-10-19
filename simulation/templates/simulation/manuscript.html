@@ -14,7 +14,7 @@
         <a class="skip-link" href="#main">{% translate "Aller au récit" %}</a>
         <header class="reign-header">
             <div class="book book-heading">
-                <div class="book-identity"><a class="book-world" href="{% url 'home' %}">Yaara</a><p class="book-title">{{ game.title }}</p><a class="help-link" href="{% url 'game' game.id %}?tab=help">{% translate "Comment jouer" %}</a></div>
+                <div class="book-identity"><a class="book-world" href="{% url 'home' %}">Yaara</a><p class="book-title">{{ game.title }}</p><a class="help-link" href="{% url 'game' game.id %}?tab=help">{% translate "Comment jouer" %}</a>{% if view and not view.finished %}<a class="help-link" href="{% url 'game' game.id %}?tab=domain#turn-page">{% if game.awaiting_start %}{% translate "Commencer" %}{% elif game.mode == 'manual' %}{% translate "Clore la lune…" %}{% else %}{% translate "Calendrier" %}{% endif %}</a>{% endif %}</div>
                 {% if view %}
                     <div class="resource-ribbon" aria-label="{% translate "Les moyens libres de votre maison" %}">
                     {% if game.mode == 'scheduled' and game.deadline %}<span data-deadline="{{ game.deadline|date:'c' }}">{{ game.deadline|date:'H:i' }} UTC</span>{% endif %}
@@ -22,6 +22,7 @@
                         <span class="resource-value" title="{% translate 'Fidèles libres' %}">{% include 'simulation/nav_icon.html' with icon='warrior' %}<strong>{{ view.available_fideles }}</strong><span class="visually-hidden">{% translate 'Fidèles libres' %}</span></span>
                         {% if not view.finished %}<span>{% blocktranslate with v0=view.harvest_in %}Récolte dans <strong>{{ v0 }} lunes</strong>{% endblocktranslate %}</span>{% endif %}
                     </div>
+
                 {% endif %}
             </div>
         </header>

@@ -23,7 +23,7 @@ def test_mixed_stages():
     When the storage choices are projected.
     Then all cities remain visible with correct transitions, benefits and availability.
     """
-    state = engine.new_state(opponents="passive")
+    state = engine.new_state(opponents="passive", economy_version=1, map_version=2)
     state["cities"]["c2"]["storage"] = 1
     state["cities"]["c3"]["storage"] = 2
     before = deepcopy(state)
@@ -68,7 +68,7 @@ def test_busy_stages():
     When storage choices are projected.
     Then all rows stay readable with their quotes and commitment reasons but none is selectable.
     """
-    state = engine.new_state(opponents="passive")
+    state = engine.new_state(opponents="passive", economy_version=1, map_version=2)
     for city in state["cities"].values():
         city["stock"] = 2400000
     engine.confirm_order(state, "p1", {"kind": "irrigation", "cities": ["c1"]}, "canals")
@@ -108,7 +108,7 @@ def test_restrictions(kind, walls, damaged, status):
     When the building list is projected.
     Then the city remains visible as {status} without a fictitious quote or mutation.
     """
-    state = engine.new_state()
+    state = engine.new_state(economy_version=1, map_version=2)
     state["cities"]["c1"].update(walls=walls, damaged=damaged)
     before = deepcopy(state)
     action = next(item for item in player_view(state, "p1")["work_actions"] if item["kind"] == kind)
@@ -149,7 +149,7 @@ def test_benefit_details(kind, current, expected):
     When its improvement is described.
     Then the benefit is {expected} without revealing numerical combativity.
     """
-    state = engine.new_state()
+    state = engine.new_state(economy_version=1, map_version=2)
     city = state["cities"]["c1"]
     city["walls" if kind == "repair" else kind] = current
     city["damaged"] = kind == "repair"
@@ -166,7 +166,9 @@ def test_benefit_details(kind, current, expected):
 )
 @pytest.mark.parametrize("language", ["fr", "en"])
 def test_mixed_batch_http(user, language):
-    game = services.create_game(user, "Mixed stages", opponents="passive")
+    game = services.create_game(
+        user, "Mixed stages", opponents="passive", economy_version=1, map_version=2
+    )
     game.state["cities"]["c2"]["storage"] = 1
     game.state["cities"]["c3"]["storage"] = 2
     game.save()
@@ -207,7 +209,9 @@ def test_mixed_batch_http(user, language):
 )
 @pytest.mark.parametrize("language", ["fr", "en"])
 def test_all_completed_http(user, language):
-    game = services.create_game(user, "Finished buildings", opponents="passive")
+    game = services.create_game(
+        user, "Finished buildings", opponents="passive", economy_version=1, map_version=2
+    )
     for city in game.state["cities"].values():
         city["storage"] = 2
     game.save()
@@ -239,7 +243,9 @@ def test_all_completed_http(user, language):
 )
 @pytest.mark.parametrize("language", ["fr", "en"])
 def test_all_busy_http(user, language):
-    game = services.create_game(user, "Busy builders", opponents="passive")
+    game = services.create_game(
+        user, "Busy builders", opponents="passive", economy_version=1, map_version=2
+    )
     for city in game.state["cities"].values():
         city["stock"] = 2400000
     engine.confirm_order(

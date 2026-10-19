@@ -18,7 +18,9 @@ pytestmark = [pytest.mark.integration, pytest.mark.usefixtures("test_static_stor
 )
 @pytest.mark.parametrize("language", ["fr", "en"])
 def test_overview_first_reign(user, language):
-    game = services.create_game(user, "Briefing", opponents="passive", map_version=1)
+    game = services.create_game(
+        user, "Briefing", opponents="passive", map_version=1, economy_version=1
+    )
     client = Client()
     client.force_login(user)
     client.cookies["django_language"] = language
@@ -27,7 +29,7 @@ def test_overview_first_reign(user, language):
     assert page.status_code == 200
     assert 'id="recent-letters"' in content
     assert 'id="upcoming-heading"' in content
-    assert content.index('id="city-ledgers"') < content.index('id="recent-letters"')
+    assert content.index('id="recent-letters"') < content.index('id="city-ledgers"')
     assert 'class="house-accounts"' not in content
     assert len(page.context["milestones"]) == 1
     assert page.context["milestones"][0]["moon"] == 12
@@ -39,7 +41,9 @@ def test_overview_first_reign(user, language):
     "UX: sealed orders and active work deadlines link to their management folios",
 )
 def test_overview_work_deadlines(user):
-    game = services.create_game(user, "Works", opponents="passive", map_version=1)
+    game = services.create_game(
+        user, "Works", opponents="passive", map_version=1, economy_version=1
+    )
     services.confirm(user, game.id, {"kind": "storage", "cities": ["c1"]}, uuid.uuid4(), 1)
     client = Client()
     client.force_login(user)
@@ -62,7 +66,9 @@ def test_overview_work_deadlines(user):
     "UX: a departed raid shows combat then return dates without rival private state",
 )
 def test_overview_military_deadlines(user):
-    game = services.create_game(user, "Campaign", opponents="passive", map_version=1)
+    game = services.create_game(
+        user, "Campaign", opponents="passive", map_version=1, economy_version=1
+    )
     services.confirm(
         user,
         game.id,
@@ -89,7 +95,7 @@ def test_overview_military_deadlines(user):
 )
 def test_overview_finished_reign(user):
     game = services.create_game(
-        user, "Finished", opponents="passive", reign_months=24, map_version=1
+        user, "Finished", opponents="passive", reign_months=24, map_version=1, economy_version=1
     )
     for moon in range(1, 25):
         services.tick(game.id, moon, user)

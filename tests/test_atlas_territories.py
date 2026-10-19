@@ -18,7 +18,7 @@ def test_territory_geometry():
     When its territory outlines are projected.
     Then each city lies in its own bounded polygon and the territories cover the sheet.
     """
-    cities = player_view(engine.new_state(), "p1")["cities"]
+    cities = player_view(engine.new_state(economy_version=1, map_version=2), "p1")["cities"]
     area = 0
     for city in cities:
         points = [tuple(map(float, point.split(","))) for point in city["territory"].split()]
@@ -43,7 +43,7 @@ def test_route_state(map_version, actor):
     When its atlas is projected.
     Then its reachable markers match the authorized targets without changing the save.
     """
-    state = engine.new_state(map_version=map_version)
+    state = engine.new_state(map_version=map_version, economy_version=1)
     before = deepcopy(state)
     view = player_view(state, actor)
     expected = {
@@ -70,7 +70,7 @@ def test_captured_territory():
     When the public atlas is read again.
     Then its border stays fixed and its ownership and frontier reflect the new ruler.
     """
-    state = engine.new_state()
+    state = engine.new_state(economy_version=1, map_version=2)
     before = player_view(state, "p1")["cities"][4]
     state["cities"]["c5"]["owner"] = "p1"
     after = player_view(state, "p1")["cities"][4]
@@ -93,7 +93,9 @@ def test_captured_territory():
     ids=["rival-engaged", "own-city-engaged"],
 )
 def test_marker_states(user, language, target, attacker, origin, owned, reachable):
-    game = services.create_game(user, "Territories", opponents="passive")
+    game = services.create_game(
+        user, "Territories", opponents="passive", economy_version=1, map_version=2
+    )
     engine.confirm_order(
         game.state,
         attacker,

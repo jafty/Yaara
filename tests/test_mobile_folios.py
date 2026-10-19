@@ -30,7 +30,9 @@ pytestmark = [pytest.mark.integration, pytest.mark.usefixtures("test_static_stor
 )
 @pytest.mark.parametrize("language", ["fr", "en"])
 def test_navigation(user, tab, active, language):
-    game = services.create_game(user, "Navigation", opponents="passive")
+    game = services.create_game(
+        user, "Navigation", opponents="passive", economy_version=1, map_version=2
+    )
     client = Client()
     client.force_login(user)
     client.cookies["django_language"] = language
@@ -52,7 +54,9 @@ def test_navigation(user, tab, active, language):
 )
 @pytest.mark.parametrize("language", ["fr", "en"])
 def test_map(user, language):
-    game = services.create_game(user, "Atlas", opponents="passive")
+    game = services.create_game(
+        user, "Atlas", opponents="passive", economy_version=1, map_version=2
+    )
     game.state["cities"]["c4"].update(stock=1234567, fideles=87, forge=2)
     game.save()
     client = Client()
@@ -78,7 +82,9 @@ def test_map(user, language):
 )
 @pytest.mark.parametrize("language", ["fr", "en"])
 def test_local_forge_http(user, language):
-    game = services.create_game(user, "Forges", opponents="passive")
+    game = services.create_game(
+        user, "Forges", opponents="passive", economy_version=1, map_version=2
+    )
     client = Client()
     client.force_login(user)
     client.cookies["django_language"] = language
@@ -106,7 +112,9 @@ def test_local_forge_http(user, language):
     ids=["same-folio", "reject-external"],
 )
 def test_cancel_destination(user, destination, expected):
-    game = services.create_game(user, "Cancellation", opponents="passive")
+    game = services.create_game(
+        user, "Cancellation", opponents="passive", economy_version=1, map_version=2
+    )
     order_id = uuid.uuid4()
     services.confirm(user, game.id, {"kind": "forge", "cities": ["c1"]}, order_id, 1)
     client = Client()
@@ -131,7 +139,9 @@ def test_cancel_destination(user, destination, expected):
     ids=["council", "works", "expeditions"],
 )
 def test_orders_context(user, tab, kinds):
-    game = services.create_game(user, "Commitments", opponents="passive")
+    game = services.create_game(
+        user, "Commitments", opponents="passive", economy_version=1, map_version=2
+    )
     for spec in (
         {"kind": "forge", "cities": ["c1"]},
         {"kind": "raid", "target": "c4", "contributions": {"c3": 45}},
@@ -145,7 +155,9 @@ def test_orders_context(user, tab, kinds):
 
 @case("folio-legacy-forge-http", "Existing reigns retain realm equipment and their signed orders")
 def test_legacy_forge_http(user):
-    game = services.create_game(user, "Archive", opponents="passive", forge_version=1)
+    game = services.create_game(
+        user, "Archive", opponents="passive", forge_version=1, economy_version=1, map_version=2
+    )
     game.state.pop("forge_version")
     for city in game.state["cities"].values():
         city.pop("forge")
@@ -165,7 +177,9 @@ def test_legacy_forge_http(user):
 @pytest.mark.parametrize("language", ["fr", "en"])
 @pytest.mark.parametrize("city", [None, "c1", "c4", "c6"])
 def test_map_context(user, language, city):
-    game = services.create_game(user, "Atlas context", opponents="passive")
+    game = services.create_game(
+        user, "Atlas context", opponents="passive", economy_version=1, map_version=2
+    )
     client = Client()
     client.force_login(user)
     client.cookies["django_language"] = language
@@ -189,7 +203,9 @@ def test_map_context(user, language, city):
 @case("folio-map-order", "Owner UX: contextual raid or capture preselects target and kind natively")
 @pytest.mark.parametrize("kind", ["raid", "capture"])
 def test_map_order(user, kind):
-    game = services.create_game(user, "Atlas order", opponents="passive")
+    game = services.create_game(
+        user, "Atlas order", opponents="passive", economy_version=1, map_version=2
+    )
     client = Client()
     client.force_login(user)
     response = client.get(
@@ -205,7 +221,9 @@ def test_map_order(user, kind):
 @case("folio-map-unavailable", "Owner UX: engaged or paused targets offer no expedition command")
 @pytest.mark.parametrize("unavailable", ["engaged", "paused", "finished", "eliminated"])
 def test_map_unavailable(user, unavailable):
-    game = services.create_game(user, "Unavailable", opponents="passive")
+    game = services.create_game(
+        user, "Unavailable", opponents="passive", economy_version=1, map_version=2
+    )
     if unavailable == "engaged":
         engine.confirm_order(
             game.state,

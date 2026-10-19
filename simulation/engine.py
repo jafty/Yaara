@@ -32,6 +32,7 @@ from .rules import (
     losses,
     raid_result,
     rule_family,
+    tax_yield,
 )
 
 CITY_NAMES = ["Qasr", "Tamesh", "Namar", "Sefra", "Ishar", "Daram", "Azal", "Mirha", "Tazir"]
@@ -50,7 +51,8 @@ def new_state(
     *,
     calendar_version=2,
     forge_version=2,
-    map_version=2,
+    map_version=3,
+    economy_version=2,
 ):
     rule_family(version)
     if reign_months not in (24, 60, 120, 240) or opponents not in ("active", "passive"):
@@ -82,6 +84,7 @@ def new_state(
         "calendar_version": calendar_version,
         "forge_version": forge_version,
         "map_version": map_version,
+        "economy_version": economy_version,
         "status": "active",
         "config": {"reign_months": reign_months, "raid_minimum": 20, "capture_minimum": 80},
         "players": {
@@ -99,6 +102,8 @@ def new_state(
         + (
             [["c1", "c5"], ["c4", "c8"], ["c7", "c2"], ["c2", "c4"], ["c5", "c7"], ["c8", "c1"]]
             if map_version == 2
+            else [["c1", "c3"], ["c4", "c6"], ["c7", "c9"]]
+            if map_version == 3
             else []
         ),
         "orders": [],
@@ -339,6 +344,27 @@ def prepare_order(state, actor, spec, order_id):
         )
     else:
         raise RuleError(message("Cet ordre n’est pas reconnu."))
+    if state.get("economy_version", 1) >= 2 and kind != "equipment":
+        if order["tasks"]:
+            for task in order["tasks"]:
+                task["funding"] = {task["city"]: task["cost"]}
+                order["funding"][task["city"]] = task["cost"]
+        else:
+            fees = allocate(EXPEDITION_PRICES[kind]["base"], contributions)
+            order["funding"] = {
+                city_id: fees[city_id] + EXPEDITION_PRICES[kind]["per_person"] * count
+                for city_id, count in contributions.items()
+            }
+        for city_id, amount in order["funding"].items():
+            if amount > available[city_id]:
+                raise RuleError(
+                    message(
+                        "Le grenier de {city} manque de {shortfall} Mesures libres pour cet ordre.",
+                        city=state["cities"][city_id]["name"],
+                        shortfall=number(amount - available[city_id]),
+                    )
+                )
+        return order
     if sum(available.values()) < order["cost"]:
         raise RuleError(message("Cette dépense dépasserait les moyens non engagés."))
     # Batch work keeps its individual financing plans in deterministic city order.
@@ -387,6 +413,7 @@ def cancel_order(state, actor, order_id):
     if not order or order["status"] != "confirmed":
         raise RuleError(message("Cet ordre ne peut plus être annulé."))
     order["status"] = "cancelled"
+    order["cancelled_month"] = closing_moon(state)
     return order
 
 
@@ -410,8 +437,8 @@ def report(events, recipient, kind, title, body):
 def annual_economy(state, events):
     rules = rule_family(state["rules"])
     for city in state["cities"].values():
-        city["tax"] += (city["population"] - absent(state, city["id"])) * (
-            100 + city["irrigation"] * 100
+        city["tax"] += (city["population"] - absent(state, city["id"])) * tax_yield(
+            city["irrigation"], state.get("economy_version", 1)
         )
         if state["month"] % 12:
             continue
@@ -471,6 +498,7 @@ def depart_orders(state, events):
                 reason = message("La cité ou l’état de l’enceinte ne permet plus ces travaux.")
         if reason:
             order["status"] = "invalidated"
+            order["invalidated_month"] = state["month"]
             report(
                 events,
                 actor,
@@ -482,6 +510,7 @@ def depart_orders(state, events):
         for city_id, amount in order["funding"].items():
             state["cities"][city_id]["stock"] -= amount
         order["status"] = "active"
+        order["executed_month"] = state["month"]
         if order["kind"] in ("raid", "capture"):
             for city_id, count in order["contributions"].items():
                 state["cities"][city_id]["fideles"] -= count
@@ -764,12 +793,17 @@ def resolve_combats(state, seed, events):
                 "battle",
                 message("Les villages de {p0} ont été attaqués", p0=target["name"]),
                 message(
+                    "Les assaillants portaient le sceau de {house}. ",
+                    house=state["players"][actor]["name"],
+                )
+                + observation(attackers, encountered - result.defender_losses, attacker_equipment)
+                + " "
+                + message(
                     "Le raid sur nos villages a coûté la vie à {p0} de nos Fidèles. Les assaillants ont emporté {p1} Mesures et en ont détruit {p2} autres. Ces pertes sont inscrites dans le grenier de la cité. ",
                     p0=result.defender_losses,
                     p1=number(result.stolen),
                     p2=number(result.destroyed),
-                )
-                + observation(attackers, encountered - result.defender_losses, attacker_equipment),
+                ),
             )
             continue
         support = [

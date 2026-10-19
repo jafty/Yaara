@@ -4,7 +4,7 @@
     <header class="chapter-heading compact-heading">
         <p class="dateline">
             {% if view.finished %}{% blocktranslate with v0=view.closed_moon %}Au terme de la lune {{ v0 }}{% endblocktranslate %}
-            {% else %}{% blocktranslate with v0=view.open_moon v1=view.year %}Lune {{ v0 }}, année {{ v1 }}{% endblocktranslate %}<span class="visually-hidden">{% translate "Ouverte à vos ordres" %}{% if view.closed_moon %} · {% blocktranslate with v0=view.closed_moon %}Comptes arrêtés à la lune {{ v0 }}{% endblocktranslate %}{% endif %}</span>{% endif %}
+            {% else %}{% blocktranslate with v0=view.open_moon v1=view.year %}Lune {{ v0 }}, année {{ v1 }}{% endblocktranslate %} · {% translate "Ouverte à vos ordres" %}{% if view.closed_moon %} · {% blocktranslate with v0=view.closed_moon %}Comptes arrêtés à la lune {{ v0 }}{% endblocktranslate %}{% endif %}{% endif %}
         </p>
         <h1>{% if tab == 'domain' %}{% translate "Le conseil de votre maison" %}{% elif tab == 'city' %}{% blocktranslate with v0=selected.name %}Le feuillet de {{ v0 }}{% endblocktranslate %}{% elif tab == 'decrees' %}{% translate "Ce que vous dicterez" %}{% elif tab == 'constructions' %}{% translate "Chantiers" %}{% elif tab == 'wars' %}{% translate "Expéditions" %}{% elif tab == 'help' %}{% translate "Comment jouer" %}{% elif tab == 'prologue' %}{% translate "Premiers pas" %}{% else %}{% translate "Rapports" %}{% endif %}</h1>
         <p class="visually-hidden">{% blocktranslate with v0=view.realm %}Au service de {{ v0 }}.{% endblocktranslate %}</p>
@@ -18,17 +18,14 @@
     {% elif game.paused %}<p class="marginal-note">{% translate "Le calendrier est suspendu. Reprenez-le avant de dicter de nouveaux ordres." %}</p>{% endif %}
     {% if tab == 'domain' %}
         <p class="reading-links council-links"><a href="?tab=constructions">{% translate "Préparer un chantier" %} →</a> · <a href="?tab=wars&amp;action=expedition">{% translate "Préparer une expédition" %} →</a> · <a href="#orders-heading">{% translate "Consulter les décrets scellés" %} →</a></p>
-        <details class="plain-disclosure"><summary>{% translate "Les comptes de votre maison" %}</summary><div class="unfolded">
-            <p>{% blocktranslate with free=view.available_stock reserved=view.reserved_stock tax=view.tax %}<strong>{{ free }} Mesures</strong> libres ; <strong>{{ reserved }}</strong> réservées.<br>Prélèvement en préparation : <strong>{{ tax }} Mesures</strong>, encore indisponibles.{% endblocktranslate %}</p>
-            <p>{% translate "Les dépenses sont réparties automatiquement entre les greniers de votre maison. Les réserves restent locales pour les pillages et le stockage." %}</p>
-        </div></details>
-        {% include 'simulation/city_ledger.html' %}
+        <p class="reading-links"><a href="#city-ledgers">{% translate "Les comptes de vos cités" %} ↓</a></p>
         <section class="briefing-news" aria-labelledby="recent-letters">
             <h2 id="recent-letters">{% translate "Les dernières nouvelles" %}</h2>
             {% if not view.closed_moon %}<p>{% translate "Votre règne commence. Le conseil rassemble vos nouvelles et vos engagements. Confiez vos premiers ouvrages aux cités ou préparez une expédition." %}</p>{% endif %}
             {% include 'simulation/letter_entries.html' with compact=True %}
             <p class="reading-links"><a href="?tab=letters">{% translate "Tous les rapports" %} →</a></p>
         </section>
+        {% include 'simulation/city_ledger.html' %}
         {% if not view.finished %}<section class="chapter-section" aria-labelledby="upcoming-heading">
             <h2 id="upcoming-heading">{% translate "Les prochaines échéances" %}</h2>
             {% if game.paused %}<p class="aside-text">{% translate "Ces échéances attendent la reprise du calendrier." %}</p>{% endif %}

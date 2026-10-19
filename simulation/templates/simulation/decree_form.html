@@ -1,9 +1,10 @@
 {% load i18n l10n %}
 <section class="{% if not inline %}chapter-section {% endif %}decree-form">{% if not inline %}<h2>{{ action.label }}</h2>{% endif %}
-    <form method="post" action="{% url 'preview' game.id %}" {% if action.kind == 'expedition' %}class="expedition-form"{% elif action.kind != 'equipment' %}data-work-form data-free-stock="{{ view.available_stock|unlocalize }}"{% endif %}>
+    <form method="post" action="{% url 'preview' game.id %}" {% if action.kind == 'expedition' %}class="expedition-form"{% elif action.kind != 'equipment' %}data-work-form data-local-funding="{{ view.local_funding|yesno:'true,false' }}" data-free-stock="{{ view.available_stock|unlocalize }}"{% endif %}>
         {% csrf_token %}
         {% if action.kind == 'expedition' %}
             <p class="marginal-note">{% translate "Les Fidèles restent des habitants de leur cité. Une fois partis, ils cessent de défendre leur origine et de contribuer à l’impôt jusqu’à leur retour." %}</p>
+            {% if view.local_funding %}<p>{% translate "Chaque origine paie ses hommes et sa part des frais fixes, proportionnelle aux effectifs envoyés. Le devis détaille les prélèvements ; les autres cités ne contribuent pas." %}</p>{% endif %}
             <p><label for="mission-kind">{% translate "Que nos hommes partent pour…" %}</label><select name="kind" id="mission-kind"><option value="raid" {% if mission_kind != 'capture' %}selected{% endif %}>{% translate "Piller les villages" %}</option><option value="capture" {% if mission_kind == 'capture' %}selected{% endif %}>{% translate "Capturer la cité" %}</option></select></p>
             <p><label for="mission-target">{% translate "Vers quelle cité ?" %}</label><select name="target" id="mission-target" required><option value="">{% translate "Désigner une cité à notre portée" %}</option>{% for target in view.attack_targets %}<option value="{{ target.id }}" {% if target.engaged %}disabled{% elif city_requested and selected.id == target.id %}selected{% endif %}>{{ target.name }} · {% if target.engaged %}{% translate "Une expédition y est déjà engagée" %}{% else %}{{ target.owner_name }}{% endif %}</option>{% endfor %}</select></p>
             <fieldset><legend>{% translate "Que chacune de nos cités fournisse les hommes suivants :" %}</legend>

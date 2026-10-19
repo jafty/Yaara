@@ -2,6 +2,8 @@
 
 The authoritative design is [the original dossier](design-source.fr.md). Prototype choices are recorded in [decisions.md](decisions.md).
 
+The approved audit revision supersedes the original economic and geography defaults for **new** reigns: yield is 100 / 130 / 200 per present inhabitant per Moon; each city funds its works, and expedition origins pay their troop costs plus a proportional share of the fixed fee. No transfers or automatic subsidies exist. New groups initially reach one city in each rival house; captures open additional routes. Saved economies and road networks remain unchanged. New automatic reigns wait for **Begin the reign**, then advance on stored UTC deadlines processed by the scheduler or Railway cron. See [Railway setup](railway.md).
+
 | Behavior | Dossier sections | Implementation |
 | --- | --- | --- |
 | Month sequence, victory, elimination | 1–3, 23 | `advance_month`, `check_end` |

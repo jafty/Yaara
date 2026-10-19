@@ -96,6 +96,7 @@ def metadata(game):
         "deadline": game.deadline,
         "interval_minutes": game.interval_minutes,
         "revision": game.revision,
+        "awaiting_start": game.state.get("awaiting_start", False),
     }
 
 
@@ -326,7 +327,9 @@ def preview_order(request, game_id):
             "name": city_names[task["city"]],
             "level": task["level"],
             "description": work_phrase(task["kind"], task["level"]),
-            "effect": work_effect(task["kind"], task["level"]),
+            "effect": work_effect(
+                task["kind"], task["level"], game.state.get("economy_version", 1)
+            ),
             "finish_month": order["execute_month"] + task["duration"],
         }
         for task in order["tasks"]
@@ -445,6 +448,14 @@ def pause(request, game_id):
         services.toggle_pause(request.user, game_id)
     except RuleError as error:
         messages.error(request, localize(error.args[0]))
+    return redirect("game", game_id=game_id)
+
+
+@login_required
+@require_POST
+def start(request, game_id):
+    authorized_game(request, game_id)
+    services.start_calendar(request.user, game_id)
     return redirect("game", game_id=game_id)
 
 

@@ -1,5 +1,11 @@
 # Test-first development policy
 
+## Approved audit revision
+
+Independent audit cases cover versioned yields at every level, saved economies without a marker, exact local affordability, atomic batch and expedition shortfalls, per-origin fixed-fee rounding, local debits and cancellation, each realm's two initial frontiers, further reach after capture, engagement ownership without hidden identifiers, and defender reports with public identity and survivor-dependent estimates. Existing cases explicitly select the old economy/map where they protect saved rules rather than new-game defaults.
+
+HTTP acceptance cases cover idempotent authorized calendar start, POST-only mutation, cron execution without a browser and repeated-run safety, full-report anchors, news-first Council accounts with a jump link, and closure-review links on the main folios. Browser journeys exercise the new local-funding shortfall, two-target geography and batch workflows in both languages with JavaScript, no JavaScript, narrow screens and enlarged text. The full core coverage and PostgreSQL checkpoints remain mandatory.
+
 The owner's policy is a standing requirement. Its basis is the design dossier, §26, plus the explicit requirement for one logical test per use-case variation. Conversation and test code are English; player-facing copy supports French and English, with canonical French engine messages preserved.
 
 ## Working sequence

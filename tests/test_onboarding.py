@@ -54,7 +54,9 @@ def test_new_game_intro(user, language):
 @pytest.mark.parametrize("language", ["fr", "en"])
 @pytest.mark.parametrize("page", [1, 2, 3, 4])
 def test_intro_pages(user, language, page):
-    game = services.create_game(user, "The opening pages", opponents="passive")
+    game = services.create_game(
+        user, "The opening pages", opponents="passive", economy_version=1, map_version=2
+    )
     before = deepcopy(game.state)
     client = Client()
     client.force_login(user)
@@ -79,7 +81,9 @@ def test_intro_pages(user, language, page):
 )
 @pytest.mark.parametrize("page", ["0", "5", "-1", "not-a-page", "1.5"])
 def test_invalid_intro_page(user, page):
-    game = services.create_game(user, "Pages", opponents="passive")
+    game = services.create_game(
+        user, "Pages", opponents="passive", economy_version=1, map_version=2
+    )
     client = Client()
     client.force_login(user)
     assert (
@@ -94,7 +98,9 @@ def test_invalid_intro_page(user, page):
 @pytest.mark.parametrize("tab", ["help", "prologue"])
 def test_guidance_private(user, tab):
     other = get_user_model().objects.create_user("guide-stranger")
-    game = services.create_game(other, "Another realm", opponents="passive")
+    game = services.create_game(
+        other, "Another realm", opponents="passive", economy_version=1, map_version=2
+    )
     client = Client()
     client.force_login(user)
     assert client.get(reverse("game", args=[game.id]), {"tab": tab}).status_code == 403
@@ -109,7 +115,14 @@ def test_guidance_private(user, tab):
 @pytest.mark.parametrize("mode", ["manual", "scheduled"])
 def test_guide_context(user, language, version, mode):
     game = services.create_game(
-        user, "Guide", version=version, mode=mode, reign_months=24, opponents="passive"
+        user,
+        "Guide",
+        version=version,
+        mode=mode,
+        reign_months=24,
+        opponents="passive",
+        economy_version=1,
+        map_version=2,
     )
     before = deepcopy(game.state)
     deadline = game.deadline
@@ -143,7 +156,14 @@ def test_guide_context(user, language, version, mode):
     "Owner: reading an automatic game's introduction does not silently pause or restart its clock",
 )
 def test_scheduled_intro_clock(user):
-    game = services.create_game(user, "Automatic pages", mode="scheduled", opponents="passive")
+    game = services.create_game(
+        user,
+        "Automatic pages",
+        mode="scheduled",
+        opponents="passive",
+        economy_version=1,
+        map_version=2,
+    )
     deadline = game.deadline
     client = Client()
     client.force_login(user)
@@ -161,7 +181,9 @@ def test_scheduled_intro_clock(user):
 )
 @pytest.mark.parametrize("language", ["fr", "en"])
 def test_city_ledger(user, language):
-    game = services.create_game(user, "Ledger", opponents="passive")
+    game = services.create_game(
+        user, "Ledger", opponents="passive", economy_version=1, map_version=2
+    )
     for city, stock in zip(("c1", "c2", "c3"), (300000, 600000, 900000)):
         game.state["cities"][city]["stock"] = stock
     game.save()
@@ -171,9 +193,9 @@ def test_city_ledger(user, language):
     client.cookies["django_language"] = language
     response = client.get(reverse("game", args=[game.id]))
     html = response.content.decode()
-    assert html.index('id="city-ledgers"') < html.index('id="recent-letters"')
+    assert html.index('id="recent-letters"') < html.index('id="city-ledgers"')
     assert 'id="frontier-notes"' not in html and 'id="standings-heading"' in html
-    assert ("Vos cités" if language == "fr" else "Your cities") in html
+    assert ("Les comptes de vos cités" if language == "fr" else "Your cities’ accounts") in html
     first = response.context["view"]["owned_cities"][0]
     assert first["stock"] == 300000 and first["available_stock"] == 216667 and first["busy"]
     assert "tab=city&amp;city=c1" in html
@@ -198,6 +220,8 @@ def test_order_labels(user, language, kind):
         "Clear confirmation",
         forge_version=1 if kind == "equipment" else 2,
         opponents="passive",
+        economy_version=1,
+        map_version=2,
     )
     client = Client()
     client.force_login(user)

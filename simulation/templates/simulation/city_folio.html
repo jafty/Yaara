@@ -8,7 +8,7 @@
         <p>{% blocktranslate with v0=selected.population v1=selected.present_population v2=selected.available_fideles v3=selected.reserved_fideles v4=selected.absent %}La cité compte <strong>{{ v0 }} habitants</strong>, dont <strong>{{ v1 }}</strong> sont présents.<br><strong>{{ v2 }} Fidèles</strong> sont libres de recevoir un ordre ; <strong>{{ v3 }}</strong> sont promis à une expédition et <strong>{{ v4 }}</strong> sont en route.{% endblocktranslate %}</p>
         <h2>{% translate "Le grenier et le prélèvement" %}</h2>
         <p>{% blocktranslate with v0=selected.stock v1=selected.capacity v2=selected.available_stock v3=selected.reserved_stock v4=selected.tax v5=selected.yield %}Le grenier conserve <strong>{{ v0 }} Mesures</strong> sur <strong>{{ v1 }}</strong>.<br><strong>{{ v2 }} Mesures</strong> sont libres, et <strong>{{ v3 }}</strong> sont réservées.<br>Le prélèvement en préparation atteint <strong>{{ v4 }} Mesures</strong>. Chaque habitant présent y ajoute <strong>{{ v5 }} Mesures par lune</strong>.{% endblocktranslate %}</p>
-        <p>{% translate "Les ouvrages réalisés ici profitent à cette cité. Leur prix est réparti automatiquement entre tous les greniers de votre maison." %}</p>
+        <p>{% if view.local_funding %}{% translate "Les ouvrages réalisés ici profitent à cette cité. Son grenier seul en finance les travaux." %}{% else %}{% translate "Les ouvrages réalisés ici profitent à cette cité. Leur prix est réparti automatiquement entre tous les greniers de votre maison." %}{% endif %}</p>
         <h2>{% translate "Les ouvrages et les équipes" %}</h2>
         {% if view.rules == 'V1' %}<p>{% if view.local_forges %}{% blocktranslate with name=selected.forge_name equipment=selected.equipment %}<strong>{{ name }}</strong> : <strong>{{ equipment }}</strong> pour les Fidèles de cette cité.{% endblocktranslate %}{% else %}{{ selected.equipment }}.{% endif %}</p>{% endif %}
         {% for work in selected.works %}<p>{% blocktranslate with v0=work.label|lower v1=work.finish_month %}Les équipes poursuivent <em>{{ v0 }}</em>. L’ouvrage doit s’achever à la <strong>lune {{ v1 }}</strong>.{% endblocktranslate %}</p>
@@ -19,5 +19,5 @@
 {% endif %}
 <section class="chapter-section"><h2>{% translate "Les routes de cette oasis" %}</h2>
     <ul class="route-list">{% for city in neighbors %}<li><a href="?tab=city&city={{ city.id }}">{{ city.name }} →</a></li>{% endfor %}</ul>
-    {% if selected.engaged %}<p>{% translate "Une expédition est déjà engagée vers cette cité." %}</p>{% endif %}
+    {% if selected.engaged %}<p>{% if selected.own_engagement %}{% translate "Vous avez déjà engagé une expédition vers cette cité." %}{% else %}{% translate "Une expédition d’une autre maison réserve déjà cette cité." %}{% endif %}</p>{% endif %}
 </section>

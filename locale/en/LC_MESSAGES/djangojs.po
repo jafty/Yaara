@@ -71,3 +71,6 @@ msgstr "This work needs %(amount)s more Measures."
 
 msgid "Après réservation : %(amount)s Mesures libres."
 msgstr "After reservation: %(amount)s Measures available."
+
+msgid "Il manque %(amount)s Mesures dans les cités choisies."
+msgstr "The selected cities need %(amount)s more Measures."
