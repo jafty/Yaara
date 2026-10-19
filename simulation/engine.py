@@ -16,6 +16,7 @@ from .narration import (
     completed_work_phrase,
     military_losses,
     number,
+    raid_finances,
     returned_loot,
 )
 from .rules import (
@@ -773,7 +774,17 @@ def resolve_combats(state, seed, events):
                 actor,
                 "battle",
                 message("{p0} à {p1}", p0=OUTCOME_LABELS[result.outcome], p1=target["name"]),
-                message(
+                raid_finances(
+                    order["cost"],
+                    [
+                        (state["cities"][city_id]["name"], amount)
+                        for city_id, amount in order["funding"].items()
+                    ],
+                    result.stolen,
+                    settled=False,
+                )
+                + "\n\n"
+                + message(
                     "La nouvelle de cette expédition nous est parvenue. {p0} ",
                     p0=military_losses(result.attacker_losses),
                 )
@@ -921,12 +932,16 @@ def return_expeditions(state, events):
         if mission["status"] == "completed" or mission["return_month"] > state["month"]:
             continue
         shares = allocate(mission["loot"], mission["cohorts"])
+        order = next(item for item in state["orders"] if item["id"] == mission["id"])
         accounts = {}
+        recovered = 0
         for city_id, survivors in mission["cohorts"].items():
             city = state["cities"][city_id]
             city["fideles"] += survivors
             deposited = min(shares[city_id], capacity(city) - city["stock"])
             city["stock"] += deposited
+            if city["owner"] == mission["actor"]:
+                recovered += deposited
             if survivors:
                 account = message(
                     "J’ai fait inscrire le retour de {p0} Fidèles à {p1}. Ils rejoignent les présents de leur cité d’origine. {p2}",
@@ -943,21 +958,39 @@ def return_expeditions(state, events):
                         "title": message("Retour à {p0}", p0=city["name"]),
                         "body": account,
                     }
+        if not sum(mission["cohorts"].values()):
+            accounts[mission["actor"]] = {
+                "title": message("Une expédition ne reviendra pas"),
+                "body": message("Aucun homme n’a survécu. Aucun butin n’est déposé."),
+            }
+        if mission["kind"] == "raid":
+            account = accounts.setdefault(
+                mission["actor"],
+                {
+                    "title": message("Le bilan du raid"),
+                    "body": message(
+                        "Les survivants ont rejoint des cités qui ne relèvent plus de votre maison."
+                    ),
+                },
+            )
+            account["body"] = (
+                raid_finances(
+                    order["cost"],
+                    [
+                        (state["cities"][city_id]["name"], amount)
+                        for city_id, amount in order["funding"].items()
+                    ],
+                    recovered,
+                    settled=True,
+                )
+                + "\n\n"
+                + account["body"]
+            )
         for recipient, account in accounts.items():
             report(events, recipient, "return", account["title"], account["body"])
-        if not sum(mission["cohorts"].values()):
-            report(
-                events,
-                mission["actor"],
-                "return",
-                message("Une expédition ne reviendra pas"),
-                message("Aucun homme n’a survécu. Aucun butin n’est déposé."),
-            )
         mission["loot"] = 0
         mission["status"] = "completed"
-        next(item for item in state["orders"] if item["id"] == mission["id"])["status"] = (
-            "completed"
-        )
+        order["status"] = "completed"
 
 
 def standings(state):

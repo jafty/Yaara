@@ -1,16 +1,65 @@
 """Language selection at the HTTP boundary; game commands keep their semantics."""
 
 from copy import deepcopy
+from uuid import uuid4
 
 import pytest
 from django.conf import settings
 from django.test import Client
 from django.urls import reverse
 
+from simulation import services
 from simulation.models import Report
 from tests.cases import case
 
 pytestmark = [pytest.mark.integration, pytest.mark.usefixtures("test_static_storage")]
+
+
+@case(
+    "raid-financial-letter-http",
+    "Owner: bilingual raid letters distinguish military success and actual cash deficit with each payer's cost",
+)
+@pytest.mark.parametrize("language", ["fr", "en"])
+def test_raid_financial_letter_http(user, language):
+    game = services.create_game(user, "Raid accounts", opponents="passive")
+    game.state["cities"]["c4"].update(fideles=0, stock=300000)
+    game.save()
+    services.confirm(
+        user,
+        game.id,
+        {"kind": "raid", "target": "c4", "contributions": {"c1": 10, "c2": 10, "c3": 10}},
+        uuid4(),
+        1,
+    )
+    for moon in (1, 2, 3):
+        services.tick(game.id, moon, user)
+    client = Client()
+    client.force_login(user)
+    html = client.get(
+        reverse("game", args=[game.pk]), {"tab": "letters"}, HTTP_ACCEPT_LANGUAGE=language
+    ).content.decode()
+    if language == "fr":
+        assert "Pillage réussi à Sefra" in html
+        assert "Solde provisoire : déficit de 50\u202f000 Mesures" in html
+        assert "Solde final des Mesures : déficit de 50\u202f000 Mesures" in html
+        assert "Tamesh : 31\u202f667 Mesures payées" in html
+    else:
+        assert "Successful raid at Sefra" in html
+        assert "Provisional balance: deficit of 50,000 Measures" in html
+        assert "Final Measures balance: deficit of 50,000 Measures" in html
+        assert "Tamesh: 31,667 Measures paid" in html
+    council = client.get(
+        reverse("game", args=[game.pk]), HTTP_ACCEPT_LANGUAGE=language
+    ).content.decode()
+    assert (
+        "Solde final des Mesures : déficit de 50 000 Mesures"
+        if language == "fr"
+        else "Final Measures balance: deficit of 50,000 Measures"
+    ) in council
+    assert all(
+        "Coût payé" not in report.body
+        for report in Report.objects.filter(game=game, recipient="p2")
+    )
 
 
 @case(

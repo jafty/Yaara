@@ -53,12 +53,13 @@ def test_grouped_return(returning_army):
 
 
 @case(
-    "return-news-recipient-split", "Rules §17: return accounts disclose only the recipient's cities"
+    "return-news-recipient-split",
+    "Rules §17: return accounts disclose only own returns and the initiator's historical payments",
 )
 def test_recipient_split(returning_army):
     """Given one expedition whose middle origin now belongs to another house.
     When its contingents return to their origins.
-    Then each owner receives one letter containing only their own local accounts.
+    Then each owner receives only their own returns and the initiator retains its historical expense account.
     """
     state = returning_army
     state["cities"]["c2"]["owner"] = "p2"
@@ -69,7 +70,10 @@ def test_recipient_split(returning_army):
     for actor, own, hidden in (("p1", ("c1", "c3"), ("c2",)), ("p2", ("c2",), ("c1", "c3"))):
         text = str(letters[actor])
         assert all(state["cities"][city]["name"] in text for city in own)
-        assert all(state["cities"][city]["name"] not in text for city in hidden)
+        assert all(f"Fidèles à {state['cities'][city]['name']}" not in text for city in hidden)
+        if actor != "p1":
+            assert "Coût payé" not in text
+            assert all(state["cities"][city]["name"] not in text for city in hidden)
         assert state["cities"]["c4"]["name"] not in text
     assert state["cities"]["c2"]["fideles"] == 100
     assert state["cities"]["c2"]["stock"] == 3000
@@ -109,7 +113,8 @@ def test_empty_origin(returning_army):
     events = []
     engine.return_expeditions(state, events)
     assert len(events) == 1
-    assert state["cities"]["c1"]["name"] not in str(events)
+    assert "Fidèles à Qasr" not in events[0]["body"]
+    assert "Qasr : 56\u202f667 Mesures payées" in events[0]["body"]
     assert state["cities"]["c1"]["stock"] == 0
     assert state["cities"]["c1"]["fideles"] == 90
     assert state["cities"]["c2"]["stock"] == 3600

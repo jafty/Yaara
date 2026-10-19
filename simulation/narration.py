@@ -123,6 +123,37 @@ def returned_loot(deposited, overflow):
     return text
 
 
+def raid_finances(cost, charges, loot, *, settled):
+    expenses = message("Coût payé pour ce raid : {cost} Mesures.", cost=number(cost))
+    for city, amount in charges:
+        expenses += message("\n{city} : {amount} Mesures payées.", city=city, amount=number(amount))
+    text = (
+        message("Butin conservé par votre maison : {loot} Mesures. ", loot=number(loot))
+        if settled
+        else message("Butin en route : {loot} Mesures. ", loot=number(loot))
+    )
+    balance = loot - cost
+    if balance > 0:
+        result = message("gain de {amount} Mesures", amount=number(balance))
+    elif balance < 0:
+        result = message("déficit de {amount} Mesures", amount=number(-balance))
+    else:
+        result = message("nul")
+    text += (
+        message("Solde final des Mesures : {result}.", result=result)
+        if settled
+        else message("Solde provisoire : {result}.", result=result)
+    )
+    text += "\n\n" + expenses
+    if not settled:
+        text += message(
+            " Le bilan final dépendra du butin conservé au retour, de la place dans les greniers et du propriétaire des cités d’origine."
+        )
+    return text + message(
+        " Ce solde ne chiffre ni les pertes humaines ni les prélèvements perdus pendant l’absence."
+    )
+
+
 COMPLETED_WORK_PHRASES = {
     "forge": [message("ont aménagé la forge"), message("ont renforcé la forge")],
     "irrigation": [

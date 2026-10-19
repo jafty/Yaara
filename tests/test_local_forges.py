@@ -35,6 +35,55 @@ def test_new_reign(local_state):
 
 
 @case(
+    "local-forges-do-not-stack",
+    "Owner: forge levels replace equipment per origin, never stack across cities or with realm equipment",
+)
+@pytest.mark.parametrize(
+    "levels,strength",
+    [((1, 1, 1), 3600), ((2, 2, 2), 4350), ((0, 1, 2), 3650)],
+    ids=["three-reinforced", "three-superior", "mixed"],
+)
+def test_forges_do_not_stack(local_state, levels, strength):
+    """Given three city forge levels {levels} and obsolete superior realm equipment.
+    When ten troops from each city depart together.
+    Then their combined strength is {strength} without a shared or cumulative bonus.
+    """
+    local_state["players"]["p1"]["equipment"] = 2
+    for city_id, level in zip(("c1", "c2", "c3"), levels):
+        local_state["cities"][city_id]["forge"] = level
+    engine.confirm_order(
+        local_state,
+        "p1",
+        {"kind": "raid", "target": "c4", "contributions": {"c1": 10, "c2": 10, "c3": 10}},
+        "r",
+    )
+    engine.advance_month(local_state, "fixed")
+    assert engine.mission_strength(local_state["expeditions"][0]) == strength
+
+
+@case(
+    "legacy-forges-do-not-stack",
+    "Owner: old realm equipment replaces local forge rules rather than combining them",
+)
+def test_legacy_forges_do_not_stack(local_state):
+    """Given legacy reinforced realm equipment and superior city forge fields.
+    When a thirty-person expedition departs.
+    Then every person uses only reinforced realm equipment with total strength 3600.
+    """
+    local_state["forge_version"] = 1
+    local_state["players"]["p1"]["equipment"] = 1
+    for city in local_state["cities"].values():
+        city["forge"] = 2
+    engine.confirm_order(
+        local_state, "p1", {"kind": "raid", "target": "c4", "contributions": {"c3": 30}}, "r"
+    )
+    engine.advance_month(local_state, "fixed")
+    mission = local_state["expeditions"][0]
+    assert "cohort_equipment" not in mission
+    assert engine.mission_strength(mission) == 3600
+
+
+@case(
     "local-forge-quote", "Local forge decision: one third of former minimum, local population price"
 )
 @pytest.mark.parametrize(

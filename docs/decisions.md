@@ -1,5 +1,12 @@
 # Implementation decisions
 
+## 2026-10-19 · Raid cash accounts and forge clarification
+
+- Keep military raid outcomes unchanged. New attacker battle letters recall the paid order total and every saved city funding share, then compare the carried loot with that expense as a provisional gain, deficit or break-even result. A successful raid can therefore be visibly cash-negative. Saved funding is authoritative for both local and legacy pooled economies; never reconstruct costs from current stocks or surviving headcounts.
+- At return, append a final cash account to the initiating house's one expedition letter, counting only loot actually deposited in its current granaries after overflow. An origin captured by another house keeps its ordinary local return letter without the attacker's costs. The initiator still receives its cash account if all origins have changed owner or everyone died. Keep its historical paid shares even for a lost origin. Other houses' deposits are not the initiator's income. Human losses and foregone levies remain explicitly outside this Measures-only balance; no price, combat, financing or storage rule changes.
+- Retain equipment values 100 / 120 / 145: ordinary baseline, reinforced (+20% over baseline), superior (+45% total). Levels replace one another; city forges affect only their own people, and expedition equipment remains frozen at departure. Local forges and legacy realm equipment are alternative saved rule versions, never additive bonuses. The guide explains this without disclosing numerical combativity in the game interface.
+- Historical weapon finds and designs justify qualitative equipment progression, not a calibrated +20/+45 or +30/+70 combat score. [UCL's weapon survey](https://www.ucl.ac.uk/museums-static/digitalegypt/tools/weapons.html) distinguishes periods and surviving evidence. [The Met's Middle Kingdom battle-ax](https://www.metmuseum.org/art/collection/search/544279) describes a more lethal blade design, but is much later than the early setting and supplies no numerical army-strength multiplier. Keep these numbers as explicit gameplay parameters pending playtesting; no running reign is rebalanced from an unsupported historical percentage.
+
 ## 2026-10-19 · Moon news and local levy accounts
 
 - Replace the resource ribbon's harvest countdown with the current absolute Moon number and the shared crescent icon. Finished reigns show their final closed Moon. Keep the exact automatic closure banner and the harvest milestone in Council.

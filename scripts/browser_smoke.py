@@ -320,6 +320,17 @@ with sync_playwright() as playwright:
                 page.locator(".correspondence").get_by_role("heading", name=title)
             ).to_be_visible()
         expect(page.locator(".correspondence")).to_contain_text(
+            "Paid cost of this raid: 132,500 Measures"
+            if en
+            else "Coût payé pour ce raid : 132\u202f500 Mesures"
+        )
+        expect(page.locator(".correspondence")).to_contain_text(
+            "Namar: 132,500 Measures paid" if en else "Namar : 132\u202f500 Mesures payées"
+        )
+        expect(page.locator(".correspondence")).to_contain_text(
+            "Final Measures balance:" if en else "Solde final des Mesures :"
+        )
+        expect(page.locator(".correspondence")).to_contain_text(
             "Our survivors say they encountered between"
             if en
             else "Nos survivants disent avoir rencontré entre"

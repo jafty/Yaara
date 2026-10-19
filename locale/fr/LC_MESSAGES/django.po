@@ -2587,3 +2587,45 @@ msgstr "Le prélèvement s’accumule à chaque clôture et reste indisponible j
 
 msgid "J’ai réuni les lettres qui vous sont destinées. Chacune garde sa date ; les observations d’hier ne décrivent pas nécessairement les forces d’aujourd’hui."
 msgstr "J’ai réuni les lettres qui vous sont destinées. Chacune garde sa date ; les observations d’hier ne décrivent pas nécessairement les forces d’aujourd’hui."
+
+msgid "Coût payé pour ce raid : {cost} Mesures."
+msgstr "Coût payé pour ce raid : {cost} Mesures."
+
+msgid "\n{city} : {amount} Mesures payées."
+msgstr "\n{city} : {amount} Mesures payées."
+
+msgid "Butin conservé par votre maison : {loot} Mesures. "
+msgstr "Butin conservé par votre maison : {loot} Mesures. "
+
+msgid "Butin en route : {loot} Mesures. "
+msgstr "Butin en route : {loot} Mesures. "
+
+msgid "gain de {amount} Mesures"
+msgstr "gain de {amount} Mesures"
+
+msgid "déficit de {amount} Mesures"
+msgstr "déficit de {amount} Mesures"
+
+msgid "nul"
+msgstr "nul"
+
+msgid "Solde final des Mesures : {result}."
+msgstr "Solde final des Mesures : {result}."
+
+msgid "Solde provisoire : {result}."
+msgstr "Solde provisoire : {result}."
+
+msgid " Le bilan final dépendra du butin conservé au retour, de la place dans les greniers et du propriétaire des cités d’origine."
+msgstr " Le bilan final dépendra du butin conservé au retour, de la place dans les greniers et du propriétaire des cités d’origine."
+
+msgid " Ce solde ne chiffre ni les pertes humaines ni les prélèvements perdus pendant l’absence."
+msgstr " Ce solde ne chiffre ni les pertes humaines ni les prélèvements perdus pendant l’absence."
+
+msgid "Le bilan du raid"
+msgstr "Le bilan du raid"
+
+msgid "Les survivants ont rejoint des cités qui ne relèvent plus de votre maison."
+msgstr "Les survivants ont rejoint des cités qui ne relèvent plus de votre maison."
+
+msgid "Une amélioration de forge remplace l’équipement précédent ; ses effets ne s’additionnent pas entre les niveaux ni entre les cités. Les règles de forge locale et d’armement commun sont deux systèmes distincts, jamais cumulés. Un contingent garde l’équipement de son départ jusqu’à son retour."
+msgstr "Une amélioration de forge remplace l’équipement précédent ; ses effets ne s’additionnent pas entre les niveaux ni entre les cités. Les règles de forge locale et d’armement commun sont deux systèmes distincts, jamais cumulés. Un contingent garde l’équipement de son départ jusqu’à son retour."

@@ -3871,3 +3871,45 @@ msgstr "The levy accrues at each closure and remains unavailable until payment a
 
 msgid "J’ai réuni les lettres qui vous sont destinées. Chacune garde sa date ; les observations d’hier ne décrivent pas nécessairement les forces d’aujourd’hui."
 msgstr "I have gathered the letters addressed to you. Each keeps its date; yesterday’s observations do not necessarily describe today’s forces."
+
+msgid "Coût payé pour ce raid : {cost} Mesures."
+msgstr "Paid cost of this raid: {cost} Measures."
+
+msgid "\n{city} : {amount} Mesures payées."
+msgstr "\n{city}: {amount} Measures paid."
+
+msgid "Butin conservé par votre maison : {loot} Mesures. "
+msgstr "Loot retained by your house: {loot} Measures. "
+
+msgid "Butin en route : {loot} Mesures. "
+msgstr "Loot in transit: {loot} Measures. "
+
+msgid "gain de {amount} Mesures"
+msgstr "gain of {amount} Measures"
+
+msgid "déficit de {amount} Mesures"
+msgstr "deficit of {amount} Measures"
+
+msgid "nul"
+msgstr "zero"
+
+msgid "Solde final des Mesures : {result}."
+msgstr "Final Measures balance: {result}."
+
+msgid "Solde provisoire : {result}."
+msgstr "Provisional balance: {result}."
+
+msgid " Le bilan final dépendra du butin conservé au retour, de la place dans les greniers et du propriétaire des cités d’origine."
+msgstr " The final balance will depend on loot retained on return, granary space and ownership of the origin cities."
+
+msgid " Ce solde ne chiffre ni les pertes humaines ni les prélèvements perdus pendant l’absence."
+msgstr " This balance does not value human losses or levies lost during the absence."
+
+msgid "Le bilan du raid"
+msgstr "The raid account"
+
+msgid "Les survivants ont rejoint des cités qui ne relèvent plus de votre maison."
+msgstr "The survivors have joined cities that no longer belong to your house."
+
+msgid "Une amélioration de forge remplace l’équipement précédent ; ses effets ne s’additionnent pas entre les niveaux ni entre les cités. Les règles de forge locale et d’armement commun sont deux systèmes distincts, jamais cumulés. Un contingent garde l’équipement de son départ jusqu’à son retour."
+msgstr "A forge upgrade replaces the previous equipment; its effects do not stack across levels or cities. Local forges and shared armament are two separate systems that never combine. A contingent keeps its departure equipment until its return."

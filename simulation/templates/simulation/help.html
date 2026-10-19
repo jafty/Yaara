@@ -18,6 +18,7 @@
 <section id="buildings"><h2>{% translate "Les ouvrages" %}</h2>
 <p>{% translate "Chaque cité dispose d’une équipe : un chantier ou un décret de travaux scellé l’occupe. Une seule sélection peut réunir plusieurs cités, même à des stades différents. Chaque ligne indique l’état actuel, l’ouvrage proposé, son bénéfice, son prix et sa durée. Les bénéfices commencent à l’achèvement." %}</p>
 <p>{% translate "Les canaux améliorent le prélèvement ; les enceintes protègent la cité lors des captures, sans abriter les villages d’un raid. Une enceinte endommagée peut être réparée." %}</p>
+<p>{% translate "Une amélioration de forge remplace l’équipement précédent ; ses effets ne s’additionnent pas entre les niveaux ni entre les cités. Les règles de forge locale et d’armement commun sont deux systèmes distincts, jamais cumulés. Un contingent garde l’équipement de son départ jusqu’à son retour." %}</p>
 {% if view.rules == 'V1' %}{% if view.local_forges %}<p>{% translate "Chaque cité peut recevoir une forge. Ses armes équipent les habitants de cette cité ; perdre ou gagner une forge par capture transfère son bénéfice au nouveau propriétaire." %}</p>
 {% else %}<p>{% translate "Dans ce règne ancien, la forge équipe toute la maison et conserve son chantier distinct des équipes des cités." %}</p>
 {% endif %}{% endif %}</section>
