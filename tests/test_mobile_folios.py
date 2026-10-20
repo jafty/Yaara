@@ -167,7 +167,9 @@ def test_legacy_forge_http(user):
     game.save()
     client = Client()
     client.force_login(user)
-    page = client.get(reverse("game", args=[game.id]), {"tab": "constructions"})
+    page = client.get(
+        reverse("game", args=[game.id]), {"tab": "constructions", "action": "equipment"}
+    )
     assert b'id="work-equipment"' in page.content
     assert b'name="kind" value="equipment"' in page.content
     assert b'id="work-forge"' not in page.content
@@ -191,12 +193,12 @@ def test_map_context(user, language, city):
         query["city"] = city
     page = client.get(reverse("game", args=[game.id]), query)
     html = page.content.decode()
-    assert 'id="map-context"' in html
+    assert ('id="map-context"' in html) == (city is not None)
     assert html.count('class="map-city') == 9
     assert 'class="map-road"' not in html
     assert 'class="primary-action" href="?tab=wars' not in html
-    assert ('data-expedition-kind="raid"' in html) == (city == "c4")
-    assert ('data-expedition-kind="capture"' in html) == (city == "c4")
+    assert ('type="radio" name="kind" value="raid"' in html) == (city == "c4")
+    assert ('type="radio" name="kind" value="capture"' in html) == (city == "c4")
     if city == "c1":
         assert "tab=city&amp;city=c1" in html
     if city == "c6":
@@ -216,8 +218,8 @@ def test_map_order(user, kind):
         {"tab": "wars", "city": "c4", "action": "expedition", "mission": kind},
     )
     html = response.content.decode()
-    assert f'value="{kind}" selected' in html
-    assert 'value="c4" selected' in html
+    assert f'value="{kind}" checked' in html
+    assert 'id="mission-target" value="c4"' in html
     assert 'class="map-sheet"' in html
 
 
@@ -248,4 +250,4 @@ def test_map_unavailable(user, unavailable):
     html = client.get(
         reverse("game", args=[game.id]), {"tab": "wars", "city": "c4"}
     ).content.decode()
-    assert "data-expedition-kind" not in html
+    assert 'type="radio" name="kind"' not in html

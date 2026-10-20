@@ -214,6 +214,8 @@ def desk(request, game_id):
         )
         milestones.sort(key=lambda item: item["moon"])
     action_kind = request.GET.get("action")
+    if tab == "wars" and city_id and selected["reachable"] and not selected["engaged"]:
+        action_kind = "expedition"
     action = next((item for item in view["work_actions"] if item["kind"] == action_kind), None)
     if action_kind == "expedition":
         action = {"kind": action_kind, "label": _("Dicter l’ordre d’une expédition")}
@@ -243,7 +245,8 @@ def desk(request, game_id):
             "section_orders": [
                 order
                 for order in view["orders"]
-                if (tab != "wars" or order["kind"] in ("raid", "capture"))
+                if order["status"] == "confirmed"
+                and (tab != "wars" or order["kind"] in ("raid", "capture"))
                 and (tab != "constructions" or order["kind"] not in ("raid", "capture"))
             ],
             "city_requested": city_id is not None,
@@ -371,7 +374,9 @@ def preview_order(request, game_id):
         {
             "name": city_names[task["city"]],
             "level": task["level"],
-            "description": work_phrase(task["kind"], task["level"]),
+            "description": work_phrase(
+                task["kind"], task["level"], game.state.get("economy_version", 1)
+            ),
             "effect": work_effect(
                 task["kind"], task["level"], game.state.get("economy_version", 1)
             ),

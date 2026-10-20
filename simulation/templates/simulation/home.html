@@ -25,7 +25,7 @@
         {% for item in games %}
             <a class="panel game-card" href="{% url 'game' item.id %}">
                 <div class="card-top">
-                    <span class="tag">{{ item.rules }}</span><span class="status-dot {% if item.finished %}finished{% endif %}">
+                    <span class="status-dot {% if item.finished %}finished{% endif %}">
                         {% if item.finished %}{% translate "Règne achevé" %}{% else %}{% translate "En cours" %}{% endif %}
                     </span>
                 </div>

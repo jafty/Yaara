@@ -97,14 +97,17 @@ class RaidResult:
     destroyed: int
 
 
-def raid_result(attackers, attack_equipment, defenders, defense_equipment, stock):
+def raid_result(attackers, attack_equipment, defenders, defense_equipment, stock, carrying=None):
     attack = attackers * attack_equipment
     defense = defenders * defense_equipment
     accessible = stock // 4
     if attack > defense:
         attacker_dead = losses(attackers, Fraction(2, 100)) if defenders else 0
         defender_dead = losses(defenders, Fraction(4, 100))
-        stolen = min(accessible * 60 // 100, (attackers - attacker_dead) * 5000)
+        stolen = min(
+            accessible * 60 // 100,
+            (attackers - attacker_dead) * 5000 if carrying is None else carrying(attacker_dead),
+        )
         destroyed = min(accessible * 20 // 100, accessible - stolen)
         return RaidResult("success", attacker_dead, defender_dead, stolen, destroyed)
     if attack < defense * Fraction(1, 2):
@@ -135,7 +138,13 @@ CAPACITIES = [2_400_000, 3_600_000, 6_000_000]
 
 
 def tax_yield(level, economy_version=1):
-    return ([100, 130, 200] if economy_version >= 2 else [100, 200, 300])[level]
+    return (
+        [100, 115, 130, 200]
+        if economy_version >= 3
+        else [100, 130, 200]
+        if economy_version == 2
+        else [100, 200, 300]
+    )[level]
 
 
 WORK_PRICES = {
@@ -165,3 +174,57 @@ OUTCOME_LABELS = {
     "defeat": message("Attaque repoussée"),
     "success": message("Pillage réussi"),
 }
+
+
+# Saved economies select their own catalogue; absent markers retain historical rules.
+CURRENT_WORK_PRICES = {
+    "irrigation": [(300_000, 3), (400_000, 5), (1_500_000, 10)],
+    "storage": [(200_000, 3), (420_000, 5), (900_000, 8)],
+    "forge": [(150_000, 3), (450_000, 5), (1_000_000, 8)],
+    "walls": [(200_000, 5), (900_000, 10), (2_400_000, 20)],
+    "watch": [(120_000, 3), (360_000, 5)],
+    "shelter": [(150_000, 3), (450_000, 5)],
+    "transport": [(200_000, 4), (600_000, 6)],
+    "siege": [(300_000, 5), (750_000, 8)],
+    "repair": [(40_000, 3), (180_000, 6), (480_000, 8)],
+}
+CURRENT_EQUIPMENT = [100, 110, 125, 145]
+CURRENT_CAPACITIES = [2_400_000, 3_600_000, 5_400_000, 8_100_000]
+CURRENT_WALLS = [Fraction(1), Fraction(2), Fraction(4), Fraction(7)]
+CURRENT_EQUIPMENT_LABELS = [
+    message("Équipement ordinaire"),
+    message("Équipement du petit arsenal"),
+    message("Équipement des ateliers d’armement"),
+    message("Équipement du grand arsenal"),
+]
+ACTION_LABELS.update(
+    {
+        "watch": message("Organiser la surveillance"),
+        "shelter": message("Protéger les récoltes"),
+        "transport": message("Développer le transport"),
+        "siege": message("Préparer le matériel de siège"),
+    }
+)
+
+
+def work_prices(economy_version=1):
+    return CURRENT_WORK_PRICES if economy_version >= 3 else WORK_PRICES
+
+
+def equipment_values(economy_version=1):
+    return CURRENT_EQUIPMENT if economy_version >= 3 else EQUIPMENT
+
+
+def equipment_labels(economy_version=1):
+    return CURRENT_EQUIPMENT_LABELS if economy_version >= 3 else EQUIPMENT_LABELS
+
+
+def capacities(economy_version=1):
+    return CURRENT_CAPACITIES if economy_version >= 3 else CAPACITIES
+
+
+def wall_multiplier(level, damaged=False, reduction=Fraction(0), economy_version=1):
+    bonus = (CURRENT_WALLS if economy_version >= 3 else WALLS)[level] - 1
+    if damaged:
+        bonus /= 2
+    return 1 + bonus * (1 - max(Fraction(0), min(Fraction(1), reduction)))

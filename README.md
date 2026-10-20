@@ -11,7 +11,7 @@ uv run python manage.py migrate
 uv run python manage.py runserver
 ```
 
-Open the local server, create an account, then start a **V1 / manual** reign. SQLite is the default local solo fallback. Use PostgreSQL for production and concurrency tests.
+Open the local server, create an account, then start a **manual** reign. SQLite is the default local solo fallback. Use PostgreSQL for production and concurrency tests.
 
 For PostgreSQL, copy `.env.example` to `.env`, choose a local password and random secret, export those variables in your shell, then:
 
@@ -26,9 +26,9 @@ Django does not load `.env` automatically. It is ignored by Git. In the current 
 ## Playable features
 
 - Nine-city map and private games against two active or passive opponents.
-- V0/V1, local stocks, annual harvest, growth and Fidèle renewal.
-- Batched construction, equipment, raids, captures, relief, siege and returns by origin.
-- Decree previews, atomic confirmation, target reservation and V1 cancellation.
+- Current rules with local funding, seasonal crop raids, annual harvest, growth and Fidèle renewal; older saves retain their rules.
+- Eight building families, batched local construction, origin-specific equipment/transport/siege gear, raids, captures, relief and returns.
+- Decree previews, atomic confirmation, target reservation and pre-departure cancellation.
 - Dated private reports in French and English, a persistent resource ribbon, textual house accounts, optional city folios, realm-wide multi-city work checklists and expedition forms, and an explicit draft/seal flow. Account and reign-selection pages retain their conventional layout. Change languages in the footer, including on an unsealed draft.
 - Manual Moons or a five/ten-minute worker; persistent games and fixed results. New reigns open at Moon 1; saved legacy calendars retain their timing.
 
@@ -37,6 +37,8 @@ The default reign lasts ten years. The first harvest arrives at the closure of M
 ## Deployment and development
 
 - [Railway setup, variables, scheduler and backups](docs/railway.md)
+- [Current gameplay reference](docs/gameplay-review-prompt.fr.md)
+- [Future ideas backlog](docs/backlog.fr.md)
 - [Original design dossier](docs/design-source.fr.md)
 - [Implemented rules and quick start](docs/rules.md)
 - [Architecture and working method](docs/architecture.md)

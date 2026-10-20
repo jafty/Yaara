@@ -21,7 +21,7 @@ pytestmark = [pytest.mark.integration, pytest.mark.usefixtures("test_static_stor
 )
 @pytest.mark.parametrize("language", ["fr", "en"])
 def test_raid_financial_letter_http(user, language):
-    game = services.create_game(user, "Raid accounts", opponents="passive")
+    game = services.create_game(user, "Raid accounts", opponents="passive", economy_version=2)
     game.state["cities"]["c4"].update(fideles=0, stock=300000)
     game.save()
     services.confirm(

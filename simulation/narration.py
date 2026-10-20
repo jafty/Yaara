@@ -1,7 +1,7 @@
 """French presentation vocabulary; no simulation state or hidden information."""
 
 from .messages import message
-from .rules import CAPACITIES, EQUIPMENT_LABELS, tax_yield
+from .rules import capacities, equipment_labels, tax_yield
 
 WORK_NAMES = {
     "forge": [
@@ -28,8 +28,8 @@ WORK_NAMES = {
 WORK_NAMES["repair"] = WORK_NAMES["walls"]
 
 
-def work_name(kind, level):
-    return WORK_NAMES[kind][level]
+def work_name(kind, level, economy_version=1):
+    return (CURRENT_WORK_NAMES if economy_version >= 3 else WORK_NAMES)[kind][level]
 
 
 def number(value):
@@ -88,21 +88,34 @@ def work_benefit(kind, current, target, economy_version=1):
     if kind == "storage":
         return message(
             "Capacité du grenier : {before} → {after} Mesures.",
-            before=number(CAPACITIES[current]),
-            after=number(CAPACITIES[target]),
+            before=number(capacities(economy_version)[current]),
+            after=number(capacities(economy_version)[target]),
         )
+    if kind == "forge" and economy_version >= 3:
+        return work_effect(kind, target, economy_version)
     if kind == "forge":
         return message(
             "Armement : {before} → {after}.",
-            before=EQUIPMENT_LABELS[current],
-            after=EQUIPMENT_LABELS[target],
+            before=equipment_labels(economy_version)[current],
+            after=equipment_labels(economy_version)[target],
         )
     if kind == "repair":
+        if economy_version >= 3:
+            return message(
+                "Bonus défensif local restauré : +{before} % → +{after} %.",
+                before=[50, 150, 300][current - 1],
+                after=[100, 300, 600][current - 1],
+            )
         return message("L’enceinte retrouvera toute sa protection, sans être agrandie.")
-    return work_effect(kind, target)
+    return work_effect(kind, target, economy_version)
 
 
-def work_phrase(kind, level):
+def work_phrase(kind, level, economy_version=1):
+    if economy_version >= 3:
+        return message(
+            "Restaurer {work}" if kind == "repair" else "Construire {work}",
+            work=work_name(kind, level, economy_version),
+        )
     return WORK_PHRASES[kind][level - 1]
 
 
@@ -172,7 +185,12 @@ COMPLETED_WORK_PHRASES = {
 }
 
 
-def completed_work_phrase(kind, level):
+def completed_work_phrase(kind, level, economy_version=1):
+    if economy_version >= 3:
+        return message(
+            "ont restauré {work}" if kind == "repair" else "ont achevé {work}",
+            work=work_name(kind, level, economy_version),
+        )
     return COMPLETED_WORK_PHRASES[kind][level - 1]
 
 
@@ -189,6 +207,8 @@ STARTED_ACTION_PHRASES = {
 
 
 def work_effect(kind, level, economy_version=1):
+    if economy_version >= 3 and kind in CURRENT_EFFECTS:
+        return CURRENT_EFFECTS[kind][level - 1]
     if kind == "forge":
         return message(
             "La forge fournira un équipement renforcé aux Fidèles de cette cité, y compris aux nouveaux habitants. Les expéditions déjà parties conserveront leur équipement."
@@ -203,8 +223,96 @@ def work_effect(kind, level, economy_version=1):
     if kind == "storage":
         return message(
             "La capacité de ce grenier passera à {capacity} Mesures.",
-            capacity=number(CAPACITIES[level]),
+            capacity=number(capacities(economy_version)[level]),
         )
     if kind == "walls":
         return message("La garnison locale sera mieux protégée contre les captures.")
     return message("L’enceinte retrouvera toute la protection de son niveau actuel.")
+
+
+CURRENT_WORK_NAMES = {
+    "irrigation": [
+        message("Cultures de l’oasis"),
+        message("Rigoles et petites digues"),
+        message("Premiers canaux"),
+        message("Grand réseau hydraulique"),
+    ],
+    "storage": [
+        message("Grenier de la cité"),
+        message("Greniers supplémentaires"),
+        message("Ensemble de silos"),
+        message("Grands magasins"),
+    ],
+    "forge": [
+        message("Équipement ordinaire"),
+        message("Petit arsenal"),
+        message("Ateliers d’armement"),
+        message("Grand arsenal"),
+    ],
+    "walls": [
+        message("Sans fortifications"),
+        message("Palissades de bois"),
+        message("Palais renforcé"),
+        message("Murailles"),
+    ],
+    "watch": [message("Veille ordinaire"), message("Postes de veille"), message("Tours de guet")],
+    "shelter": [
+        message("Réserves villageoises"),
+        message("Réserves souterraines"),
+        message("Dépôts renforcés"),
+    ],
+    "transport": [
+        message("Transport ordinaire"),
+        message("Ateliers de bât"),
+        message("Train de transport"),
+    ],
+    "siege": [message("Sans matériel de siège"), message("Échelles d’assaut"), message("Béliers")],
+}
+CURRENT_WORK_NAMES["repair"] = CURRENT_WORK_NAMES["walls"]
+CURRENT_EFFECTS = {
+    "forge": [
+        message("Force des Fidèles de cette cité : +10 % en attaque et en défense."),
+        message("Force des Fidèles de cette cité : +25 % au total."),
+        message("Force des Fidèles de cette cité : +45 % au total."),
+    ],
+    "walls": [
+        message("Défense locale contre capture : ×2 à pleine efficacité."),
+        message("Défense locale contre capture : ×4 à pleine efficacité."),
+        message("Défense locale contre capture : ×7 à pleine efficacité."),
+    ],
+    "watch": [
+        message("Défense des raids : 40 % des Fidèles disponibles."),
+        message("Défense des raids : 60 % des Fidèles disponibles."),
+    ],
+    "shelter": [
+        message("Récolte protégée du pillage et des destructions : 400 000 Mesures."),
+        message("Récolte protégée du pillage et des destructions : 800 000 Mesures."),
+    ],
+    "transport": [
+        message("Capacité de butin des survivants originaires de cette cité : +25 %."),
+        message("Capacité de butin des survivants originaires de cette cité : +50 % au total."),
+    ],
+    "siege": [
+        message("Les assaillants de cette cité ignorent 25 % du bonus des fortifications."),
+        message("Les assaillants de cette cité ignorent 50 % du bonus des fortifications."),
+    ],
+}
+WORK_PURPOSES.update(
+    {
+        "watch": message("Mobiliser davantage de défenseurs contre les raids."),
+        "shelter": message("Mettre une partie de la récolte à l’abri."),
+        "transport": message("Rapporter davantage de butin."),
+        "siege": message("Réduire l’avantage des fortifications adverses."),
+    }
+)
+WORK_ADVICE.update(
+    {kind: WORK_PURPOSES[kind] for kind in ("watch", "shelter", "transport", "siege")}
+)
+STARTED_ACTION_PHRASES.update(
+    {
+        "watch": message("Les travaux de surveillance ont commencé."),
+        "shelter": message("Les travaux des réserves protégées ont commencé."),
+        "transport": message("Les ateliers de transport ont commencé leur ouvrage."),
+        "siege": message("La préparation du matériel de siège a commencé."),
+    }
+)

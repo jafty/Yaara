@@ -58,7 +58,7 @@
                 {% if view and not view.finished %}<a href="{% url 'game' game.id %}?tab=domain#turn-page">{% include 'simulation/nav_icon.html' with icon='moon' %}{% if game.awaiting_start %}{% translate "Commencer" %}{% elif game.mode == 'manual' %}{% translate "Clore la lune…" %}{% else %}{% translate "Calendrier" %}{% endif %}</a>{% endif %}
             </nav>
             <footer class="book-footer">
-                <p><a href="{% url 'home' %}">{% translate "Refermer ce livre" %}</a>{% if view %} · {% blocktranslate with v0=view.rules %}Règles {{ v0 }}{% endblocktranslate %}{% endif %}</p>
+                <p><a href="{% url 'home' %}">{% translate "Refermer ce livre" %}</a></p>
                 {% include 'simulation/language_switch.html' %}
                 <form method="post" action="{% url 'logout' %}">{% csrf_token %}<button type="submit">{% translate "Quitter" %}</button></form>
             </footer>

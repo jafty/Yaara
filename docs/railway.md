@@ -23,7 +23,7 @@ Railway's `RAILWAY_PUBLIC_DOMAIN` is automatically allowed and trusted. The star
 4. Generate the public domain. The build installs pinned, checksum-verified dependencies and compiles French and English catalogs and collects static assets. Pre-deploy runs `python manage.py migrate --noinput`; Gunicorn runs as a non-root user. `/health/` checks database connectivity.
 The compiled translation catalogs are included in Git and the Docker image. The report-content schema migration runs through the existing pre-deploy command; no manual translation compilation is needed on Railway.
 
-5. Open the domain, register, and create a **manual V1** game. This mode requires no scheduler. Accounts, sessions, games and reports persist in PostgreSQL; the web container requires no volume.
+5. Open the domain, register, and create a **manual** game. This mode requires no scheduler. Accounts, sessions, games and reports persist in PostgreSQL; the web container requires no volume.
 
 Railway terminates HTTPS. Django trusts its forwarded HTTPS header and uses HTTPS redirects and secure cookies. Direct public container hosting requires a trusted TLS reverse proxy.
 
@@ -82,4 +82,4 @@ Email password reset is not configured. An authorized operator can run `python m
 
 ## Scope
 
-Private, unranked solo games; active/passive opponents; V0/V1; manual/scheduled months; fixed final results. French/English responsive UI and local assets. No external fonts, LLM APIs, Redis, or frontend build system. Human multiplayer, email, competitive rankings and game-master edits remain future work. Computer opponents are basic; rule tests do not establish game balance.
+Private, unranked solo games; active/passive opponents; compatible saved rules; manual/scheduled months; fixed final results. French/English responsive UI and local assets. No external fonts, LLM APIs, Redis, or frontend build system. Human multiplayer, email, competitive rankings and game-master edits remain future work. Computer opponents are basic; rule tests do not establish game balance.

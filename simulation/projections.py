@@ -9,8 +9,10 @@ from .rules import (
     EQUIPMENT_LABELS,
     EXPEDITION_PRICES,
     RuleError,
+    equipment_labels,
     rule_family,
     tax_yield,
+    work_prices,
 )
 
 STATUS_LABELS = {
@@ -77,6 +79,7 @@ FRONTIER_TERRITORIES = (
 
 
 def player_view(state, actor):
+    economy = state.get("economy_version", 1)
     closed = closed_moon(state)
     upcoming = closing_moon(state)
     dating = max(1, closed if state["status"] == "finished" else upcoming)
@@ -94,12 +97,15 @@ def player_view(state, actor):
             "owner_name": state["players"][city["owner"]]["name"],
             "owned": city["owner"] == actor,
             "walls": city["walls"],
-            "wall_label": [
-                Message("Sans enceinte"),
+            "wall_label": work_name("walls", city["walls"], economy)
+            if economy >= 3
+            else [
+                Message("Sans fortifications"),
                 Message("Enceinte de terre"),
                 Message("Grande enceinte"),
             ][city["walls"]],
             "damaged": city["damaged"],
+            "raid_available_moon": city["raid_protected_until"] if economy >= 3 else 0,
             "engaged": city["id"] in targets,
             "own_engagement": any(
                 order["id"] == targets.get(city["id"]) and order["actor"] == actor
@@ -120,23 +126,23 @@ def player_view(state, actor):
                     "available_fideles": city["fideles"] - people[city["id"]],
                     "reserved_fideles": people[city["id"]],
                     "stock": city["stock"],
-                    "capacity": engine.capacity(city),
+                    "capacity": engine.capacity(city, economy),
                     "available_stock": city["stock"] - funds[city["id"]],
                     "reserved_stock": funds[city["id"]],
-                    "stock_percent": round(city["stock"] / engine.capacity(city) * 100),
+                    "stock_percent": round(city["stock"] / engine.capacity(city, economy) * 100),
                     "tax": city["tax"],
                     "yield": tax_yield(city["irrigation"], state.get("economy_version", 1)),
                     "irrigation": city["irrigation"],
                     "storage": city["storage"],
                     "forge": city.get("forge", 0),
-                    "forge_name": work_name("forge", engine.city_equipment(state, city)),
-                    "equipment": EQUIPMENT_LABELS[engine.city_equipment(state, city)],
+                    "forge_name": work_name("forge", engine.city_equipment(state, city), economy),
+                    "equipment": equipment_labels(economy)[engine.city_equipment(state, city)],
                     "busy": city["id"] in busy,
                     "deaths": city["military_deaths"] + city["civilian_deaths"],
                     "works": [
                         {
                             "label": ACTION_LABELS[work["kind"]],
-                            "name": work_name(work["kind"], work["level"]),
+                            "name": work_name(work["kind"], work["level"], economy),
                             "finish_month": work["finish_month"],
                             "start_month": work["start_month"],
                             "progress": min(
@@ -222,7 +228,7 @@ def player_view(state, actor):
         for row in (state["result"]["standings"] if state["result"] else engine.standings(state))
     ]
     available_actions = []
-    for kind in ("irrigation", "storage", "walls", "repair", "forge"):
+    for kind in work_prices(economy):
         if kind == "forge" and (
             not engine.local_forges(state) or not rule_family(state["rules"]).equipment
         ):
@@ -235,7 +241,7 @@ def player_view(state, actor):
             option = {
                 "id": city["id"],
                 "name": city["name"],
-                "current_name": work_name(kind, current),
+                "current_name": work_name(kind, current, economy),
                 "current_damaged": kind in ("walls", "repair") and city["damaged"],
                 "work_name": "",
                 "cost": 0,
@@ -251,7 +257,15 @@ def player_view(state, actor):
             try:
                 task = engine.work_spec(state, city, kind)
             except RuleError as error:
-                complete = current == rule_family(state["rules"]).max_level and kind != "repair"
+                complete = (
+                    current
+                    == (
+                        len(work_prices(economy)[kind])
+                        if economy >= 3
+                        else rule_family(state["rules"]).max_level
+                    )
+                    and kind != "repair"
+                )
                 reason = error.args[0]
                 if complete:
                     reason = Message("Cet ouvrage est achevé.")
@@ -263,7 +277,7 @@ def player_view(state, actor):
                     cost=task["cost"],
                     duration=task["duration"],
                     level=task["level"],
-                    work_name=work_name(kind, task["level"]),
+                    work_name=work_name(kind, task["level"], economy),
                     benefit=work_benefit(
                         kind, current, task["level"], state.get("economy_version", 1)
                     ),
@@ -301,7 +315,7 @@ def player_view(state, actor):
                 "prices": [
                     {
                         "level": level,
-                        "name": work_name(kind, level),
+                        "name": work_name(kind, level, economy),
                         "cost": cost,
                         "duration": duration,
                         "effect": work_effect(kind, level, state.get("economy_version", 1)),
@@ -348,6 +362,7 @@ def player_view(state, actor):
         "reign_months": state["config"]["reign_months"],
         "remaining": state["config"]["reign_months"] - closed,
         "rules": state["rules"],
+        "seasonal_raids": economy >= 3,
         "finished": state["status"] == "finished",
         "eliminated": state["players"][actor]["eliminated"],
         "actor": actor,

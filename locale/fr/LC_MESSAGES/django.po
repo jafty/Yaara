@@ -283,7 +283,7 @@ msgid "Cet ordre n’est pas reconnu."
 msgstr "Cet ordre n’est pas reconnu."
 
 msgid "Cette action appartient aux règles V1."
-msgstr "Cette action appartient aux règles V1."
+msgstr "Cette action n’est pas disponible dans les règles de ce règne."
 
 msgid "Cette cité ne relève pas de votre autorité."
 msgstr "Cette cité ne relève pas de votre autorité."
@@ -504,7 +504,7 @@ msgstr ""
 "En V0, un sceau est définitif. Aucun décret confirmé ne peut être annulé."
 
 msgid "En V0, une confirmation est définitive."
-msgstr "En V0, une confirmation est définitive."
+msgstr "Dans ce règne, une confirmation est définitive."
 
 msgid "En cours"
 msgstr "En cours"
@@ -1058,7 +1058,7 @@ msgstr ""
 "automatiquement entre tous les greniers de votre maison."
 
 msgid "Les projets d’armement appartiennent aux règles V1."
-msgstr "Les projets d’armement appartiennent aux règles V1."
+msgstr "Les projets d’armement ne sont pas disponibles dans les règles de ce règne."
 
 msgid "Les rares survivants ne livrent que des observations incertaines."
 msgstr "Les rares survivants ne livrent que des observations incertaines."
@@ -2629,3 +2629,326 @@ msgstr "Les survivants ont rejoint des cités qui ne relèvent plus de votre mai
 
 msgid "Une amélioration de forge remplace l’équipement précédent ; ses effets ne s’additionnent pas entre les niveaux ni entre les cités. Les règles de forge locale et d’armement commun sont deux systèmes distincts, jamais cumulés. Un contingent garde l’équipement de son départ jusqu’à son retour."
 msgstr "Une amélioration de forge remplace l’équipement précédent ; ses effets ne s’additionnent pas entre les niveaux ni entre les cités. Les règles de forge locale et d’armement commun sont deux systèmes distincts, jamais cumulés. Un contingent garde l’équipement de son départ jusqu’à son retour."
+
+#. Approved playability revision, October 2026.
+msgid "Action"
+msgstr "Action"
+
+#. Approved playability revision, October 2026.
+msgid "Après un pillage victorieux ayant causé des pertes agricoles, les villages restent dispersés deux lunes : pillés en lune 7, ils peuvent de nouveau être pillés en lune 10. Une capture reste possible. Les raids de la lune de récolte sont déduits avant son versement."
+msgstr "Après un pillage victorieux ayant causé des pertes agricoles, les villages restent dispersés deux lunes : pillés en lune 7, ils peuvent de nouveau être pillés en lune 10. Une capture reste possible. Les raids de la lune de récolte sont déduits avant son versement."
+
+#. Approved playability revision, October 2026.
+msgid "Ateliers de bât"
+msgstr "Ateliers de bât"
+
+#. Approved playability revision, October 2026.
+msgid "Ateliers d’armement"
+msgstr "Ateliers d’armement"
+
+#. Approved playability revision, October 2026.
+msgid "Aucun nouvel ouvrage disponible."
+msgstr "Aucun nouvel ouvrage disponible."
+
+#. Approved playability revision, October 2026.
+msgid "Béliers"
+msgstr "Béliers"
+
+#. Approved playability revision, October 2026.
+msgid "Capacité de butin des survivants originaires de cette cité : +25 %."
+msgstr "Capacité de butin des survivants originaires de cette cité : +25 %."
+
+#. Approved playability revision, October 2026.
+msgid "Capacité de butin des survivants originaires de cette cité : +50 % au total."
+msgstr "Capacité de butin des survivants originaires de cette cité : +50 % au total."
+
+#. Approved playability revision, October 2026.
+msgid "Capturer"
+msgstr "Capturer"
+
+#. Approved playability revision, October 2026.
+msgid "Choisir les cités"
+msgstr "Choisir les cités"
+
+#. Approved playability revision, October 2026.
+msgid "Choisissez vos cités ou vos hommes, puis « Valider l’action ». La page suivante récapitule le prix, les dates et les conséquences : rien n’est encore réservé. « Confirmer et sceller l’ordre » engage les moyens annoncés. La clôture de la lune fait entrer le décret en vigueur."
+msgstr "Choisissez vos cités ou vos hommes, puis « Valider l’action ». La page suivante récapitule le prix, les dates et les conséquences : rien n’est encore réservé. « Confirmer et sceller l’ordre » engage les moyens annoncés. La clôture de la lune fait entrer le décret en vigueur."
+
+#. Approved playability revision, October 2026.
+msgid "Construire {work}"
+msgstr "Construire {work}"
+
+#. Approved playability revision, October 2026.
+msgid "Dans ce règne ancien, le sceau rend cet ordre définitif. Aucune annulation ne sera possible."
+msgstr "Dans ce règne ancien, le sceau rend cet ordre définitif. Aucune annulation ne sera possible."
+
+#. Approved playability revision, October 2026.
+msgid "Dans ce règne ancien, un décret scellé ne peut pas être annulé. Vérifiez soigneusement sa relecture."
+msgstr "Dans ce règne ancien, un décret scellé ne peut pas être annulé. Vérifiez soigneusement sa relecture."
+
+#. Approved playability revision, October 2026.
+msgid "Dans ce règne ancien, un sceau est définitif. Aucun décret confirmé ne peut être annulé."
+msgstr "Dans ce règne ancien, un sceau est définitif. Aucun décret confirmé ne peut être annulé."
+
+#. Approved playability revision, October 2026.
+msgid "Défense des raids : 40 % des Fidèles disponibles."
+msgstr "Défense des raids : 40 % des Fidèles disponibles."
+
+#. Approved playability revision, October 2026.
+msgid "Défense des raids : 60 % des Fidèles disponibles."
+msgstr "Défense des raids : 60 % des Fidèles disponibles."
+
+#. Approved playability revision, October 2026.
+msgid "Défense locale contre capture : ×2 à pleine efficacité."
+msgstr "Défense locale contre capture : ×2 à pleine efficacité."
+
+#. Approved playability revision, October 2026.
+msgid "Défense locale contre capture : ×4 à pleine efficacité."
+msgstr "Défense locale contre capture : ×4 à pleine efficacité."
+
+#. Approved playability revision, October 2026.
+msgid "Défense locale contre capture : ×7 à pleine efficacité."
+msgstr "Défense locale contre capture : ×7 à pleine efficacité."
+
+#. Approved playability revision, October 2026.
+msgid "Dépôts renforcés"
+msgstr "Dépôts renforcés"
+
+#. Approved playability revision, October 2026.
+msgid "Développer le transport"
+msgstr "Développer le transport"
+
+#. Approved playability revision, October 2026.
+msgid "Ensemble de silos"
+msgstr "Ensemble de silos"
+
+#. Approved playability revision, October 2026.
+msgid "Fidèles par cité d’origine"
+msgstr "Fidèles par cité d’origine"
+
+#. Approved playability revision, October 2026.
+msgid "Force des Fidèles de cette cité : +10 % en attaque et en défense."
+msgstr "Force des Fidèles de cette cité : +10 % en attaque et en défense."
+
+#. Approved playability revision, October 2026.
+msgid "Force des Fidèles de cette cité : +25 % au total."
+msgstr "Force des Fidèles de cette cité : +25 % au total."
+
+#. Approved playability revision, October 2026.
+msgid "Force des Fidèles de cette cité : +45 % au total."
+msgstr "Force des Fidèles de cette cité : +45 % au total."
+
+#. Approved playability revision, October 2026.
+msgid "Grand arsenal"
+msgstr "Grand arsenal"
+
+#. Approved playability revision, October 2026.
+msgid "Grand réseau hydraulique"
+msgstr "Grand réseau hydraulique"
+
+#. Approved playability revision, October 2026.
+msgid "Grands magasins"
+msgstr "Grands magasins"
+
+#. Approved playability revision, October 2026.
+msgid "Greniers supplémentaires"
+msgstr "Greniers supplémentaires"
+
+#. Approved playability revision, October 2026.
+msgid "La carte montre les propriétaires et les fortifications publiques. Les forces et les stocks rivaux restent secrets ; vos rapports gardent les observations du jour où ils ont été écrits. Le devis annonce départ, combat et retour prévu. Les tentatives de siège suivent actuellement ce même calendrier."
+msgstr "La carte montre les propriétaires et les fortifications publiques. Les forces et les stocks rivaux restent secrets ; vos rapports gardent les observations du jour où ils ont été écrits. Le devis annonce départ, combat et retour prévu. Les tentatives de siège suivent actuellement ce même calendrier."
+
+#. Approved playability revision, October 2026.
+msgid "La préparation du matériel de siège a commencé."
+msgstr "La préparation du matériel de siège a commencé."
+
+#. Approved playability revision, October 2026.
+msgid "Le raid sur nos villages a coûté la vie à {p0} de nos Fidèles. Les assaillants ont emporté {p1} Mesures et en ont détruit {p2} autres. Ces pertes diminuent la récolte en préparation ; la production continue. "
+msgstr "Le raid sur nos villages a coûté la vie à {p0} de nos Fidèles. Les assaillants ont emporté {p1} Mesures et en ont détruit {p2} autres. Ces pertes diminuent la récolte en préparation ; la production continue. "
+
+#. Approved playability revision, October 2026.
+msgid "Le rendement par habitant présent progresse de 100 à 115, 130 puis 200 Mesures par lune. Les revenus restent indisponibles jusqu’au versement annuel."
+msgstr "Le rendement par habitant présent progresse de 100 à 115, 130 puis 200 Mesures par lune. Les revenus restent indisponibles jusqu’au versement annuel."
+
+#. Approved playability revision, October 2026.
+msgid "Les assaillants de cette cité ignorent 25 % du bonus des fortifications."
+msgstr "Les assaillants de cette cité ignorent 25 % du bonus des fortifications."
+
+#. Approved playability revision, October 2026.
+msgid "Les assaillants de cette cité ignorent 50 % du bonus des fortifications."
+msgstr "Les assaillants de cette cité ignorent 50 % du bonus des fortifications."
+
+#. Approved playability revision, October 2026.
+msgid "Les ateliers de transport ont commencé leur ouvrage."
+msgstr "Les ateliers de transport ont commencé leur ouvrage."
+
+#. Approved playability revision, October 2026.
+msgid "Les bonus militaires remplacent les niveaux précédents. Chaque contingent garde son équipement, son transport et son matériel de siège de départ. Le transport augmente le butin emportable, sans améliorer les chances de victoire."
+msgstr "Les bonus militaires remplacent les niveaux précédents. Chaque contingent garde son équipement, son transport et son matériel de siège de départ. Le transport augmente le butin emportable, sans améliorer les chances de victoire."
+
+#. Approved playability revision, October 2026.
+msgid "Les travaux de surveillance ont commencé."
+msgstr "Les travaux de surveillance ont commencé."
+
+#. Approved playability revision, October 2026.
+msgid "Les travaux des réserves protégées ont commencé."
+msgstr "Les travaux des réserves protégées ont commencé."
+
+#. Approved playability revision, October 2026.
+msgid "Mettre une partie de la récolte à l’abri."
+msgstr "Mettre une partie de la récolte à l’abri."
+
+#. Approved playability revision, October 2026.
+msgid "Mobiliser davantage de défenseurs contre les raids."
+msgstr "Mobiliser davantage de défenseurs contre les raids."
+
+#. Approved playability revision, October 2026.
+msgid "Murailles"
+msgstr "Murailles"
+
+#. Approved playability revision, October 2026.
+msgid "Ordres en attente"
+msgstr "Ordres en attente"
+
+#. Approved playability revision, October 2026.
+msgid "Organiser la surveillance"
+msgstr "Organiser la surveillance"
+
+#. Approved playability revision, October 2026.
+msgid "Palais renforcé"
+msgstr "Palais renforcé"
+
+#. Approved playability revision, October 2026.
+msgid "Palissades de bois"
+msgstr "Palissades de bois"
+
+#. Approved playability revision, October 2026.
+msgid "Petit arsenal"
+msgstr "Petit arsenal"
+
+#. Approved playability revision, October 2026.
+msgid "Piller"
+msgstr "Piller"
+
+#. Approved playability revision, October 2026.
+msgid "Postes de veille"
+msgstr "Postes de veille"
+
+#. Approved playability revision, October 2026.
+msgid "Pour une première partie, choisissez le calendrier manuel. Vous pourrez lire chaque nouvelle avant de passer à la lune suivante."
+msgstr "Pour une première partie, choisissez le calendrier manuel. Vous pourrez lire chaque nouvelle avant de passer à la lune suivante."
+
+#. Approved playability revision, October 2026.
+msgid "Protéger les récoltes"
+msgstr "Protéger les récoltes"
+
+#. Approved playability revision, October 2026.
+msgid "Préparer le matériel de siège"
+msgstr "Préparer le matériel de siège"
+
+#. Approved playability revision, October 2026.
+msgid "Rapporter davantage de butin."
+msgstr "Rapporter davantage de butin."
+
+#. Approved playability revision, October 2026.
+msgid "Restaurer {work}"
+msgstr "Restaurer {work}"
+
+#. Approved playability revision, October 2026.
+msgid "Rigoles et petites digues"
+msgstr "Rigoles et petites digues"
+
+#. Approved playability revision, October 2026.
+msgid "Récolte protégée du pillage et des destructions : 400 000 Mesures."
+msgstr "Récolte protégée du pillage et des destructions : 400 000 Mesures."
+
+#. Approved playability revision, October 2026.
+msgid "Récolte protégée du pillage et des destructions : 800 000 Mesures."
+msgstr "Récolte protégée du pillage et des destructions : 800 000 Mesures."
+
+#. Approved playability revision, October 2026.
+msgid "Récoltes et pillages"
+msgstr "Récoltes et pillages"
+
+#. Approved playability revision, October 2026.
+msgid "Réduire l’avantage des fortifications adverses."
+msgstr "Réduire l’avantage des fortifications adverses."
+
+#. Approved playability revision, October 2026.
+msgid "Réserves souterraines"
+msgstr "Réserves souterraines"
+
+#. Approved playability revision, October 2026.
+msgid "Réserves villageoises"
+msgstr "Réserves villageoises"
+
+#. Approved playability revision, October 2026.
+msgid "Sans fortifications"
+msgstr "Sans fortifications"
+
+#. Approved playability revision, October 2026.
+msgid "Sans matériel de siège"
+msgstr "Sans matériel de siège"
+
+#. Approved playability revision, October 2026.
+msgid "Sans surveillance, 20 %, 30 % ou 40 % des Fidèles disponibles défendent les villages. Les postes de veille garantissent 40 %, les tours 60 %. Les fortifications protègent seulement des captures. Le matériel de siège réduit leur bonus, jamais la défense de base."
+msgstr "Sans surveillance, 20 %, 30 % ou 40 % des Fidèles disponibles défendent les villages. Les postes de veille garantissent 40 %, les tours 60 %. Les fortifications protègent seulement des captures. Le matériel de siège réduit leur bonus, jamais la défense de base."
+
+#. Approved playability revision, October 2026.
+msgid "Tours de guet"
+msgstr "Tours de guet"
+
+#. Approved playability revision, October 2026.
+msgid "Train de transport"
+msgstr "Train de transport"
+
+#. Approved playability revision, October 2026.
+msgid "Transport ordinaire"
+msgstr "Transport ordinaire"
+
+#. Approved playability revision, October 2026.
+msgid "Un raid vise la récolte en préparation, jamais le grenier. Après protection de 200 000, 400 000 ou 800 000 Mesures, un quart du reste est exposé. Une victoire permet d’en emporter 60 %, dans la limite du transport, et en détruit 20 %. Ces pertes réduisent le versement annuel, sans interrompre la production ni les chantiers."
+msgstr "Un raid vise la récolte en préparation, jamais le grenier. Après protection de 200 000, 400 000 ou 800 000 Mesures, un quart du reste est exposé. Une victoire permet d’en emporter 60 %, dans la limite du transport, et en détruit 20 %. Ces pertes réduisent le versement annuel, sans interrompre la production ni les chantiers."
+
+#. Approved playability revision, October 2026.
+msgid "Valider l’action"
+msgstr "Valider l’action"
+
+#. Approved playability revision, October 2026.
+msgid "Veille ordinaire"
+msgstr "Veille ordinaire"
+
+#. Approved playability revision, October 2026.
+msgid "ont achevé {work}"
+msgstr "ont achevé {work}"
+
+#. Approved playability revision, October 2026.
+msgid "ont restauré {work}"
+msgstr "ont restauré {work}"
+
+#. Approved playability revision, October 2026.
+msgid "« Valider l’action » vous mène à la relecture, sans rien réserver. Vérifiez les termes ; « Confirmer et sceller l’ordre » engage ensuite les fonds et les équipes ou les hommes annoncés. Les bénéfices d’un ouvrage viennent à son achèvement."
+msgstr "« Valider l’action » vous mène à la relecture, sans rien réserver. Vérifiez les termes ; « Confirmer et sceller l’ordre » engage ensuite les fonds et les équipes ou les hommes annoncés. Les bénéfices d’un ouvrage viennent à son achèvement."
+
+#. Approved playability revision, October 2026.
+msgid "Échelles d’assaut"
+msgstr "Échelles d’assaut"
+
+#. Approved playability revision, October 2026.
+msgid "Équipement des ateliers d’armement"
+msgstr "Équipement des ateliers d’armement"
+
+#. Approved playability revision, October 2026.
+msgid "Équipement du grand arsenal"
+msgstr "Équipement du grand arsenal"
+
+#. Approved playability revision, October 2026.
+msgid "Équipement du petit arsenal"
+msgstr "Équipement du petit arsenal"
+
+#. Approved playability revision, October 2026.
+msgid "Villages dispersés : un nouveau pillage pourra arriver à partir de la lune %(moon)s. La capture reste possible."
+msgstr "Villages dispersés : un nouveau pillage pourra arriver à partir de la lune %(moon)s. La capture reste possible."
+
+msgid "Bonus défensif local restauré : +{before} % → +{after} %."
+msgstr "Bonus défensif local restauré : +{before} % → +{after} %."

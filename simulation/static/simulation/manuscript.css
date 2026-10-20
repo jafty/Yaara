@@ -231,8 +231,7 @@ h2 {
   font-size: 1.2rem;
   margin: 1.25rem 0 0.6rem;
 }
-h3,
-.work-title {
+h3 {
   font-size: 1.1rem;
   margin: 0.9rem 0 0.4rem;
 }
@@ -438,7 +437,7 @@ summary::marker {
   font-size: 0.85rem;
 }
 .city-choice {
-  padding-block: 0.6rem;
+  padding-block: 0.35rem;
   border-bottom: 1px solid var(--rule);
 }
 .work-city-heading {
@@ -534,12 +533,6 @@ input[type="number"] {
 .book-footer p {
   margin: 0;
 }
-.council-links {
-  display: grid;
-  gap: 0.25rem;
-  margin-top: 0;
-  font-size: 0.9rem;
-}
 .council-links a {
   display: grid;
   grid-template-columns: 1.3rem minmax(0, 1fr) auto;
@@ -577,8 +570,8 @@ input[type="number"] {
 .ledger-summary {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 8.5rem), 1fr));
-  gap: 0.5rem 1rem;
-  margin: 0.65rem 0;
+  gap: 0.3rem 0.7rem;
+  margin: 0.4rem 0;
   font-size: 0.85rem;
 }
 .ledger-fact dt {
@@ -603,24 +596,6 @@ input[type="number"] {
   color: var(--accent);
   font-size: 0.85rem;
   margin-bottom: 0.4rem;
-}
-.work-advice {
-  margin-top: 0.6rem;
-}
-.work-price {
-  display: block;
-  font-size: 0.8rem;
-  color: var(--muted);
-  margin: 0.3rem 0 0 1rem;
-}
-.work-selection > summary {
-  padding: 0;
-}
-.work-title {
-  display: inline;
-}
-.work-selection > .decree-form {
-  margin-top: 0.6rem;
 }
 .briefing-news > h2 {
   margin-top: 1.5rem;
@@ -750,7 +725,7 @@ input[type="number"] {
 .map-context {
   padding: 1rem 0;
   border-block: 1px solid var(--rule);
-  scroll-margin-top: 1rem;
+  scroll-margin-top: 6rem;
 }
 .map-context h2 {
   margin: 0 0 0.5rem;
@@ -760,25 +735,8 @@ input[type="number"] {
   margin-bottom: 0.6rem;
   font-size: 0.9rem;
 }
-.context-actions a {
-  display: block;
-  min-height: 44px;
-  padding-block: 0.4rem;
-}
 #expedition-order {
   scroll-margin-top: 8rem;
-}
-@media (min-width: 700px) {
-  .expedition-atlas {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 13rem;
-    gap: 1.25rem;
-    align-items: start;
-  }
-  .map-context {
-    border-top: 0;
-    padding-top: 0;
-  }
 }
 @media (max-width: 600px) {
   .city-ledger .city-entry {
@@ -803,3 +761,75 @@ input[type="number"] {
     scroll-behavior: auto;
   }
 }
+
+/* Compact illustrated catalogue and native expedition controls. */
+.illustration {
+  height: 8rem;
+  margin: 0.5rem 0 1rem;
+  position: relative;
+  overflow: hidden;
+  border-radius: 2px;
+}
+.illustration::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  aspect-ratio: 1;
+  background-image: url("illustrations/yaara-atlas.png");
+  background-size: 400% 400%;
+  background-position: var(--scene-x, 0) var(--scene-y, 0);
+}
+.illustration-small {
+  width: 5rem;
+  height: 5rem;
+  margin: 0;
+  flex: 0 0 5rem;
+}
+.illustration-council { --scene-x: 0; --scene-y: 0; }
+.illustration-expedition { --scene-x: 33.333%; --scene-y: 0; }
+.illustration-work { --scene-x: 66.667%; --scene-y: 0; }
+.illustration-harvest { --scene-x: 100%; --scene-y: 0; }
+.illustration-irrigation { --scene-x: 0; --scene-y: 33.333%; }
+.illustration-storage { --scene-x: 33.333%; --scene-y: 33.333%; }
+.illustration-forge, .illustration-equipment { --scene-x: 66.667%; --scene-y: 33.333%; }
+.illustration-walls, .illustration-repair { --scene-x: 100%; --scene-y: 33.333%; }
+.illustration-watch { --scene-x: 0; --scene-y: 66.667%; }
+.illustration-shelter { --scene-x: 33.333%; --scene-y: 66.667%; }
+.illustration-transport { --scene-x: 66.667%; --scene-y: 66.667%; }
+.illustration-siege, .illustration-capture { --scene-x: 100%; --scene-y: 66.667%; }
+.illustration-raid { --scene-x: 33.333%; --scene-y: 100%; }
+.illustration-return { --scene-x: 66.667%; --scene-y: 100%; }
+.illustration-letter { --scene-x: 100%; --scene-y: 100%; }
+.work-card {
+  display: grid;
+  grid-template-columns: 5rem minmax(0, 1fr) auto;
+  gap: 0.65rem;
+  align-items: center;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--rule);
+  color: inherit;
+  text-decoration: none;
+}
+.work-card h2 { margin: 0 0 0.2rem; font-size: 1.05rem; }
+.work-card p { font-size: 0.85rem; margin: 0.2rem 0; }
+.work-card-prices { color: var(--muted); }
+.work-card:hover h2 { color: var(--accent); text-decoration: underline; }
+.work-family-heading { display: flex; gap: 0.75rem; align-items: center; }
+.work-family-heading h2 { margin: 0; }
+.mission-options { display: flex; gap: 0.5rem; padding: 0; }
+.mission-options label { position: relative; flex: 1; cursor: pointer; }
+.mission-options input { position: absolute; opacity: 0; }
+.mission-options span {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--rule);
+}
+.mission-options input:checked + span { color: var(--accent); border-color: var(--accent); background: #f6eae4; }
+.mission-options input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 3px; }
+.decree-form .primary-action { color: #fff; background: var(--accent); border-color: var(--accent); }
+.decree-form .primary-action:hover { background: #682017; }
+.work-city-details p { margin-bottom: 0.3rem; }

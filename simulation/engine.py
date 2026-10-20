@@ -20,20 +20,21 @@ from .narration import (
     returned_loot,
 )
 from .rules import (
-    CAPACITIES,
-    EQUIPMENT,
     EQUIPMENT_LABELS,
     EXPEDITION_PRICES,
     OUTCOME_LABELS,
-    WALLS,
-    WORK_PRICES,
     RuleError,
     allocate,
+    capacities,
     capture_result,
+    equipment_labels,
+    equipment_values,
     losses,
     raid_result,
     rule_family,
     tax_yield,
+    wall_multiplier,
+    work_prices,
 )
 
 CITY_NAMES = ["Qasr", "Tamesh", "Namar", "Sefra", "Ishar", "Daram", "Azal", "Mirha", "Tazir"]
@@ -53,7 +54,7 @@ def new_state(
     calendar_version=2,
     forge_version=2,
     map_version=3,
-    economy_version=2,
+    economy_version=3,
 ):
     rule_family(version)
     if reign_months not in (24, 60, 120, 240) or opponents not in ("active", "passive"):
@@ -75,6 +76,11 @@ def new_state(
             "forge": 0,
             "damaged": False,
             "raid_protected_until": 0,
+            **(
+                {"watch": 0, "shelter": 0, "transport": 0, "siege": 0}
+                if economy_version >= 3
+                else {}
+            ),
             "military_deaths": 0,
             "civilian_deaths": 0,
         }
@@ -118,8 +124,8 @@ def owned_cities(state, actor):
     return [city for city in state["cities"].values() if city["owner"] == actor]
 
 
-def capacity(city):
-    return CAPACITIES[city["storage"]]
+def capacity(city, economy_version=1):
+    return capacities(economy_version)[city["storage"]]
 
 
 def absent(state, city_id):
@@ -221,7 +227,8 @@ def ensure_actor(state, actor):
 
 def work_spec(state, city, kind):
     rules = rule_family(state["rules"])
-    if kind not in WORK_PRICES:
+    prices = work_prices(state.get("economy_version", 1))
+    if kind not in prices:
         raise RuleError(message("Ce chantier n’existe pas."))
     if kind in ("storage", "repair", "forge") and not rules.storage:
         raise RuleError(message("Cette action appartient aux règles V1."))
@@ -233,12 +240,13 @@ def work_spec(state, city, kind):
         level = city["walls"]
     else:
         level = city[kind] + 1
-        if level > rules.max_level:
+        maximum = len(prices[kind]) if state.get("economy_version", 1) >= 3 else rules.max_level
+        if level > maximum:
             raise RuleError(message("Le niveau maximal de cet ouvrage est déjà atteint."))
         if kind == "walls" and city["damaged"]:
             raise RuleError(message("Il faut réparer l’enceinte avant de la renforcer."))
-    cost, duration = WORK_PRICES[kind][level - 1]
-    if kind == "forge":
+    cost, duration = prices[kind][level - 1]
+    if kind == "forge" and state.get("economy_version", 1) < 3:
         cost = max(cost, (600 if level == 1 else 1400) * city["population"])
     return {"city": city["id"], "kind": kind, "level": level, "cost": cost, "duration": duration}
 
@@ -279,7 +287,7 @@ def prepare_order(state, actor, spec, order_id):
         "cost": 0,
         "tasks": [],
     }
-    if kind in WORK_PRICES:
+    if kind in work_prices(state.get("economy_version", 1)):
         targets = spec.get("cities", [])
         if not isinstance(targets, list) or not targets or len(targets) != len(set(targets)):
             raise RuleError(message("Choisissez au moins une cité, une seule fois chacune."))
@@ -312,7 +320,15 @@ def prepare_order(state, actor, spec, order_id):
                     "Une autre expédition est déjà engagée vers cette cité. Aucun moyen n’a été réservé."
                 )
             )
-        if kind == "raid" and closed_moon(state) < state["cities"][target]["raid_protected_until"]:
+        if (
+            kind == "raid"
+            and (
+                closing_moon(state) + 1
+                if state.get("economy_version", 1) >= 3
+                else closed_moon(state)
+            )
+            < state["cities"][target]["raid_protected_until"]
+        ):
             raise RuleError(
                 message("Les villages ne constituent pas une cible de pillage disponible.")
             )
@@ -436,38 +452,43 @@ def report(events, recipient, kind, title, body):
 
 
 def annual_economy(state, events):
-    rules = rule_family(state["rules"])
     for city in state["cities"].values():
         city["tax"] += (city["population"] - absent(state, city["id"])) * tax_yield(
             city["irrigation"], state.get("economy_version", 1)
         )
         if state["month"] % 12:
             continue
-        added = min(city["tax"], capacity(city) - city["stock"])
-        overflow = city["tax"] - added
-        city["stock"] += added
-        city["tax"] = 0
-        growth = int(city["population"] * rules.growth)
-        city["population"] += growth
-        existing = city["fideles"] + absent(state, city["id"])
-        renewed = max(0, min(city["population"] // 10 - existing, city["population"] // 100))
-        city["fideles"] += renewed
-        report(
-            events,
-            city["owner"],
-            "harvest",
-            message("La récolte de {p0}", p0=city["name"]),
-            message(
-                "Les comptes de {p0} sont arrêtés pour cette année. Le prélèvement a fait entrer {p1} Mesures dans son grenier ; {p2} autres n’ont pu y trouver place. J’ai inscrit {p3} nouveaux habitants et {p4} habitants rejoignant les Fidèles. La cité compte à présent {p5} habitants. Depuis le début du règne, {p6} de ses habitants ont perdu la vie.",
-                p0=city["name"],
-                p1=number(added),
-                p2=number(overflow),
-                p3=growth,
-                p4=renewed,
-                p5=number(city["population"]),
-                p6=city["military_deaths"] + city["civilian_deaths"],
-            ),
-        )
+        if state.get("economy_version", 1) < 3:
+            harvest_city(state, city, events)
+
+
+def harvest_city(state, city, events):
+    rules = rule_family(state["rules"])
+    added = min(city["tax"], capacity(city, state.get("economy_version", 1)) - city["stock"])
+    overflow = city["tax"] - added
+    city["stock"] += added
+    city["tax"] = 0
+    growth = int(city["population"] * rules.growth)
+    city["population"] += growth
+    existing = city["fideles"] + absent(state, city["id"])
+    renewed = max(0, min(city["population"] // 10 - existing, city["population"] // 100))
+    city["fideles"] += renewed
+    report(
+        events,
+        city["owner"],
+        "harvest",
+        message("La récolte de {p0}", p0=city["name"]),
+        message(
+            "Les comptes de {p0} sont arrêtés pour cette année. Le prélèvement a fait entrer {p1} Mesures dans son grenier ; {p2} autres n’ont pu y trouver place. J’ai inscrit {p3} nouveaux habitants et {p4} habitants rejoignant les Fidèles. La cité compte à présent {p5} habitants. Depuis le début du règne, {p6} de ses habitants ont perdu la vie.",
+            p0=city["name"],
+            p1=number(added),
+            p2=number(overflow),
+            p3=growth,
+            p4=renewed,
+            p5=number(city["population"]),
+            p6=city["military_deaths"] + city["civilian_deaths"],
+        ),
+    )
 
 
 def depart_orders(state, events):
@@ -490,7 +511,8 @@ def depart_orders(state, events):
                 reason = message("Les contributions ne peuvent plus rejoindre cette frontière.")
             if (
                 order["kind"] == "raid"
-                and state["month"] < state["cities"][order["target"]]["raid_protected_until"]
+                and state["month"] + int(state.get("economy_version", 1) >= 3)
+                < state["cities"][order["target"]]["raid_protected_until"]
             ):
                 reason = message("La protection contre le pillage est encore active.")
         for task in order["tasks"]:
@@ -523,7 +545,9 @@ def depart_orders(state, events):
                     "target": order["target"],
                     "cohorts": dict(order["contributions"]),
                     "status": "outbound",
-                    "combativity": EQUIPMENT[state["players"][actor]["equipment"]],
+                    "combativity": equipment_values(state.get("economy_version", 1))[
+                        state["players"][actor]["equipment"]
+                    ],
                     "loot": 0,
                     "departure_month": state["month"],
                     "combat_month": state["month"] + 1,
@@ -532,9 +556,18 @@ def depart_orders(state, events):
             )
             if local_forges(state):
                 state["expeditions"][-1]["cohort_equipment"] = {
-                    city_id: EQUIPMENT[city_equipment(state, state["cities"][city_id])]
+                    city_id: equipment_values(state.get("economy_version", 1))[
+                        city_equipment(state, state["cities"][city_id])
+                    ]
                     for city_id in order["contributions"]
                 }
+            if state.get("economy_version", 1) >= 3:
+                mission = state["expeditions"][-1]
+                for attribute in ("transport", "siege"):
+                    mission["cohort_" + attribute] = {
+                        city_id: state["cities"][city_id][attribute]
+                        for city_id in order["contributions"]
+                    }
         else:
             tasks = (
                 order["tasks"]
@@ -599,7 +632,9 @@ def finish_works(state, events):
             body = message(
                 "Les équipes de {p0} {p1}. L’ouvrage est désormais en service ; j’en tiendrai compte dans les registres à venir.",
                 p0=city["name"],
-                p1=completed_work_phrase(work["kind"], work["level"]),
+                p1=completed_work_phrase(
+                    work["kind"], work["level"], state.get("economy_version", 1)
+                ),
             )
         report(events, recipient, "work", title, body)
     active = {work["order_id"] for work in state["works"] if work["status"] == "active"}
@@ -636,7 +671,9 @@ def relief_allocations(state, missions, priority):
                     "mission": mission_id,
                     "actor": city["owner"],
                     "count": count,
-                    "combativity": EQUIPMENT[city_equipment(state, city)],
+                    "combativity": equipment_values(state.get("economy_version", 1))[
+                        city_equipment(state, city)
+                    ],
                 }
             )
     for mission in missions:
@@ -675,7 +712,7 @@ def lose_attackers(state, mission, dead, priority):
         military_deaths(state, origin, count)
 
 
-def observation(enemy_count, own_survivors, equipment):
+def observation(enemy_count, own_survivors, equipment, economy_version=1):
     if own_survivors == 0:
         return message("Aucun survivant ne peut décrire les forces adverses.")
     if own_survivors < 10:
@@ -689,7 +726,26 @@ def observation(enemy_count, own_survivors, equipment):
         p1=lower + 19,
         p2=message("ensemble d’équipements variés")
         if equipment == "mixed"
-        else EQUIPMENT_LABELS[equipment].lower(),
+        else equipment_labels(economy_version)[equipment].lower(),
+    )
+
+
+def carrying_capacity(mission, dead, priority):
+    casualties = allocate(dead, mission["cohorts"], priority)
+    return sum(
+        (count - casualties[origin]) * 5000 * (4 + mission["cohort_transport"][origin]) // 4
+        for origin, count in mission["cohorts"].items()
+    )
+
+
+def siege_reduction(mission):
+    strengths = {
+        origin: count * mission["cohort_equipment"][origin]
+        for origin, count in mission["cohorts"].items()
+    }
+    return Fraction(
+        sum(strength * mission["cohort_siege"][origin] for origin, strength in strengths.items()),
+        4 * sum(strengths.values()),
     )
 
 
@@ -732,11 +788,15 @@ def resolve_combats(state, seed, events):
             continue
         attackers = sum(mission["cohorts"].values())
         defender_equipment = city_equipment(state, target)
-        defense_combativity = EQUIPMENT[defender_equipment]
+        defense_combativity = equipment_values(state.get("economy_version", 1))[defender_equipment]
         attack_strength = mission_strength(mission)
-        equipment_values = set(mission.get("cohort_equipment", {}).values())
+        cohort_values = set(mission.get("cohort_equipment", {}).values())
         attacker_equipment = (
-            "mixed" if len(equipment_values) > 1 else EQUIPMENT.index(attack_strength // attackers)
+            "mixed"
+            if len(cohort_values) > 1
+            else equipment_values(state.get("economy_version", 1)).index(
+                attack_strength // attackers
+            )
         )
         if mission["kind"] == "raid":
             if state["month"] < target["raid_protected_until"]:
@@ -750,8 +810,12 @@ def resolve_combats(state, seed, events):
                     ),
                 )
                 continue
-            fraction = random_stream(seed, state["month"], f"raid:{mission['id']}").choice(
-                [20, 30, 40]
+            fraction = (
+                [0, 40, 60][target["watch"]]
+                if state.get("economy_version", 1) >= 3 and target["watch"]
+                else random_stream(seed, state["month"], f"raid:{mission['id']}").choice(
+                    [20, 30, 40]
+                )
             )
             audit["encounters"][mission["id"]] = fraction
             encountered = max(1, target["fideles"] * fraction // 100) if target["fideles"] else 0
@@ -760,15 +824,23 @@ def resolve_combats(state, seed, events):
                 Fraction(attack_strength, attackers),
                 encountered,
                 defense_combativity,
-                target["stock"],
+                max(0, target["tax"] - [200_000, 400_000, 800_000][target["shelter"]])
+                if state.get("economy_version", 1) >= 3
+                else target["stock"],
+                (lambda dead: carrying_capacity(mission, dead, priority))
+                if state.get("economy_version", 1) >= 3
+                else None,
             )
             lose_attackers(state, mission, result.attacker_losses, priority)
             target["fideles"] -= result.defender_losses
             military_deaths(state, target["id"], result.defender_losses)
-            target["stock"] -= result.stolen + result.destroyed
+            seasonal = state.get("economy_version", 1) >= 3
+            target["tax" if seasonal else "stock"] -= result.stolen + result.destroyed
             mission["loot"] = result.stolen
-            if result.outcome == "success":
-                target["raid_protected_until"] = state["month"] + 12
+            if result.outcome == "success" and (
+                not seasonal or result.stolen + result.destroyed > 0
+            ):
+                target["raid_protected_until"] = state["month"] + (3 if seasonal else 12)
             report(
                 events,
                 actor,
@@ -796,7 +868,12 @@ def resolve_combats(state, seed, events):
                     if result.stolen
                     else message("Les survivants rentreront sans butin. ")
                 )
-                + observation(encountered, attackers - result.attacker_losses, defender_equipment),
+                + observation(
+                    encountered,
+                    attackers - result.attacker_losses,
+                    defender_equipment,
+                    state.get("economy_version", 1),
+                ),
             )
             report(
                 events,
@@ -807,10 +884,17 @@ def resolve_combats(state, seed, events):
                     "Les assaillants portaient le sceau de {house}. ",
                     house=state["players"][actor]["name"],
                 )
-                + observation(attackers, encountered - result.defender_losses, attacker_equipment)
+                + observation(
+                    attackers,
+                    encountered - result.defender_losses,
+                    attacker_equipment,
+                    state.get("economy_version", 1),
+                )
                 + " "
                 + message(
-                    "Le raid sur nos villages a coûté la vie à {p0} de nos Fidèles. Les assaillants ont emporté {p1} Mesures et en ont détruit {p2} autres. Ces pertes sont inscrites dans le grenier de la cité. ",
+                    "Le raid sur nos villages a coûté la vie à {p0} de nos Fidèles. Les assaillants ont emporté {p1} Mesures et en ont détruit {p2} autres. Ces pertes diminuent la récolte en préparation ; la production continue. "
+                    if seasonal
+                    else "Le raid sur nos villages a coûté la vie à {p0} de nos Fidèles. Les assaillants ont emporté {p1} Mesures et en ont détruit {p2} autres. Ces pertes sont inscrites dans le grenier de la cité. ",
                     p0=result.defender_losses,
                     p1=number(result.stolen),
                     p2=number(result.destroyed),
@@ -830,14 +914,19 @@ def resolve_combats(state, seed, events):
             defender_equipment = (
                 "mixed"
                 if len(encountered_equipment) > 1
-                else EQUIPMENT.index(next(iter(encountered_equipment)))
+                else equipment_values(state.get("economy_version", 1)).index(
+                    next(iter(encountered_equipment))
+                )
             )
         reinforcement = sum(item["count"] for item in support)
         relief_strength = sum(item["count"] * item["combativity"] for item in support)
         field = local * defense_combativity + relief_strength
-        wall = WALLS[target["walls"]]
-        if target["damaged"]:
-            wall = 1 + (wall - 1) / 2
+        wall = wall_multiplier(
+            target["walls"],
+            target["damaged"],
+            siege_reduction(mission) if state.get("economy_version", 1) >= 3 else Fraction(0),
+            state.get("economy_version", 1),
+        )
         fortified = local * defense_combativity * wall + relief_strength
         exported = sum(item["count"] for item in relief if item["origin"] == target["id"])
         present_population = target["population"] - absent(state, target["id"]) - exported
@@ -897,7 +986,12 @@ def resolve_combats(state, seed, events):
                 "{p0} Les survivants repartent vers leurs origines ; ils y rejoindront les présents à la date annoncée. ",
                 p0=military_losses(attacker_dead),
             )
-            + observation(local + reinforcement, attackers - attacker_dead, defender_equipment),
+            + observation(
+                local + reinforcement,
+                attackers - attacker_dead,
+                defender_equipment,
+                state.get("economy_version", 1),
+            ),
         )
         report(
             events,
@@ -919,7 +1013,12 @@ def resolve_combats(state, seed, events):
                 if result.outcome in ("held", "shortage")
                 else ""
             )
-            + observation(attackers, local + reinforcement - defender_dead, attacker_equipment),
+            + observation(
+                attackers,
+                local + reinforcement - defender_dead,
+                attacker_equipment,
+                state.get("economy_version", 1),
+            ),
         )
     # Relief stays away throughout the whole phase, even after its battle.
     for item in relief:
@@ -938,7 +1037,9 @@ def return_expeditions(state, events):
         for city_id, survivors in mission["cohorts"].items():
             city = state["cities"][city_id]
             city["fideles"] += survivors
-            deposited = min(shares[city_id], capacity(city) - city["stock"])
+            deposited = min(
+                shares[city_id], capacity(city, state.get("economy_version", 1)) - city["stock"]
+            )
             city["stock"] += deposited
             if city["owner"] == mission["actor"]:
                 recovered += deposited
@@ -1066,7 +1167,9 @@ def check_end(state, events):
 def assert_invariants(state):
     funds, people = reservations(state)
     for city_id, city in state["cities"].items():
-        assert 0 <= funds[city_id] <= city["stock"] <= capacity(city), ("stock", city_id)
+        assert (
+            0 <= funds[city_id] <= city["stock"] <= capacity(city, state.get("economy_version", 1))
+        ), ("stock", city_id)
         assert 0 <= people[city_id] <= city["fideles"], ("reservation", city_id)
         assert 0 <= city["fideles"] + absent(state, city_id) <= city["population"], (
             "population",
@@ -1101,6 +1204,9 @@ def advance_month(state, seed):
     depart_orders(state, events)
     finish_works(state, events)
     audit = resolve_combats(state, seed, events)
+    if state.get("economy_version", 1) >= 3 and state["month"] % 12 == 0:
+        for city in state["cities"].values():
+            harvest_city(state, city, events)
     return_expeditions(state, events)
     check_end(state, events)
     if open_calendar(state) and state["status"] == "active":
@@ -1170,8 +1276,48 @@ def bot_orders(state, seed):
                     proposals.append(
                         {"kind": "raid", "target": target, "contributions": {origin["id"]: 45}}
                     )
+        if state.get("economy_version", 1) >= 3:
+            # Seasonal decisions use only the calendar, own accounts and public walls.
+            proposals = [spec for spec in proposals if spec["kind"] != "raid"]
+            if decision_month % 12 in (4, 7, 10):
+                for target in targets:
+                    eligible = eligible_origins(state, actor, target)
+                    for city in cities:
+                        if city["id"] in eligible and city["fideles"] - people[city["id"]] >= 45:
+                            proposals.insert(
+                                0,
+                                {
+                                    "kind": "raid",
+                                    "target": target,
+                                    "contributions": {city["id"]: 45},
+                                },
+                            )
+                            break
+            preferences = (
+                ("forge", "watch", "transport", "siege", "shelter", "storage")
+                if actor == "p2"
+                else (
+                    "irrigation",
+                    "shelter",
+                    "walls",
+                    "watch",
+                    "forge",
+                    "storage",
+                    "transport",
+                    "siege",
+                )
+            )
+            proposals.extend(
+                {"kind": kind, "cities": [city["id"]]} for kind in preferences for city in cities
+            )
+            proposals.sort(key=lambda spec: spec["kind"] != "capture")
         for spec in proposals:
             try:
+                if state.get("economy_version", 1) >= 3 and spec["kind"] in work_prices(3):
+                    quote = work_spec(state, state["cities"][spec["cities"][0]], spec["kind"])
+                    city_id = quote["city"]
+                    if state["cities"][city_id]["stock"] - funds[city_id] - quote["cost"] < 100_000:
+                        continue
                 order = confirm_order(state, actor, spec, f"bot-{actor}-{decision_month}")
             except RuleError:
                 continue

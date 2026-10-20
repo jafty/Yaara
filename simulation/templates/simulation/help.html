@@ -9,11 +9,11 @@
 <p>{% translate "Les Fidèles font partie des habitants. Partis en expédition, ils ne défendent plus leur cité et ne contribuent plus à son impôt jusqu’à leur retour. L’impôt se prépare chaque lune et est versé toutes les douze lunes." %}</p>
 <p class="reading-links"><a href="?tab=domain#city-ledgers">{% translate "Consulter vos greniers" %} →</a></p></section>
 <section id="orders"><h2>{% translate "Vos ordres" %}</h2>
-<p>{% translate "Choisissez vos cités ou vos hommes, puis « Valider la sélection ». La page suivante récapitule le prix, les dates et les conséquences : rien n’est encore réservé. « Confirmer et sceller l’ordre » engage les moyens annoncés. La clôture de la lune fait entrer le décret en vigueur." %}</p>
+<p>{% translate "Choisissez vos cités ou vos hommes, puis « Valider l’action ». La page suivante récapitule le prix, les dates et les conséquences : rien n’est encore réservé. « Confirmer et sceller l’ordre » engage les moyens annoncés. La clôture de la lune fait entrer le décret en vigueur." %}</p>
 {% if view.cancellable %}<h2>{% translate "Retirer un ordre scellé" %}</h2>
 <p>{% translate "Avant la clôture, retirez un décret depuis son registre pour libérer ses moyens. Après le départ d’une expédition, aucun rappel n’est possible." %}</p>
 {% else %}<h2>{% translate "La confirmation est définitive" %}</h2>
-<p>{% translate "Dans ces règles V0, un décret scellé ne peut pas être annulé. Vérifiez soigneusement sa relecture." %}</p>
+<p>{% translate "Dans ce règne ancien, un décret scellé ne peut pas être annulé. Vérifiez soigneusement sa relecture." %}</p>
 {% endif %}</section>
 <section id="buildings"><h2>{% translate "Les ouvrages" %}</h2>
 <p>{% translate "Chaque cité dispose d’une équipe : un chantier ou un décret de travaux scellé l’occupe. Une seule sélection peut réunir plusieurs cités, même à des stades différents. Chaque ligne indique l’état actuel, l’ouvrage proposé, son bénéfice, son prix et sa durée. Les bénéfices commencent à l’achèvement." %}</p>
@@ -22,10 +22,16 @@
 {% if view.rules == 'V1' %}{% if view.local_forges %}<p>{% translate "Chaque cité peut recevoir une forge. Ses armes équipent les habitants de cette cité ; perdre ou gagner une forge par capture transfère son bénéfice au nouveau propriétaire." %}</p>
 {% else %}<p>{% translate "Dans ce règne ancien, la forge équipe toute la maison et conserve son chantier distinct des équipes des cités." %}</p>
 {% endif %}{% endif %}</section>
+{% if view.seasonal_raids %}<section><h2>{% translate "Récoltes et pillages" %}</h2>
+<p>{% translate "Le rendement par habitant présent progresse de 100 à 115, 130 puis 200 Mesures par lune. Les revenus restent indisponibles jusqu’au versement annuel." %}</p>
+<p>{% translate "Un raid vise la récolte en préparation, jamais le grenier. Après protection de 200 000, 400 000 ou 800 000 Mesures, un quart du reste est exposé. Une victoire permet d’en emporter 60 %, dans la limite du transport, et en détruit 20 %. Ces pertes réduisent le versement annuel, sans interrompre la production ni les chantiers." %}</p>
+<p>{% translate "Après un pillage victorieux ayant causé des pertes agricoles, les villages restent dispersés deux lunes : pillés en lune 7, ils peuvent de nouveau être pillés en lune 10. Une capture reste possible. Les raids de la lune de récolte sont déduits avant son versement." %}</p>
+<p>{% translate "Sans surveillance, 20 %, 30 % ou 40 % des Fidèles disponibles défendent les villages. Les postes de veille garantissent 40 %, les tours 60 %. Les fortifications protègent seulement des captures. Le matériel de siège réduit leur bonus, jamais la défense de base." %}</p>
+<p>{% translate "Les bonus militaires remplacent les niveaux précédents. Chaque contingent garde son équipement, son transport et son matériel de siège de départ. Le transport augmente le butin emportable, sans améliorer les chances de victoire." %}</p></section>{% endif %}
 <section id="expeditions"><h2>{% translate "Les expéditions" %}</h2>
 <p>{% translate "Un raid cherche du butin dans les villages ; une capture cherche à prendre la cité. Les bordures de la carte représentent des territoires, pas les routes : les mentions de portée indiquent les cibles accessibles par vos possessions reliées. Une seule attaque peut être engagée vers une cible." %}</p>
 <p>{% blocktranslate with raid=view.raid_minimum capture=view.capture_minimum %}Il faut au moins {{ raid }} Fidèles pour un raid, {{ capture }} pour une capture. Le formulaire précise les cités capables de fournir les hommes.{% endblocktranslate %}</p>
-<p>{% translate "La carte montre les propriétaires et les fortifications publiques. Les forces et les stocks rivaux restent secrets ; vos rapports gardent les observations du jour où ils ont été écrits. Le devis annonce départ, combat et retour prévu. Un siège peut prolonger l’expédition." %}</p>
+<p>{% translate "La carte montre les propriétaires et les fortifications publiques. Les forces et les stocks rivaux restent secrets ; vos rapports gardent les observations du jour où ils ont été écrits. Le devis annonce départ, combat et retour prévu. Les tentatives de siège suivent actuellement ce même calendrier." %}</p>
 </section>
 <section id="calendar">{% if game.mode == 'manual' %}<h2>{% translate "Clore chaque lune manuellement" %}</h2>
 <p>{% translate "Prenez vos décisions, puis utilisez « Clore la lune » au conseil. Vous pouvez aussi ne donner aucun ordre. La clôture avance les ouvrages, les expéditions et le prélèvement." %}</p>

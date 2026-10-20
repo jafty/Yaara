@@ -38,7 +38,7 @@ def test_initial_frontiers(actor, targets):
     When {actor} inspects its frontier.
     Then only {targets} are reachable with all friendly origins eligible.
     """
-    state = engine.new_state()
+    state = engine.new_state(economy_version=2)
     assert state["map_version"] == 3
     assert len({tuple(sorted(edge)) for edge in state["links"]}) == 12
     assert {c for c in state["cities"] if engine.eligible_origins(state, actor, c)} == targets
@@ -52,7 +52,7 @@ def test_local_work():
     When its storage decree is sealed and its Moon closes.
     Then only Qasr reserves and spends the construction price.
     """
-    state = engine.new_state(opponents="passive")
+    state = engine.new_state(opponents="passive", economy_version=2)
     state["cities"]["c1"]["stock"] = 500000
     order = engine.confirm_order(state, "p1", {"kind": "storage", "cities": ["c1"]}, "local")
     assert order["funding"] == {"c1": 500000}
@@ -68,7 +68,7 @@ def test_local_shortfall(kind):
     When a {kind} decree is requested.
     Then it is rejected with a named local shortfall and no state mutation.
     """
-    state = engine.new_state(opponents="passive")
+    state = engine.new_state(opponents="passive", economy_version=2)
     spec = (
         {"kind": kind, "cities": ["c1", "c2"]}
         if kind == "storage"
@@ -97,7 +97,7 @@ def test_local_expedition(kind, contributions, expected):
     When a {kind} expedition is sealed.
     Then its fixed fee and per-person cost charge only those origins as {expected}.
     """
-    state = engine.new_state(opponents="passive")
+    state = engine.new_state(opponents="passive", economy_version=2)
     for c in state["cities"].values():
         c["stock"] = 2400000
     order = engine.confirm_order(
@@ -130,7 +130,7 @@ def test_local_cancellation():
     When the player withdraws it before closure.
     Then all its funds and teams are free with unchanged stocks and a cancellation date.
     """
-    state = engine.new_state()
+    state = engine.new_state(economy_version=2)
     engine.confirm_order(state, "p1", {"kind": "storage", "cities": ["c1"]}, "cancel")
     engine.cancel_order(state, "p1", "cancel")
     assert not any(engine.reservations(state)[0].values())
@@ -148,7 +148,7 @@ def test_frontier_conquest():
     When the expanded frontier is consulted.
     Then Ishar and Daram become accessible without changing the saved roads.
     """
-    state = engine.new_state()
+    state = engine.new_state(economy_version=2)
     state["cities"]["c4"]["owner"] = "p1"
     roads = deepcopy(state["links"])
     assert {c for c in state["cities"] if engine.eligible_origins(state, "p1", c)} == {
@@ -169,7 +169,7 @@ def test_engagement_owner(actor, own):
     When {actor} reads its public engagement status.
     Then the commitment is marked as own {own} without exposing its order identifier.
     """
-    state = engine.new_state()
+    state = engine.new_state(economy_version=2)
     engine.confirm_order(
         state, "p1", {"kind": "raid", "target": "c4", "contributions": {"c3": 20}}, "hidden-order"
     )
@@ -187,7 +187,7 @@ def test_raid_identity():
     When combat resolves with surviving witnesses.
     Then its defender report names the house and leads with observations before losses.
     """
-    state = engine.new_state(opponents="passive")
+    state = engine.new_state(opponents="passive", economy_version=2)
     engine.confirm_order(
         state, "p1", {"kind": "raid", "target": "c4", "contributions": {"c3": 45}}, "raid"
     )

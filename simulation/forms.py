@@ -15,13 +15,6 @@ class GameForm(forms.Form):
     player_name = forms.CharField(
         label=_("Votre maison"), max_length=60, initial=_("La maison d’Ambre")
     )
-    version = forms.ChoiceField(
-        label=_("Règles"),
-        choices=[
-            ("V1", _("V1 · sièges, croissance et annulation")),
-            ("V0", _("V0 · règles essentielles")),
-        ],
-    )
     opponents = forms.ChoiceField(
         label=_("Vos rivaux"),
         choices=[

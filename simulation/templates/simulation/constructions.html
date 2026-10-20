@@ -1,15 +1,16 @@
 {% load i18n %}
-{% if action %}<p class="back-link"><a href="?tab=constructions" data-works-return>← {% translate "Tous les chantiers" %}</a></p>{% endif %}
-{% if action and not view.finished and not view.eliminated and not game.paused %}
-    {% include 'simulation/decree_form.html' %}
+{% if action %}<section id="work-{{ action.kind }}">
+    <p class="back-link"><a href="?tab=constructions" data-works-return>← {% translate "Tous les chantiers" %}</a></p>
+    <div class="work-family-heading">{% include 'simulation/illustration.html' with scene=action.kind compact=True %}<h2>{{ action.label }}</h2></div>
+    {% if not view.finished and not view.eliminated and not game.paused and action.selectable or action.kind == 'equipment' and not view.finished and not view.eliminated and not game.paused %}
+        {% include 'simulation/decree_form.html' with inline=True %}
+    {% elif action.kind == 'equipment' %}<p>{{ action.benefit }}</p>
+    {% else %}{% include 'simulation/work_cities.html' with interactive=False %}{% endif %}</section>
 {% else %}
     {% include 'simulation/work_choices.html' %}
 {% endif %}
-<section aria-labelledby="active-works"><h2 id="active-works">{% translate "Les travaux en cours" %}</h2>
-    {% for work in constructions %}<article class="order-entry"><h3>{{ work.label }} · <a href="?tab=city&city={{ work.city_id }}">{{ work.city }}</a></h3>
-        <p>{% blocktranslate with v0=work.finish_month %}Achèvement prévu à la lune <strong>{{ v0 }}</strong>.{% endblocktranslate %}</p>
-    </article>{% endfor %}
+{% if construction_count %}<section aria-labelledby="active-works"><h2 id="active-works">{% translate "Les travaux en cours" %}</h2>
+    {% for work in constructions %}<article class="order-entry"><h3>{{ work.label }} · <a href="?tab=city&amp;city={{ work.city_id }}">{{ work.city }}</a></h3><p>{% blocktranslate with v0=work.finish_month %}Achèvement prévu à la lune <strong>{{ v0 }}</strong>.{% endblocktranslate %}</p></article>{% endfor %}
     {% for work in view.equipment_work %}<article class="order-entry"><h3>{% translate "Armement" %}</h3><p>{% blocktranslate with v0=work.finish_month %}Achèvement prévu à la lune <strong>{{ v0 }}</strong>.{% endblocktranslate %}</p></article>{% endfor %}
-    {% if not construction_count %}<p>{% translate "Aucun chantier ni projet d’armement en cours." %}</p>{% endif %}
-</section>
+</section>{% endif %}
 {% include 'simulation/orders_register.html' %}

@@ -148,11 +148,11 @@ with sync_playwright() as playwright:
             page.get_by_role("heading", name="Works" if en else "Chantiers", exact=True)
         ).to_be_visible()
         assert page.locator("#works-heading").count() == 0
-        expect(page.locator("#work-storage > summary")).to_contain_text(
-            "Great granary" if en else "Grand grenier"
+        expect(page.locator("#work-storage")).to_contain_text(
+            "Additional granaries" if en else "Greniers supplémentaires"
         )
-        expect(page.locator("#work-forge > summary")).to_contain_text(
-            "City forge" if en else "Forge de la cité"
+        expect(page.locator("#work-forge")).to_contain_text(
+            "Small arsenal" if en else "Petit arsenal"
         )
         assert "Level " not in page.locator(".work-choices").inner_text()
         assert "Niveau " not in page.locator(".work-choices").inner_text()
@@ -171,53 +171,46 @@ with sync_playwright() as playwright:
         assert page.locator(".sidebar, .stats-strip, img, table").count() == 0
         assert page.locator(".city-entry details").count() == 0
         expect(page.locator("body")).to_have_css("background-color", "rgb(253, 251, 247)")
-        expect(page.locator(".dateline")).to_contain_text("Moon 1" if en else "Lune 1")
+        expect(page.locator(".dateline")).to_have_count(0)
+        expect(page.locator(".resource-ribbon")).to_contain_text("1")
         page.screenshot(path=str(artifacts / f"domain-desktop-{language}.png"), full_page=True)
         page.locator('.bookmarks a[href$="?tab=constructions"]').click()
         # Local forges keep the same atomic multi-city draft/seal/cancel workflow.
+        page.goto(game_url + "?tab=constructions&action=forge")
         forge = page.locator("#work-forge")
-        forge.locator(":scope > summary").click()
         forge.locator('input[value="c1"]').check()
         forge.locator('input[value="c2"]').check()
-        expect(forge.locator("[data-work-cost]")).to_have_text(
-            "1,200,000" if en else "1\u202f200\u202f000"
-        )
+        expect(forge.locator("[data-work-cost]")).to_have_text("300,000" if en else "300\u202f000")
         forge.locator('button[type="submit"]').click()
-        expect(page.locator(".decree-reading")).to_contain_text(
-            "reinforced equipment" if en else "équipement renforcé"
-        )
+        expect(page.locator(".decree-reading")).to_contain_text("+10%" if en else "+10 %")
         expect(page.locator('.bookmarks a[aria-current="page"]')).to_have_count(0)
         page.locator(".wax-seal").click()
         expect(page.locator(".resource-ribbon")).to_contain_text(
-            "600,000" if en else "600\u00a0000"
+            "1,500,000" if en else "1\u00a0500\u00a0000"
         )
         page.locator(".orders-register button").click()
         expect(page.locator(".resource-ribbon")).to_contain_text(
             "1,800,000" if en else "1\u00a0800\u00a0000"
         )
+        page.goto(game_url + "?tab=constructions&action=irrigation")
         canals = page.locator("#work-irrigation")
-        canals.locator(":scope > summary").click()
         canals.locator('input[value="c1"]').check()
         expect(canals.locator("[data-budget-note]")).to_have_text(
-            "The selected cities need 1,800,000 more Measures."
+            "After reservation: 1,500,000 Measures available."
             if en
-            else "Il manque 1\u202f800\u202f000 Mesures dans les cités choisies."
+            else "Après réservation : 1\u202f500\u202f000 Mesures libres."
         )
+        page.goto(game_url + "?tab=constructions&action=storage")
         work = page.locator("#work-storage")
-        work.locator(":scope > summary").click()
         work.locator("[data-select-cities]").click()
         expect(work.locator("[data-city-count]")).to_have_text("3")
-        expect(work.locator("[data-work-cost]")).to_have_text(
-            "1,500,000" if en else "1\u202f500\u202f000"
-        )
+        expect(work.locator("[data-work-cost]")).to_have_text("600,000" if en else "600\u202f000")
         work.locator("[data-clear-cities]").click()
         expect(work.locator("[data-city-count]")).to_have_text("0")
         work.locator('input[value="c1"]').check()
         work.locator('input[value="c2"]').check()
         expect(work.locator("[data-city-count]")).to_have_text("2")
-        expect(work.locator("[data-work-cost]")).to_have_text(
-            "1,000,000" if en else "1\u202f000\u202f000"
-        )
+        expect(work.locator("[data-work-cost]")).to_have_text("400,000" if en else "400\u202f000")
         work.locator('button[type="submit"]').click()
         expect(page.locator(".decree-reading")).to_contain_text("Qasr")
         expect(page.locator(".decree-reading")).to_contain_text("Tamesh")
@@ -240,10 +233,10 @@ with sync_playwright() as playwright:
         page.locator(".wax-seal").click()
         expect(page.locator(".orders-register")).to_contain_text("Confirmed" if en else "Confirmé")
         expect(page.locator(".resource-ribbon")).to_contain_text(
-            "800,000" if en else "800\u00a0000"
+            "1,400,000" if en else "1\u00a0400\u00a0000"
         )
         page.locator(".orders-register button").click()
-        expect(page.locator(".orders-register")).to_contain_text("Cancelled" if en else "Annulé")
+        expect(page.locator(".orders-register")).to_have_count(0)
         page.locator('.bookmarks a[data-section="wars"]').click()
         assert page.locator(".map-city").count() == 9
         assert page.locator(".map-territory").count() == 9
@@ -259,8 +252,15 @@ with sync_playwright() as playwright:
         assert page.locator("[data-local-accounts]").count() == 0
         expect(page.locator("#map-context")).to_contain_text("Sefra")
         page.screenshot(path=str(artifacts / f"map-context-desktop-{language}.png"), full_page=True)
-        page.locator('[data-expedition-kind="capture"]').click()
-        expect(page.locator("#mission-kind")).to_have_value("capture")
+        page.locator('input[name="kind"][value="capture"]').check()
+        expect(page.locator('input[name="kind"][value="capture"]')).to_be_checked()
+        expect(page.locator("#map-context > .illustration")).to_have_class(
+            "illustration illustration-capture"
+        )
+        atlas = page.locator(".realm-map").bounding_box()
+        panel = page.locator("#map-context").bounding_box()
+        assert panel["y"] >= atlas["y"] + atlas["height"]
+        assert panel["width"] >= atlas["width"] - 1
         expect(page.locator("#mission-target")).to_have_value("c4")
         for origin in ("c1", "c2", "c3"):
             page.locator(f'input[name="men_{origin}"]').fill("30")
@@ -268,11 +268,11 @@ with sync_playwright() as playwright:
             "short" if en else "Il manque"
         )
         page.locator(".expedition-form button").click()
-        expect(page.locator("#mission-kind")).to_have_value("capture")
+        expect(page.locator('input[name="kind"][value="capture"]')).to_be_checked()
         expect(page.locator("#mission-target")).to_have_value("c4")
         expect(page.locator('input[name="men_c1"]')).to_have_value("30")
         assert "tab=wars" in page.url and "action=expedition" in page.url
-        page.locator("#mission-kind").select_option("raid")
+        page.locator('input[name="kind"][value="raid"]').check()
         for origin in ("c1", "c2", "c3"):
             page.locator(f'input[name="men_{origin}"]').fill("10")
         expect(page.locator("#army-cost")).to_have_text("95,000" if en else "95\u202f000")
@@ -298,9 +298,7 @@ with sync_playwright() as playwright:
         for moon in range(1, 4):
             page.locator('.bookmarks a[data-section="domain"]').click()
             page.locator("#turn-page button.primary-action").click()
-            expect(page.locator(".dateline")).to_contain_text(
-                f"Moon {moon + 1}" if en else f"Lune {moon + 1}"
-            )
+            expect(page.locator(".resource-ribbon")).to_contain_text(str(moon + 1))
         page.locator('.bookmarks a[href$="?tab=wars"]').click()
         expect(
             page.get_by_role("heading", name="Expeditions" if en else "Expéditions", exact=True)
@@ -351,6 +349,7 @@ with sync_playwright() as playwright:
         page.goto(game_url + "?tab=city&city=c2")
         expect(page.locator("[data-local-accounts]")).to_be_visible()
         page.locator('a[href="?tab=decrees&city=c2"]').click()
+        page.locator("#work-storage").click()
         expect(page.locator('#work-storage input[value="c2"]')).to_be_checked()
         expect(page.locator('#work-storage input[value="c1"]')).not_to_be_checked()
         page.goto(game_url + "?tab=city&city=c4")
@@ -358,8 +357,8 @@ with sync_playwright() as playwright:
         # Complete one granary, then reserve another city's teams for a forge.
         # Storage now mixes completed infrastructure, ordinary granaries and busy teams.
         page.goto(game_url + "?tab=constructions")
+        page.goto(game_url + "?tab=constructions&action=storage")
         storage = page.locator("#work-storage")
-        storage.locator(":scope > summary").click()
         storage.locator('input[value="c1"]').check()
         storage.locator('button[type="submit"]').click()
         page.locator(".wax-seal").click()
@@ -367,25 +366,24 @@ with sync_playwright() as playwright:
             page.locator('.bookmarks a[data-section="domain"]').click()
             page.locator("#turn-page button.primary-action").click()
         page.goto(game_url + "?tab=constructions")
+        page.goto(game_url + "?tab=constructions&action=forge")
         forge = page.locator("#work-forge")
-        forge.locator(":scope > summary").click()
         forge.locator('input[value="c2"]').check()
         forge.locator('button[type="submit"]').click()
         page.locator(".wax-seal").click()
+        page.goto(game_url + "?tab=constructions&action=storage")
         storage = page.locator("#work-storage")
-        storage.locator(":scope > summary").click()
         expect(storage.locator('input[value="c2"]')).to_be_disabled()
         expect(storage.locator('input[value="c1"]')).to_be_enabled()
         expect(storage.locator(".work-transition").first).to_have_text(
-            "Great granary → Reserve silos" if en else "Grand grenier → Silos de réserve"
+            "Additional granaries → Silo complex"
+            if en
+            else "Greniers supplémentaires → Ensemble de silos"
         )
         expect(storage.locator(".work-benefit").first).to_contain_text(
-            "3,600,000 → 6,000,000" if en else "3\u202f600\u202f000 → 6\u202f000\u202f000"
+            "3,600,000 → 5,400,000" if en else "3\u202f600\u202f000 → 5\u202f400\u202f000"
         )
-        storage.locator(".work-advice > summary").click()
-        expect(storage.locator(".work-advice p")).to_contain_text(
-            "creates no grain" if en else "ne crée pas de grain"
-        )
+        assert storage.locator(".work-advice").count() == 0
         readable_hierarchy(page)
         page.screenshot(path=str(artifacts / f"works-mixed-desktop-{language}.png"), full_page=True)
         for width in (390, 320):
@@ -411,8 +409,8 @@ with sync_playwright() as playwright:
                     == 16
                 )
                 if suffix == "?tab=constructions":
+                    page.locator("#work-storage").click()
                     storage = page.locator("#work-storage")
-                    storage.locator(":scope > summary").click()
                     for facts in storage.locator(".work-facts").all():
                         expect(facts.locator("dt")).to_have_count(3)
                     for choice in storage.locator(".city-choice").all():
@@ -458,16 +456,16 @@ with sync_playwright() as playwright:
         plain_page.locator('.city-entry a[href*="city=c1"]').click()
         expect(plain_page.locator("[data-local-accounts]")).to_be_visible()
         plain_page.goto(game_url + "?tab=constructions")
-        plain_forge = plain_page.locator("#work-forge")
-        plain_forge.locator(":scope > summary").click()
+        plain_page.locator("#work-storage").click()
+        plain_forge = plain_page.locator("#work-storage")
         plain_forge.locator('input[value="c1"]').check()
         plain_forge.locator('button[type="submit"]').click()
         expect(plain_page.locator(".notices")).to_contain_text(
             "The granary in Qasr needs" if en else "Le grenier de Qasr manque"
         )
         plain_page.goto(game_url + "?tab=constructions")
+        plain_page.locator("#work-storage").click()
         plain_storage = plain_page.locator("#work-storage")
-        plain_storage.locator(":scope > summary").click()
         plain_storage.locator('input[value="c3"]').check()
         plain_storage.locator('button[type="submit"]').click()
         expect(plain_page.locator(".unsealed-leaf")).to_be_visible()
@@ -478,24 +476,25 @@ with sync_playwright() as playwright:
         plain_page.screenshot(
             path=str(artifacts / f"map-context-mobile-{language}.png"), full_page=True
         )
-        plain_page.locator('[data-expedition-kind="raid"]').click()
+        plain_page.locator('input[name="kind"][value="raid"]').check()
         expect(plain_page.locator("#mission-target")).to_have_value("c4")
-        expect(plain_page.locator("#mission-kind")).to_have_value("raid")
+        expect(plain_page.locator('input[name="kind"][value="raid"]')).to_be_checked()
         plain.close()
-        # Reproduce the owner's three empty granaries after funding three local forges.
+        # Spend exactly 600k per city on the first two arsenal tiers before harvest.
         page.goto(base_url + "/games/new/")
         page.locator("#id_title").fill("Empty granaries")
         page.locator("#id_opponents").select_option("passive")
         page.locator(".game-setup button").click()
         empty_url = page.url.split("?")[0]
-        page.goto(empty_url + "?tab=constructions")
-        forge = page.locator("#work-forge")
-        forge.locator(":scope > summary").click()
-        forge.locator("[data-select-cities]").click()
-        forge.locator('button[type="submit"]').click()
-        page.locator(".wax-seal").click()
-        page.goto(empty_url)
-        page.locator("#turn-page button.primary-action").click()
+        for tier in range(2):
+            page.goto(empty_url + "?tab=constructions&action=forge")
+            forge = page.locator("#work-forge")
+            forge.locator("[data-select-cities]").click()
+            forge.locator('button[type="submit"]').click()
+            page.locator(".wax-seal").click()
+            for _ in range(4 if tier == 0 else 1):
+                page.goto(empty_url)
+                page.locator("#turn-page button.primary-action").click()
         page.goto(empty_url + "?tab=wars&action=expedition&city=c4")
         for origin in ("c1", "c2", "c3"):
             page.locator(f'input[name="men_{origin}"]').fill("10")

@@ -37,7 +37,7 @@ def test_repair_effect_preserves_wall_level():
 @pytest.mark.usefixtures("test_static_storage")
 @case(
     "bulk-decree-from-realm",
-    "City action directive: select several cities directly on Decrees, then seal one atomic order",
+    "City action directive: select several cities on a family page, then seal one atomic order",
 )
 @pytest.mark.parametrize("language", ["fr", "en"])
 def test_bulk_decree_from_realm(user, language):
@@ -47,7 +47,9 @@ def test_bulk_decree_from_realm(user, language):
     client = Client()
     client.force_login(user)
     client.cookies["django_language"] = language
-    page = client.get(reverse("game", args=[game.id]), {"tab": "decrees"})
+    page = client.get(
+        reverse("game", args=[game.id]), {"tab": "constructions", "action": "storage"}
+    )
     forms = re.findall(r"<form\b.*?</form>", page.content.decode(), re.S)
     storage = next((form for form in forms if 'value="storage"' in form), "")
     assert "data-work-form" in storage
@@ -75,7 +77,7 @@ def test_bulk_decree_from_realm(user, language):
 @pytest.mark.usefixtures("test_static_storage")
 @case(
     "bulk-decree-busy-city",
-    "City action directive: an inline batch excludes teams already reserved by another decree",
+    "City action directive: a family batch excludes teams already reserved by another decree",
 )
 def test_bulk_decree_busy_city(user):
     game = services.create_game(
@@ -84,7 +86,9 @@ def test_bulk_decree_busy_city(user):
     services.confirm(user, game.id, {"kind": "storage", "cities": ["c1"]}, uuid.uuid4(), 1)
     client = Client()
     client.force_login(user)
-    page = client.get(reverse("game", args=[game.id]), {"tab": "decrees"})
+    page = client.get(
+        reverse("game", args=[game.id]), {"tab": "constructions", "action": "storage"}
+    )
     forms = re.findall(r"<form\b.*?</form>", page.content.decode(), re.S)
     storage = next((form for form in forms if 'value="storage"' in form), "")
     assert re.search(r'<input\b[^>]*name="cities"[^>]*value="c1"[^>]*disabled', storage)

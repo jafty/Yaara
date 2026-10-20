@@ -92,7 +92,7 @@ def create_game(
     calendar_version=2,
     forge_version=2,
     map_version=3,
-    economy_version=2,
+    economy_version=3,
 ):
     # Serialize account-level creation limits as well as each game's commands.
     get_user_model().objects.select_for_update().get(pk=user.pk)

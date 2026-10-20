@@ -74,7 +74,7 @@ if (targetSelect) {
   const prices = JSON.parse(
     document.querySelector("#expedition-prices").textContent,
   );
-  const kind = document.querySelector("#mission-kind");
+  const kinds = [...document.querySelectorAll('input[name="kind"][type="radio"]')];
   const form = targetSelect.closest("form");
   const rows = [...document.querySelectorAll(".contribution")];
   const format = new Intl.NumberFormat(document.documentElement.lang);
@@ -87,7 +87,13 @@ if (targetSelect) {
       (sum, row, index) => sum + counts[index],
       0,
     );
-    const price = prices[kind.value];
+    const kind = kinds.find(input => input.checked).value;
+    const scene = document.querySelector("#map-context > .illustration");
+    if (scene) {
+      scene.classList.toggle("illustration-raid", kind === "raid");
+      scene.classList.toggle("illustration-capture", kind === "capture");
+    }
+    const price = prices[kind];
     const cost = price.base + total * price.per_person;
     document.querySelector("#army-total").textContent = format.format(total);
     document.querySelector("#army-cost").textContent = format.format(
@@ -153,7 +159,7 @@ if (targetSelect) {
     updateTotals();
   };
   targetSelect.addEventListener("change", updateOrigins);
-  kind.addEventListener("change", updateTotals);
+  kinds.forEach(input => input.addEventListener("change", updateTotals));
   rows.forEach((row) =>
     row.querySelector("input").addEventListener("input", updateTotals),
   );

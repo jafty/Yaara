@@ -175,7 +175,9 @@ def test_mixed_batch_http(user, language):
     client = Client()
     client.force_login(user)
     client.cookies["django_language"] = language
-    page = client.get(reverse("game", args=[game.id]), {"tab": "constructions"})
+    page = client.get(
+        reverse("game", args=[game.id]), {"tab": "constructions", "action": "storage"}
+    )
     action = next(
         item for item in page.context["view"]["work_actions"] if item["kind"] == "storage"
     )
@@ -186,9 +188,7 @@ def test_mixed_batch_http(user, language):
         if language == "fr"
         else "City granary → Great granary" in html
     )
-    assert (
-        "Le conseil des bâtisseurs" in html if language == "fr" else "The builders’ counsel" in html
-    )
+    assert "work-advice" not in html
     preview = client.post(
         reverse("preview", args=[game.id]), {"kind": "storage", "cities": ["c1", "c2"]}
     )
@@ -218,7 +218,9 @@ def test_all_completed_http(user, language):
     client = Client()
     client.force_login(user)
     client.cookies["django_language"] = language
-    page = client.get(reverse("game", args=[game.id]), {"tab": "constructions"})
+    page = client.get(
+        reverse("game", args=[game.id]), {"tab": "constructions", "action": "storage"}
+    )
     action = next(
         item for item in page.context["view"]["work_actions"] if item["kind"] == "storage"
     )
@@ -226,7 +228,7 @@ def test_all_completed_http(user, language):
     assert all(row["status"] == "completed" for row in action["cities"])
     assert action["prices"] == []
     storage = re.search(
-        r'<details class="work-selection" id="work-storage".*?</article>',
+        r'<section id="work-storage".*?</section>',
         page.content.decode(),
         re.S,
     ).group()
@@ -260,9 +262,11 @@ def test_all_busy_http(user, language):
     client = Client()
     client.force_login(user)
     client.cookies["django_language"] = language
-    page = client.get(reverse("game", args=[game.id]), {"tab": "constructions"})
+    page = client.get(
+        reverse("game", args=[game.id]), {"tab": "constructions", "action": "storage"}
+    )
     storage = re.search(
-        r'<details class="work-selection" id="work-storage".*?</article>',
+        r'<section id="work-storage".*?</section>',
         page.content.decode(),
         re.S,
     ).group()

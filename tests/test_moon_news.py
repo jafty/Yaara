@@ -22,7 +22,7 @@ pytestmark = [pytest.mark.integration, pytest.mark.usefixtures("test_static_stor
 @pytest.mark.parametrize("status", ["sealed", "departed", "cancelled", "invalidated"])
 @pytest.mark.parametrize("original_archive", [False, True], ids=["structured", "original"])
 def test_sealing_receipts(user, language, status, original_archive):
-    game = services.create_game(user, "Receipt news", opponents="passive")
+    game = services.create_game(user, "Receipt news", opponents="passive", economy_version=2)
     moon = 1 if status == "sealed" else 30
     game.state["month"] = moon
     game.save()
@@ -70,7 +70,7 @@ def test_sealing_receipts(user, language, status, original_archive):
     "Owner: suppress only sealing order receipts, not unrelated event titles",
 )
 def test_receipt_kind_guard(user):
-    game = services.create_game(user, "Guard", opponents="passive")
+    game = services.create_game(user, "Guard", opponents="passive", economy_version=2)
     event = Report.objects.create(
         game=game,
         recipient="p1",
@@ -90,7 +90,7 @@ def test_receipt_kind_guard(user):
 @pytest.mark.parametrize("calendar_version", [1, 2])
 def test_complete_moon_news(user, closed, count, calendar_version):
     game = services.create_game(
-        user, "News", opponents="passive", calendar_version=calendar_version
+        user, "News", opponents="passive", calendar_version=calendar_version, economy_version=2
     )
     game.state["month"] = closed + int(calendar_version == 2)
     game.save()
@@ -120,7 +120,7 @@ def test_complete_moon_news(user, closed, count, calendar_version):
 
 @case("council-quiet-moon", "Owner: a quiet closed Moon does not repeat older events")
 def test_quiet_moon(user):
-    game = services.create_game(user, "Quiet", opponents="passive")
+    game = services.create_game(user, "Quiet", opponents="passive", economy_version=2)
     game.state["month"] = 3
     game.save()
     client = Client()
@@ -134,7 +134,7 @@ def test_quiet_moon(user):
 @pytest.mark.parametrize("calendar_version", [1, 2])
 def test_header_moon(user, language, finished, calendar_version):
     game = services.create_game(
-        user, "Moon", opponents="passive", calendar_version=calendar_version
+        user, "Moon", opponents="passive", calendar_version=calendar_version, economy_version=2
     )
     game.state["month"] = 24 if finished else 12 + int(calendar_version == 2)
     game.state["status"] = "finished" if finished else "active"
@@ -153,7 +153,7 @@ def test_header_moon(user, language, finished, calendar_version):
 @case("council-local-preparation", "Owner: each city shows its accrued unavailable levy in Council")
 @pytest.mark.parametrize("language", ["fr", "en"])
 def test_local_preparation(user, language):
-    game = services.create_game(user, "Levies", opponents="passive")
+    game = services.create_game(user, "Levies", opponents="passive", economy_version=2)
     for city, tax in zip(("c1", "c2", "c3"), (12345, 45678, 78901)):
         game.state["cities"][city]["tax"] = tax
     game.save()
@@ -184,7 +184,7 @@ def test_local_preparation(user, language):
     ],
 )
 def test_event_icons(user, kind, icon):
-    game = services.create_game(user, "Icons", opponents="passive")
+    game = services.create_game(user, "Icons", opponents="passive", economy_version=2)
     report = Report.objects.create(
         game=game, recipient="p1", month=1, kind=kind, title="Visible title", body="News"
     )

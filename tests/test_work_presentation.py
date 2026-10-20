@@ -97,9 +97,7 @@ def test_single_list(user, language, forge_version):
     client.cookies["django_language"] = language
     page = client.get(reverse("game", args=[game.id]), {"tab": "constructions"})
     html = page.content.decode()
-    choices = re.search(
-        r'<section class="work-choices".*?</section>\s*<section', html, re.S
-    ).group()
+    choices = re.search(r'<section class="work-choices".*?</section>', html, re.S).group()
     assert html.count("<h1>") == 1
     assert 'id="works-heading"' not in html
     assert "Du travail de la forge" not in html and "The work of the forge" not in html
@@ -108,8 +106,9 @@ def test_single_list(user, language, forge_version):
     assert ('id="work-equipment"' in choices) == (forge_version == 1)
     assert ("Grand grenier" if language == "fr" else "Great granary") in choices
     assert ("Forge de la cité" if language == "fr" else "City forge") in choices
-    assert "data-work-form" in choices
-    assert ('name="kind" value="equipment"' in choices) == (forge_version == 1)
+    assert "data-work-form" not in choices
+    assert "action=storage" in choices
+    assert ("action=equipment" in choices) == (forge_version == 1)
 
 
 @pytest.mark.integration
@@ -209,7 +208,9 @@ def test_legacy_submit_visible(user, language, affordable):
     client = Client()
     client.force_login(user)
     client.cookies["django_language"] = language
-    html = client.get(reverse("game", args=[game.id]), {"tab": "constructions"}).content.decode()
+    html = client.get(
+        reverse("game", args=[game.id]), {"tab": "constructions", "action": "equipment"}
+    ).content.decode()
     form = next(
         form for form in re.findall(r"<form\b.*?</form>", html, re.S) if 'value="equipment"' in form
     )

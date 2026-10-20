@@ -1,30 +1,11 @@
 {% load i18n %}
 <section class="work-choices" aria-label="{% translate 'Les ouvrages de vos cités' %}">
-    <p class="aside-text">{% translate "Choisissez un ouvrage, puis une ou plusieurs cités. Un seul sceau réserve tout le lot ; chaque cité mobilise ses propres équipes." %}</p>
     {% for action in view.work_actions %}
-        <article class="decree-choice">
-            <details class="work-selection" id="work-{{ action.kind }}" {% if city_requested %}open{% endif %}>
-                <summary>
-                    <span class="work-title" role="heading" aria-level="2">{{ action.label }}</span>
-                    <span class="work-purpose">{{ action.purpose }}</span>
-                    {% for price in action.prices %}<span class="work-price">{% blocktranslate with name=price.name cost=price.cost duration=price.duration %}{{ name }} : <strong>{{ cost }} Mesures</strong> ; <strong>{{ duration }} lunes</strong>.{% endblocktranslate %}</span>{% endfor %}
-                </summary>
-                {% if action.kind == 'equipment' %}
-                    <p class="work-benefit">{% if action.benefit %}{{ action.benefit }}{% else %}{{ action.equipment }}.{% endif %}</p>
-                    {% if not view.finished and not view.eliminated and not game.paused %}
-                        {% if action.selectable %}{% include 'simulation/decree_form.html' with inline=True %}
-                        {% else %}<p class="aside-text">{% translate "Aucun nouvel ouvrage ne peut être entrepris ici pour le moment." %}</p>{% endif %}
-                    {% endif %}
-                {% else %}
-                    {% if action.selectable and not view.finished and not view.eliminated and not game.paused %}
-                        {% include 'simulation/decree_form.html' with inline=True %}
-                    {% else %}{% include 'simulation/work_cities.html' with interactive=False %}{% endif %}
-                {% endif %}
-                <details class="work-advice">
-                    <summary>{% translate "Le conseil des bâtisseurs" %}</summary>
-                    <p class="aside-text">{{ action.advice }}</p>
-                </details>
-            </details>
-        </article>
+    {% if action.kind != "repair" or action.prices %}<a id="work-{{ action.kind }}" class="work-card ledger-note" href="?tab=constructions&amp;action={{ action.kind }}{% if city_requested %}&amp;city={{ selected.id }}{% endif %}">
+        {% include 'simulation/illustration.html' with scene=action.kind compact=True %}
+        <div><h2>{{ action.label }}</h2><p>{{ action.purpose }}</p>
+        <p>{{ action.prices.0.name }}</p><p class="work-card-prices">{% for price in action.prices %}<span>{{ price.cost }} {% translate "Mesures" %} · {{ price.duration }} {% translate "lunes" %}</span>{% if not forloop.last %} / {% endif %}{% empty %}{% translate "Aucun nouvel ouvrage disponible." %}{% endfor %}</p></div>
+        <span aria-hidden="true">→</span>
+    </a>{% endif %}
     {% endfor %}
 </section>

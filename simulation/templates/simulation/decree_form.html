@@ -3,11 +3,13 @@
     <form method="post" action="{% url 'preview' game.id %}" {% if action.kind == 'expedition' %}class="expedition-form" data-local-funding="{{ view.local_funding|yesno:'true,false' }}" data-free-stock="{{ view.available_stock|unlocalize }}"{% elif action.kind != 'equipment' %}data-work-form data-local-funding="{{ view.local_funding|yesno:'true,false' }}" data-free-stock="{{ view.available_stock|unlocalize }}"{% endif %}>
         {% csrf_token %}
         {% if action.kind == 'expedition' %}
-            <p class="marginal-note">{% translate "Les Fidèles restent des habitants de leur cité. Une fois partis, ils cessent de défendre leur origine et de contribuer à l’impôt jusqu’à leur retour." %}</p>
-            {% if view.local_funding %}<p>{% translate "Chaque origine paie ses hommes et sa part des frais fixes, proportionnelle aux effectifs envoyés. Le devis détaille les prélèvements ; les autres cités ne contribuent pas." %}</p>{% endif %}
-            <p><label for="mission-kind">{% translate "Que nos hommes partent pour…" %}</label><select name="kind" id="mission-kind"><option value="raid" {% if mission_kind != 'capture' %}selected{% endif %}>{% translate "Piller les villages" %}</option><option value="capture" {% if mission_kind == 'capture' %}selected{% endif %}>{% translate "Capturer la cité" %}</option></select></p>
-            <p><label for="mission-target">{% translate "Vers quelle cité ?" %}</label><select name="target" id="mission-target" required><option value="">{% translate "Désigner une cité à notre portée" %}</option>{% for target in view.attack_targets %}<option value="{{ target.id }}" {% if target.engaged %}disabled{% elif city_requested and selected.id == target.id %}selected{% endif %}>{{ target.name }} · {% if target.engaged %}{% translate "Une expédition y est déjà engagée" %}{% else %}{{ target.owner_name }}{% endif %}</option>{% endfor %}</select></p>
-            <fieldset><legend>{% translate "Que chacune de nos cités fournisse les hommes suivants :" %}</legend>
+            <fieldset class="mission-options"><legend class="visually-hidden">{% translate "Action" %}</legend>
+                <label><input type="radio" name="kind" value="raid" {% if mission_kind != 'capture' %}checked{% endif %}><span>{% translate "Piller" %}</span></label>
+                <label><input type="radio" name="kind" value="capture" {% if mission_kind == 'capture' %}checked{% endif %}><span>{% translate "Capturer" %}</span></label>
+            </fieldset>
+            {% if selected_target %}<input type="hidden" name="target" id="mission-target" value="{{ selected.id }}">
+            {% else %}<p><label for="mission-target">{% translate "Vers quelle cité ?" %}</label><select name="target" id="mission-target" required><option value="">{% translate "Désigner une cité à notre portée" %}</option>{% for target in view.attack_targets %}<option value="{{ target.id }}" {% if target.engaged %}disabled{% endif %}>{{ target.name }} · {{ target.owner_name }}</option>{% endfor %}</select></p>{% endif %}
+            <fieldset><legend>{% translate "Fidèles par cité d’origine" %}</legend>
                 {% for city in view.owned_cities %}<label class="contribution" data-origin="{{ city.id }}" data-free-stock="{{ city.available_stock|unlocalize }}"><span>{{ city.name }}<small>{% blocktranslate with v0=city.available_fideles %}{{ v0 }} Fidèles disponibles.{% endblocktranslate %}<span class="origin-note"></span></small>{% if view.local_funding %}<small class="origin-funding" aria-live="polite">{% blocktranslate with charge=city.expedition_charge available=city.available_stock %}Part de cette cité : {{ charge }} Mesures ; disponibles : {{ available }}.{% endblocktranslate %}{% if city.expedition_shortfall %} {% blocktranslate with amount=city.expedition_shortfall %}Il manque {{ amount }} Mesures dans cette cité.{% endblocktranslate %}{% endif %}</small>{% endif %}</span><span class="manpower-input"><input type="number" name="men_{{ city.id }}" value="{{ city.contribution|default:'0' }}" min="0" max="{{ city.available_fideles }}" inputmode="numeric" aria-label="{% blocktranslate with v0=city.name %}Fidèles de {{ v0 }}{% endblocktranslate %}"> {% translate "Fidèles" %}</span></label>{% endfor %}</fieldset>
             <p class="expedition-summary" aria-live="polite">{% translate "Effectif réuni :" %} <strong id="army-total">{{ expedition_total }}</strong>. {% translate "Prix :" %} <strong id="army-cost">{{ expedition_cost }}</strong> {% translate "Mesures" %}.</p>
             <p class="cost-hint">{% blocktranslate with raid_base=view.expedition_prices.raid.base raid_person=view.expedition_prices.raid.per_person capture_base=view.expedition_prices.capture.base capture_person=view.expedition_prices.capture.per_person %}Pillage : {{ raid_base }} Mesures + {{ raid_person }} par Fidèle. Capture : {{ capture_base }} Mesures + {{ capture_person }} par Fidèle.{% endblocktranslate %}</p>
@@ -20,7 +22,7 @@
             {% if not inline %}<p>{% blocktranslate with v0=view.equipment_quote.cost v1=view.equipment_quote.duration %}<strong>{{ v0 }} Mesures</strong> ; <strong>{{ v1 }} lunes</strong>.{% endblocktranslate %}</p>{% endif %}
             {% if view.equipment_shortfall %}<p class="cost-hint">{% blocktranslate with amount=view.equipment_shortfall %}Il manque {{ amount }} Mesures pour cet ouvrage.{% endblocktranslate %}</p>{% endif %}
         {% else %}<input type="hidden" name="kind" value="{{ action.kind }}">
-            <fieldset><legend>{% translate "Que ces travaux soient entrepris…" %}</legend>
+            <fieldset><legend>{% translate "Choisir les cités" %}</legend>
                 {% include 'simulation/work_cities.html' with interactive=True %}
             </fieldset>
             <div class="batch-controls" hidden>
@@ -30,6 +32,6 @@
                 <p class="cost-hint" data-budget-note aria-live="polite"></p>
             </div>
         {% endif %}
-        <button class="primary-action" type="submit" {% if action.kind == 'equipment' %}{% if not view.equipment_available or view.equipment_shortfall %}disabled{% endif %}{% elif action.kind != 'expedition' and not action.selectable %}disabled{% endif %}>{% translate "Valider la sélection" %}</button>
+        <button class="primary-action" type="submit" {% if action.kind == 'equipment' %}{% if not view.equipment_available or view.equipment_shortfall %}disabled{% endif %}{% elif action.kind != 'expedition' and not action.selectable %}disabled{% endif %}>{% translate "Valider l’action" %}</button>
         <p class="aside-text">{% translate "Vous pourrez vérifier le récapitulatif avant de confirmer. Aucun moyen n’est réservé." %}</p>
     </form></section>

@@ -15,7 +15,9 @@ pytestmark = pytest.mark.logic
 @pytest.fixture
 def departed_raid(monkeypatch):
     monkeypatch.setattr(engine, "random_stream", FixedRandom())
-    state = engine.new_state(opponents="passive", calendar_version=1, map_version=1)
+    state = engine.new_state(
+        opponents="passive", calendar_version=1, map_version=1, economy_version=2
+    )
     engine.confirm_order(
         state,
         "p1",

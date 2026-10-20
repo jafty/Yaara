@@ -25,7 +25,7 @@ def test_empty_granaries(stocks):
     When their combined raid is prepared.
     Then the exact 95000-Measure allocation is required without mutating the state.
     """
-    state = engine.new_state(opponents="passive")
+    state = engine.new_state(opponents="passive", economy_version=2)
     for city, stock in zip(("c1", "c2", "c3"), stocks):
         state["cities"][city]["stock"] = stock
     before = deepcopy(state)
@@ -47,7 +47,7 @@ def test_frontier_borders():
     When its public city territories are projected.
     Then every saved road joins a shared border and each rival bridge is geographically close.
     """
-    state = engine.new_state()
+    state = engine.new_state(economy_version=2)
     before = deepcopy(state)
     cities = {city["id"]: city for city in player_view(state, "p1")["cities"]}
     for first, second in state["links"]:
@@ -69,7 +69,9 @@ def test_frontier_borders():
 @pytest.mark.parametrize("language", ["fr", "en"])
 @pytest.mark.parametrize("kind", ["raid", "capture", "storage", "equipment"])
 def test_failed_preview(user, language, kind):
-    game = services.create_game(user, "Failed order", opponents="passive", forge_version=1)
+    game = services.create_game(
+        user, "Failed order", opponents="passive", forge_version=1, economy_version=2
+    )
     for city in game.state["cities"].values():
         city["stock"] = 0
     game.save()
@@ -105,7 +107,7 @@ def test_failed_preview(user, language, kind):
 @case("remarks-failed-seal", "Owner: stale confirmation returns to the matching editable form")
 @pytest.mark.parametrize("kind", ["raid", "storage"])
 def test_failed_seal(user, kind):
-    game = services.create_game(user, "Stale", opponents="passive")
+    game = services.create_game(user, "Stale", opponents="passive", economy_version=2)
     client = Client()
     client.force_login(user)
     spec = (
@@ -129,7 +131,9 @@ def test_failed_seal(user, kind):
 @case("remarks-prologue-action-order", "Owner: Continue appears before Begin reign on each leaf")
 @pytest.mark.parametrize("page", [1, 2, 3, 4])
 def test_prologue_action_order(user, page):
-    game = services.create_game(user, "Intro", mode="scheduled", opponents="passive")
+    game = services.create_game(
+        user, "Intro", mode="scheduled", opponents="passive", economy_version=2
+    )
     client = Client()
     client.force_login(user)
     html = client.get(
@@ -145,7 +149,7 @@ def test_prologue_action_order(user, page):
 @case("remarks-report-return", "Owner: every complete report links back to Council")
 @pytest.mark.parametrize("language", ["fr", "en"])
 def test_report_return(user, language):
-    game = services.create_game(user, "Letters", opponents="passive")
+    game = services.create_game(user, "Letters", opponents="passive", economy_version=2)
     client = Client()
     client.force_login(user)
     client.cookies["django_language"] = language
@@ -163,7 +167,7 @@ def test_report_return(user, language):
     "Owner: native expedition retry shows all exact city shares and shortages",
 )
 def test_native_funding(user):
-    game = services.create_game(user, "Empty", opponents="passive")
+    game = services.create_game(user, "Empty", opponents="passive", economy_version=2)
     for city in game.state["cities"].values():
         city["stock"] = 0
     game.save()
@@ -198,7 +202,7 @@ def test_native_funding(user):
 @pytest.mark.usefixtures("test_static_storage")
 @case("remarks-invalid-men", "Owner: malformed headcounts return to the expedition action")
 def test_invalid_men(user):
-    game = services.create_game(user, "Invalid men", opponents="passive")
+    game = services.create_game(user, "Invalid men", opponents="passive", economy_version=2)
     client = Client()
     client.force_login(user)
     response = client.post(
@@ -218,7 +222,7 @@ def test_invalid_men(user):
 )
 @pytest.mark.parametrize("failure", ["funds", "deadline", "revision"])
 def test_reopen_rejection(user, monkeypatch, failure):
-    game = services.create_game(user, "Reopen", opponents="passive")
+    game = services.create_game(user, "Reopen", opponents="passive", economy_version=2)
     client = Client()
     client.force_login(user)
     preview = client.post(
@@ -246,7 +250,9 @@ def test_reopen_rejection(user, monkeypatch, failure):
 def test_aligned_start(user, monkeypatch, interval, minute, second, microsecond):
     now = datetime(2026, 10, 19, 13, minute, second, microsecond, tzinfo=timezone.utc)
     monkeypatch.setattr(services.timezone, "now", lambda: now)
-    game = services.create_game(user, "Aligned", mode="scheduled", interval_minutes=interval)
+    game = services.create_game(
+        user, "Aligned", mode="scheduled", interval_minutes=interval, economy_version=2
+    )
     services.start_calendar(user, game.id)
     game.refresh_from_db()
     assert game.deadline.minute % interval == 0
@@ -263,7 +269,9 @@ def test_aligned_start(user, monkeypatch, interval, minute, second, microsecond)
 def test_aligned_resume(user, monkeypatch):
     now = datetime(2026, 10, 19, 13, 3, tzinfo=timezone.utc)
     monkeypatch.setattr(services.timezone, "now", lambda: now)
-    game = services.create_game(user, "Resume", mode="scheduled", interval_minutes=5)
+    game = services.create_game(
+        user, "Resume", mode="scheduled", interval_minutes=5, economy_version=2
+    )
     services.start_calendar(user, game.id)
     services.toggle_pause(user, game.id)
     now += timedelta(minutes=1)

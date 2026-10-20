@@ -1,164 +1,79 @@
-# Yaara — Contexte vérifié et demande de réflexion sur le rythme du jeu
+# Yaara — Référence de jouabilité
 
-Document de travail en français, utilisable comme prompt autonome. Aucun changement de règles n'est décidé par ce document.
+Révision du 20 octobre 2026 : implémentation de la demande de jouabilité et de son GO, puis renforcement des fortifications demandé pendant le développement. Base récupérée : `d9747b1` de `codex/yaara-deployment`. Cette référence décrit le code de cette révision, pas une preuve du déploiement Railway ni les paramètres d’une sauvegarde particulière.
 
-## Périmètre et fiabilité
+## Maintien et compatibilité
 
-Lecture du 19 octobre 2026, sur la branche de déploiement récupérée depuis le dépôt, au commit `2b0d424bd3cb328c408e69e3870d342005df3d14`. Cela identifie le code analysé, sans attester quelle révision tourne effectivement en production ni les paramètres d'une sauvegarde particulière.
+Toute modification du cœur doit mettre à jour les faits et exemples concernés dans ce document, ainsi que `docs/decisions.md`. Vérifier le code et le marqueur économique de la sauvegarde avant de répondre sur les règles. Le dossier `design-source.fr.md` reste historique.
 
-Les sections « Fonctionnement vérifié » décrivent les nouvelles parties par défaut. Les sauvegardes peuvent conserver des règles antérieures. Les observations du joueur et les propositions sont séparées des faits implémentés.
+Les nouvelles parties utilisent `economy_version=3`, les forges locales, la carte à douze routes et le calendrier ouvrant la lune 1. Les économies précédentes conservent leurs tarifs, niveaux, équipements, raids sur stocks et calendrier de récolte. Aucun ordre, chantier, devis accepté ou rapport archivé n’est réécrit. V0/V1 disparaissent de l’interface de création et des étiquettes ; les identifiants nécessaires aux anciennes sauvegardes restent internes.
 
-### Maintien de cette référence
+## Cadre et victoire
 
-Ce document est une référence vivante du fonctionnement du jeu. Toute modification du cœur affectant les règles décrites doit le mettre à jour dans le même changement : faits, paramètres, exemples calculés, compatibilité et référence de révision. Une simple réorganisation interne sans effet sur le comportement nécessite de vérifier son exactitude, pas d'inventer une modification documentaire.
+Trois maisons possèdent initialement trois cités chacune. Le mode livré est solo contre deux adversaires automatiques actifs ou passifs. Une année compte douze lunes. Le règne standard dure 120 lunes ; les durées 24, 60 et 240 restent disponibles. Calendrier manuel ou automatique à cinq/dix minutes ; les parties automatiques attendent un départ explicite et suivent les échéances stockées.
 
-Les réponses aux questions de règles, d'économie, d'équilibrage ou de fonctionnement doivent s'appuyer sur ce document lorsque pertinent, en vérifiant le code applicable et les paramètres des sauvegardes concernées. En cas d'écart, signaler et corriger la documentation. Les propositions et observations historiques restent identifiées comme telles ; elles ne deviennent pas des règles implémentées par leur seule présence ici. Ces obligations figurent aussi dans [AGENTS.md](../AGENTS.md).
+Posséder toutes les cités donne la victoire immédiate. Au terme du règne, classement par nombre de cités puis population de rattachement. Pas de prestige ni de classement aux mesures restantes. Pilleur, producteur, défenseur et conquérant sont des orientations possibles, pas des classes ni une promesse d’équilibre démontré.
 
-Sources principales : [moteur](../simulation/engine.py), [paramètres et formules](../simulation/rules.py), [calendrier](../simulation/calendar.py), [services applicatifs](../simulation/services.py), [décisions](decisions.md). Le [dossier historique](design-source.fr.md) contient des propositions et des valeurs dépassées : notamment, sa progression agricole 100/200/300 ne décrit pas la nouvelle économie 100/130/200.
+## Ressources et rythme
 
-## Fonctionnement vérifié : cadre et calendrier
+Chaque cité commence avec 1 000 habitants, dont 100 Fidèles, 600 000 mesures disponibles, un prélèvement accumulé nul et une capacité de 2 400 000. Chaque cité finance seule ses travaux ; chaque origine finance ses hommes et sa part proportionnelle du forfait d’expédition. Aucune trésorerie mutualisée ni transfert manuel.
 
-- Le joueur dirige une maison possédant initialement trois cités, face à deux maisons de trois cités chacune. Le code applicatif propose actuellement du solo contre des adversaires automatiques actifs ou passifs ; le multijoueur humain n'est pas encore livré.
-- Le monde avance par tours communs à toutes les maisons d'une même partie, appelés lunes ou mois. Une année comprend douze tours. Les horloges de parties distinctes ne constituent pas un monde commun.
-- La cadence automatique est actuellement de dix minutes par tour par défaut ; cinq minutes sont également proposées. Un mode manuel existe.
-- À dix minutes par tour, une année représente nominalement deux heures ; onze tours représentent 1 h 50. Le premier tour automatique peut être plus court : son échéance est alignée sur la prochaine borne UTC. Les pauses et retards du planificateur affectent le temps réel observé.
-- Une nouvelle partie automatique attend un démarrage explicite. Lire les pages d'introduction ne la démarre pas.
-- La première lune ouverte est la lune 1. Sa clôture comptabilise son économie et exécute ses ordres, puis ouvre la lune 2. La première récolte est versée à la clôture de la lune 12, puis aux lunes 24, 36, etc.
-- La durée par défaut est de 120 tours, soit dix années et environ vingt heures sans pause à la cadence actuelle. Des durées de 24, 60 et 240 tours sont également acceptées.
-- Posséder toutes les cités donne immédiatement la victoire. Sinon, le classement final compare le nombre de cités, puis la population de rattachement ; une égalité reste possible. Perdre toutes ses cités entraîne l'élimination en fin de tour.
+Le rendement par habitant présent est 100 / 115 / 130 / 200 mesures par lune. Les hommes absents ne produisent pas ; le départ intervient après la comptabilisation et le retour après elle. La récolte s’accumule sans être dépensable puis est versée aux clôtures 12, 24, etc., sous réserve de capacité. Le surplus est perdu. Croissance annuelle de 0,5 %, arrondie à l’entier inférieur ; renouvellement des Fidèles dans les habitants existants, plafonné à 1 % et à l’écart au contingent cible de 10 %.
 
-## Fonctionnement vérifié : habitants, mesures et liquidités
+Dans la nouvelle économie, la clôture comptabilise le prélèvement, exécute les départs et achèvements, résout les combats, effectue le versement annuel et le renouvellement éventuels, puis les retours et le résultat. Les raids de la lune 12 atteignent donc sa récolte avant versement. Un siège utilise les réserves déjà engrangées ; une cité conquise reçoit sa récolte restante sous son nouveau propriétaire. Les anciennes économies gardent leur ordre précédent, avec versement avant les combats.
 
-Chaque cité commence avec :
+Le scellement exige les fonds déjà disponibles ; une récolte attendue ne finance pas un ordre encore inabordable. La préparation et la relecture ne réservent rien ; le scellement réserve, la clôture paie. L’annulation libère les réservations avant départ dans les règles qui l’autorisent.
 
-| Élément | Valeur initiale |
-| --- | ---: |
-| Population de rattachement | 1 000 habitants |
-| Fidèles mobilisables, inclus dans cette population | 100 |
-| Réserves dépensables | 600 000 mesures |
-| Prélèvement accumulé, non dépensable | 0 |
-| Capacité du grenier | 2 400 000 mesures |
+## Catalogue courant
 
-Une maison commence donc avec 3 000 habitants, 300 Fidèles et 1 800 000 mesures réparties entre trois greniers. **Ce total n'est pas une caisse mutualisée.**
+Coûts par passage, effets totaux remplaçant le niveau précédent. Une équipe locale par cité ; lots multi-cités atomiques.
 
-Le rendement est de **100 mesures par habitant présent et par tour**, puis **130 avec les premiers canaux**, puis **200 avec le réseau de canaux**. Le premier ouvrage agricole apporte donc **+30 par habitant et par tour**, et le second **+70 supplémentaires**, pas +100 à chaque étape.
+| Famille | Niveau I : prix / lunes | Niveau II : prix / lunes | Niveau III : prix / lunes | Progression |
+| --- | --- | --- | --- | --- |
+| Irrigation | 300 k / 3 | 400 k / 5 | 1,5 M / 10 | Rendement 100 → 115 → 130 → 200 |
+| Stockage | 200 k / 3 | 420 k / 5 | 900 k / 8 | Capacité 2,4 → 3,6 → 5,4 → 8,1 M |
+| Arsenal | 150 k / 3 | 450 k / 5 | 1 M / 8 | Force de base ×1 → ×1,10 → ×1,25 → ×1,45 |
+| Fortifications | 200 k / 5 | 900 k / 10 | 2,4 M / 20 | Défense locale contre capture ×1 → ×2 → ×4 → ×7 |
+| Surveillance | 120 k / 3 | 360 k / 5 | — | Mobilisation de raid aléatoire 20/30/40 %, puis fixe 40 %, puis fixe 60 % |
+| Protection | 150 k / 3 | 450 k / 5 | — | Récolte protégée 200 → 400 → 800 k |
+| Transport | 200 k / 4 | 600 k / 6 | — | Capacité de butin ×1 → ×1,25 → ×1,50 |
+| Siège | 300 k / 5 | 750 k / 8 | — | Ignore 0 → 25 → 50 % du bonus des murs |
+| Réparation des fortifications | 40 k / 3 | 180 k / 6 | 480 k / 8 | Restaure le niveau endommagé existant |
 
-À population constante de 1 000 habitants présents :
+Prix d’arsenal fixes, indépendants de la population. Une construction démarrant à la clôture N et durant trois lunes s’achève à N+3. L’irrigation produit au nouveau rendement à la comptabilisation suivante, sans rétroactivité.
 
-| État agricole | Comptabilisation par tour | Production sur douze tours |
-| --- | ---: | ---: |
-| Sans canaux | 100 000 | 1 200 000 |
-| Premiers canaux | 130 000 | 1 560 000 |
-| Réseau de canaux | 200 000 | 2 400 000 |
+Équipement, transport et matériel de siège restent propres à chaque origine et sont figés au départ. La capacité de transport dépend des survivants de chaque origine. La réduction de murs d’une armée mixte est pondérée par la force de chaque contingent. Les secours conservent leur propre équipement ; seuls les défenseurs locaux bénéficient des murs.
 
-**Cette production n'entre pas dans le grenier chaque tour.** Elle s'accumule dans un compte de prélèvement indisponible, puis est versée annuellement dans la limite de la capacité locale. Le surplus est perdu.
+Une capture par assaut peut endommager les fortifications : leur bonus est divisé par deux. Le matériel de siège réduit ensuite le bonus restant, jamais la défense de base. Exemple : murailles intactes ×7, béliers homogènes → `1 + (7−1) × 0,5 = 4`. Murailles endommagées et béliers → ×2,5. Les réparations existaient déjà avant cette révision ; elles sont adaptées aux nouveaux prix/niveaux. Les raids ne détériorent pas les bâtiments et n’arrêtent ni production ni chantier.
 
-Les hommes en expédition ne produisent pas pendant les tours où le moteur les compte absents. La comptabilisation économique précède les départs et les retours : le tour du départ compte encore leur présence ; le tour du retour compte encore leur absence.
+## Raids saisonniers
 
-La croissance annuelle est de 0,5 %, arrondie à l'entier inférieur par cité, après calcul du prélèvement. La reconstitution des Fidèles transforme des habitants existants en hommes mobilisables, sans ressusciter les morts ; elle est plafonnée à 1 % de la population et à l'écart avec un contingent cible de 10 %.
+Minimum 20 Fidèles ; coût `20 000 + 2 500 × effectif`. Départ à la clôture N, combat N+1, retour N+2. La cible est réservée exclusivement dès le scellement. Deux cités ennemies sont initialement accessibles, une de chaque maison rivale.
 
-Les mesures représentent, dans l'intention du concepteur, des ressources et un équivalent de temps de travail. **Toute nouvelle activité doit avoir un coût d'opportunité.** Ne pas inventer une réserve parallèle de travail gratuit.
+Le raid vise le prélèvement réellement accumulé, jamais les stocks déjà engrangés. Soustraire d’abord le seuil protégé (200/400/800 k), puis exposer un quart du reste positif. En cas de victoire stricte en force, butin = minimum entre 60 % de cette fraction et la capacité des survivants ; destructions = 20 % de la fraction. Une défaite ordinaire peut détruire 5 % de cette fraction ; une déroute ne prélève ni ne détruit. Aucune interruption de production, aucun forfait supplémentaire.
 
-Distinction importante avec le code : les constructions actuelles facturent un coût en mesures et occupent l'équipe locale, mais ne retirent pas explicitement un nombre de travailleurs de la population productive. Ajouter cette mobilisation serait une nouvelle règle ; il faudrait éviter de facturer deux fois le même travail.
+Capacité ordinaire : 5 000 mesures par survivant, modifiée par son origine. Une réserve protégée ne protège ni les combattants ni la cité. La surveillance remplace le tirage 20/30/40 par une mobilisation garantie de 40 ou 60 %. Les murs ne renforcent pas les défenseurs de raid. Les pertes militaires continuent naturellement de réduire la population productrice.
 
-## Fonctionnement vérifié : constructions et réparations
+Un succès qui prélève ou détruit des ressources disperse les villages pendant les deux lunes suivantes : pillage N, prochain combat de raid N+3. Une arrivée à cette date peut être préparée avant. Une victoire sans pertes agricoles et une défaite ne déclenchent pas ce répit. Les captures restent possibles. Le butin n’est dépensable qu’au retour ; capacité et propriété des cités déterminent les dépôts et le bilan final.
 
-| Ouvrage | Premier niveau : coût / durée | Second niveau : coût / durée | Effet |
-| --- | --- | --- | --- |
-| Canaux | 2 400 000 / 6 tours | 4 800 000 / 12 tours | Rendement 100 → 130 → 200 |
-| Grenier | 500 000 / 4 tours | 1 200 000 / 8 tours | Capacité 2,4 → 3,6 → 6 millions |
-| Enceinte | 1 200 000 / 8 tours | 9 600 000 / 20 tours | Multiplicateur de la défense locale contre capture : 1 → 1,6 → 3 |
-| Forge locale | Au moins 600 000 / 8 tours | Au moins 1 400 000 / 14 tours | Équipement militaire amélioré |
-| Réparation d'enceinte | 240 000 / 3 tours au niveau 1 | 1 920 000 / 6 tours au niveau 2 | Restaure une enceinte endommagée |
+Exemple à équipements ordinaires, 1,2 M accumulé et 200 k protégés : 250 k exposés, jusqu’à 150 k pillés, 50 k détruits. Avec 41 assaillants contre 40 défenseurs, coût 122 500, butin 150 000, solde provisoire +27 500. Ce solde exclut pertes humaines, production perdue pendant l’absence et éventuels débordements au retour. La récolte restante vaut 1 M. Le taux de production n’est pas suspendu.
 
-Pour la forge, le coût exact est `max(600 000, 600 × population)` au premier niveau et `max(1 400 000, 1 400 × population)` au second.
+## Captures, siège ponctuel et ravitaillement
 
-Les valeurs internes d'équipement sont 100, 120 et 145 : elles remplacent le niveau précédent, sans cumul. Une forge équipe les gens de sa cité, pas tout le royaume. Les équipements des contingents sont figés au départ. Les valeurs numériques de combativité ne sont pas montrées aux joueurs.
+Minimum 80 Fidèles ; coût `900 000 + 18 000 × effectif`, soit au moins 2,34 M. Une capture reste hors de portée des seules réserves initiales d’une maison. Il n’existe pas encore de siège maintenu sur plusieurs lunes.
 
-Chaque cité finance seule ses travaux et ne dispose que d'une équipe de chantier : ordres scellés et chantiers actifs bloquent cette équipe. Un ordre peut sélectionner plusieurs cités, mais chaque cité doit pouvoir financer sa propre tâche ; sinon, tout l'ordre est refusé sans réservation.
+L’attaque doit dépasser strictement la défense fortifiée pour un assaut victorieux ; au-delà d’une fois et demie cette défense, reddition. Si elle dépasse seulement la défense hors murs, un siège ponctuel vérifie le ravitaillement : `500 × habitants présents`. Stocks suffisants : la cité tient et consomme ce montant ; stocks insuffisants : capitulation par pénurie. Des murs ×7 n’empêchent pas cette seconde issue. À 1 000 présents, 500 k suffisent exactement, 499 999 ne suffisent pas. Les pertes et dépenses normales restent dues. Pas d’immunité contre un nouvel assaut et pas de pause de chantier entre tentatives.
 
-Une construction commencée à la clôture de la lune 1 et durant six tours se termine à la clôture de la lune 7. Elle ne termine pas à la lune 6. Le moteur comptabilisant l'économie avant les achèvements, de nouveaux canaux achevés en lune 7 augmentent la production à partir de la lune 8.
+Les coefficients ×2/×4/×7 sont des paramètres de jeu explicitement choisis pour favoriser le siège face aux grandes murailles. Les sources historiques sur les forteresses ne prouvent pas un multiplicateur universel de sept ; ne pas présenter ce nombre comme une mesure archéologique.
 
-Les réparations de murailles existent déjà. Un assaut de capture victorieux peut endommager l'enceinte ; son bonus est alors réduit de moitié, sans supprimer la défense de base. Un raid ordinaire ne déclenche pas cet état et ne désactive pas la production des villages. Les réparations agricoles ou généralisées seraient de nouvelles fonctionnalités.
+## Première année et rentabilité indicative
 
-Les enceintes n'augmentent pas la défense utilisée dans la formule des raids. Les forges, en revanche, interviennent dans la force militaire. Ne pas confondre ces usages.
+Sans action, attaque ou absence, une cité reçoit 1,2 M en lune 12 et atteint 1,8 M de stock. Si les rigoles démarrent à la clôture 1, elles s’achèvent à la clôture 4 : quatre lunes à 100 k et huit à 115 k, soit 1,32 M récolté et 1,62 M de stock après paiement initial de 300 k. La croissance de clôture 12 ne modifie pas cette première récolte.
 
-## Fonctionnement vérifié : ordres et expéditions
+À population constante de 1 000 présents et sans pertes ni débordements, amortissement marginal des trois passages d’irrigation : 20, environ 26,67 et environ 21,43 lunes de production améliorée. Construction et attente du versement s’ajoutent au délai de récupération en argent disponible. Ces chiffres ne prouvent pas l’équilibre d’un règne de 120 lunes.
 
-- Préparer et vérifier un ordre ne réserve rien. Le sceller réserve les mesures, les effectifs ou l'équipe nécessaires. Le paiement intervient à la clôture, après la comptabilisation économique et le versement annuel éventuel.
-- L'annulation avant clôture existe dans les règles complètes actuelles ; elle libère les réservations, sans remboursement puisque la dépense n'a pas encore eu lieu.
-- La confirmation exige néanmoins des fonds disponibles à cet instant : une récolte attendue à la clôture ne permet pas de sceller un ordre encore inabordable.
-- Chaque origine paie la part variable correspondant à ses hommes et une part du forfait proportionnelle à son contingent. Les autres cités ne contribuent pas.
-- Raid : minimum 20 Fidèles ; coût = 20 000 + 2 500 × effectif.
-- Capture : minimum 80 Fidèles ; coût = 900 000 + 18 000 × effectif. Au minimum, cela représente 2 340 000 mesures, davantage que toutes les réserves initiales d'une maison.
-- Départ à la clôture N, combat à N+1, retour à N+2. Le butin n'est dépensable qu'après son dépôt effectif, sous réserve de capacité et de propriété des cités de retour.
-- Une cible est réservée exclusivement dès la confirmation. La géographie et les composantes de cités amies déterminent les origines admissibles. Chaque maison a initialement une cité ennemie accessible dans chacun des deux domaines rivaux.
+## Interface et idées différées
 
-## Pourquoi un raid victorieux peut être déficitaire
+Conseil, Expéditions et Chantiers restent les destinations principales. Catalogue illustré compact, fiches de famille avec sélection multi-cités, panneau d’attaque dans la page sous la carte et contrôles natifs ; aucune popup obligatoire. « Valider l’action » ouvre la relecture ; seul le scellement engage les moyens. Suivi des ordres en attente et opérations actives, historique dans les rapports. Illustrations décoratives par contexte, sans nouvelle divulgation d’informations adverses.
 
-Un raid rencontre aléatoirement 20 %, 30 % ou 40 % des Fidèles disponibles de sa cible. La victoire exige une force strictement supérieure à celle des défenseurs rencontrés.
-
-Le stock accessible représente un quart du grenier. En cas de succès, le butin est le minimum entre 60 % de ce quart et 5 000 mesures par survivant. Le raid peut aussi détruire des réserves : cette destruction n'est pas un revenu pour l'attaquant. Un succès protège la cible contre le pillage pour une durée de douze tours selon les contrôles du calendrier.
-
-Exemple contrôlé : cible à 600 000 mesures et 100 Fidèles disponibles, équipements ordinaires des deux côtés, sans autre événement.
-
-| Attaquants | Dépense | Défense rencontrée | Résultat | Butin | Solde brut |
-| --- | ---: | ---: | --- | ---: | ---: |
-| 20 | 70 000 | 20 | Défaite, car égalité de force | 0 | −70 000 |
-| 30 | 95 000 | 20 | Victoire | 90 000 | −5 000 |
-| 40 | 120 000 | 30 | Victoire | 90 000 | −30 000 |
-| 41 | 122 500 | 40 | Victoire | 90 000 | −32 500 |
-
-Ces soldes excluent les décès, les prélèvements perdus pendant l'absence et les pertes éventuelles au dépôt. Une cible ayant déjà dépensé ses réserves rapporte encore moins. Un raid n'est donc pas nécessairement une activité de financement, même en cas de victoire.
-
-## Diagnostic chiffré du début de partie
-
-Les points suivants sont des déductions des règles, pas de nouvelles propositions :
-
-1. Une forge initiale absorbe les 600 000 mesures d'une cité ; un grenier en absorbe 500 000 et laisse 100 000. Les canaux et l'enceinte ne sont pas finançables avec ses seules réserves initiales.
-2. Sans dépense, expédition ou attaque, une cité atteint 1 800 000 mesures après la première récolte. Les premiers canaux restent donc inabordables. À la seconde récolte, elle atteint sa capacité de 2 400 000 ; 606 000 mesures débordent, compte tenu de la croissance à 1 005 habitants durant la deuxième année.
-3. L'agriculture productive est ainsi inaccessible pendant la première année dans ce scénario, et accessible après la deuxième récolte. Agrandir le grenier ne suffit pas à rendre les canaux abordables après la première récolte : 600 000 − 500 000 + 1 200 000 = 1 300 000 mesures.
-4. À population constante de 1 000 habitants, les premiers canaux procurent 360 000 mesures supplémentaires par année complète pour un coût de 2 400 000 : environ 6,67 années de production améliorée pour amortir ce coût brut, soit 13 h 20 à la cadence actuelle, hors construction et attente des versements. La croissance, le stockage et l'horizon de victoire modifient la valeur réelle.
-5. Il existe deux blocages distincts : les réserves dépensables et la disponibilité des équipes. Ajouter de petits ouvrages au même emplacement de chantier pourrait rendre l'ouverture plus conflictuelle sans créer d'actions pendant un grand chantier.
-
-## Observations du joueur
-
-Le jeu est fonctionnel, clair et sans anomalie flagrante d'affichage ou de fonctionnalité pendant les essais.
-
-En revanche, les réserves sont rapidement immobilisées dans quelques bâtiments coûteux. Dépenser immédiatement paraît tentant, mais même une gestion prudente laisse peu de possibilités avant la récolte suivante. Le raid devient presque la seule activité divertissante, alors qu'il est rarement rentable au début.
-
-Le joueur accepte un jeu de temps long, avec des connexions espacées. Il souhaite néanmoins davantage de décisions abordables : petits aménagements agricoles, étapes de construction, améliorations militaires spécialisées, travaux contextuels et éventuellement illustrations dans un style de papyrus.
-
-Il confie les arbitrages de conception à son interlocuteur : ces suggestions peuvent être rejetées ou transformées.
-
-## Réflexions déjà échangées et statut des idées
-
-- Attendre les résultats d'une décision peut être satisfaisant ; attendre de pouvoir prendre une décision peut être frustrant.
-- Investir tôt peut être rationnel. Le système ne doit pas compter sur l'autodiscipline du joueur pour préserver son intérêt.
-- Multiplier les achats bon marché ne résout pas à lui seul l'absence de liquidités entre récoltes.
-- Une capacité de travail gratuite parallèle aux mesures a été explicitement rejetée par le joueur.
-- Les exemples précédemment proposés avec 100 mesures initiales, 120 mesures annuelles ou des actions à 2–16 mesures étaient fictifs et hors échelle. **Ils ne doivent servir ni de référence ni de base d'équilibrage.**
-- Des progressions courtes d'aménagements, des préparatifs payants et de la reconnaissance restent des pistes, sans tarifs validés. Leur intérêt doit être comparé aux dépenses, rendements, équipes et durées actuels.
-- Distribuer progressivement une fraction de la production annuelle reste une hypothèse structurelle, pas une décision. Le moteur accumule déjà la production tour par tour : modifier sa disponibilité changerait la liquidité, l'exposition au pillage et les possibilités de réinvestissement, même à production nominale inchangée. Un versement anticipé peut aussi éviter des débordements : les recettes effectivement encaissées ne resteraient donc pas forcément identiques.
-- De nouveaux dégâts et travaux de réparation ne doivent pas enfermer le vaincu dans une spirale sans ressources. Les réparations d'enceinte existantes doivent être prises en compte avant de proposer un système supplémentaire.
-- Les illustrations restent une proposition. L'interface actuelle privilégie le manuscrit sobre et comporte déjà une carte schématique ; ajouter des illustrations de papyrus serait un choix de présentation à discuter.
-- Le code conserve des familles de règles et des marqueurs de compatibilité pour les anciennes sauvegardes. Le souhait de ne plus parler de versions dans la conception ne justifie pas de les supprimer ni de modifier silencieusement les parties existantes.
-
-## Demande à adresser au game designer
-
-Tu es un game designer expérimenté en jeux de stratégie et de gestion asynchrones. Utilise les faits vérifiés ci-dessus pour proposer une évolution concrète de Yaara. Réponds entièrement en français. **Ne code rien et ne considère aucune proposition antérieure comme approuvée.**
-
-1. Analyse séparément le rythme des décisions, la disponibilité des réserves locales, l'occupation des équipes, la rentabilité agricole et l'intérêt militaire des raids.
-2. Prends position : faut-il préserver les versements entièrement annuels, revoir les investissements initiaux, ajouter des actions intermédiaires, ou combiner certains de ces leviers ? Explique les compromis.
-3. Propose un ensemble limité de mécanismes cohérents. Pour chaque nouveauté, précise coût en mesures, durée en tours, effet, éventuel usage de l'équipe locale, conditions, répétabilité et coût d'opportunité. Identifie clairement les chiffres proposés et leur justification relativement à l'économie actuelle.
-4. Évite le travail gratuit, les clics systématiquement rentables, les améliorations universelles et les tâches qui obligent à se reconnecter toutes les dix minutes.
-5. Compare une première année actuelle à une première année proposée, sur douze clôtures, avec soldes locaux, réservations, dates d'achèvement et prélèvements réellement dépensables. Toute simulation simplifiée doit expliciter population, adversaires et événements exclus.
-6. Évalue les investissements par rapport à une partie par défaut de 120 tours, soit vingt heures nominales. Distingue production acquise, argent versé, amortissement et valeur stratégique.
-7. Préserve une reprise possible après défaite. Distingue raids, captures, sièges, dégâts existants et nouveaux dégâts proposés.
-8. Explique comment le jeu reste intéressant avec des connexions espacées. Distingue une activité facultative d'un avantage décisif accordé à la présence permanente.
-9. Tu peux t'inspirer de Travian, OGame, Clash of Clans ou Age of Empires, sans importer des mécanismes incompatibles avec notre cadence, notre économie et nos tours communs.
-10. Termine par les décisions recommandées, les ajustements simples, les changements structurels et les mesures à collecter lors des essais. Signale toute information manquante au lieu d'inventer une règle actuelle.
-
-## Vérifications réalisées pour ce document
-
-Lecture des paramètres et des chemins d'exécution cités, puis exécution directe du moteur natif sans base de données et sans modifier le jeu : progression passive jusqu'aux clôtures 1, 11, 12 et 24 ; devis initiaux forge/grenier/canaux/enceinte ; calculs de raids à 20, 30, 40 et 41 attaquants face à 20, 30 et 40 défenseurs. Les résultats reproduisent les exemples ci-dessus. Aucun équilibrage, code applicatif ou état de partie n'a été modifié.
+Voir `docs/backlog.fr.md` pour les pistes différées : détérioration d’ouvrages extérieurs, reconnaissance, engagements visibles, sièges prolongés, hospice, ravitaillement, écuries, archers et éventuel prestige. Elles ne sont pas des règles livrées.
