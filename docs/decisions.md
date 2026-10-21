@@ -1,5 +1,11 @@
 # Implementation decisions
 
+## 2026-10-21 · Distinct city folio landscapes
+
+- Give all nine cities a different decorative cityscape in one coherent fresco set: Qasr's square, Tamesh's hillside, Namar's canal, Sefra's market, Ishar's well, Daram's winding lane, Azal's spring, Mirha's fields and Tazir's gateway. Keep the supplied architectural vocabulary, solid walls without arrow slits or battlements, compact headwear and sparse blue tunics.
+- Map the nine atlas panels to stable public city IDs, independently of house, ownership, language, saved rule version or building levels. Every house's cities differ, including after capture. These images express visual identity, not installed upgrades or private city resources. Reuse the decorative illustration component and full 3:2 responsive proportions. No simulation, save or report changes.
+- Verify at Presentation level with independent bilingual city-folio cases, unchanged identity after ownership change, complete catalog collection, lint/format, PostgreSQL HTTP checks and the bilingual browser journey through all nine images, mobile/enlarged layouts and native navigation.
+
 ## 2026-10-21 · Owner-supplied fresco illustrations
 
 - Use the owner's five landscape images for Council, granaries, forges (including legacy realm equipment), fortifications/repair, and army preparation. Raid and capture share the same preparation image; their report illustrations also share it. Expeditions opens directly on the map without a separate heading illustration.

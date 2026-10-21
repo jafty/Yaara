@@ -93,6 +93,44 @@ def test_expeditions_map_only(user, language):
 
 
 @case(
+    "illustrations-city-folio-identity",
+    "Owner cityscapes: each of the nine cities has a distinct decorative identity in either language",
+)
+@pytest.mark.parametrize("language", ["fr", "en"])
+@pytest.mark.parametrize("city_id", [f"c{number}" for number in range(1, 10)])
+def test_city_folio_illustration(user, language, city_id):
+    game = services.create_game(user, "Cityscapes", opponents="passive")
+    client = Client()
+    client.force_login(user)
+    client.cookies["django_language"] = language
+    url = reverse("game", args=[game.id])
+    text = client.get(url, {"tab": "city", "city": city_id}).content.decode()
+    scene = (
+        f'<div class="illustration illustration-city illustration-city-{city_id}" '
+        'aria-hidden="true"></div>'
+    )
+    assert text.count(scene) == 1
+    assert text.count('class="illustration ') == 1
+
+
+@case(
+    "illustrations-city-retains-identity",
+    "Owner cityscapes: a city's illustration stays attached to the city when its house changes",
+)
+def test_city_illustration_after_ownership_change(user):
+    game = services.create_game(user, "City identity", opponents="passive")
+    client = Client()
+    client.force_login(user)
+    url = reverse("game", args=[game.id])
+    before = client.get(url, {"tab": "city", "city": "c4"}).content.decode()
+    game.state["cities"]["c4"]["owner"] = "p1"
+    game.save()
+    after = client.get(url, {"tab": "city", "city": "c4"}).content.decode()
+    scene = 'class="illustration illustration-city illustration-city-c4"'
+    assert scene in before and scene in after
+
+
+@case(
     "playability-unversioned-creation",
     "Owner GO: current creation has no rules selector and ignores obsolete version form fields",
 )

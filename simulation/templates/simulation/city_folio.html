@@ -1,5 +1,6 @@
 {% load i18n %}
 <p class="reading-links"><a href="{% url 'game' game.id %}#city-ledgers">← {% translate "Revenir au domaine" %}</a></p>
+{% include 'simulation/illustration.html' with scene='city' variant=selected.id %}
 <p class="salutation">{% translate "Monseigneur," %}</p>
 <p>{% blocktranslate with v0=selected.name v1=selected.owner_name %}{{ v0 }} relève de <strong>{{ v1 }}</strong>.{% endblocktranslate %} {{ selected.wall_label }}{% if selected.damaged %}, {% translate "endommagée" %}{% endif %}.</p>
 {% if selected.owned %}

@@ -799,6 +799,16 @@ input[type="number"] {
 .illustration-siege { --scene-x: 0; --scene-y: 100%; }
 .illustration-return { --scene-x: 50%; --scene-y: 100%; }
 .illustration-letter { --scene-x: 100%; --scene-y: 100%; }
+.illustration-city { --scene-image: url("illustrations/cityscapes.png"); }
+.illustration-city-c1 { --scene-x: 0; --scene-y: 0; }
+.illustration-city-c2 { --scene-x: 50%; --scene-y: 0; }
+.illustration-city-c3 { --scene-x: 100%; --scene-y: 0; }
+.illustration-city-c4 { --scene-x: 0; --scene-y: 50%; }
+.illustration-city-c5 { --scene-x: 50%; --scene-y: 50%; }
+.illustration-city-c6 { --scene-x: 100%; --scene-y: 50%; }
+.illustration-city-c7 { --scene-x: 0; --scene-y: 100%; }
+.illustration-city-c8 { --scene-x: 50%; --scene-y: 100%; }
+.illustration-city-c9 { --scene-x: 100%; --scene-y: 100%; }
 .work-card {
   display: grid;
   grid-template-columns: 5rem minmax(0, 1fr) auto;

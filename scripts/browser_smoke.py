@@ -206,6 +206,27 @@ with sync_playwright() as playwright:
         expect(page.locator(".dateline")).to_have_count(0)
         expect(page.locator(".resource-ribbon")).to_contain_text("1")
         page.screenshot(path=str(artifacts / f"domain-desktop-{language}.png"), full_page=True)
+        cityscapes = set()
+        for number in range(1, 10):
+            page.goto(game_url + f"?tab=city&city=c{number}")
+            scene = page.locator(".illustration-city")
+            expect(scene).to_have_class(
+                f"illustration illustration-city illustration-city-c{number}"
+            )
+            illustration_asset(scene, "cityscapes.png")
+            cityscapes.add(scene.evaluate("el => getComputedStyle(el).backgroundPosition"))
+            no_overflow(page)
+            page.screenshot(
+                path=str(artifacts / f"city-c{number}-desktop-{language}.png"), full_page=True
+            )
+            for width in (390, 320):
+                page.set_viewport_size({"width": width, "height": 844})
+                no_overflow(page)
+                page.evaluate("document.documentElement.style.fontSize = '125%'")
+                no_overflow(page)
+                page.evaluate("document.documentElement.style.removeProperty('font-size')")
+            page.set_viewport_size({"width": 1440, "height": 1100})
+        assert len(cityscapes) == 9
         page.locator('.bookmarks a[href$="?tab=constructions"]').click()
         # Local forges keep the same atomic multi-city draft/seal/cancel workflow.
         page.goto(game_url + "?tab=constructions&action=forge")
@@ -490,6 +511,9 @@ with sync_playwright() as playwright:
         plain_page.locator("[data-prologue-skip]").click()
         plain_page.locator('.city-entry a[href*="city=c1"]').click()
         expect(plain_page.locator("[data-local-accounts]")).to_be_visible()
+        expect(plain_page.locator(".illustration-city-c1")).to_be_visible()
+        illustration_asset(plain_page.locator(".illustration-city-c1"), "cityscapes.png")
+        no_overflow(plain_page)
         plain_page.goto(game_url + "?tab=constructions")
         plain_page.locator("#work-storage").click()
         plain_forge = plain_page.locator("#work-storage")
