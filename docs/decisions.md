@@ -1,5 +1,11 @@
 # Implementation decisions
 
+## 2026-10-21 · Painted terrain on worn parchment
+
+- The owner's follow-up replaces the first vector-decoration pass with one generated raster terrain background. Use visibly worn pale papyrus, fibres, cracks, rubbed mineral pigment and weathered edges, with sparse desert mountains, dunes, rocks and scrub around open areas. Keep the original map layout, borders, city markers, Roman house marks, typography and legend.
+- Serve `illustrations/map-terrain.png` locally as the map frame's background, scaled to the complete sheet without cropping. Existing SVG territories, accessible city links and marker states stay above the painting. Terrain remains decorative and independent of ownership, installed works, saved road versions and private resources; no rules, projections, archived reports or player-visible copy change. The gameplay reference remains accurate without revision.
+- Use Presentation verification: lint/format, complete case-catalog collection, affected bilingual map/illustration HTTP checks on PostgreSQL 17, and the bilingual browser journey, including narrow/enlarged layouts, keyboard selection and no-JavaScript navigation. Visually inspect current and legacy maps and verify background image decoding.
+
 ## 2026-10-21 · Benin-inspired warriors and active battle scenes
 
 - The owner's warrior sketch supersedes the earlier tunic and sparse-soldier direction. Soldiers wear separate shoulder pads over bare chests and abdomens, small layered collars, diagonal straps, decorated belts, wrapped kilts, sandals and rounded caps. Vary headwear, shoulder details, cloth trim and weapons, including spears and swords, within the shared Benin City-inspired silhouette.

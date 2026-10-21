@@ -630,7 +630,7 @@ input[type="number"] {
   margin: 0;
 }
 .map-frame {
-  background: var(--map-paper);
+  background: var(--map-paper) url("illustrations/map-terrain.png") center / 100% 100% no-repeat;
   border: 1px solid #d4c9b7;
 }
 .map-sheet {
