@@ -1,5 +1,14 @@
 # Implementation decisions
 
+## 2026-10-21 · Benin-inspired warriors and active battle scenes
+
+- The owner's warrior sketch supersedes the earlier tunic and sparse-soldier direction. Soldiers wear separate shoulder pads over bare chests and abdomens, small layered collars, diagonal straps, decorated belts, wrapped kilts, sandals and rounded caps. Vary headwear, shoulder details, cloth trim and weapons, including spears and swords, within the shared Benin City-inspired silhouette.
+- Populate army preparation with a larger assembled force. All eight battle-report images show opposing soldiers actively fighting, with supporting ranks and several distinct clashes, in one continuous landscape. Preserve the flat mineral palette, bold outlines, worn pale parchment and 3:2 compositions.
+- Preserve each report's existing perspective and military outcome: blue-accented forces represent the recipient/player, red-accented forces the enemy; a successful received attack shows the enemy prevailing. Raids remain village encounters; captures center on city gates. These decorative scenes do not assert exact troop counts, resource amounts or equipment levels.
+- Apply the same costume to Council and fortification guards and the atlas's returning soldiers. Include women as Council advisors, granary workers and the atlas's scribe; other civilian scenes can retain their existing characters. Preserve the atlas's nine scene positions and the cityscape atlas. Normalize generated atlas rows to the existing CSS thirds so adjacent scenes do not overlap their crops.
+- Replace local image assets under their existing filenames. Report selection, archived content, game rules, templates and translations are unchanged. The current gameplay reference remains accurate and needs no revision.
+- Use Presentation verification: lint/format, complete case-catalog collection, affected bilingual HTTP cases on real PostgreSQL, visual review of every revised scene and atlas cell, and the bilingual browser journey with image decoding, narrow/enlarged layouts and no-JavaScript navigation. No new logical variation is introduced by replacing decorative assets.
+
 ## 2026-10-22 · Consistent frescoes and list thumbnails
 
 - Use the supplied Council image as the visual reference: flat mineral colours, bold brown outlines, pale worn papyrus, simple architecture and sparse small figures. Retain Council, granary, forge and fortification originals that already match it; redraw the two nine-panel atlases, army preparation and all eight battle illustrations. Review figures for aligned heads, torsos and feet, separated limbs and supported objects; correct the floating raid basket and misleading held-city banner found during review.
