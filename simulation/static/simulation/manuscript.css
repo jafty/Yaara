@@ -764,43 +764,40 @@ input[type="number"] {
 
 /* Compact illustrated catalogue and native expedition controls. */
 .illustration {
-  height: 8rem;
-  margin: 0.5rem 0 1rem;
-  position: relative;
-  overflow: hidden;
+  width: min(100%, 30rem);
+  aspect-ratio: 3 / 2;
+  margin: 0.5rem auto 1rem;
   border-radius: 2px;
-}
-.illustration::before {
-  content: "";
-  position: absolute;
-  inset-inline: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  aspect-ratio: 1;
-  background-image: url("illustrations/yaara-atlas.png");
-  background-size: 400% 400%;
+  background-image: var(--scene-image, url("illustrations/yaara-atlas.png"));
+  background-size: var(--scene-size, 300% 300%);
   background-position: var(--scene-x, 0) var(--scene-y, 0);
+  background-repeat: no-repeat;
+}
+.illustration-council,
+.illustration-storage,
+.illustration-forge, .illustration-equipment,
+.illustration-walls, .illustration-repair,
+.illustration-army, .illustration-raid, .illustration-capture {
+  --scene-size: 100% 100%;
 }
 .illustration-small {
   width: 5rem;
-  height: 5rem;
   margin: 0;
   flex: 0 0 5rem;
 }
-.illustration-council { --scene-x: 0; --scene-y: 0; }
-.illustration-expedition { --scene-x: 33.333%; --scene-y: 0; }
-.illustration-work { --scene-x: 66.667%; --scene-y: 0; }
-.illustration-harvest { --scene-x: 100%; --scene-y: 0; }
-.illustration-irrigation { --scene-x: 0; --scene-y: 33.333%; }
-.illustration-storage { --scene-x: 33.333%; --scene-y: 33.333%; }
-.illustration-forge, .illustration-equipment { --scene-x: 66.667%; --scene-y: 33.333%; }
-.illustration-walls, .illustration-repair { --scene-x: 100%; --scene-y: 33.333%; }
-.illustration-watch { --scene-x: 0; --scene-y: 66.667%; }
-.illustration-shelter { --scene-x: 33.333%; --scene-y: 66.667%; }
-.illustration-transport { --scene-x: 66.667%; --scene-y: 66.667%; }
-.illustration-siege, .illustration-capture { --scene-x: 100%; --scene-y: 66.667%; }
-.illustration-raid { --scene-x: 33.333%; --scene-y: 100%; }
-.illustration-return { --scene-x: 66.667%; --scene-y: 100%; }
+.illustration-council { --scene-image: url("illustrations/council.jpg"); }
+.illustration-storage { --scene-image: url("illustrations/granary.jpg"); }
+.illustration-forge, .illustration-equipment { --scene-image: url("illustrations/forge.jpg"); }
+.illustration-walls, .illustration-repair { --scene-image: url("illustrations/fortifications.jpg"); }
+.illustration-army, .illustration-raid, .illustration-capture { --scene-image: url("illustrations/army-preparation.jpg"); }
+.illustration-work { --scene-x: 0; --scene-y: 0; }
+.illustration-harvest { --scene-x: 50%; --scene-y: 0; }
+.illustration-irrigation { --scene-x: 100%; --scene-y: 0; }
+.illustration-watch { --scene-x: 0; --scene-y: 50%; }
+.illustration-shelter { --scene-x: 50%; --scene-y: 50%; }
+.illustration-transport { --scene-x: 100%; --scene-y: 50%; }
+.illustration-siege { --scene-x: 0; --scene-y: 100%; }
+.illustration-return { --scene-x: 50%; --scene-y: 100%; }
 .illustration-letter { --scene-x: 100%; --scene-y: 100%; }
 .work-card {
   display: grid;
@@ -816,8 +813,6 @@ input[type="number"] {
 .work-card p { font-size: 0.85rem; margin: 0.2rem 0; }
 .work-card-prices { color: var(--muted); }
 .work-card:hover h2 { color: var(--accent); text-decoration: underline; }
-.work-family-heading { display: flex; gap: 0.75rem; align-items: center; }
-.work-family-heading h2 { margin: 0; }
 .mission-options { display: flex; gap: 0.5rem; padding: 0; }
 .mission-options label { position: relative; flex: 1; cursor: pointer; }
 .mission-options input { position: absolute; opacity: 0; }

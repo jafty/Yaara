@@ -1,5 +1,11 @@
 # Implementation decisions
 
+## 2026-10-21 · Owner-supplied fresco illustrations
+
+- Use the owner's five landscape images for Council, granaries, forges (including legacy realm equipment), fortifications/repair, and army preparation. Raid and capture share the same preparation image; their report illustrations also share it. Expeditions opens directly on the map without a separate heading illustration.
+- Replace the remaining decorative atlas with matching generated papyrus frescoes for construction, harvest, irrigation, watch, shelter, transport, siege equipment, returns and letters. All assets remain local and decorative. Preserve the full 3:2 compositions in catalogue thumbnails and restrained full-size family images; a family page has one illustration. No rule, saved game or archived report content changes.
+- Use the Presentation verification level: lint/format, complete case-catalog collection, affected HTTP cases on PostgreSQL and the bilingual browser journey, including image decoding, responsive proportions, both attack choices and native no-JavaScript preparation.
+
 ## 2026-10-20 · Playable openings, seasonal raids and illustrated family pages
 
 - The owner approved the full playability scope, then explicitly raised fortifications to favor siege. New games use `economy_version=3`; absent/older economy markers preserve all existing quotes, levels, crop yields, equipment, stocks, raids, cooldowns and archived letters. The public creation form always uses current complete rules and omits V0/V1; internal rule-family compatibility remains.

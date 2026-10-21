@@ -88,11 +88,6 @@ if (targetSelect) {
       0,
     );
     const kind = kinds.find(input => input.checked).value;
-    const scene = document.querySelector("#map-context > .illustration");
-    if (scene) {
-      scene.classList.toggle("illustration-raid", kind === "raid");
-      scene.classList.toggle("illustration-capture", kind === "capture");
-    }
     const price = prices[kind];
     const cost = price.base + total * price.per_person;
     document.querySelector("#army-total").textContent = format.format(total);

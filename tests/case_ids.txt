@@ -308,6 +308,8 @@ header-moon-number/2-False-en
 header-moon-number/2-False-fr
 header-moon-number/2-True-en
 header-moon-number/2-True-fr
+illustrations-expeditions-map-only/en
+illustrations-expeditions-map-only/fr
 initial-capture-rejected-without-partial-reservations
 intro-invalid-page/-1
 intro-invalid-page/0
@@ -467,8 +469,10 @@ playability-catalogue/watch-1-120000-3
 playability-catalogue/watch-2-360000-5
 playability-current-pages/en
 playability-current-pages/fr
-playability-direct-attack/en
-playability-direct-attack/fr
+playability-direct-attack/capture-en
+playability-direct-attack/capture-fr
+playability-direct-attack/raid-en
+playability-direct-attack/raid-fr
 playability-empty-crop/0-0
 playability-empty-crop/200000-1
 playability-empty-crop/600000-2

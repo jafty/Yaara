@@ -33,6 +33,8 @@ def test_current_pages(user, language):
     assert text.count('name="cities"') == 3
     assert ("Channels and small dikes" if language == "en" else "Rigoles et petites digues") in text
     assert ("Validate action" if language == "en" else "Valider l’action") in text
+    assert 'class="illustration illustration-irrigation"' in text
+    assert "illustration-irrigation illustration-small" not in text
     preview = client.post(
         reverse("preview", args=[game.id]), {"kind": "irrigation", "cities": ["c1", "c2"]}
     )
@@ -49,24 +51,45 @@ def test_current_pages(user, language):
     "Owner GO: a map target directly exposes one native radio-based preparation form",
 )
 @pytest.mark.parametrize("language", ["fr", "en"])
-def test_direct_attack(user, language):
+@pytest.mark.parametrize("kind", ["raid", "capture"])
+def test_direct_attack(user, language, kind):
     game = services.create_game(user, "Attack", opponents="passive")
     game.state["cities"]["c4"].update(stock=1234567, tax=2345678, forge=3, watch=2)
     game.save()
     client = Client()
     client.force_login(user)
     client.cookies["django_language"] = language
-    response = client.get(reverse("game", args=[game.id]), {"tab": "wars", "city": "c4"})
+    response = client.get(
+        reverse("game", args=[game.id]), {"tab": "wars", "city": "c4", "mission": kind}
+    )
     text = response.content.decode()
     assert text.count('class="expedition-form"') == 1
     assert text.count('type="radio" name="kind"') == 2
     assert 'id="mission-target" value="c4"' in text
     assert '<select name="target"' not in text
     assert "data-expedition-kind" not in text
+    assert text.count('class="illustration illustration-army"') == 1
+    assert "illustration-expedition" not in text
+    assert "illustration-raid" not in text and "illustration-capture" not in text
     assert "1234567" not in text and "2345678" not in text
     opponent = next(c for c in response.context["view"]["cities"] if c["id"] == "c4")
     assert not {"stock", "tax", "forge", "watch", "combativity"}.intersection(opponent)
     assert "cohort_equipment" not in json.dumps(response.context["view"])
+
+
+@case(
+    "illustrations-expeditions-map-only",
+    "Owner artwork revision: the unselected expedition page uses the map as its illustration",
+)
+@pytest.mark.parametrize("language", ["fr", "en"])
+def test_expeditions_map_only(user, language):
+    game = services.create_game(user, "Map", opponents="passive")
+    client = Client()
+    client.force_login(user)
+    client.cookies["django_language"] = language
+    text = client.get(reverse("game", args=[game.id]), {"tab": "wars"}).content.decode()
+    assert 'class="realm-map"' in text
+    assert 'class="illustration ' not in text
 
 
 @case(

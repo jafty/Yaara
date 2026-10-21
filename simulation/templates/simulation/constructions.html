@@ -1,7 +1,8 @@
 {% load i18n %}
 {% if action %}<section id="work-{{ action.kind }}">
     <p class="back-link"><a href="?tab=constructions" data-works-return>← {% translate "Tous les chantiers" %}</a></p>
-    <div class="work-family-heading">{% include 'simulation/illustration.html' with scene=action.kind compact=True %}<h2>{{ action.label }}</h2></div>
+    {% include 'simulation/illustration.html' with scene=action.kind %}
+    <h2>{{ action.label }}</h2>
     {% if not view.finished and not view.eliminated and not game.paused and action.selectable or action.kind == 'equipment' and not view.finished and not view.eliminated and not game.paused %}
         {% include 'simulation/decree_form.html' with inline=True %}
     {% elif action.kind == 'equipment' %}<p>{{ action.benefit }}</p>

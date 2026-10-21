@@ -12,7 +12,7 @@
         {% else %}<h2 id="context-title">{% translate "Préparer une expédition" %}</h2>{% endif %}
         {% if action and not view.finished and not view.eliminated and not game.paused %}
             {% if selected_target or not city_requested %}
-            {% include 'simulation/illustration.html' with scene=mission_kind %}
+            {% include 'simulation/illustration.html' with scene='army' %}
             {% if view.seasonal_raids and selected.raid_available_moon > view.open_moon %}<p class="marginal-note">{% blocktranslate with moon=selected.raid_available_moon %}Villages dispersés : un nouveau pillage pourra arriver à partir de la lune {{ moon }}. La capture reste possible.{% endblocktranslate %}</p>{% endif %}
             <div id="expedition-order">{% include 'simulation/decree_form.html' with inline=True %}</div>
             {% endif %}

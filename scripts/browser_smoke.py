@@ -19,6 +19,9 @@ def no_overflow(page):
         "The page overflows horizontally"
     )
     readable_hierarchy(page)
+    for scene in page.locator(".illustration").all():
+        box = scene.bounding_box()
+        assert abs(box["width"] / box["height"] - 1.5) < 0.02
     if page.locator(".book-title").count():
         scannable_layout(page)
 
@@ -61,6 +64,22 @@ def scannable_layout(page):
     for note in page.locator(".notice, .marginal-note, .unsealed-leaf").all():
         assert note.evaluate("el => getComputedStyle(el).borderLeftWidth") == "0px"
         assert note.evaluate("el => getComputedStyle(el).boxShadow") != "none"
+
+
+def illustration_asset(scene, filename):
+    """Check the actual displayed local asset, including successful image decoding."""
+    assert scene.evaluate(
+        r"""async (el, filename) => {
+          const background = getComputedStyle(el).backgroundImage;
+          const url = background.match(/url\(["']?(.*?)["']?\)/)[1];
+          const image = new Image();
+          image.src = url;
+          await image.decode();
+          return new URL(url).pathname.endsWith('/' + filename)
+            && image.naturalWidth > 0 && image.naturalHeight > 0;
+        }""",
+        filename,
+    )
 
 
 with sync_playwright() as playwright:
@@ -157,7 +176,19 @@ with sync_playwright() as playwright:
         assert "Level " not in page.locator(".work-choices").inner_text()
         assert "Niveau " not in page.locator(".work-choices").inner_text()
         # A specific work has a native return path to the complete Works list.
-        page.goto(game_url + "?tab=constructions&action=storage")
+        for family, filename in (
+            ("irrigation", "yaara-atlas.png"),
+            ("storage", "granary.jpg"),
+            ("forge", "forge.jpg"),
+            ("walls", "fortifications.jpg"),
+            ("watch", "yaara-atlas.png"),
+            ("shelter", "yaara-atlas.png"),
+            ("transport", "yaara-atlas.png"),
+            ("siege", "yaara-atlas.png"),
+        ):
+            page.goto(game_url + "?tab=constructions&action=" + family)
+            illustration_asset(page.locator(".illustration"), filename)
+            no_overflow(page)
         page.locator("[data-works-return]").focus()
         page.keyboard.press("Enter")
         expect(page.locator(".work-choices")).to_be_visible()
@@ -167,6 +198,7 @@ with sync_playwright() as playwright:
         page.evaluate("document.documentElement.style.removeProperty('font-size')")
         page.screenshot(path=str(artifacts / f"works-named-{language}.png"), full_page=True)
         page.goto(game_url)
+        illustration_asset(page.locator(".illustration-council"), "council.jpg")
         assert page.locator(".city-entry").count() == 3
         assert page.locator(".sidebar, .stats-strip, img, table").count() == 0
         assert page.locator(".city-entry details").count() == 0
@@ -247,16 +279,19 @@ with sync_playwright() as playwright:
             "aria-label", re.compile("Out of reach" if en else "Hors de portée")
         )
         assert page.locator(".map-road").count() == 0
+        expect(page.locator(".illustration")).to_have_count(0)
         page.locator('.map-city[href*="city=c4"]').focus()
         page.keyboard.press("Enter")
         assert page.locator("[data-local-accounts]").count() == 0
         expect(page.locator("#map-context")).to_contain_text("Sefra")
+        illustration_asset(page.locator("#map-context > .illustration"), "army-preparation.jpg")
         page.screenshot(path=str(artifacts / f"map-context-desktop-{language}.png"), full_page=True)
         page.locator('input[name="kind"][value="capture"]').check()
         expect(page.locator('input[name="kind"][value="capture"]')).to_be_checked()
         expect(page.locator("#map-context > .illustration")).to_have_class(
-            "illustration illustration-capture"
+            "illustration illustration-army"
         )
+        illustration_asset(page.locator("#map-context > .illustration"), "army-preparation.jpg")
         atlas = page.locator(".realm-map").bounding_box()
         panel = page.locator("#map-context").bounding_box()
         assert panel["y"] >= atlas["y"] + atlas["height"]
@@ -472,6 +507,9 @@ with sync_playwright() as playwright:
         plain_page.goto(game_url + "?tab=wars")
         plain_page.locator('.map-city[href*="city=c4"]').click()
         expect(plain_page.locator("#map-context")).to_contain_text("Sefra")
+        expect(plain_page.locator("#map-context > .illustration")).to_have_class(
+            "illustration illustration-army"
+        )
         no_overflow(plain_page)
         plain_page.screenshot(
             path=str(artifacts / f"map-context-mobile-{language}.png"), full_page=True
