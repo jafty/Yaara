@@ -4,6 +4,7 @@
 
 - Use the owner's five landscape images for Council, granaries, forges (including legacy realm equipment), fortifications/repair, and army preparation. Raid and capture share the same preparation image; their report illustrations also share it. Expeditions opens directly on the map without a separate heading illustration.
 - Replace the remaining decorative atlas with matching generated papyrus frescoes for construction, harvest, irrigation, watch, shelter, transport, siege equipment, returns and letters. All assets remain local and decorative. Preserve the full 3:2 compositions in catalogue thumbnails and restrained full-size family images; a family page has one illustration. No rule, saved game or archived report content changes.
+- The owner's follow-up refines the generated atlas: solid buildings without arrow slits or battlements, mostly bare heads and small high-set rounded caps instead of long Egyptian headcloths, and restrained Tuareg-inspired blue tunics on two figures. The return scene reuses the supplied fortification's smooth walls, projecting buttresses, wooden gate, red/blue bands and thatched tower. The five supplied image files remain the owner's originals.
 - Use the Presentation verification level: lint/format, complete case-catalog collection, affected HTTP cases on PostgreSQL and the bilingual browser journey, including image decoding, responsive proportions, both attack choices and native no-JavaScript preparation.
 
 ## 2026-10-20 · Playable openings, seasonal raids and illustrated family pages
