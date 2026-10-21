@@ -725,7 +725,8 @@ input[type="number"] {
 .map-context {
   padding: 1rem 0;
   border-block: 1px solid var(--rule);
-  scroll-margin-top: 6rem;
+  /* Offset the page's 9rem anchor padding so the heading clears the compact header. */
+  scroll-margin-top: -6rem;
 }
 .map-context h2 {
   margin: 0 0 0.5rem;
@@ -754,6 +755,9 @@ input[type="number"] {
 @media (max-height: 500px) {
   .reign-header {
     position: static;
+  }
+  .map-context {
+    scroll-margin-top: -10rem;
   }
 }
 @media (prefers-reduced-motion: reduce) {

@@ -41,6 +41,25 @@ def readable_hierarchy(page):
         assert min(sizes["disclosures"]) >= max(sizes["body"]), sizes
 
 
+def city_heading_starts_panel(page):
+    """A city jump starts with its heading below the sticky resource header."""
+    heading = page.locator("#context-title")
+    expect(heading).to_be_in_viewport()
+    # Browser-side timers do not run in the JavaScript-disabled journey.
+    for _ in range(100):
+        aligned = page.evaluate("""() => {
+      const header = document.querySelector('.reign-header').getBoundingClientRect();
+      const heading = document.querySelector('#context-title').getBoundingClientRect();
+      const map = document.querySelector('.realm-map').getBoundingClientRect();
+      const gap = heading.top - header.bottom;
+      return gap >= 0 && gap <= 20 && map.bottom <= header.bottom;
+    }""")
+        if aligned:
+            return
+        page.wait_for_timeout(100)
+    raise AssertionError("The city heading must be the first content below the header")
+
+
 def scannable_layout(page):
     """The title remains readable and secondary actions stay below the folio."""
     title = page.locator(".book-title")
@@ -305,6 +324,7 @@ with sync_playwright() as playwright:
         page.keyboard.press("Enter")
         assert page.locator("[data-local-accounts]").count() == 0
         expect(page.locator("#map-context")).to_contain_text("Sefra")
+        city_heading_starts_panel(page)
         illustration_asset(page.locator("#map-context > .illustration"), "army-preparation.jpg")
         page.screenshot(path=str(artifacts / f"map-context-desktop-{language}.png"), full_page=True)
         page.locator('input[name="kind"][value="capture"]').check()
@@ -531,6 +551,7 @@ with sync_playwright() as playwright:
         plain_page.goto(game_url + "?tab=wars")
         plain_page.locator('.map-city[href*="city=c4"]').click()
         expect(plain_page.locator("#map-context")).to_contain_text("Sefra")
+        city_heading_starts_panel(plain_page)
         expect(plain_page.locator("#map-context > .illustration")).to_have_class(
             "illustration illustration-army"
         )
