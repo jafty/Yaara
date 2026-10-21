@@ -5,19 +5,27 @@
         <svg class="map-sheet" viewBox="0 0 680 500" aria-labelledby="map-title map-description">
             <title id="map-title">{% translate "Carte des oasis de Yaara" %}</title>
             <desc id="map-description">{% translate "Chaque cité possède un territoire teinté aux couleurs de sa maison. Les sceaux identifient les propriétaires. Double cercle : votre domaine ; losange : cité à portée ; cercle simple : hors de portée ; pointillés : expédition engagée." %}</desc>
+            {% include 'simulation/map_landscape.html' %}
             {% for city in view.cities %}
                 <a class="map-city house-{{ city.owner }}" data-map-state="{% if city.engaged %}engaged{% elif city.owned %}owned{% elif city.reachable %}reachable{% else %}unreachable{% endif %}" href="?tab=wars&amp;city={{ city.id }}#map-context" {% if city_requested and selected.id == city.id %}aria-current="location"{% endif %} aria-label="{{ city.name }} · {{ city.owner_name }} · {{ city.wall_label }} · {% include 'simulation/map_status.html' %}">
                     <polygon class="map-territory" points="{{ city.territory }}"/>
                     <g transform="translate({{ city.x|unlocalize }} {{ city.y|unlocalize }})">
                         {% include 'simulation/map_marker.html' with owned=city.owned reachable=city.reachable engaged=city.engaged %}
                         <text class="map-sigil" y="6" text-anchor="middle" aria-hidden="true">{% include 'simulation/house_mark.html' with owner=city.owner %}</text>
-                        <text class="map-name" y="62" text-anchor="middle">{{ city.name }}</text>
+                        <text class="map-name" y="54" text-anchor="middle">{{ city.name }}</text>
                     </g>
                 </a>
             {% endfor %}
         </svg>
     </div>
-    <ul class="map-legend" aria-label="{% translate 'Les maisons de Yaara' %}">{% for rank in view.ranking %}<li class="house-{{ rank.actor }}"><span class="house-seal" aria-hidden="true">{% include 'simulation/house_mark.html' with owner=rank.actor %}</span> {{ rank.name }}</li>{% endfor %}</ul>
+    <ul class="map-legend map-houses" aria-label="{% translate 'Les maisons de Yaara' %}">
+        {% for rank in view.ranking %}
+            <li class="house-{{ rank.actor }}">
+                {% include 'simulation/house_emblem.html' with owner=rank.actor %}
+                <span><span class="house-number" aria-hidden="true">{% include 'simulation/house_mark.html' with owner=rank.actor %}</span> {{ rank.name }}</span>
+            </li>
+        {% endfor %}
+    </ul>
     <ul class="map-legend map-states" aria-label="{% translate 'Lire la carte' %}">
         <li><svg class="map-key" viewBox="-40 -40 80 80" aria-hidden="true">{% include 'simulation/map_marker.html' with owned=True reachable=False engaged=False %}</svg>{% translate "Votre domaine" %}</li>
         <li><svg class="map-key" viewBox="-40 -40 80 80" aria-hidden="true">{% include 'simulation/map_marker.html' with owned=False reachable=True engaged=False %}</svg>{% translate "À portée" %}</li>
