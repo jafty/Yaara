@@ -219,6 +219,16 @@ with sync_playwright() as playwright:
         page.goto(game_url)
         illustration_asset(page.locator(".illustration-council"), "council.jpg")
         assert page.locator(".city-entry").count() == 3
+        for number in range(1, 4):
+            thumbnail = page.locator(f"#city-c{number} .illustration-small")
+            illustration_asset(thumbnail, "cityscapes.png")
+            expect(thumbnail).to_have_attribute("aria-hidden", "true")
+        for width in (390, 320):
+            page.set_viewport_size({"width": width, "height": 844})
+            page.evaluate("document.documentElement.style.fontSize = '125%'")
+            no_overflow(page)
+        page.evaluate("document.documentElement.style.removeProperty('font-size')")
+        page.set_viewport_size({"width": 1440, "height": 1100})
         assert page.locator(".sidebar, .stats-strip, img, table").count() == 0
         assert page.locator(".city-entry details").count() == 0
         expect(page.locator("body")).to_have_css("background-color", "rgb(253, 251, 247)")
@@ -412,6 +422,18 @@ with sync_playwright() as playwright:
         illustration_asset(
             page.locator(".illustration-offensive-raid-success"), "offensive-raid-success.jpg"
         )
+        expect(page.locator(".letter-entry > .illustration")).to_have_count(0)
+        for letter in page.locator(".letter-entry").all():
+            expect(letter.locator(".letter-heading .illustration-small")).to_have_count(1)
+        for width in (390, 320):
+            page.set_viewport_size({"width": width, "height": 844})
+            page.evaluate("document.documentElement.style.fontSize = '125%'")
+            no_overflow(page)
+        page.screenshot(
+            path=str(artifacts / f"letters-thumbnails-mobile-{language}.png"), full_page=True
+        )
+        page.evaluate("document.documentElement.style.removeProperty('font-size')")
+        page.set_viewport_size({"width": 1440, "height": 1100})
         # HTTP cases cover every recipient/outcome; decode all eight CSS assets here.
         for direction in ("offensive", "received"):
             for kind in ("raid", "capture"):
@@ -555,6 +577,7 @@ with sync_playwright() as playwright:
         )
         plain_page.locator("[data-prologue-previous]").click()
         plain_page.locator("[data-prologue-skip]").click()
+        illustration_asset(plain_page.locator("#city-c1 .illustration-small"), "cityscapes.png")
         plain_page.locator('.city-entry a[href*="city=c1"]').click()
         expect(plain_page.locator("[data-local-accounts]")).to_be_visible()
         expect(plain_page.locator(".illustration-city-c1")).to_be_visible()

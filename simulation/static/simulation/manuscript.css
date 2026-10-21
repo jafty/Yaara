@@ -289,11 +289,16 @@ strong {
 .letter-entry h3 {
   margin-top: 0;
 }
-.letter-entry h3 .nav-icon {
-  width: 1em;
-  height: 1em;
-  margin-right: 0.4em;
-  vertical-align: -0.1em;
+.letter-heading {
+  display: grid;
+  grid-template-columns: 5rem minmax(0, 1fr);
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.6rem;
+}
+.letter-heading h3,
+.letter-heading .letter-date {
+  margin: 0;
 }
 .decree-choice p:last-child,
 .order-entry p:last-child {
@@ -306,7 +311,7 @@ strong {
 }
 .city-ledger .city-entry {
   display: grid;
-  grid-template-columns: 7rem minmax(0, 1fr);
+  grid-template-columns: 5rem 7rem minmax(0, 1fr);
   align-items: center;
   gap: 0.75rem;
 }
@@ -741,8 +746,11 @@ input[type="number"] {
 }
 @media (max-width: 600px) {
   .city-ledger .city-entry {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 0.2rem;
+    grid-template-columns: 5rem minmax(0, 1fr);
+    gap: 0.5rem 0.75rem;
+  }
+  .city-ledger .ledger-figures {
+    grid-column: 1 / -1;
   }
   .book {
     width: calc(100% - 2rem);

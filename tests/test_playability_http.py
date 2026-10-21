@@ -114,6 +114,31 @@ def test_city_folio_illustration(user, language, city_id):
 
 
 @case(
+    "illustrations-city-list-thumbnails",
+    "Owner imagery revision: city accounts show each owned city's matching decorative thumbnail",
+)
+@pytest.mark.parametrize("language", ["fr", "en"])
+@pytest.mark.parametrize(
+    "actor,city_ids",
+    [("p1", ["c1", "c2", "c3"]), ("p2", ["c4", "c5", "c6"]), ("p3", ["c7", "c8", "c9"])],
+)
+def test_city_list_thumbnails(user, language, actor, city_ids):
+    game = services.create_game(user, "City thumbnails", opponents="passive")
+    game.memberships.update(actor=actor)
+    client = Client()
+    client.force_login(user)
+    client.cookies["django_language"] = language
+    page = client.get(reverse("game", args=[game.id]), {"tab": "domain"})
+    text = page.content.decode()
+    entries = re.findall(r'<li class="city-entry".*?</li>', text, re.S)
+    assert len(entries) == 3
+    for entry, city_id in zip(entries, city_ids, strict=True):
+        assert f'illustration-city-{city_id} illustration-small" aria-hidden="true"' in entry
+        assert f"?tab=city&amp;city={city_id}" in entry
+    assert text.count('class="illustration illustration-city ') == 3
+
+
+@case(
     "illustrations-city-retains-identity",
     "Owner cityscapes: a city's illustration stays attached to the city when its house changes",
 )

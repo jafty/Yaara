@@ -10,6 +10,7 @@
     {% if view.local_funding %}<p>{% translate "Chaque cité finance ses travaux. Les cités qui fournissent une expédition en paient les frais ; aucun autre grenier ne contribue." %}</p>{% else %}<p>{% translate "Les dépenses sont réparties automatiquement entre les greniers de votre maison. Les réserves restent locales pour les pillages et le stockage." %}</p>{% endif %}
     <ul class="city-ledger">{% for city in view.owned_cities %}
         <li class="city-entry" id="city-{{ city.id }}">
+            {% include 'simulation/illustration.html' with scene='city' variant=city.id compact=True %}
             <h3><a href="?tab=city&amp;city={{ city.id }}">{{ city.name }} →</a></h3>
             <dl class="ledger-figures">
                 <div><dt>{% translate "Grenier" %}</dt><dd>{{ city.stock }} / {{ city.capacity }}</dd></div>

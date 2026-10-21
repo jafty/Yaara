@@ -89,11 +89,12 @@ def test_combat_artwork(monkeypatch, kind, outcome, expected):
 
 @case(
     "news-combat-artwork-bilingual",
-    "Owner artwork: persisted recipient scenes render in full reports in French and English",
+    "Owner artwork: recipient thumbnails render in Council and full reports in both languages",
 )
 @pytest.mark.integration
 @pytest.mark.usefixtures("test_static_storage")
 @pytest.mark.parametrize("language", ["fr", "en"])
+@pytest.mark.parametrize("tab", ["domain", "letters"])
 @pytest.mark.parametrize("recipient,direction", [("p1", "offensive"), ("p2", "received")])
 @pytest.mark.parametrize(
     "kind,outcome,expected",
@@ -105,7 +106,7 @@ def test_combat_artwork(monkeypatch, kind, outcome, expected):
     ],
 )
 def test_combat_artwork_http(
-    user, monkeypatch, language, recipient, direction, kind, outcome, expected
+    user, monkeypatch, language, tab, recipient, direction, kind, outcome, expected
 ):
     game = services.create_game(user, "News artwork", opponents="passive")
     game.state, events = combat_news(monkeypatch, kind, outcome)
@@ -115,10 +116,15 @@ def test_combat_artwork_http(
     client = Client()
     client.force_login(user)
     client.cookies["django_language"] = language
-    page = client.get(reverse("game", args=[game.id]), {"tab": "letters"})
+    page = client.get(reverse("game", args=[game.id]), {"tab": tab})
     assert page.status_code == 200
     scene = f"{direction}-{kind}-{expected}"
-    assert page.content.decode().count(f'class="illustration illustration-{scene}"') == 1
+    assert (
+        page.content.decode().count(
+            f'class="illustration illustration-{scene} illustration-small" aria-hidden="true"'
+        )
+        == 1
+    )
     other = "received" if direction == "offensive" else "offensive"
     assert f"illustration-{other}-{kind}" not in page.content.decode()
     assert list(game.reports.values("id", "content", "title", "body")) == saved
@@ -157,6 +163,6 @@ def test_archive_artwork(user, variation):
     client.force_login(user)
     page = client.get(reverse("game", args=[game.id]), {"tab": "letters"})
     scene = "work" if variation == "other-kind" else "raid"
-    assert f'class="illustration illustration-{scene}"' in page.content.decode()
+    assert f'class="illustration illustration-{scene} illustration-small"' in page.content.decode()
     report.refresh_from_db()
     assert report.content == original
