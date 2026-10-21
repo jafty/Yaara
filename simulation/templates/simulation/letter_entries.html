@@ -4,7 +4,7 @@
         {% include "simulation/illustration.html" with scene=report.scene compact=True %}
         <div>
             <p class="letter-date">{% blocktranslate with v0=report.month %}Lune {{ v0 }}{% endblocktranslate %}{% if report.original_archive %} · {% translate "Archive originale en français" %}{% endif %}</p>
-            <h3>{{ report.title }}</h3>
+            <h3>{% include 'simulation/nav_icon.html' with icon=report.icon %}{{ report.title }}</h3>
         </div>
     </div>
     <div class="letter-text">{% if compact %}<p>{{ report.body|truncatewords:35 }}</p>{% else %}{{ report.body|linebreaks }}{% endif %}{% if compact %}<p><a href="?tab=letters#report-{{ report.id }}">{% translate "Lire le rapport complet" %} →</a></p>{% else %}<p class="signature">{% blocktranslate with v0=report.month %}Consigné par votre scribe à la lune {{ v0 }}.{% endblocktranslate %}</p><p class="reading-links"><a href="?tab=domain">← {% translate "Retour au conseil" %}</a></p>{% endif %}</div>

@@ -300,6 +300,12 @@ strong {
 .letter-heading .letter-date {
   margin: 0;
 }
+.letter-entry h3 .nav-icon {
+  width: 1em;
+  height: 1em;
+  margin-right: 0.4em;
+  vertical-align: -0.1em;
+}
 .decree-choice p:last-child,
 .order-entry p:last-child {
   margin-bottom: 0.3rem;
