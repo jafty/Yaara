@@ -1,12 +1,5 @@
 # Implementation decisions
 
-## 2026-10-21 · Restrained illustrated expedition map
-
-- Keep the schematic territory layout and native city links. Add faint, locally rendered mountain, dune and rock drawings beneath the borders and markers, with a subtle papyrus grain and edge wash drawn from the existing fresco palette. Decoration follows stable public city positions for both frontier and older maps, independently of ownership, buildings and private resources; it never describes road adjacency or movement costs.
-- Keep Roman house marks inside the city markers and preserve the double-circle, diamond and dashed engagement states. Add distinct sun, crescent and palm emblems beside house names in the legend, paired with the same Roman marks. Emblems remain attached to house IDs after capture and ranking changes. Retain simple city markers rather than miniature city sprites.
-- Slightly reduce city labels and bring them closer to their markers, giving the southern cities and decorative terrain more breathing room. Decorative SVGs stay hidden from assistive technology and do not intercept city links. No new player-visible copy, rules, projections, saved games or archived reports change; the gameplay reference remains accurate without revision.
-- Use Presentation verification: lint/format, complete case-catalog collection, affected bilingual map/illustration HTTP cases on real PostgreSQL, and the bilingual browser journey, including narrow/enlarged layouts, keyboard selection and no-JavaScript navigation. Review current and legacy map layouts visually.
-
 ## 2026-10-21 · Benin-inspired warriors and active battle scenes
 
 - The owner's warrior sketch supersedes the earlier tunic and sparse-soldier direction. Soldiers wear separate shoulder pads over bare chests and abdomens, small layered collars, diagonal straps, decorated belts, wrapped kilts, sandals and rounded caps. Vary headwear, shoulder details, cloth trim and weapons, including spears and swords, within the shared Benin City-inspired silhouette.
