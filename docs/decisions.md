@@ -1,5 +1,12 @@
 # Implementation decisions
 
+## 2026-10-21 · Combat news frescoes
+
+- Add eight generated 3:2 papyrus frescoes inspired by the supplied army and fortification images: offensive raids, offensive captures, received raids and received captures, each with success and failure. Incoming success means the enemy attack succeeded; incoming failure means the recipient held. The images are decorative, with no resource quantities or equipment-level claims.
+- New resolved battle letters save one allowlisted scene identifier alongside their existing localized title/body. Raid victory follows the military outcome even with zero loot; capture success includes unopposed entry, surrender, assault and capitulation through shortage. Held sieges, defeats and routs use failure artwork. Attacker and defender receive different views. Public sovereignty notices and abandoned combats keep generic artwork.
+- Preserve all archived report content. Older letters without a saved scene retain the prior generic illustration rather than guessing a raid result from loot or consulting today's mutable ownership. Army preparation remains unchanged. No combat rules, balance, database schema or private numerical information change.
+- Verify at Behavior level: independent prescribed-outcome cases, the complete logic coverage gate, PostgreSQL report rendering/persistence checks in both languages, full catalog collection, lint/format and the bilingual browser smoke with local image decoding.
+
 ## 2026-10-21 · Distinct city folio landscapes
 
 - Give all nine cities a different decorative cityscape in one coherent fresco set: Qasr's square, Tamesh's hillside, Namar's canal, Sefra's market, Ishar's well, Daram's winding lane, Azal's spring, Mirha's fields and Tazir's gateway. Keep the supplied architectural vocabulary, solid walls without arrow slits or battlements, compact headwear and sparse blue tunics.

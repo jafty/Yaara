@@ -76,4 +76,6 @@ Sans action, attaque ou absence, une cité reçoit 1,2 M en lune 12 et atteint 1
 
 Conseil, Expéditions et Chantiers restent les destinations principales. Catalogue illustré compact, fiches de famille avec sélection multi-cités, panneau d’attaque dans la page sous la carte et contrôles natifs ; aucune popup obligatoire. « Valider l’action » ouvre la relecture ; seul le scellement engage les moyens. Suivi des ordres en attente et opérations actives, historique dans les rapports. Illustrations décoratives par contexte, sans nouvelle divulgation d’informations adverses.
 
+Ajout de présentation du 21 octobre 2026 : les nouveaux rapports de combat conservent une illustration propre au raid ou à la capture, à l’expédition offensive ou à l’attaque reçue, et au succès ou à l’échec de l’assaillant. Une attaque ennemie réussie illustre donc une perte du destinataire. Le choix suit l’issue militaire, même sans butin, sans modifier les règles ni les textes archivés ; les anciens rapports sans ce choix gardent leur illustration générique.
+
 Voir `docs/backlog.fr.md` pour les pistes différées : détérioration d’ouvrages extérieurs, reconnaissance, engagements visibles, sièges prolongés, hospice, ravitaillement, écuries, archers et éventuel prestige. Elles ne sont pas des règles livrées.

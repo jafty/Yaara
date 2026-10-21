@@ -409,6 +409,32 @@ with sync_playwright() as playwright:
             if en
             else "Nos survivants disent avoir rencontré entre"
         )
+        illustration_asset(
+            page.locator(".illustration-offensive-raid-success"), "offensive-raid-success.jpg"
+        )
+        # HTTP cases cover every recipient/outcome; decode all eight CSS assets here.
+        for direction in ("offensive", "received"):
+            for kind in ("raid", "capture"):
+                for outcome in ("success", "failure"):
+                    scene_name = f"{direction}-{kind}-{outcome}"
+                    page.locator("main").evaluate(
+                        """(root, scene) => {
+                          const el = document.createElement('div');
+                          el.id = 'combat-artwork-check';
+                          el.className = 'illustration illustration-' + scene;
+                          el.setAttribute('aria-hidden', 'true');
+                          root.append(el);
+                        }""",
+                        scene_name,
+                    )
+                    scene = page.locator("#combat-artwork-check")
+                    illustration_asset(scene, scene_name + ".jpg")
+                    assert (
+                        scene.evaluate("el => getComputedStyle(el).backgroundSize") == "100% 100%"
+                    )
+                    box = scene.bounding_box()
+                    assert abs(box["width"] / box["height"] - 1.5) < 0.02
+                    scene.evaluate("el => el.remove()")
         page.screenshot(path=str(artifacts / f"letters-desktop-{language}.png"), full_page=True)
         # Switching the same persisted letters translates their bodies too.
         page.locator("#language").select_option("fr" if en else "en")

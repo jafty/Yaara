@@ -781,7 +781,15 @@ input[type="number"] {
 .illustration-storage,
 .illustration-forge, .illustration-equipment,
 .illustration-walls, .illustration-repair,
-.illustration-army, .illustration-raid, .illustration-capture {
+.illustration-army, .illustration-raid, .illustration-capture,
+.illustration-offensive-raid-success,
+.illustration-offensive-raid-failure,
+.illustration-offensive-capture-success,
+.illustration-offensive-capture-failure,
+.illustration-received-raid-success,
+.illustration-received-raid-failure,
+.illustration-received-capture-success,
+.illustration-received-capture-failure {
   --scene-size: 100% 100%;
 }
 .illustration-small {
@@ -794,6 +802,14 @@ input[type="number"] {
 .illustration-forge, .illustration-equipment { --scene-image: url("illustrations/forge.jpg"); }
 .illustration-walls, .illustration-repair { --scene-image: url("illustrations/fortifications.jpg"); }
 .illustration-army, .illustration-raid, .illustration-capture { --scene-image: url("illustrations/army-preparation.jpg"); }
+.illustration-offensive-raid-success { --scene-image: url("illustrations/offensive-raid-success.jpg"); }
+.illustration-offensive-raid-failure { --scene-image: url("illustrations/offensive-raid-failure.jpg"); }
+.illustration-offensive-capture-success { --scene-image: url("illustrations/offensive-capture-success.jpg"); }
+.illustration-offensive-capture-failure { --scene-image: url("illustrations/offensive-capture-failure.jpg"); }
+.illustration-received-raid-success { --scene-image: url("illustrations/received-raid-success.jpg"); }
+.illustration-received-raid-failure { --scene-image: url("illustrations/received-raid-failure.jpg"); }
+.illustration-received-capture-success { --scene-image: url("illustrations/received-capture-success.jpg"); }
+.illustration-received-capture-failure { --scene-image: url("illustrations/received-capture-failure.jpg"); }
 .illustration-work { --scene-x: 0; --scene-y: 0; }
 .illustration-harvest { --scene-x: 50%; --scene-y: 0; }
 .illustration-irrigation { --scene-x: 100%; --scene-y: 0; }

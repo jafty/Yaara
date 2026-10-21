@@ -439,14 +439,17 @@ def random_stream(seed, month, purpose):
     return random.Random(int.from_bytes(digest, "big"))
 
 
-def report(events, recipient, kind, title, body):
+def report(events, recipient, kind, title, body, *, scene=None):
+    content = {"title": describe(title), "body": describe(body)}
+    if scene:
+        content["scene"] = scene
     events.append(
         {
             "recipient": recipient,
             "kind": kind,
             "title": title,
             "body": body,
-            "content": {"title": describe(title), "body": describe(body)},
+            "content": content,
         }
     )
 
@@ -837,6 +840,7 @@ def resolve_combats(state, seed, events):
             seasonal = state.get("economy_version", 1) >= 3
             target["tax" if seasonal else "stock"] -= result.stolen + result.destroyed
             mission["loot"] = result.stolen
+            scene_outcome = "success" if result.outcome == "success" else "failure"
             if result.outcome == "success" and (
                 not seasonal or result.stolen + result.destroyed > 0
             ):
@@ -874,6 +878,7 @@ def resolve_combats(state, seed, events):
                     defender_equipment,
                     state.get("economy_version", 1),
                 ),
+                scene=f"offensive-raid-{scene_outcome}",
             )
             report(
                 events,
@@ -899,6 +904,7 @@ def resolve_combats(state, seed, events):
                     p1=number(result.stolen),
                     p2=number(result.destroyed),
                 ),
+                scene=f"received-raid-{scene_outcome}",
             )
             continue
         support = [
@@ -977,6 +983,7 @@ def resolve_combats(state, seed, events):
                         p1=state["players"][actor]["name"],
                     ),
                 )
+        scene_outcome = "success" if result.captured else "failure"
         report(
             events,
             actor,
@@ -992,6 +999,7 @@ def resolve_combats(state, seed, events):
                 defender_equipment,
                 state.get("economy_version", 1),
             ),
+            scene=f"offensive-capture-{scene_outcome}",
         )
         report(
             events,
@@ -1019,6 +1027,7 @@ def resolve_combats(state, seed, events):
                 attacker_equipment,
                 state.get("economy_version", 1),
             ),
+            scene=f"received-capture-{scene_outcome}",
         )
     # Relief stays away throughout the whole phase, even after its battle.
     for item in relief:
