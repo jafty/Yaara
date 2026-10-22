@@ -29,6 +29,10 @@ WORK_NAMES["repair"] = WORK_NAMES["walls"]
 
 
 def work_name(kind, level, economy_version=1):
+    if kind in ("repair_watch", "repair_shelter"):
+        kind = kind.removeprefix("repair_")
+    if economy_version >= 4 and kind in ("walls", "repair") and level == 0:
+        return message("Défenses de la cité")
     return (CURRENT_WORK_NAMES if economy_version >= 3 else WORK_NAMES)[kind][level]
 
 
@@ -79,6 +83,10 @@ WORK_ADVICE = {
 
 
 def work_benefit(kind, current, target, economy_version=1):
+    if economy_version >= 4 and kind.startswith("repair"):
+        return message(
+            "L’ouvrage retrouvera toute son efficacité ; l’équipe sera occupée pendant la réparation."
+        )
     if kind == "irrigation":
         return message(
             "Impôt par habitant présent : {before} → {after} Mesures par lune.",
@@ -113,7 +121,7 @@ def work_benefit(kind, current, target, economy_version=1):
 def work_phrase(kind, level, economy_version=1):
     if economy_version >= 3:
         return message(
-            "Restaurer {work}" if kind == "repair" else "Construire {work}",
+            "Restaurer {work}" if kind.startswith("repair") else "Construire {work}",
             work=work_name(kind, level, economy_version),
         )
     return WORK_PHRASES[kind][level - 1]
@@ -188,7 +196,7 @@ COMPLETED_WORK_PHRASES = {
 def completed_work_phrase(kind, level, economy_version=1):
     if economy_version >= 3:
         return message(
-            "ont restauré {work}" if kind == "repair" else "ont achevé {work}",
+            "ont restauré {work}" if kind.startswith("repair") else "ont achevé {work}",
             work=work_name(kind, level, economy_version),
         )
     return COMPLETED_WORK_PHRASES[kind][level - 1]
@@ -207,6 +215,20 @@ STARTED_ACTION_PHRASES = {
 
 
 def work_effect(kind, level, economy_version=1):
+    if economy_version >= 4:
+        if kind.startswith("repair"):
+            return message("L’ouvrage retrouvera toute son efficacité, sans gagner de niveau.")
+        if kind == "walls":
+            return message(
+                "La garnison locale sera mieux protégée contre les captures ; les réserves restent nécessaires pour tenir un siège."
+            )
+        if kind == "forge":
+            return equipment_labels(economy_version)[level]
+        if kind == "shelter":
+            return message(
+                "Seuil de protection : {amount} Mesures, plafonné à 90 % de la récolte accumulée.",
+                amount=number([200000, 400000, 800000][level]),
+            )
     if economy_version >= 3 and kind in CURRENT_EFFECTS:
         return CURRENT_EFFECTS[kind][level - 1]
     if kind == "forge":
@@ -316,3 +338,26 @@ STARTED_ACTION_PHRASES.update(
         "siege": message("La préparation du matériel de siège a commencé."),
     }
 )
+for repair_kind, family in (("repair_watch", "watch"), ("repair_shelter", "shelter")):
+    WORK_PURPOSES[repair_kind] = message("Restaurer l’efficacité de cet ouvrage endommagé.")
+    WORK_ADVICE[repair_kind] = message(
+        "Réparer occupe la même équipe que construire. Le niveau bâti est conservé ; le dommage réduit son effet d’un niveau jusqu’à la réparation."
+    )
+    STARTED_ACTION_PHRASES[repair_kind] = message(
+        "Les réparations des ouvrages extérieurs ont commencé."
+    )
+STARTED_ACTION_PHRASES["convoy"] = message("Le convoi de ressources est parti.")
+
+
+def observed_losses(count, witnesses):
+    if witnesses < 10:
+        return message("Nos témoins ne peuvent apprécier les pertes adverses.")
+    if count == 0:
+        return message("Nos témoins n’ont constaté aucune perte dans les rangs adverses.")
+    if count < 5:
+        return message("Quelques combattants adverses sont tombés.")
+    if count < 15:
+        return message("Les rangs adverses ont subi des pertes sensibles.")
+    if count < 30:
+        return message("Les rangs adverses ont été durement éprouvés.")
+    return message("Les rangs adverses ont subi de très lourdes pertes.")

@@ -19,7 +19,7 @@ pytestmark = [pytest.mark.integration, pytest.mark.usefixtures("test_static_stor
 )
 @pytest.mark.parametrize("language", ["fr", "en"])
 def test_current_pages(user, language):
-    game = services.create_game(user, "Current", opponents="passive")
+    game = services.create_game(user, "Current", opponents="passive", economy_version=3)
     client = Client()
     client.force_login(user)
     client.cookies["django_language"] = language
@@ -53,7 +53,7 @@ def test_current_pages(user, language):
 @pytest.mark.parametrize("language", ["fr", "en"])
 @pytest.mark.parametrize("kind", ["raid", "capture"])
 def test_direct_attack(user, language, kind):
-    game = services.create_game(user, "Attack", opponents="passive")
+    game = services.create_game(user, "Attack", opponents="passive", economy_version=3)
     game.state["cities"]["c4"].update(stock=1234567, tax=2345678, forge=3, watch=2)
     game.save()
     client = Client()
@@ -83,7 +83,7 @@ def test_direct_attack(user, language, kind):
 )
 @pytest.mark.parametrize("language", ["fr", "en"])
 def test_expeditions_map_only(user, language):
-    game = services.create_game(user, "Map", opponents="passive")
+    game = services.create_game(user, "Map", opponents="passive", economy_version=3)
     client = Client()
     client.force_login(user)
     client.cookies["django_language"] = language
@@ -99,7 +99,7 @@ def test_expeditions_map_only(user, language):
 @pytest.mark.parametrize("language", ["fr", "en"])
 @pytest.mark.parametrize("city_id", [f"c{number}" for number in range(1, 10)])
 def test_city_folio_illustration(user, language, city_id):
-    game = services.create_game(user, "Cityscapes", opponents="passive")
+    game = services.create_game(user, "Cityscapes", opponents="passive", economy_version=3)
     client = Client()
     client.force_login(user)
     client.cookies["django_language"] = language
@@ -110,7 +110,7 @@ def test_city_folio_illustration(user, language, city_id):
         'aria-hidden="true"></div>'
     )
     assert text.count(scene) == 1
-    assert text.count('class="illustration ') == 1
+    assert text.count('class="illustration ') == (9 if city_id in ("c1", "c2", "c3") else 1)
 
 
 @case(
@@ -123,7 +123,7 @@ def test_city_folio_illustration(user, language, city_id):
     [("p1", ["c1", "c2", "c3"]), ("p2", ["c4", "c5", "c6"]), ("p3", ["c7", "c8", "c9"])],
 )
 def test_city_list_thumbnails(user, language, actor, city_ids):
-    game = services.create_game(user, "City thumbnails", opponents="passive")
+    game = services.create_game(user, "City thumbnails", opponents="passive", economy_version=3)
     game.memberships.update(actor=actor)
     client = Client()
     client.force_login(user)
@@ -143,7 +143,7 @@ def test_city_list_thumbnails(user, language, actor, city_ids):
     "Owner cityscapes: a city's illustration stays attached to the city when its house changes",
 )
 def test_city_illustration_after_ownership_change(user):
-    game = services.create_game(user, "City identity", opponents="passive")
+    game = services.create_game(user, "City identity", opponents="passive", economy_version=3)
     client = Client()
     client.force_login(user)
     url = reverse("game", args=[game.id])
@@ -181,7 +181,7 @@ def test_creation(user):
     from simulation.models import Game
 
     game = Game.objects.get(owner=user)
-    assert game.state["rules"] == "V1" and game.state["economy_version"] == 3
+    assert game.state["rules"] == "V1" and game.state["economy_version"] == 4
 
 
 @case(
@@ -190,7 +190,7 @@ def test_creation(user):
 )
 @pytest.mark.parametrize("language", ["fr", "en"])
 def test_repair_page(user, language):
-    game = services.create_game(user, "Repair", opponents="passive")
+    game = services.create_game(user, "Repair", opponents="passive", economy_version=3)
     game.state["cities"]["c1"].update(walls=3, damaged=True)
     game.save()
     client = Client()

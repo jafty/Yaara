@@ -1,7 +1,7 @@
 {% load i18n %}
 <div class="expedition-atlas">
     {% include 'simulation/realm_map.html' %}
-    {% if city_requested or action %}<section id="map-context" class="map-context" aria-labelledby="context-title">
+    {% if action.kind == "convoy" %}{% include "simulation/convoy_form.html" %}{% elif city_requested or action %}<section id="map-context" class="map-context" aria-labelledby="context-title">
         {% if city_requested %}
         <h2 id="context-title">{{ selected.name }}</h2>
         <p class="map-status">{% include 'simulation/map_status.html' with city=selected %} · {{ selected.wall_label }}{% if selected.damaged %}, {% translate "endommagée" %}{% endif %}</p>
@@ -14,6 +14,9 @@
             {% if selected_target or not city_requested %}
             {% include 'simulation/illustration.html' with scene='army' %}
             {% if view.seasonal_raids and selected.raid_available_moon > view.open_moon %}<p class="marginal-note">{% blocktranslate with moon=selected.raid_available_moon %}Villages dispersés : un nouveau pillage pourra arriver à partir de la lune {{ moon }}. La capture reste possible.{% endblocktranslate %}</p>{% endif %}
+            <section class="target-knowledge"><h3>{% translate "Ce que nous savons de cette cible" %}</h3>
+                {% for letter in target_observations %}<p><strong>{% blocktranslate with moon=letter.month %}Observation de la lune {{ moon }}{% endblocktranslate %}</strong> · {{ letter.observation }} <a href="?tab=letters#report-{{ letter.id }}">{% translate "Lire le rapport complet" %} →</a></p>{% empty %}<p>{% translate "Aucun témoignage de combat conservé pour cette cible. Ses effectifs, ses réserves et ses ouvrages non observés restent inconnus." %}</p>{% endfor %}
+            </section>
             <div id="expedition-order">{% include 'simulation/decree_form.html' with inline=True %}</div>
             {% endif %}
         {% endif %}
@@ -21,3 +24,5 @@
 </div>
 {% include 'simulation/missions.html' %}
 {% include 'simulation/orders_register.html' %}
+
+{% if view.strategic_rules and not view.finished and not view.eliminated and not game.paused and action.kind != 'convoy' %}<p class="reading-links"><a href="?tab=wars&amp;action=convoy#convoy-order">{% translate "Acheminer des ressources" %} →</a></p>{% endif %}

@@ -98,7 +98,7 @@ def test_capture_http(user, monkeypatch, language, tab):
     from simulation import services
     from tests.test_news_illustrations import combat_news
 
-    game = services.create_game(user, "Clarity", opponents="passive")
+    game = services.create_game(user, "Clarity", opponents="passive", economy_version=3)
     game.state, events = combat_news(monkeypatch, "capture", "held")
     game.memberships.update(actor="p2")
     services.persist(game, events)

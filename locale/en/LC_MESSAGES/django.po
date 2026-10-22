@@ -4272,3 +4272,451 @@ msgstr "Final accounts"
 
 msgid "Habitants : %(population)s. Mesures en réserve : %(stock)s. Prélèvement accumulé : %(tax)s."
 msgstr "Inhabitants: %(population)s. Stored Measures: %(stock)s. Accrued levy: %(tax)s."
+
+#: Strategic preparation and recipient reports
+msgid " Les assaillants portaient le sceau de {house}. "
+msgstr " The attackers bore the seal of {house}. "
+
+#: Strategic preparation and recipient reports
+msgid " Nos hommes ont incendié une partie des récoltes accessibles."
+msgstr " Our men burned part of the accessible crops."
+
+#: Strategic preparation and recipient reports
+msgid " Nos survivants sont au nombre de {count}. "
+msgstr " Our survivors number {count}. "
+
+#: Strategic preparation and recipient reports
+msgid " Survivants : {survivors}. Coût payé : {cost} Mesures. "
+msgstr " Survivors: {survivors}. Paid cost: {cost} Measures. "
+
+#: Strategic preparation and recipient reports
+msgid " Un ouvrage a été endommagé : {work}."
+msgstr " A structure was damaged: {work}."
+
+#: Strategic preparation and recipient reports
+msgid " Un ouvrage a été endommagé : {work}. Il fonctionne au niveau inférieur jusqu’à sa réparation."
+msgstr " A structure was damaged: {work}. It operates one level lower until repaired."
+
+#: Strategic preparation and recipient reports
+msgid " Victimes parmi les habitants non engagés : {count}. "
+msgstr " Casualties among residents outside the fighting: {count}. "
+
+#: Strategic preparation and recipient reports
+msgid "%(origin)s → %(target)s : %(cargo)s Mesures. Arrivée prévue à la lune %(moon)s."
+msgstr "%(origin)s → %(target)s: %(cargo)s Measures. Arrival expected at Moon %(moon)s."
+
+#: Strategic preparation and recipient reports
+msgid "Acheminer des ressources"
+msgstr "Send resources"
+
+#: Strategic preparation and recipient reports
+msgid "Achèvement : lune %(finish)s. Premier effet : lune %(effect)s. Réserves après paiement : %(remaining)s Mesures."
+msgstr "Completion: Moon %(finish)s. First effect: Moon %(effect)s. Reserves after payment: %(remaining)s Measures."
+
+#: Strategic preparation and recipient reports
+msgid "Après départ : %(remaining)s Mesures libres ; besoin d’un mois de siège : %(need)s."
+msgstr "After departure: %(remaining)s free Measures; one month's siege needs: %(need)s."
+
+#: Strategic preparation and recipient reports
+msgid "Après paiement et départ des hommes : %(remaining)s Mesures libres ; besoin d’un mois de siège : %(need)s."
+msgstr "After payment and the men's departure: %(remaining)s free Measures; one month's siege needs: %(need)s."
+
+#: Strategic preparation and recipient reports
+msgid "Attention : il manque %(missing)s Mesures pour tenir un mois de siège après cet ordre."
+msgstr "Warning: %(missing)s Measures short of one month's siege supplies after this order."
+
+#: Strategic preparation and recipient reports
+msgid "Attention : il manque %(missing)s Mesures pour tenir un mois de siège après les réservations."
+msgstr "Warning: %(missing)s Measures short of one month's siege supplies after reservations."
+
+#: Strategic preparation and recipient reports
+msgid "Attention : moins d’un mois de réserves de siège après ce chantier."
+msgstr "Warning: less than one month's siege supplies after this work."
+
+#: Strategic preparation and recipient reports
+msgid "Attention : moins d’un mois de réserves de siège après ce départ."
+msgstr "Warning: less than one month's siege supplies after this departure."
+
+#: Strategic preparation and recipient reports
+msgid "Aucun témoignage de combat conservé pour cette cible. Ses effectifs, ses réserves et ses ouvrages non observés restent inconnus."
+msgstr "No battle testimony has been kept for this target. Its forces, reserves and unobserved structures remain unknown."
+
+#: Strategic preparation and recipient reports
+msgid "Besoin d’un mois de siège : %(need)s Mesures déjà engrangées."
+msgstr "One month's siege needs: %(need)s Measures already in store."
+
+#: Strategic preparation and recipient reports
+msgid "Cargaison conservée à {city} : {kept} Mesures ; cargaison perdue ou sans place : {lost}. Frais payés : {fee} Mesures."
+msgstr "Cargo retained at {city}: {kept} Measures; cargo lost or without room: {lost}. Fees paid: {fee} Measures."
+
+#: Strategic preparation and recipient reports
+msgid "Cargaison en Mesures"
+msgstr "Cargo in Measures"
+
+#: Strategic preparation and recipient reports
+msgid "Ce chantier s’achèverait après la fin du règne."
+msgstr "This work would finish after the end of the reign."
+
+#: Strategic preparation and recipient reports
+msgid "Ce que nous savons de cette cible"
+msgstr "What we know about this target"
+
+#: Strategic preparation and recipient reports
+msgid "Ces moyens sont figés au départ. La défense réelle, les renforts et les réserves ennemies restent inconnus ; une observation datée décrit un ancien combat, jamais une garantie pour le prochain."
+msgstr "These means are fixed at departure. Actual defenses, reinforcements and enemy reserves remain unknown; a dated observation describes a past battle, never a guarantee for the next one."
+
+#: Strategic preparation and recipient reports
+msgid "Cet ouvrage ne nécessite aucune réparation."
+msgstr "This structure needs no repair."
+
+#: Strategic preparation and recipient reports
+msgid "Cette alerte mesure une capacité de ravitaillement, pas une attaque annoncée. Les secours automatiques dépendent des cités encore amicales et disponibles ; ils ne sont pas garantis."
+msgstr "This warning measures supply capacity, not an announced attack. Automatic relief depends on cities still being friendly and available; it is not guaranteed."
+
+#: Strategic preparation and recipient reports
+msgid "Cette projection conserve les habitants présents et le rendement actuels jusqu’à la récolte. Elle exclut les futurs mouvements, pertes, pillages et changements de rendement, y compris les chantiers en cours. Ce repère n’est ni un revenu garanti ni de l’argent déjà dépensable."
+msgstr "This projection holds the current population present and yield constant until the harvest. It excludes future movements, losses, raids and changes in yield, including ongoing works. This estimate is neither guaranteed income nor money already available to spend."
+
+#: Strategic preparation and recipient reports
+msgid "Chaque cité finance ses travaux. Pour une expédition, chaque origine paie ses hommes et une part des frais fixes proportionnelle à son effectif."
+msgstr "Each city funds its works. For an expedition, each origin pays for its men and a share of the fixed fee proportional to its contingent."
+
+#: Strategic preparation and recipient reports
+msgid "Chaque cité finance son ouvrage ou sa contribution. Aucun autre grenier ne comble son manque."
+msgstr "Each city funds its work or contribution. No other granary covers its shortfall."
+
+#: Strategic preparation and recipient reports
+msgid "Choisir une cité"
+msgstr "Choose a city"
+
+#: Strategic preparation and recipient reports
+msgid "Choisissez deux cités distinctes de votre maison."
+msgstr "Choose two distinct cities belonging to your house."
+
+#: Strategic preparation and recipient reports
+msgid "Cité de départ"
+msgstr "Origin city"
+
+#: Strategic preparation and recipient reports
+msgid "Cité de frontière : accessible à une maison ennemie."
+msgstr "Frontier city: accessible to an enemy house."
+
+#: Strategic preparation and recipient reports
+msgid "Cité intérieure : pas de frontière ennemie directe."
+msgstr "Interior city: no direct enemy frontier."
+
+#: Strategic preparation and recipient reports
+msgid "Cité à ravitailler"
+msgstr "City to supply"
+
+#: Strategic preparation and recipient reports
+msgid "Comparer les contingents"
+msgstr "Compare contingents"
+
+#: Strategic preparation and recipient reports
+msgid "Comprendre le butin"
+msgstr "Understand the spoils"
+
+#: Strategic preparation and recipient reports
+msgid "Comprendre les convois"
+msgstr "Understand convoys"
+
+#: Strategic preparation and recipient reports
+msgid "Convoi déjà engagé"
+msgstr "Convoy already committed"
+
+#: Strategic preparation and recipient reports
+msgid "De %(origin)s vers %(target)s : %(cargo)s Mesures de cargaison et %(fee)s Mesures de frais. Départ à la lune %(departure)s, arrivée à la lune %(arrival)s, après les combats."
+msgstr "From %(origin)s to %(target)s: %(cargo)s Measures of cargo and %(fee)s Measures in fees. Departure at Moon %(departure)s, arrival at Moon %(arrival)s, after the battles."
+
+#: Strategic preparation and recipient reports
+msgid "Défenses de la cité"
+msgstr "City defenses"
+
+#: Strategic preparation and recipient reports
+msgid "Départ : lune %(departure)s · Combat : lune %(combat)s · Retour : lune %(arrival)s."
+msgstr "Departure: Moon %(departure)s · Battle: Moon %(combat)s · Return: Moon %(arrival)s."
+
+#: Strategic preparation and recipient reports
+msgid "Départ à la clôture de la lune %(departure)s ; arrivée à la clôture de la lune %(arrival)s, après les combats."
+msgstr "Departure at the close of Moon %(departure)s; arrival at the close of Moon %(arrival)s, after the battles."
+
+#: Strategic preparation and recipient reports
+msgid "Examiner les travaux possibles"
+msgstr "Examine available works"
+
+#: Strategic preparation and recipient reports
+msgid "Il faudra conserver au moins %(amount)s Mesures de butin pour rembourser cette expédition."
+msgstr "At least %(amount)s Measures of spoils must be retained to repay this expedition."
+
+#: Strategic preparation and recipient reports
+msgid "Il faut réparer cet ouvrage avant de l’améliorer."
+msgstr "This structure must be repaired before it can be improved."
+
+#: Strategic preparation and recipient reports
+msgid "Ils rejoignent les Fidèles de votre maison."
+msgstr "They rejoin your house's Faithful."
+
+#: Strategic preparation and recipient reports
+msgid "Ils sont démobilisés parmi les habitants, sans rejoindre les Fidèles du nouveau souverain."
+msgstr "They are demobilized among the inhabitants, without joining the new sovereign's Faithful."
+
+#: Strategic preparation and recipient reports
+msgid "La capacité du grenier limite la réception. Si la destination est perdue, le convoi tente de rentrer à l’origine ou au refuge choisi au départ, avec une lune supplémentaire. Sans destination encore amicale à l’arrivée, la cargaison est perdue. Les convois n’ont ni escorte ni interception."
+msgstr "Granary capacity limits how much can be received. If the destination is lost, the convoy tries to return to its origin or the refuge chosen at departure, taking one extra Moon. Without a still-friendly destination on arrival, the cargo is lost. Convoys have no escort or interception."
+
+#: Strategic preparation and recipient reports
+msgid "La cargaison doit contenir de 1 à 500 000 Mesures entières."
+msgstr "Cargo must contain between 1 and 500,000 whole Measures."
+
+#: Strategic preparation and recipient reports
+msgid "La destination a changé de maître. Le convoi tentera de rejoindre {city} à la lune {moon}."
+msgstr "The destination has changed ruler. The convoy will try to reach {city} at Moon {moon}."
+
+#: Strategic preparation and recipient reports
+msgid "La garnison locale sera mieux protégée contre les captures ; les réserves restent nécessaires pour tenir un siège."
+msgstr "The local garrison will be better protected against capture; reserves are still needed to withstand a siege."
+
+#: Strategic preparation and recipient reports
+msgid "Le chemin du convoi n’est plus amical."
+msgstr "The convoy's route is no longer friendly."
+
+#: Strategic preparation and recipient reports
+msgid "Le compte du convoi"
+msgstr "The convoy account"
+
+#: Strategic preparation and recipient reports
+msgid "Le contingent cherche refuge"
+msgstr "The contingent seeks refuge"
+
+#: Strategic preparation and recipient reports
+msgid "Le convoi de ressources est parti."
+msgstr "The supply convoy has departed."
+
+#: Strategic preparation and recipient reports
+msgid "Le convoi exige un chemin entièrement amical."
+msgstr "The convoy needs an entirely friendly route."
+
+#: Strategic preparation and recipient reports
+msgid "Le convoi fait demi-tour"
+msgstr "The convoy turns back"
+
+#: Strategic preparation and recipient reports
+msgid "Le convoi fait demi-tour."
+msgstr "The convoy turns back."
+
+#: Strategic preparation and recipient reports
+msgid "Le délai du règne ou un dommage empêche ce chantier."
+msgstr "The end of the reign or damage prevents this work."
+
+#: Strategic preparation and recipient reports
+msgid "Le premier effet économique arriverait après la fin du règne."
+msgstr "The first economic effect would arrive after the end of the reign."
+
+#: Strategic preparation and recipient reports
+msgid "Le prélèvement en préparation ne nourrit pas le siège. Les murs facilitent la défense contre l’assaut, mais ne remplacent pas les réserves. Un chantier ou une expédition peut créer un manque : gardez une marge ou préparez un convoi."
+msgstr "The accrued levy cannot feed a siege. Walls help defend against an assault, but cannot replace reserves. Works or expeditions may cause a shortfall: keep a margin or prepare a convoy."
+
+#: Strategic preparation and recipient reports
+msgid "Le seuil de remboursement couvre les frais payés. Il ne compense ni les morts, ni la production perdue pendant l’absence, ni le butin perdu faute de place au retour. La capacité de transport est un plafond, pas une promesse de gain."
+msgstr "The repayment threshold covers the fees paid. It does not compensate for deaths, production lost during the absence, or spoils lost for lack of room on return. Carrying capacity is a ceiling, not a promise of profit."
+
+#: Strategic preparation and recipient reports
+msgid "Les rangs adverses ont subi de très lourdes pertes."
+msgstr "The enemy ranks suffered very heavy losses."
+
+#: Strategic preparation and recipient reports
+msgid "Les rangs adverses ont subi des pertes sensibles."
+msgstr "The enemy ranks suffered noticeable losses."
+
+#: Strategic preparation and recipient reports
+msgid "Les rangs adverses ont été durement éprouvés."
+msgstr "The enemy ranks were badly depleted."
+
+#: Strategic preparation and recipient reports
+msgid "Les réparations des ouvrages extérieurs ont commencé."
+msgstr "Repairs to the exterior structures have begun."
+
+#: Strategic preparation and recipient reports
+msgid "Les secours de {city}"
+msgstr "Relief from {city}"
+
+#: Strategic preparation and recipient reports
+msgid "Lire cette prévision"
+msgstr "Read this forecast"
+
+#: Strategic preparation and recipient reports
+msgid "Lune %(moon)s"
+msgstr "Moon %(moon)s"
+
+#: Strategic preparation and recipient reports
+msgid "L’arsenal équipe les Fidèles de son origine en attaque comme en défense. Le matériel de siège réduit l’avantage des murs lors d’une capture ; il ne sert pas au pillage. Le transport augmente le butin que les survivants peuvent rapporter."
+msgstr "The arsenal equips its city's Faithful in attack and defense. Siege equipment reduces the walls' advantage during a capture; it has no use in raids. Transport increases the spoils survivors can bring home."
+
+#: Strategic preparation and recipient reports
+msgid "L’ouvrage retrouvera toute son efficacité ; l’équipe sera occupée pendant la réparation."
+msgstr "The structure will regain its full effectiveness; the crew will be occupied during repairs."
+
+#: Strategic preparation and recipient reports
+msgid "L’ouvrage retrouvera toute son efficacité, sans gagner de niveau."
+msgstr "The structure will regain its full effectiveness, without gaining a level."
+
+#: Strategic preparation and recipient reports
+msgid "Moins d’un mois de siège : besoin de %(need)s Mesures ; manque de %(missing)s après les réservations."
+msgstr "Less than one month's siege supplies: %(need)s Measures needed; %(missing)s short after reservations."
+
+#: Strategic preparation and recipient reports
+msgid "Niveau bâti : %(built)s · Niveau en service : %(effective)s."
+msgstr "Built level: %(built)s · Effective level: %(effective)s."
+
+#: Strategic preparation and recipient reports
+msgid "Nos convois en route"
+msgstr "Our convoys on the road"
+
+#: Strategic preparation and recipient reports
+msgid "Nos témoins ne peuvent apprécier les pertes adverses."
+msgstr "Our witnesses cannot judge the enemy's losses."
+
+#: Strategic preparation and recipient reports
+msgid "Nos témoins n’ont constaté aucune perte dans les rangs adverses."
+msgstr "Our witnesses saw no losses in the enemy ranks."
+
+#: Strategic preparation and recipient reports
+msgid "Observation de la lune %(moon)s"
+msgstr "Observation from Moon %(moon)s"
+
+#: Strategic preparation and recipient reports
+msgid "Ouvrage endommagé"
+msgstr "Damaged structure"
+
+#: Strategic preparation and recipient reports
+msgid "Pillage remporté de haute lutte"
+msgstr "Hard-fought raid victory"
+
+#: Strategic preparation and recipient reports
+msgid "Pillage sans opposition"
+msgstr "Unopposed raid"
+
+#: Strategic preparation and recipient reports
+msgid "Prochaine équipe libérée : lune %(moon)s."
+msgstr "Next crew available: Moon %(moon)s."
+
+#: Strategic preparation and recipient reports
+msgid "Prélèvement estimé à la prochaine récolte : %(amount)s Mesures ; débordement possible : %(overflow)s."
+msgstr "Estimated levy at the next harvest: %(amount)s Measures; possible overflow: %(overflow)s."
+
+#: Strategic preparation and recipient reports
+msgid "Quelques combattants adverses sont tombés."
+msgstr "A few enemy fighters fell."
+
+#: Strategic preparation and recipient reports
+msgid "Raid interrompu"
+msgstr "Raid abandoned"
+
+#: Strategic preparation and recipient reports
+msgid "Restaurer l’efficacité de cet ouvrage endommagé."
+msgstr "Restore the effectiveness of this damaged structure."
+
+#: Strategic preparation and recipient reports
+msgid "Retour du contingent de {city}"
+msgstr "Return of the contingent from {city}"
+
+#: Strategic preparation and recipient reports
+msgid "Réparer la surveillance"
+msgstr "Repair surveillance"
+
+#: Strategic preparation and recipient reports
+msgid "Réparer les réserves protégées"
+msgstr "Repair protected reserves"
+
+#: Strategic preparation and recipient reports
+msgid "Réparer occupe la même équipe que construire. Le niveau bâti est conservé ; le dommage réduit son effet d’un niveau jusqu’à la réparation."
+msgstr "Repairs use the same crew as construction. The built level is retained; damage reduces its effect by one level until repaired."
+
+#: Strategic preparation and recipient reports
+msgid "Seuil de protection : {amount} Mesures, plafonné à 90 % de la récolte accumulée."
+msgstr "Protection threshold: {amount} Measures, capped at 90 % of the accrued crop."
+
+#: Strategic preparation and recipient reports
+msgid "Tenir un siège"
+msgstr "Withstand a siege"
+
+#: Strategic preparation and recipient reports
+msgid "Transport : jusqu’à %(capacity)s Mesures par survivant."
+msgstr "Transport: up to %(capacity)s Measures per survivor."
+
+#: Strategic preparation and recipient reports
+msgid "Travaux en cours ou réservés jusqu’à la lune %(moon)s."
+msgstr "Work underway or reserved until Moon %(moon)s."
+
+#: Strategic preparation and recipient reports
+msgid "Un chantier commencé à la lune N et durant trois lunes s’achève à N+3. L’irrigation agit sur le prélèvement à la clôture suivante ; l’argent reste indisponible jusqu’à la récolte. Un ouvrage achevé trop tard peut ne jamais produire son premier effet pendant ce règne."
+msgstr "Work started at Moon N and lasting three Moons finishes at N+3. Irrigation affects the levy at the following closure; the money remains unavailable until harvest. A structure completed too late may never produce its first effect during this reign."
+
+#: Strategic preparation and recipient reports
+msgid "Un convoi est déjà engagé depuis cette cité."
+msgstr "A convoy is already committed from this city."
+
+#: Strategic preparation and recipient reports
+msgid "Un convoi transporte au plus 500 000 Mesures entre deux cités amicales reliées. La cargaison et les frais sont payés au départ ; seule la cargaison arrive deux lunes plus tard. Les frais sont de 10 %, 7 % ou 5 % selon le transport de l’origine, arrondis au supérieur."
+msgstr "A convoy carries at most 500,000 Measures between two connected friendly cities. Cargo and fees are paid at departure; only the cargo arrives two Moons later. Fees are 10 %, 7 % or 5 % depending on the origin's transport, rounded up."
+
+#: Strategic preparation and recipient reports
+msgid "Un raid qui fait perdre des ressources, des habitants ou un ouvrage à sa cible déclenche deux lunes de répit, même après une défaite des assaillants. Une attaque sans perte pour la cible ne déclenche aucun répit. Les dégâts de la lune de récolte sont retirés avant son versement."
+msgstr "A raid that costs its target resources, inhabitants or a structure triggers two Moons of respite, even after the attackers' defeat. An attack causing no loss to its target triggers no respite. Damage in the harvest Moon is deducted before payment."
+
+#: Strategic preparation and recipient reports
+msgid "Un raid vise le prélèvement accumulé. Les abris protègent au plus 90 % de cette récolte ; un quart du reste est exposé. Une victoire nette permet d’en emporter 60 %, une victoire disputée 30 %. Le transport des survivants limite toujours le butin. Les destructions restent limitées par les hommes qui survivent ; production et chantiers continuent."
+msgstr "A raid targets the accrued levy. Shelters protect at most 90 % of this crop; a quarter of the remainder is exposed. A clear victory allows 60 % to be taken, a hard-fought victory 30 %. Survivors' transport always limits the spoils. Destruction is limited by surviving men; production and works continue."
+
+#: Strategic preparation and recipient reports
+msgid "Un raid vise les prélèvements accumulés avant la récolte annuelle, pas les réserves déjà engrangées. Les abris et les pillages précédents réduisent les prises possibles. Une victoire militaire peut donc rester déficitaire."
+msgstr "A raid targets levies accrued before the annual harvest, not reserves already in store. Shelters and earlier raids reduce potential spoils. A military victory may therefore still lose money."
+
+#: Strategic preparation and recipient reports
+msgid "Un siège ponctuel représente un mois. Si l’armée ennemie dépasse la défense de campagne sans pouvoir franchir les murs, chaque habitant présent exige 500 Mesures déjà engrangées. À l’égalité exacte, la cité tient et consomme ce montant ; en dessous, elle consomme ce qui reste et capitule."
+msgstr "A single siege attempt represents one month. If the enemy army exceeds the field defense without breaching the walls, each inhabitant present needs 500 Measures already in store. At exact equality, the city holds and consumes that amount; below it, the city consumes what remains and capitulates."
+
+#: Strategic preparation and recipient reports
+msgid "Une cité possède une seule équipe. Construire et réparer mobilisent cette même équipe ; un décret scellé la réserve déjà. Aucun autre chantier ne peut commencer ici avant sa libération."
+msgstr "A city has one crew. Building and repairing use this same crew; a sealed decree already reserves it. No other work can start here until the crew is released."
+
+#: Strategic preparation and recipient reports
+msgid "Une expédition est engagée vers cette cité."
+msgstr "An expedition is committed against this city."
+
+#: Strategic preparation and recipient reports
+msgid "Voir la cité concernée"
+msgstr "View the city concerned"
+
+#: Strategic preparation and recipient reports
+msgid "de frais"
+msgstr "in fees"
+
+#: Strategic preparation and recipient reports
+msgid "{count} Fidèles de {origin} se dirigent vers {refuge}. Leur arrivée est prévue à la lune {moon}."
+msgstr "{count} Faithful from {origin} are heading to {refuge}. Their arrival is expected at Moon {moon}."
+
+#: Strategic preparation and recipient reports
+msgid "{count} survivants ont rejoint {city}. {fate} Butin conservé : {kept} Mesures ; perdu ou sans place : {lost}."
+msgstr "{count} survivors reached {city}. {fate} Spoils retained: {kept} Measures; lost or without room: {lost}."
+
+#: Strategic preparation and recipient reports
+msgid "À {target}, le contingent de {origin} a perdu {dead} Fidèles ; {survivors} ont survécu et restent attachés à votre maison."
+msgstr "At {target}, the contingent from {origin} lost {dead} Faithful; {survivors} survived and remain loyal to your house."
+
+#: Strategic preparation and recipient reports
+msgid "Équipe disponible à la lune %(moon)s."
+msgstr "Crew available at Moon %(moon)s."
+
+#: Strategic preparation and recipient reports
+msgid "Équipe occupée"
+msgstr "Crew occupied"
+
+#: Strategic preparation and recipient reports
+msgid "Équipes libres : %(count)s. Prochaine récolte : lune %(harvest)s."
+msgstr "Free crews: %(count)s. Next harvest: Moon %(harvest)s."
+
+#: Strategic preparation and recipient reports
+msgid "État initial de cet ouvrage."
+msgstr "Initial state of this structure."

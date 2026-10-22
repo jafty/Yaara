@@ -53,7 +53,7 @@ def test_catalogue(kind, level, cost, duration):
     When its work is sealed and all {duration} construction intervals elapse.
     Then the local payment and completion match the approved quote without pausing production.
     """
-    state = engine.new_state(opponents="passive")
+    state = engine.new_state(opponents="passive", economy_version=3)
     city = state["cities"]["c1"]
     city["stock"] = cost
     city["walls" if kind == "repair" else kind] = level if kind == "repair" else level - 1
@@ -82,7 +82,7 @@ def test_yield(level, expected):
     When its first Moon closes.
     Then {expected} Measures accrue while spendable reserves remain unchanged.
     """
-    state = engine.new_state(opponents="passive")
+    state = engine.new_state(opponents="passive", economy_version=3)
     state["cities"]["c1"]["irrigation"] = level
     engine.advance_month(state, "yield")
     assert state["cities"]["c1"]["tax"] == expected
@@ -96,7 +96,7 @@ def test_batch(affordable):
     When their shared decree is sealed.
     Then the exact local amounts are reserved or the entire state stays unchanged.
     """
-    state = engine.new_state(opponents="passive")
+    state = engine.new_state(opponents="passive", economy_version=3)
     state["cities"]["c2"]["irrigation"] = 1
     state["cities"]["c2"]["stock"] = 400000 if affordable else 399999
     before = deepcopy(state)
@@ -127,7 +127,7 @@ def test_seasonal_raid(monkeypatch, watch, fraction, men, expected_loot):
     Then crop losses, watch mobilization and the two-Moon respite follow the new rules.
     """
     monkeypatch.setattr(engine, "random_stream", lambda *args: FixedRandom(fraction))
-    state = engine.new_state(opponents="passive")
+    state = engine.new_state(opponents="passive", economy_version=3)
     target = state["cities"]["c4"]
     target["tax"] = 1000000
     target["watch"] = watch
@@ -156,7 +156,7 @@ def test_harvest_raid(monkeypatch):
     Then 150000 is carried, 50000 destroyed and only 1000000 enters the victim granary.
     """
     monkeypatch.setattr(engine, "random_stream", lambda *args: FixedRandom(40))
-    state = engine.new_state(opponents="passive")
+    state = engine.new_state(opponents="passive", economy_version=3)
     for _ in range(10):
         engine.advance_month(state, "annual")
     engine.confirm_order(
@@ -205,7 +205,7 @@ def test_starvation(stock, owner, remaining):
     When 200 ordinary attackers arrive with no allied relief.
     Then supplies decide possession as {owner} with {remaining} Measures left despite the walls.
     """
-    state = engine.new_state(opponents="passive")
+    state = engine.new_state(opponents="passive", economy_version=3)
     for origin in ("c1", "c2"):
         state["cities"][origin]["stock"] = 2400000
     target = state["cities"]["c4"]
@@ -239,7 +239,7 @@ def test_mixed_transport(monkeypatch):
     Then frozen origin characteristics yield 250000 carried Measures without sharing the best bonus.
     """
     monkeypatch.setattr(engine, "random_stream", lambda *args: FixedRandom(40))
-    state = engine.new_state(opponents="passive")
+    state = engine.new_state(opponents="passive", economy_version=3)
     state["cities"]["c1"].update(transport=2, forge=1, siege=1)
     state["cities"]["c2"].update(transport=0, forge=3, siege=2)
     state["cities"]["c4"]["tax"] = 3800000
@@ -272,7 +272,7 @@ def test_empty_crop(monkeypatch, initial_tax, shelter):
     Then it carries nothing, grants no respite and leaves production running.
     """
     monkeypatch.setattr(engine, "random_stream", lambda *args: FixedRandom(20))
-    state = engine.new_state(opponents="passive")
+    state = engine.new_state(opponents="passive", economy_version=3)
     target = state["cities"]["c4"]
     target.update(tax=initial_tax, shelter=shelter)
     engine.confirm_order(
@@ -295,7 +295,7 @@ def test_respite_arrival(moon, allowed):
     When a raid is prepared for arrival one Moon later.
     Then eligibility is {allowed} and a rejected order reserves nothing.
     """
-    state = engine.new_state(opponents="passive")
+    state = engine.new_state(opponents="passive", economy_version=3)
     state["month"] = moon
     state["cities"]["c4"]["raid_protected_until"] = 10
     before = deepcopy(state)
@@ -336,7 +336,7 @@ def test_bot_reserve(moon):
     When they choose ordinary validated orders.
     Then their works leave at least 100000 free Measures locally and early raids are avoided.
     """
-    state = engine.new_state()
+    state = engine.new_state(economy_version=3)
     state["month"] = moon
     orders = engine.bot_orders(state, "policy")
     assert orders
@@ -360,7 +360,7 @@ def test_ram_assault():
     """
     from simulation.rules import wall_multiplier
 
-    state = engine.new_state(opponents="passive")
+    state = engine.new_state(opponents="passive", economy_version=3)
     for origin in ("c1", "c2", "c3"):
         state["cities"][origin].update(stock=2400000, siege=2)
     target = state["cities"]["c4"]
@@ -389,7 +389,7 @@ def test_current_bot_privacy(moon):
     When active rivals choose their orders in Moon {moon}.
     Then all accepted orders remain identical.
     """
-    state = engine.new_state()
+    state = engine.new_state(economy_version=3)
     state["month"] = moon
     other = deepcopy(state)
     for city in other["cities"].values():
@@ -408,7 +408,7 @@ def test_bot_constrained(constraint):
     When it chooses a validated order.
     Then it makes no impossible military commitment and never changes state without an accepted order.
     """
-    state = engine.new_state()
+    state = engine.new_state(economy_version=3)
     state["month"] = 5
     state["players"]["p3"]["bot"] = False
     for city in engine.owned_cities(state, "p2"):
@@ -439,7 +439,7 @@ def test_repair_choice(level, before, after, cost, duration):
     When their owner considers a repair.
     Then the quote exposes restoration from bonus {before} to {after}, cost {cost} and duration {duration}.
     """
-    state = engine.new_state(opponents="passive")
+    state = engine.new_state(opponents="passive", economy_version=3)
     state["cities"]["c1"].update(walls=level, damaged=True)
     action = next(
         row for row in player_view(state, "p1")["work_actions"] if row["kind"] == "repair"

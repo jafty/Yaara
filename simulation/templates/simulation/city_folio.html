@@ -10,10 +10,23 @@
         <h2>{% translate "Le grenier et le prélèvement" %}</h2>
         <p>{% blocktranslate with v0=selected.stock v1=selected.capacity v2=selected.available_stock v3=selected.reserved_stock v4=selected.tax v5=selected.yield %}Le grenier conserve <strong>{{ v0 }} Mesures</strong> sur <strong>{{ v1 }}</strong>.<br><strong>{{ v2 }} Mesures</strong> sont libres, et <strong>{{ v3 }}</strong> sont réservées.<br>Le prélèvement en préparation atteint <strong>{{ v4 }} Mesures</strong>. Chaque habitant présent y ajoute <strong>{{ v5 }} Mesures par lune</strong>.{% endblocktranslate %}</p>
         <p>{% if view.local_funding %}{% translate "Les ouvrages réalisés ici profitent à cette cité. Son grenier seul en finance les travaux." %}{% else %}{% translate "Les ouvrages réalisés ici profitent à cette cité. Leur prix est réparti automatiquement entre tous les greniers de votre maison." %}{% endif %}</p>
+        {% if view.rules == 'V1' %}<p>{% blocktranslate with need=selected.siege_food %}Besoin d’un mois de siège : {{ need }} Mesures déjà engrangées.{% endblocktranslate %}</p>{% endif %}
+        {% if selected.siege_shortfall %}<p class="reserve-warning">{% blocktranslate with missing=selected.siege_shortfall %}Attention : il manque {{ missing }} Mesures pour tenir un mois de siège après les réservations.{% endblocktranslate %}</p>{% endif %}
+        {% if view.rules == 'V1' %}{% include 'simulation/ledger_help.html' with topic='siege' %}{% endif %}
+        <p>{% blocktranslate with amount=selected.harvest_forecast overflow=selected.forecast_overflow %}Prélèvement estimé à la prochaine récolte : {{ amount }} Mesures ; débordement possible : {{ overflow }}.{% endblocktranslate %}</p>
+        {% include 'simulation/ledger_help.html' with topic='forecast' %}
         <h2>{% translate "Les ouvrages et les équipes" %}</h2>
         {% if view.rules == 'V1' %}<p>{% if view.local_forges %}{% blocktranslate with name=selected.forge_name equipment=selected.equipment %}<strong>{{ name }}</strong> : <strong>{{ equipment }}</strong> pour les Fidèles de cette cité.{% endblocktranslate %}{% else %}{{ selected.equipment }}.{% endif %}</p>{% endif %}
         {% for work in selected.works %}<p>{% blocktranslate with v0=work.label|lower v1=work.finish_month %}Les équipes poursuivent <em>{{ v0 }}</em>. L’ouvrage doit s’achever à la <strong>lune {{ v1 }}</strong>.{% endblocktranslate %}</p>
         {% empty %}<p>{% if selected.busy %}{% translate "Les équipes attendent l’entrée en vigueur d’un décret scellé." %}{% else %}{% translate "Les équipes sont libres de recevoir un chantier." %}{% endif %}</p>{% endfor %}
+        {% include 'simulation/ledger_help.html' with topic='crew' %}
+        {% if selected.buildings %}<ul class="building-ledger">{% for building in selected.buildings %}<li>
+            {% include 'simulation/illustration.html' with scene=building.kind compact=True %}
+            <div><h3>{{ building.name }}</h3><p>{% blocktranslate with built=building.level effective=building.effective_level %}Niveau bâti : {{ built }} · Niveau en service : {{ effective }}.{% endblocktranslate %}</p>
+            <p>{{ building.effect }}</p>{% if building.damaged %}<p class="reserve-warning">{% translate "Ouvrage endommagé" %}</p>{% endif %}
+            {% if building.finish_moon %}<p>{% blocktranslate with moon=building.finish_moon %}Travaux en cours ou réservés jusqu’à la lune {{ moon }}.{% endblocktranslate %}</p>{% endif %}
+            <a href="?tab=constructions&amp;action={{ building.kind }}&amp;city={{ selected.id }}">{% translate "Examiner les travaux possibles" %} →</a></div>
+        </li>{% endfor %}</ul>{% endif %}
         {% if selected.deaths %}<p>{% blocktranslate with v0=selected.deaths %}Depuis le début du règne, <strong>{{ v0 }} habitants</strong> ont perdu la vie.{% endblocktranslate %}</p>{% endif %}
         {% if not view.finished and not view.eliminated and not game.paused %}<p class="reading-links"><a href="?tab=decrees&city={{ selected.id }}">{% blocktranslate with v0=selected.name %}Dicter un décret pour {{ v0 }}{% endblocktranslate %} →</a></p>{% endif %}
     </section>

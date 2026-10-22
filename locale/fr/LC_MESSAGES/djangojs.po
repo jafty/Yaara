@@ -21,3 +21,15 @@ msgstr "Il manque %(amount)s Mesures dans cette cité."
 
 msgid "Il manque %(amount)s Mesures pour cette expédition. Aucun moyen n’est réservé."
 msgstr "Il manque %(amount)s Mesures pour cette expédition. Aucun moyen n’est réservé."
+
+#: simulation/static/simulation/app.js
+msgid "Après départ : %(remaining)s Mesures libres ; besoin d’un mois de siège : %(need)s."
+msgstr "Après départ : %(remaining)s Mesures libres ; besoin d’un mois de siège : %(need)s."
+
+#: simulation/static/simulation/app.js
+msgid "Attention : moins d’un mois de réserves de siège après ce départ."
+msgstr "Attention : moins d’un mois de réserves de siège après ce départ."
+
+#: simulation/static/simulation/app.js
+msgid "Il faudra conserver au moins %(amount)s Mesures de butin pour rembourser cette expédition."
+msgstr "Il faudra conserver au moins %(amount)s Mesures de butin pour rembourser cette expédition."

@@ -1,8 +1,8 @@
 {% load i18n %}
 <section class="work-choices" aria-label="{% translate 'Les ouvrages de vos cités' %}">
     {% for action in view.work_actions %}
-    {% if action.kind != "repair" or action.prices %}<a id="work-{{ action.kind }}" class="work-card ledger-note" href="?tab=constructions&amp;action={{ action.kind }}{% if city_requested %}&amp;city={{ selected.id }}{% endif %}">
-        {% include 'simulation/illustration.html' with scene=action.kind compact=True %}
+    {% if not action.repair or action.prices %}<a id="work-{{ action.kind }}" class="work-card ledger-note" href="?tab=constructions&amp;action={{ action.kind }}{% if city_requested %}&amp;city={{ selected.id }}{% endif %}">
+        {% include 'simulation/illustration.html' with scene=action.scene compact=True %}
         <div><h2>{{ action.label }}</h2><p>{{ action.purpose }}</p>
         <p>{{ action.prices.0.name }}</p><p class="work-card-prices">{% for price in action.prices %}<span>{{ price.cost }} {% translate "Mesures" %} · {{ price.duration }} {% translate "lunes" %}</span>{% if not forloop.last %} / {% endif %}{% empty %}{% translate "Aucun nouvel ouvrage disponible." %}{% endfor %}</p></div>
         <span aria-hidden="true">→</span>

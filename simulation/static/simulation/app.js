@@ -106,6 +106,18 @@ if (targetSelect) {
     }
     let shortfall = 0;
     rows.forEach((row, index) => {
+      const chargeForOrigin = fees[index] + counts[index] * price.per_person;
+      const remainingStock = Number(row.dataset.freeStock) - chargeForOrigin;
+      const need = Math.max(0, Number(row.dataset.present) - counts[index]) * 500;
+      const reserves = row.querySelector(".origin-reserves");
+      if (reserves) {
+        reserves.textContent = interpolate(
+          gettext("Après départ : %(remaining)s Mesures libres ; besoin d’un mois de siège : %(need)s."),
+          {remaining: format.format(remainingStock), need: format.format(need)}, true,
+        );
+        row.querySelector("[data-origin-warning]").textContent = remainingStock < need
+          ? gettext("Attention : moins d’un mois de réserves de siège après ce départ.") : "";
+      }
       const note = row.querySelector(".origin-funding");
       if (!note) return;
       const charge = fees[index] + counts[index] * price.per_person;
@@ -129,6 +141,12 @@ if (targetSelect) {
           { amount: format.format(shortfall) }, true,
         )
       : "";
+    const breakEven = form.querySelector("[data-raid-break-even]");
+    breakEven.hidden = kind !== "raid";
+    breakEven.textContent = interpolate(
+      gettext("Il faudra conserver au moins %(amount)s Mesures de butin pour rembourser cette expédition."),
+      {amount: format.format(cost)}, true,
+    );
     document.querySelector("#mission-help").textContent = interpolate(
       gettext(
         "Il faut au moins %(minimum)s Fidèles. Départ à la clôture de cette lune, combat à la suivante, retour une lune après le combat. Le butin ne sera disponible qu’au retour.",

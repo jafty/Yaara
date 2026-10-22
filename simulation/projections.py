@@ -7,9 +7,10 @@ from .narration import WORK_ADVICE, WORK_PURPOSES, work_benefit, work_effect, wo
 from .rules import (
     ACTION_LABELS,
     EQUIPMENT_LABELS,
-    EXPEDITION_PRICES,
     RuleError,
+    effective_level,
     equipment_labels,
+    expedition_prices,
     rule_family,
     tax_yield,
     work_prices,
@@ -155,6 +156,84 @@ def player_view(state, actor):
                     ],
                 }
             )
+            public["siege_food"] = (city["population"] - away) * (
+                500 if state["rules"] == "V1" else 0
+            )
+            public["siege_shortfall"] = max(0, public["siege_food"] - public["available_stock"])
+            public["siege_months"] = (
+                public["available_stock"] // public["siege_food"] if public["siege_food"] else 0
+            )
+            public["frontier"] = any(
+                city["id"] in edge
+                and any(state["cities"][neighbor]["owner"] != actor for neighbor in edge)
+                for edge in state["links"]
+            )
+            commitments = [
+                (work["kind"], work["finish_month"])
+                for work in state["works"]
+                if work.get("city") == city["id"] and work["status"] == "active"
+            ]
+            commitments += [
+                (task["kind"], order["execute_month"] + task["duration"])
+                for order in state["orders"]
+                if order["status"] == "confirmed"
+                for task in order["tasks"]
+                if task["city"] == city["id"]
+            ]
+            public["team_tasks"] = [ACTION_LABELS[kind] for kind, _ in commitments]
+            public["team_free_moon"] = max((moon for _, moon in commitments), default=upcoming)
+            public["harvest_forecast"] = city["tax"] + (city["population"] - away) * public[
+                "yield"
+            ] * (12 - closed % 12)
+            public["forecast_overflow"] = max(
+                0, city["stock"] + public["harvest_forecast"] - public["capacity"]
+            )
+            public["buildings"] = []
+            if economy >= 3:
+                public["siege_equipment"] = work_name("siege", city["siege"], economy)
+                public["siege_effect"] = (
+                    work_effect("siege", city["siege"], economy) if city["siege"] else ""
+                )
+                public["transport_equipment"] = work_name("transport", city["transport"], economy)
+                public["carry_per_survivor"] = 5000 * (4 + city["transport"]) // 4
+                public["convoy_fee_percent"] = [10, 7, 5][city["transport"]]
+                for family in (
+                    "irrigation",
+                    "storage",
+                    "forge",
+                    "walls",
+                    "watch",
+                    "shelter",
+                    "transport",
+                    "siege",
+                ):
+                    level = city[family]
+                    effective = effective_level(city, family)
+                    public["buildings"].append(
+                        {
+                            "kind": family,
+                            "label": ACTION_LABELS[family],
+                            "name": work_name(family, level, economy),
+                            "level": level,
+                            "effective_level": effective,
+                            "effect": work_effect(family, effective, economy)
+                            if effective
+                            else Message("État initial de cet ouvrage."),
+                            "damaged": city["damaged"]
+                            if family == "walls"
+                            else family in city.get("damaged_works", []),
+                            "finish_moon": next(
+                                (
+                                    moon
+                                    for kind, moon in commitments
+                                    if kind == family
+                                    or kind == "repair_" + family
+                                    or (family == "walls" and kind == "repair")
+                                ),
+                                None,
+                            ),
+                        }
+                    )
         cities.append(public)
     by_id = {city["id"]: city for city in cities}
     owned = [city for city in cities if city["owned"]]
@@ -237,12 +316,15 @@ def player_view(state, actor):
             continue
         options = []
         for city in engine.owned_cities(state, actor):
-            current = city["walls"] if kind == "repair" else city[kind]
+            family = "walls" if kind == "repair" else kind.removeprefix("repair_")
+            current = city[family]
             option = {
                 "id": city["id"],
                 "name": city["name"],
                 "current_name": work_name(kind, current, economy),
-                "current_damaged": kind in ("walls", "repair") and city["damaged"],
+                "current_damaged": city["damaged"]
+                if family == "walls"
+                else family in city.get("damaged_works", []),
                 "work_name": "",
                 "cost": 0,
                 "duration": 0,
@@ -257,19 +339,15 @@ def player_view(state, actor):
             try:
                 task = engine.work_spec(state, city, kind)
             except RuleError as error:
-                complete = (
-                    current
-                    == (
-                        len(work_prices(economy)[kind])
-                        if economy >= 3
-                        else rule_family(state["rules"]).max_level
-                    )
-                    and kind != "repair"
-                )
+                complete = current == (
+                    len(work_prices(economy)[kind])
+                    if economy >= 3
+                    else rule_family(state["rules"]).max_level
+                ) and not kind.startswith("repair")
                 reason = error.args[0]
                 if complete:
                     reason = Message("Cet ouvrage est achevé.")
-                elif kind == "repair" and not current:
+                elif kind == "repair" and not current and economy < 4:
                     reason = Message("Cette cité n’a pas d’enceinte à réparer.")
                 option.update(status="completed" if complete else "unavailable", reason=reason)
             else:
@@ -284,6 +362,18 @@ def player_view(state, actor):
                     available=not option["busy"],
                     status="busy" if option["busy"] else "available",
                     shortfall=max(0, task["cost"] - option["available_stock"]),
+                )
+                option.update(
+                    finish_moon=upcoming + task["duration"],
+                    first_effect_moon=upcoming + task["duration"] + int(kind == "irrigation"),
+                    effect_after_reign=upcoming + task["duration"] + int(kind == "irrigation")
+                    > state["config"]["reign_months"],
+                    stock_after=option["available_stock"] - task["cost"],
+                    siege_shortfall_after=max(
+                        0,
+                        by_id[city["id"]]["siege_food"]
+                        - (option["available_stock"] - task["cost"]),
+                    ),
                 )
                 if option["busy"]:
                     active_works = by_id[city["id"]]["works"]
@@ -307,6 +397,8 @@ def player_view(state, actor):
         available_actions.append(
             {
                 "kind": kind,
+                "repair": kind.startswith("repair"),
+                "scene": kind.removeprefix("repair_") if kind.startswith("repair_") else kind,
                 "label": ACTION_LABELS[kind],
                 "cities": options,
                 "selectable": any(city["available"] for city in options),
@@ -363,6 +455,41 @@ def player_view(state, actor):
         "remaining": state["config"]["reign_months"] - closed,
         "rules": state["rules"],
         "seasonal_raids": economy >= 3,
+        "strategic_rules": economy >= 4,
+        "free_teams": sum(not city["busy"] for city in owned),
+        "next_free_team_moon": min(
+            (city["team_free_moon"] for city in owned if city["busy"]), default=None
+        ),
+        "convoy_origins": [
+            {
+                "id": city["id"],
+                "name": city["name"],
+                "destinations": sorted(
+                    engine.connected_component(state, city["id"]) - {city["id"]}
+                ),
+                "available": not any(
+                    order["kind"] == "convoy"
+                    and order.get("origin") == city["id"]
+                    and order["status"] in ("confirmed", "active", "returning")
+                    for order in state["orders"]
+                ),
+                "fee_percent": city.get("convoy_fee_percent", 10),
+            }
+            for city in owned
+        ]
+        if economy >= 4
+        else [],
+        "convoys": [
+            {
+                "origin": by_id[item["origin"]]["name"],
+                "target": by_id[item["target"]]["name"],
+                "cargo": item["cargo"],
+                "arrival_moon": item["arrival_month"],
+                "returning": item["status"] == "returning",
+            }
+            for item in state.get("convoys", [])
+            if item["actor"] == actor and item["status"] != "completed"
+        ],
         "finished": state["status"] == "finished",
         "eliminated": state["players"][actor]["eliminated"],
         "actor": actor,
@@ -389,7 +516,8 @@ def player_view(state, actor):
         "available_stock": sum(city["available_stock"] for city in owned),
         "reserved_stock": sum(city["reserved_stock"] for city in owned),
         "capacity": sum(city["capacity"] for city in owned),
-        "population": sum(city["population"] for city in owned),
+        "population": sum(city["population"] for city in owned)
+        + engine.displaced_population(state, actor),
         "available_fideles": sum(city["available_fideles"] for city in owned),
         "absent": sum(city["absent"] for city in owned),
         "tax": sum(city["tax"] for city in owned),
@@ -406,7 +534,7 @@ def player_view(state, actor):
         "capture_minimum": state["config"]["capture_minimum"],
         "expedition_prices": {
             kind: {**prices, "minimum": state["config"][f"{kind}_minimum"]}
-            for kind, prices in EXPEDITION_PRICES.items()
+            for kind, prices in expedition_prices(economy).items()
         },
         "epilogue_missions": state["result"]["expeditions_in_transit"] if state["result"] else 0,
     }

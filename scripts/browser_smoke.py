@@ -69,7 +69,12 @@ def scannable_layout(page):
     expect(page.locator(".resource-ribbon .resource-value")).to_have_count(3)
     assert page.locator('.reign-header a[href*="tab="]').count() == 0
     tab = page.evaluate("new URL(location.href).searchParams.get('tab') || 'domain'")
-    expected = tab if tab in ("domain", "wars", "constructions") else None
+    expected = (
+        tab
+        if tab in ("domain", "wars", "constructions")
+        and not page.locator(".decree-reading").count()
+        else None
+    )
     active = page.locator('.bookmarks a[aria-current="page"]')
     expect(active).to_have_count(1 if expected else 0)
     if expected:
@@ -264,23 +269,25 @@ with sync_playwright() as playwright:
         forge.locator('input[value="c2"]').check()
         expect(forge.locator("[data-work-cost]")).to_have_text("300,000" if en else "300\u202f000")
         forge.locator('button[type="submit"]').click()
-        expect(page.locator(".decree-reading")).to_contain_text("+10%" if en else "+10 %")
+        expect(page.locator(".decree-reading")).to_contain_text(
+            "Small arsenal equipment" if en else "Équipement du petit arsenal"
+        )
         expect(page.locator('.bookmarks a[aria-current="page"]')).to_have_count(0)
         page.locator(".wax-seal").click()
         expect(page.locator(".resource-ribbon")).to_contain_text(
-            "1,500,000" if en else "1\u00a0500\u00a0000"
+            "2,400,000" if en else "2\u00a0400\u00a0000"
         )
         page.locator(".orders-register button").click()
         expect(page.locator(".resource-ribbon")).to_contain_text(
-            "1,800,000" if en else "1\u00a0800\u00a0000"
+            "2,700,000" if en else "2\u00a0700\u00a0000"
         )
         page.goto(game_url + "?tab=constructions&action=irrigation")
         canals = page.locator("#work-irrigation")
         canals.locator('input[value="c1"]').check()
         expect(canals.locator("[data-budget-note]")).to_have_text(
-            "After reservation: 1,500,000 Measures available."
+            "After reservation: 2,400,000 Measures available."
             if en
-            else "Après réservation : 1\u202f500\u202f000 Mesures libres."
+            else "Après réservation : 2\u202f400\u202f000 Mesures libres."
         )
         page.goto(game_url + "?tab=constructions&action=storage")
         work = page.locator("#work-storage")
@@ -307,7 +314,7 @@ with sync_playwright() as playwright:
                 "Unsealed draft" if selected_language == "en" else "Brouillon sans sceau"
             )
         expect(page.locator(".resource-ribbon")).to_contain_text(
-            "1,800,000" if en else "1\u00a0800\u00a0000"
+            "2,700,000" if en else "2\u00a0700\u00a0000"
         )
         page.screenshot(
             path=str(artifacts / f"decree-letter-desktop-{language}.png"), full_page=True
@@ -315,7 +322,7 @@ with sync_playwright() as playwright:
         page.locator(".wax-seal").click()
         expect(page.locator(".orders-register")).to_contain_text("Confirmed" if en else "Confirmé")
         expect(page.locator(".resource-ribbon")).to_contain_text(
-            "1,400,000" if en else "1\u00a0400\u00a0000"
+            "2,300,000" if en else "2\u00a0300\u00a0000"
         )
         page.locator(".orders-register button").click()
         expect(page.locator(".orders-register")).to_have_count(0)
@@ -349,31 +356,34 @@ with sync_playwright() as playwright:
         assert panel["width"] >= atlas["width"] - 1
         expect(page.locator("#mission-target")).to_have_value("c4")
         for origin in ("c1", "c2", "c3"):
-            page.locator(f'input[name="men_{origin}"]').fill("30")
-        expect(page.locator("[data-expedition-budget]")).to_contain_text(
-            "short" if en else "Il manque"
-        )
+            page.locator(f'input[name="men_{origin}"]').fill("20")
         page.locator(".expedition-form button").click()
         expect(page.locator('input[name="kind"][value="capture"]')).to_be_checked()
         expect(page.locator("#mission-target")).to_have_value("c4")
-        expect(page.locator('input[name="men_c1"]')).to_have_value("30")
+        expect(page.locator('input[name="men_c1"]')).to_have_value("20")
         assert "tab=wars" in page.url and "action=expedition" in page.url
+        help_note = page.locator(".ledger-help").first
+        help_note.locator("summary").focus()
+        page.keyboard.press("Enter")
+        expect(help_note).to_have_attribute("open", "")
+        page.keyboard.press("Enter")
+        expect(help_note).not_to_have_attribute("open", "")
         page.locator('input[name="kind"][value="raid"]').check()
         for origin in ("c1", "c2", "c3"):
             page.locator(f'input[name="men_{origin}"]').fill("10")
-        expect(page.locator("#army-cost")).to_have_text("95,000" if en else "95\u202f000")
+        expect(page.locator("#army-cost")).to_have_text("35,000" if en else "35\u202f000")
         for origin, amount in (
-            ("c1", "31,667" if en else "31\u202f667"),
-            ("c2", "31,667" if en else "31\u202f667"),
-            ("c3", "31,666" if en else "31\u202f666"),
+            ("c1", "11,667" if en else "11\u202f667"),
+            ("c2", "11,667" if en else "11\u202f667"),
+            ("c3", "11,666" if en else "11\u202f666"),
         ):
             expect(page.locator(f'[data-origin="{origin}"] .origin-funding')).to_contain_text(
                 amount
             )
         page.locator('input[name="men_c1"]').fill("0")
         page.locator('input[name="men_c2"]').fill("0")
-        page.locator('input[name="men_c3"]').fill("45")
-        expect(page.locator("#army-cost")).to_contain_text("132,500" if en else "132\u202f500")
+        page.locator('input[name="men_c3"]').fill("60")
+        expect(page.locator("#army-cost")).to_contain_text("65,000" if en else "65\u202f000")
         page.locator(".expedition-form button").click()
         expect(
             page.get_by_role("heading", name="The people committed" if en else "Les hommes engagés")
@@ -401,20 +411,20 @@ with sync_playwright() as playwright:
             == page.locator(".letter-entry").count()
         )
         for title in (
-            ("Return to Namar", "Successful raid at Sefra")
+            ("Return of the contingent from Namar", "Successful raid at Sefra")
             if en
-            else ("Retour à Namar", "Pillage réussi à Sefra")
+            else ("Retour du contingent de Namar", "Pillage réussi à Sefra")
         ):
             expect(
                 page.locator(".correspondence").get_by_role("heading", name=title)
             ).to_be_visible()
         expect(page.locator(".correspondence")).to_contain_text(
-            "Paid cost of this raid: 132,500 Measures"
+            "Paid cost of this raid: 65,000 Measures"
             if en
-            else "Coût payé pour ce raid : 132\u202f500 Mesures"
+            else "Coût payé pour ce raid : 65\u202f000 Mesures"
         )
         expect(page.locator(".correspondence")).to_contain_text(
-            "Namar: 132,500 Measures paid" if en else "Namar : 132\u202f500 Mesures payées"
+            "Namar: 65,000 Measures paid" if en else "Namar : 65\u202f000 Mesures payées"
         )
         expect(page.locator(".correspondence")).to_contain_text(
             "Final Measures balance:" if en else "Solde final des Mesures :"
@@ -497,7 +507,7 @@ with sync_playwright() as playwright:
         page.locator("#language").select_option("fr" if en else "en")
         page.locator(".language-switch button").click()
         expect(page.locator(".correspondence")).to_contain_text(
-            "J’ai fait inscrire le retour" if en else "I have recorded the return"
+            "Butin conservé" if en else "Spoils retained"
         )
         page.locator("#language").select_option(language)
         page.locator(".language-switch button").click()
@@ -618,6 +628,30 @@ with sync_playwright() as playwright:
         expect(plain_page.locator(".illustration-city-c1")).to_be_visible()
         illustration_asset(plain_page.locator(".illustration-city-c1"), "cityscapes.png")
         no_overflow(plain_page)
+        plain_page.goto(game_url + "?tab=wars&action=convoy")
+        convoy_help = plain_page.locator("#convoy-order .ledger-help")
+        convoy_help.locator("summary").focus()
+        plain_page.keyboard.press("Enter")
+        expect(convoy_help).to_have_attribute("open", "")
+        no_overflow(plain_page)
+        plain_page.locator("#convoy-origin").select_option("c1")
+        plain_page.locator("#convoy-target").select_option("c3")
+        plain_page.locator("#convoy-cargo").fill("500000")
+        plain_page.locator("#convoy-order button").click()
+        expect(plain_page.locator(".decree-reading")).to_contain_text(
+            "50,000 Measures in fees" if en else "50\u00a0000 Mesures de frais"
+        )
+        expect(plain_page.locator(".reserve-warning")).to_contain_text(
+            "350,000" if en else "350\u00a0000"
+        )
+        no_overflow(plain_page)
+        plain_page.screenshot(path=str(artifacts / f"convoy-native-{language}.png"), full_page=True)
+        plain_page.locator(".wax-seal").click()
+        expect(
+            plain_page.locator(".order-entry").filter(
+                has_text="Send resources" if en else "Acheminer des ressources"
+            )
+        ).to_be_visible()
         plain_page.goto(game_url + "?tab=constructions")
         plain_page.locator("#work-storage").click()
         plain_forge = plain_page.locator("#work-storage")
@@ -646,8 +680,17 @@ with sync_playwright() as playwright:
         plain_page.locator('input[name="kind"][value="raid"]').check()
         expect(plain_page.locator("#mission-target")).to_have_value("c4")
         expect(plain_page.locator('input[name="kind"][value="raid"]')).to_be_checked()
+        plain_page.goto(game_url + "?tab=wars")
+        plain_page.locator(".order-entry").filter(
+            has_text="Send resources" if en else "Acheminer des ressources"
+        ).get_by_role("button").click()
+        expect(
+            plain_page.locator(".order-entry").filter(
+                has_text="Send resources" if en else "Acheminer des ressources"
+            )
+        ).to_have_count(0)
         plain.close()
-        # Spend exactly 600k per city on the first two arsenal tiers before harvest.
+        # Spend exactly 900k per city on two arsenals and irrigation before harvest.
         page.goto(base_url + "/games/new/")
         page.locator("#id_title").fill("Empty granaries")
         page.locator("#id_opponents").select_option("passive")
@@ -659,15 +702,22 @@ with sync_playwright() as playwright:
             forge.locator("[data-select-cities]").click()
             forge.locator('button[type="submit"]').click()
             page.locator(".wax-seal").click()
-            for _ in range(4 if tier == 0 else 1):
+            for _ in range(4 if tier == 0 else 6):
                 page.goto(empty_url)
                 page.locator("#turn-page button.primary-action").click()
+        page.goto(empty_url + "?tab=constructions&action=irrigation")
+        irrigation = page.locator("#work-irrigation")
+        irrigation.locator("[data-select-cities]").click()
+        irrigation.locator('button[type="submit"]').click()
+        page.locator(".wax-seal").click()
+        page.goto(empty_url)
+        page.locator("#turn-page button.primary-action").click()
         page.goto(empty_url + "?tab=wars&action=expedition&city=c4")
         for origin in ("c1", "c2", "c3"):
             page.locator(f'input[name="men_{origin}"]').fill("10")
-        expect(page.locator("#army-cost")).to_have_text("95,000" if en else "95\u202f000")
+        expect(page.locator("#army-cost")).to_have_text("35,000" if en else "35\u202f000")
         expect(page.locator("[data-expedition-budget]")).to_contain_text(
-            "95,000" if en else "95\u202f000"
+            "35,000" if en else "35\u202f000"
         )
         page.locator(".expedition-form button").click()
         expect(page.locator(".notices")).to_contain_text("Qasr")
@@ -683,7 +733,7 @@ with sync_playwright() as playwright:
         native_page = native.new_page()
         native_page.goto(page.url)
         expect(native_page.locator("#army-total")).to_have_text("30")
-        expect(native_page.locator("#army-cost")).to_have_text("95,000" if en else "95\u00a0000")
+        expect(native_page.locator("#army-cost")).to_have_text("35,000" if en else "35\u00a0000")
         assert native_page.locator(".origin-funding").count() == 3
         native_page.locator(".expedition-form button").click()
         expect(native_page.locator('input[name="men_c3"]')).to_have_value("10")

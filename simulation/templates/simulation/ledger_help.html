@@ -1,0 +1,25 @@
+{% load i18n %}
+<details class="ledger-help">
+    <summary><span class="help-mark" aria-hidden="true">i</span> {% if topic == 'raid' %}{% translate "Comprendre le butin" %}{% elif topic == 'siege' %}{% translate "Tenir un siège" %}{% elif topic == 'crew' %}{% translate "Équipe occupée" %}{% elif topic == 'convoy' %}{% translate "Comprendre les convois" %}{% elif topic == 'forecast' %}{% translate "Lire cette prévision" %}{% else %}{% translate "Comparer les contingents" %}{% endif %}</summary>
+    <div class="ledger-note">
+        {% if topic == 'raid' %}
+            <p>{% translate "Un raid vise les prélèvements accumulés avant la récolte annuelle, pas les réserves déjà engrangées. Les abris et les pillages précédents réduisent les prises possibles. Une victoire militaire peut donc rester déficitaire." %}</p>
+            <p>{% translate "Le seuil de remboursement couvre les frais payés. Il ne compense ni les morts, ni la production perdue pendant l’absence, ni le butin perdu faute de place au retour. La capacité de transport est un plafond, pas une promesse de gain." %}</p>
+        {% elif topic == 'siege' %}
+            <p>{% translate "Un siège ponctuel représente un mois. Si l’armée ennemie dépasse la défense de campagne sans pouvoir franchir les murs, chaque habitant présent exige 500 Mesures déjà engrangées. À l’égalité exacte, la cité tient et consomme ce montant ; en dessous, elle consomme ce qui reste et capitule." %}</p>
+            <p>{% translate "Le prélèvement en préparation ne nourrit pas le siège. Les murs facilitent la défense contre l’assaut, mais ne remplacent pas les réserves. Un chantier ou une expédition peut créer un manque : gardez une marge ou préparez un convoi." %}</p>
+            <p>{% translate "Cette alerte mesure une capacité de ravitaillement, pas une attaque annoncée. Les secours automatiques dépendent des cités encore amicales et disponibles ; ils ne sont pas garantis." %}</p>
+        {% elif topic == 'crew' %}
+            <p>{% translate "Une cité possède une seule équipe. Construire et réparer mobilisent cette même équipe ; un décret scellé la réserve déjà. Aucun autre chantier ne peut commencer ici avant sa libération." %}</p>
+            <p>{% translate "Un chantier commencé à la lune N et durant trois lunes s’achève à N+3. L’irrigation agit sur le prélèvement à la clôture suivante ; l’argent reste indisponible jusqu’à la récolte. Un ouvrage achevé trop tard peut ne jamais produire son premier effet pendant ce règne." %}</p>
+        {% elif topic == 'convoy' %}
+            <p>{% translate "Un convoi transporte au plus 500 000 Mesures entre deux cités amicales reliées. La cargaison et les frais sont payés au départ ; seule la cargaison arrive deux lunes plus tard. Les frais sont de 10 %, 7 % ou 5 % selon le transport de l’origine, arrondis au supérieur." %}</p>
+            <p>{% translate "La capacité du grenier limite la réception. Si la destination est perdue, le convoi tente de rentrer à l’origine ou au refuge choisi au départ, avec une lune supplémentaire. Sans destination encore amicale à l’arrivée, la cargaison est perdue. Les convois n’ont ni escorte ni interception." %}</p>
+        {% elif topic == 'forecast' %}
+            <p>{% translate "Cette projection conserve les habitants présents et le rendement actuels jusqu’à la récolte. Elle exclut les futurs mouvements, pertes, pillages et changements de rendement, y compris les chantiers en cours. Ce repère n’est ni un revenu garanti ni de l’argent déjà dépensable." %}</p>
+        {% else %}
+            <p>{% translate "L’arsenal équipe les Fidèles de son origine en attaque comme en défense. Le matériel de siège réduit l’avantage des murs lors d’une capture ; il ne sert pas au pillage. Le transport augmente le butin que les survivants peuvent rapporter." %}</p>
+            <p>{% translate "Ces moyens sont figés au départ. La défense réelle, les renforts et les réserves ennemies restent inconnus ; une observation datée décrit un ancien combat, jamais une garantie pour le prochain." %}</p>
+        {% endif %}
+    </div>
+</details>

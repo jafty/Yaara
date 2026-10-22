@@ -22,7 +22,7 @@ from .models import Game, Report
 from .narration import work_effect, work_phrase
 from .presentation import localize, report_view
 from .projections import player_view
-from .rules import ACTION_LABELS, EXPEDITION_PRICES, RuleError, allocate
+from .rules import ACTION_LABELS, RuleError, allocate
 
 
 @require_GET
@@ -114,12 +114,17 @@ def desk(request, game_id):
         except ValueError:
             city["contribution"] = 0
     mission_kind = "capture" if request.GET.get("mission") == "capture" else "raid"
-    price = EXPEDITION_PRICES[mission_kind]
+    price = view["expedition_prices"][mission_kind]
     contributions = {city["id"]: city["contribution"] for city in view["owned_cities"]}
     fees = allocate(price["base"], contributions)
     for city in view["owned_cities"]:
         city["expedition_charge"] = fees[city["id"]] + city["contribution"] * price["per_person"]
         city["expedition_shortfall"] = max(0, city["expedition_charge"] - city["available_stock"])
+        city["expedition_remaining"] = city["available_stock"] - city["expedition_charge"]
+        city["expedition_food"] = max(0, city["present_population"] - city["contribution"]) * 500
+        city["expedition_siege_shortfall"] = max(
+            0, city["expedition_food"] - city["expedition_remaining"]
+        )
     tab = request.GET.get("tab", "domain")
     if tab not in (
         "domain",
@@ -146,6 +151,16 @@ def desk(request, game_id):
         raise Http404
     if selected is None:
         selected = next(iter(view["owned_cities"]), view["cities"][0])
+    target_observations = []
+    if tab == "wars" and city_id:
+        known = Report.objects.filter(
+            game=game, recipient=actor, content__city_id=city_id
+        ).order_by("-month", "-id")
+        target_observations = [
+            report_view(letter, state=game.state)
+            for letter in known
+            if letter.content.get("observation")
+        ][:3]
     # Reports are immutable per-recipient records; never infer access from current ownership.
     reports = Report.objects.filter(game=game, recipient=actor)
     news_month = view["closed_moon"] or game.state["month"]
@@ -214,12 +229,23 @@ def desk(request, game_id):
             }
         )
         milestones.sort(key=lambda item: item["moon"])
+    recent_by_city = {}
+    for letter in Report.objects.filter(
+        game=game, recipient=actor, month__gte=max(1, view["closed_moon"] - 2)
+    ).order_by("-month", "-id"):
+        entry = report_view(letter, state=game.state)
+        if entry["city_id"] and entry["city_id"] not in recent_by_city:
+            recent_by_city[entry["city_id"]] = entry
+    for city in view["owned_cities"]:
+        city["recent_report"] = recent_by_city.get(city["id"])
     action_kind = request.GET.get("action")
     if tab == "wars" and city_id and selected["reachable"] and not selected["engaged"]:
         action_kind = "expedition"
     action = next((item for item in view["work_actions"] if item["kind"] == action_kind), None)
     if action_kind == "expedition":
         action = {"kind": action_kind, "label": _("Dicter l’ordre d’une expédition")}
+    elif action_kind == "convoy" and view["strategic_rules"]:
+        action = {"kind": "convoy", "label": _("Acheminer des ressources")}
     elif action_kind == "equipment" and view["equipment_available"]:
         action = {"kind": action_kind, "label": _("Organiser l’armement")}
     elif action_kind and action is None:
@@ -247,14 +273,20 @@ def desk(request, game_id):
                 order
                 for order in view["orders"]
                 if order["status"] == "confirmed"
-                and (tab != "wars" or order["kind"] in ("raid", "capture"))
-                and (tab != "constructions" or order["kind"] not in ("raid", "capture"))
+                and (tab != "wars" or order["kind"] in ("raid", "capture", "convoy"))
+                and (tab != "constructions" or order["kind"] not in ("raid", "capture", "convoy"))
             ],
             "city_requested": city_id is not None,
             "selected_target": next(
                 (target for target in view["attack_targets"] if target["id"] == city_id), None
             ),
             "mission_kind": mission_kind,
+            "target_observations": target_observations,
+            "combat_moon": view["open_moon"] + 1,
+            "return_moon": view["open_moon"] + 2,
+            "convoy_origin": request.GET.get("origin", ""),
+            "convoy_target": request.GET.get("target", ""),
+            "convoy_cargo": request.GET.get("cargo", ""),
             "expedition_total": sum(contributions.values()),
             "expedition_cost": price["base"] + sum(contributions.values()) * price["per_person"],
             "selected_cities": request.GET.getlist("cities"),
@@ -321,6 +353,14 @@ def order_form_url(game, spec):
             for city, count in spec.get("contributions", {}).items()
             if city in game.state["cities"]
         )
+    elif kind == "convoy":
+        query = {
+            "tab": "wars",
+            "action": "convoy",
+            "origin": spec.get("origin", ""),
+            "target": spec.get("target", ""),
+            "cargo": spec.get("cargo", ""),
+        }
     elif kind in ACTION_LABELS:
         query = {"tab": "constructions", "action": kind, "cities": spec.get("cities", [])}
     return reverse("game", args=[game.id]) + "?" + urlencode(query, doseq=True)
@@ -369,6 +409,14 @@ def preview_order(request, game_id):
                 spec.update(target=request.POST.get("target"))
                 return redirect(order_form_url(game, spec))
             spec.update({"target": request.POST.get("target"), "contributions": contributions})
+        elif kind == "convoy":
+            try:
+                cargo = int(request.POST.get("cargo", "0"))
+            except ValueError:
+                cargo = 0
+            spec.update(
+                origin=request.POST.get("origin"), target=request.POST.get("target"), cargo=cargo
+            )
         elif kind != "equipment":
             spec["cities"] = request.POST.getlist("cities")
         try:
@@ -390,8 +438,30 @@ def preview_order(request, game_id):
         )
     kind = spec["kind"]
     city_names = {city_id: city["name"] for city_id, city in game.state["cities"].items()}
+    own_view = player_view(game.state, actor)
+    own_by_id = {city["id"]: city for city in own_view["owned_cities"]}
     funding = [
-        {"name": city_names[city_id], "amount": amount}
+        {
+            "name": city_names[city_id],
+            "amount": amount,
+            "remaining": own_by_id[city_id]["available_stock"] - amount,
+            "siege_food": max(
+                0,
+                own_by_id[city_id]["present_population"]
+                - order.get("contributions", {}).get(city_id, 0),
+            )
+            * (500 if game.state["rules"] == "V1" else 0),
+            "siege_shortfall": max(
+                0,
+                max(
+                    0,
+                    own_by_id[city_id]["present_population"]
+                    - order.get("contributions", {}).get(city_id, 0),
+                )
+                * (500 if game.state["rules"] == "V1" else 0)
+                - (own_by_id[city_id]["available_stock"] - amount),
+            ),
+        }
         for city_id, amount in order["funding"].items()
         if amount
     ]
@@ -421,9 +491,10 @@ def preview_order(request, game_id):
             "label": localize(ACTION_LABELS[kind]),
             "view": localize(player_view(game.state, actor)),
             "tab": "decrees",
-            "nav_section": "wars" if kind in ("raid", "capture") else "constructions",
+            "nav_section": "wars" if kind in ("raid", "capture", "convoy") else "constructions",
             "order": order,
             "target": city_names.get(order.get("target")),
+            "origin": city_names.get(order.get("origin")),
             "funding": funding,
             "contributions": contributions,
             "tasks": localize(tasks),
@@ -457,7 +528,7 @@ def confirm_order(request, game_id):
         destination = (
             reverse("game", args=[game_id])
             + "?tab="
-            + ("wars" if order["kind"] in ("raid", "capture") else "constructions")
+            + ("wars" if order["kind"] in ("raid", "capture", "convoy") else "constructions")
         )
         messages.success(
             request,

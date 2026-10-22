@@ -1,87 +1,117 @@
 # Yaara — Référence de jouabilité
 
-Révision du 20 octobre 2026 : implémentation de la demande de jouabilité et de son GO, puis renforcement des fortifications demandé pendant le développement. Base récupérée : `d9747b1` de `codex/yaara-deployment`. Cette référence décrit le code de cette révision, pas une preuve du déploiement Railway ni les paramètres d’une sauvegarde particulière.
+Révision du 22 octobre 2026 : préparation stratégique, raids, sièges, convois et réserves initiales. Base récupérée : `6bd894e7be47ddf4790c1d56f3f74db821cbc834` de `codex/yaara-deployment`. Décrit l’implémentation de cette révision, sans attester son déploiement Railway. Sources : `simulation/rules.py`, `engine.py`, `projections.py`, `narration.py`, `views.py` et tests `test_strategy_*`.
 
 ## Maintien et compatibilité
 
-Toute modification du cœur doit mettre à jour les faits et exemples concernés dans ce document, ainsi que `docs/decisions.md`. Vérifier le code et le marqueur économique de la sauvegarde avant de répondre sur les règles. Le dossier `design-source.fr.md` reste historique.
+Synchroniser ce document et `docs/decisions.md` avec chaque changement des règles. Le dossier `design-source.fr.md` conserve l’intention historique. La discussion jointe n’est pas un rejeu des anciennes parties.
 
-Les nouvelles parties utilisent `economy_version=3`, les forges locales, la carte à douze routes et le calendrier ouvrant la lune 1. Les économies précédentes conservent leurs tarifs, niveaux, équipements, raids sur stocks et calendrier de récolte. Aucun ordre, chantier, devis accepté ou rapport archivé n’est réécrit. V0/V1 disparaissent de l’interface de création et des étiquettes ; les identifiants nécessaires aux anciennes sauvegardes restent internes.
+Les nouvelles parties utilisent `economy_version=4`, forges locales, carte à douze routes et calendrier ouvrant la lune 1. Les sauvegardes précédentes conservent leurs réserves, tarifs, murs, combats, ordres acceptés et rapports. L’économie 3 conserve notamment les raids saisonniers et murs ×1/2/4/7 ; les économies 1/2 gardent leurs raids sur stocks et versement annuel avant combats. Les marqueurs V0/V1 sont internes, sans sélecteur public. Aucune conversion automatique d’une partie en cours.
 
-## Cadre et victoire
+## Cadre et ressources
 
-Trois maisons possèdent initialement trois cités chacune. Le mode livré est solo contre deux adversaires automatiques actifs ou passifs. Une année compte douze lunes. Le règne standard dure 120 lunes ; les durées 24, 60 et 240 restent disponibles. Calendrier manuel ou automatique à cinq/dix minutes ; les parties automatiques attendent un départ explicite et suivent les échéances stockées.
+Trois maisons possèdent trois cités chacune ; solo contre deux adversaires actifs ou passifs. Un tour, ou lune, représente **un mois**. Règne standard de 120 lunes, également configurable à 24, 60 ou 240. Calendrier manuel ou automatique cinq/dix minutes, avec départ explicite des parties automatiques. Victoire immédiate avec les neuf cités ; sinon classement au terme par cités puis population de rattachement. Aucun prestige.
 
-Posséder toutes les cités donne la victoire immédiate. Au terme du règne, classement par nombre de cités puis population de rattachement. Pas de prestige ni de classement aux mesures restantes. Pilleur, producteur, défenseur et conquérant sont des orientations possibles, pas des classes ni une promesse d’équilibre démontré.
+Chaque cité commence avec 1 000 habitants dont 100 Fidèles, **900 000 Mesures**, prélèvement nul, capacité 2 400 000. Les anciennes économies commencent toujours à 600 000. L’augmentation laisse financer les rigoles (300 k) et un raid de 30 hommes (35 k) avec 565 k encore en réserve, sans garantir deux mois de ravitaillement. Chaque cité finance ses travaux ; chaque origine finance ses hommes et sa part proportionnelle du forfait, répartie en mesures entières par la méthode des plus grands restes. Les convois permettent un transfert différé, jamais un financement implicite.
 
-## Ressources et rythme
+Rendement par habitant présent : 100 / 115 / 130 / 200 Mesures par lune. Absents non producteurs. Prélèvement accumulé indisponible avant les clôtures 12, 24, etc. ; surplus sans place perdu. Croissance annuelle de 0,5 %, arrondie au-dessous ; renouvellement des Fidèles parmi les habitants existants plafonné à 1 % de population et à l’écart au contingent cible de 10 %.
 
-Chaque cité commence avec 1 000 habitants, dont 100 Fidèles, 600 000 mesures disponibles, un prélèvement accumulé nul et une capacité de 2 400 000. Chaque cité finance seule ses travaux ; chaque origine finance ses hommes et sa part proportionnelle du forfait d’expédition. Aucune trésorerie mutualisée ni transfert manuel.
+Clôture : prélèvement, départs, achèvements, combats, versement annuel éventuel et croissance, retours militaires, arrivées des convois, résultat. Un raid de lune 12 réduit la récolte avant versement. Un convoi arrivant ce mois ne nourrit pas le siège déjà résolu. Préparer ou relire ne réserve rien ; sceller réserve les moyens existants, la clôture les dépense. Annulation avant départ selon les règles de la sauvegarde.
 
-Le rendement par habitant présent est 100 / 115 / 130 / 200 mesures par lune. Les hommes absents ne produisent pas ; le départ intervient après la comptabilisation et le retour après elle. La récolte s’accumule sans être dépensable puis est versée aux clôtures 12, 24, etc., sous réserve de capacité. Le surplus est perdu. Croissance annuelle de 0,5 %, arrondie à l’entier inférieur ; renouvellement des Fidèles dans les habitants existants, plafonné à 1 % et à l’écart au contingent cible de 10 %.
+## Travaux et équipes
 
-Dans la nouvelle économie, la clôture comptabilise le prélèvement, exécute les départs et achèvements, résout les combats, effectue le versement annuel et le renouvellement éventuels, puis les retours et le résultat. Les raids de la lune 12 atteignent donc sa récolte avant versement. Un siège utilise les réserves déjà engrangées ; une cité conquise reçoit sa récolte restante sous son nouveau propriétaire. Les anciennes économies gardent leur ordre précédent, avec versement avant les combats.
+Une équipe par cité, partagée entre construction et réparation et réservée dès le scellement. Lots multi-cités atomiques. Coûts par passage, effets totaux remplaçant le niveau précédent.
 
-Le scellement exige les fonds déjà disponibles ; une récolte attendue ne finance pas un ordre encore inabordable. La préparation et la relecture ne réservent rien ; le scellement réserve, la clôture paie. L’annulation libère les réservations avant départ dans les règles qui l’autorisent.
-
-## Catalogue courant
-
-Coûts par passage, effets totaux remplaçant le niveau précédent. Une équipe locale par cité ; lots multi-cités atomiques.
-
-| Famille | Niveau I : prix / lunes | Niveau II : prix / lunes | Niveau III : prix / lunes | Progression |
+| Famille | Niveau I : prix / lunes | Niveau II | Niveau III | Effet, avec état initial |
 | --- | --- | --- | --- | --- |
-| Irrigation | 300 k / 3 | 400 k / 5 | 1,5 M / 10 | Rendement 100 → 115 → 130 → 200 |
-| Stockage | 200 k / 3 | 420 k / 5 | 900 k / 8 | Capacité 2,4 → 3,6 → 5,4 → 8,1 M |
-| Arsenal | 150 k / 3 | 450 k / 5 | 1 M / 8 | Force de base ×1 → ×1,10 → ×1,25 → ×1,45 |
-| Fortifications | 200 k / 5 | 900 k / 10 | 2,4 M / 20 | Défense locale contre capture ×1 → ×2 → ×4 → ×7 |
-| Surveillance | 120 k / 3 | 360 k / 5 | — | Mobilisation de raid aléatoire 20/30/40 %, puis fixe 40 %, puis fixe 60 % |
-| Protection | 150 k / 3 | 450 k / 5 | — | Récolte protégée 200 → 400 → 800 k |
-| Transport | 200 k / 4 | 600 k / 6 | — | Capacité de butin ×1 → ×1,25 → ×1,50 |
-| Siège | 300 k / 5 | 750 k / 8 | — | Ignore 0 → 25 → 50 % du bonus des murs |
-| Réparation des fortifications | 40 k / 3 | 180 k / 6 | 480 k / 8 | Restaure le niveau endommagé existant |
+| Irrigation | 300 k / 3 | 400 k / 5 | 1,5 M / 10 | Rendement 100 / 115 / 130 / 200 |
+| Stockage | 200 k / 3 | 420 k / 5 | 900 k / 8 | Capacité 2,4 / 3,6 / 5,4 / 8,1 M |
+| Arsenal | 150 k / 3 | 450 k / 5 | 1 M / 8 | Force 100 / 110 / 125 / 145, interne au moteur |
+| Fortifications | 200 k / 5 | 900 k / 10 | 2,4 M / 20 | Défense locale contre capture ×3 / ×4 / ×5,5 / ×7 |
+| Surveillance | 120 k / 3 | 360 k / 5 | — | Mobilisation de raid aléatoire 20/30/40 %, puis fixe 40 %, puis 60 % |
+| Protection | 150 k / 3 | 450 k / 5 | — | Seuil 200 / 400 / 800 k, plafonné à 90 % du prélèvement |
+| Transport | 200 k / 4 | 600 k / 6 | — | Butin par survivant 5 000 / 6 250 / 7 500 ; frais de convoi 10 / 7 / 5 % |
+| Siège | 300 k / 5 | 750 k / 8 | — | Réduction du bonus des murs 0 / 25 / 50 % |
 
-Prix d’arsenal fixes, indépendants de la population. Une construction démarrant à la clôture N et durant trois lunes s’achève à N+3. L’irrigation produit au nouveau rendement à la comptabilisation suivante, sans rétroactivité.
+Départ d’un chantier N, durée trois lunes : achèvement N+3, premier prélèvement amélioré N+4 pour l’irrigation. Un achèvement après la fin configurée est refusé ; l’égalité est autorisée mais un premier effet économique trop tardif est signalé. La prévision de récolte conserve le nombre actuel de présents et le rendement actuel : elle exclut mouvements, pertes et effets futurs des travaux.
 
-Équipement, transport et matériel de siège restent propres à chaque origine et sont figés au départ. La capacité de transport dépend des survivants de chaque origine. La réduction de murs d’une armée mixte est pondérée par la force de chaque contingent. Les secours conservent leur propre équipement ; seuls les défenseurs locaux bénéficient des murs.
+Arsenal, transport et siège de chaque contingent figés au départ. Transport calculé sur les survivants ; réduction du bonus des murs pondérée par les forces des contingents. Seuls les défenseurs locaux bénéficient des murs. La combativité numérique reste absente des projections et du navigateur.
 
-Une capture par assaut peut endommager les fortifications : leur bonus est divisé par deux. Le matériel de siège réduit ensuite le bonus restant, jamais la défense de base. Exemple : murailles intactes ×7, béliers homogènes → `1 + (7−1) × 0,5 = 4`. Murailles endommagées et béliers → ×2,5. Les réparations existaient déjà avant cette révision ; elles sont adaptées aux nouveaux prix/niveaux. Les raids ne détériorent pas les bâtiments et n’arrêtent ni production ni chantier.
+## Raids
 
-## Raids saisonniers
+Minimum 20 Fidèles ; prix **5 000 + 1 000 × effectif**. Départ N, combat N+1, retour N+2. Une cible engagée est réservée jusqu’au combat. Deux cités ennemies initialement à portée, une de chaque maison rivale.
 
-Minimum 20 Fidèles ; coût `20 000 + 2 500 × effectif`. Départ à la clôture N, combat N+1, retour N+2. La cible est réservée exclusivement dès le scellement. Deux cités ennemies sont initialement accessibles, une de chaque maison rivale.
+Soit A assaillants, D défenseurs rencontrés, E=min(A,D) et R le rapport de force équipé. L’arrondi des décès est au plus proche, demi-entier au-dessus.
 
-Le raid vise le prélèvement réellement accumulé, jamais les stocks déjà engrangés. Soustraire d’abord le seuil protégé (200/400/800 k), puis exposer un quart du reste positif. En cas de victoire stricte en force, butin = minimum entre 60 % de cette fraction et la capacité des survivants ; destructions = 20 % de la fraction. Une défaite ordinaire peut détruire 5 % de cette fraction ; une déroute ne prélève ni ne détruit. Aucune interruption de production, aucun forfait supplémentaire.
+| Situation | Morts assaillants / défenseurs | Butin / destruction de la part exposée |
+| --- | --- | --- |
+| Aucun défenseur | 0 / 0 | 60 % / 20 % |
+| R > 1,25 : défense dispersée | 2 % E / 4 % E | 60 % / 20 % |
+| 0,75 ≤ R ≤ 1,25 : combat disputé | 6 % E / 6 % E | Si R > 1 : 30 % / 10 % ; sinon 0 / 5 % |
+| R < 0,75 : retrait sans interception | 2 % E / 1 % E | 0 / 0 |
+| R < 0,75 : retrait intercepté | 20 % A / 2 % E | 0 / 0 |
 
-Capacité ordinaire : 5 000 mesures par survivant, modifiée par son origine. Une réserve protégée ne protège ni les combattants ni la cité. La surveillance remplace le tirage 20/30/40 par une mobilisation garantie de 40 ou 60 %. Les murs ne renforcent pas les défenseurs de raid. Les pertes militaires continuent naturellement de réduire la population productrice.
+Interception à 10/20/30 % selon surveillance effective 0/I/II. La surveillance ne renforce pas la combativité. Les murs n’interviennent pas dans les raids.
 
-Un succès qui prélève ou détruit des ressources disperse les villages pendant les deux lunes suivantes : pillage N, prochain combat de raid N+3. Une arrivée à cette date peut être préparée avant. Une victoire sans pertes agricoles et une défaite ne déclenchent pas ce répit. Les captures restent possibles. Le butin n’est dépensable qu’au retour ; capacité et propriété des cités déterminent les dépôts et le bilan final.
+La récolte exposée vaut le quart entier du prélèvement après protection, celle-ci étant limitée à 90 % de ce prélèvement. Butin limité par le transport des survivants ; destruction limitée à 2 000 Mesures par survivant et au reste exposé après butin. Les stocks engrangés ne sont pas pillés, production et chantiers continuent.
 
-Exemple à équipements ordinaires, 1,2 M accumulé et 200 k protégés : 250 k exposés, jusqu’à 150 k pillés, 50 k détruits. Avec 41 assaillants contre 40 défenseurs, coût 122 500, butin 150 000, solde provisoire +27 500. Ce solde exclut pertes humaines, production perdue pendant l’absence et éventuels débordements au retour. La récolte restante vaut 1 M. Le taux de production n’est pas suspendu.
+Après pertes agricoles effectives, décès non combattants tirés uniformément entre zéro et le minimum entier de 0,2 % des habitants non engagés présents et 5 % des assaillants survivants. Échantillon sans remise : exclut combattants, expéditions et secours absents ; un Fidèle non engagé peut être touché et est retiré une seule fois.
 
-## Captures, siège ponctuel et ravitaillement
+Après victoire avec survivants, opportunité de dommage d’ouvrage de 20 %. Sélection uniforme entre surveillance et protection achevées, non déjà endommagées. Une protection sélectionnée doit encore être découverte (25 %) ; aucun second tirage d’ouvrage. Au plus un dommage, appliqué après les effets de ce raid. Niveau bâti conservé, effet réduit d’un niveau ; aucune destruction de chantier ni sabotage ciblé. Amélioration d’un ouvrage endommagé refusée jusqu’à réparation ; une amélioration déjà en chantier n’efface pas le dommage.
 
-Minimum 80 Fidèles ; coût `900 000 + 18 000 × effectif`, soit au moins 2,34 M. Une capture reste hors de portée des seules réserves initiales d’une maison. Il n’existe pas encore de siège maintenu sur plusieurs lunes.
+Toute perte réelle de ressources, habitants ou ouvrage pour la cible déclenche le répit de deux lunes, même après défaite des assaillants : perte en N, prochain raid possible en N+3. Les pertes des seuls attaquants ne suffisent pas. Capture toujours possible.
 
-L’attaque doit dépasser strictement la défense fortifiée pour un assaut victorieux ; au-delà d’une fois et demie cette défense, reddition. Si elle dépasse seulement la défense hors murs, un siège ponctuel vérifie le ravitaillement : `500 × habitants présents`. Stocks suffisants : la cité tient et consomme ce montant ; stocks insuffisants : capitulation par pénurie. Des murs ×7 n’empêchent pas cette seconde issue. À 1 000 présents, 500 k suffisent exactement, 499 999 ne suffisent pas. Les pertes et dépenses normales restent dues. Pas d’immunité contre un nouvel assaut et pas de pause de chantier entre tentatives.
+Exemple : 1,2 M accumulé, 200 k protégés → 250 k exposés. 60 assaillants ordinaires contre 40 défenseurs : 1 mort assaillant, 2 défenseurs, jusqu’à 150 k de butin, 50 k détruits, coût 65 k, solde provisoire +85 k. Avec 41 contre 40 : combat disputé, 2 morts de chaque côté, 75 k de butin, 25 k détruits, coût 46 k, solde provisoire +29 k. Ces soldes excluent morts, production perdue, perte du butin ou débordement au retour.
 
-Les coefficients ×2/×4/×7 sont des paramètres de jeu explicitement choisis pour favoriser le siège face aux grandes murailles. Les sources historiques sur les forteresses ne prouvent pas un multiplicateur universel de sept ; ne pas présenter ce nombre comme une mesure archéologique.
+## Captures et siège d’un mois
 
-## Première année et rentabilité indicative
+Minimum 80 Fidèles ; prix **50 000 + 2 000 × effectif**, soit 210 k au minimum. Captures abordables avant la première récolte ; leur réussite dépend des forces et stocks adverses. Aucun siège maintenu entre tentatives.
 
-Sans action, attaque ou absence, une cité reçoit 1,2 M en lune 12 et atteint 1,8 M de stock. Si les rigoles démarrent à la clôture 1, elles s’achèvent à la clôture 4 : quatre lunes à 100 k et huit à 115 k, soit 1,32 M récolté et 1,62 M de stock après paiement initial de 300 k. La croissance de clôture 12 ne modifie pas cette première récolte.
+Secours automatiques : au plus 20 % des Fidèles disponibles de chaque cité amie reliée, répartis entre menaces et plafonnés par la force de l’assaillant. Une cité elle-même attaquée en capture pendant cette résolution n’envoie aucun secours. Ils restent absents toute la phase et leurs survivants restent attachés à leur maison.
 
-À population constante de 1 000 présents et sans pertes ni débordements, amortissement marginal des trois passages d’irrigation : 20, environ 26,67 et environ 21,43 lunes de production améliorée. Construction et attente du versement s’ajoutent au délai de récupération en argent disponible. Ces chiffres ne prouvent pas l’équilibre d’un règne de 120 lunes.
+Attaque strictement supérieure à 1,5 fois la défense fortifiée : reddition, pertes 1 % assaillants / 2 % défenseurs. Supérieure seulement à la défense fortifiée : assaut, 8 % / 12 %. Supérieure à la défense de campagne mais pas aux murs : siège ponctuel d’un mois, **500 Mesures engrangées par habitant présent**. À l’égalité des stocks la cité tient : consommation de ce besoin, pertes 2 % / 1 %. En dessous elle consomme le stock restant et capitule : 4 % / 8 %, sans mortalité civile supplémentaire. À 1 000 présents, 500 000 suffisent, 499 999 ne suffisent pas. Si l’attaque ne dépasse pas la défense de campagne : défaite 12 % / 3 %, ou déroute 25 % / 2 % sous la moitié de cette défense.
 
-## Interface et idées différées
+Avec 100 locaux et 40 secours ordinaires, défenses initiales : campagne 140, fortifiée 340. **150 attaquants peuvent prendre une cité ayant dépensé son stock sous le besoin de siège** ; une réserve suffisante la fait tenir. 300 sans siège ne franchissent pas ces défenses ; 300 avec siège I réduisent la défense à 290 et gagnent l’assaut. Les coefficients sont un choix de jeu, pas une mesure archéologique.
 
-Conseil, Expéditions et Chantiers restent les destinations principales. Catalogue illustré compact, fiches de famille avec sélection multi-cités, panneau d’attaque dans la page sous la carte et contrôles natifs ; aucune popup obligatoire. « Valider l’action » ouvre la relecture ; seul le scellement engage les moyens. Suivi des ordres en attente et opérations actives, historique dans les rapports. Illustrations décoratives par contexte, sans nouvelle divulgation d’informations adverses.
+Intégrité initiale 100 %. Multiplicateur effectif = 1 + (multiplicateur intact − 1) × intégrité × (1 − réduction de siège). Assaut réussi : intégrité au plus 50 %. Siège tenu : baisse de 20 points × réduction moyenne de siège, plancher 70 %, sans remonter une intégrité déjà inférieure. Redditions/pénuries ne dégradent pas mécaniquement les murs. Précision rationnelle conservée, sans flottants.
 
-Ajout de présentation du 21 octobre 2026 : les nouveaux rapports de combat conservent une illustration propre au raid ou à la capture, à l’expédition offensive ou à l’attaque reçue, et au succès ou à l’échec de l’assaillant. Une attaque ennemie réussie illustre donc une perte du destinataire. Le choix suit l’issue militaire, même sans butin, sans modifier les règles ni les textes archivés ; les anciens rapports sans ce choix gardent leur illustration générique.
+Réparation des défenses initiales : 20 k / 2 lunes ; murs I/II/III : 40 k / 3, 180 k / 6, 480 k / 8. Surveillance I/II : 24/72 k, deux lunes ; protection I/II : 30/90 k, deux lunes. Réparer restaure l’effet, sans gagner de niveau ni restituer des habitants ou ressources perdus.
 
-Voir `docs/backlog.fr.md` pour les pistes différées : détérioration d’ouvrages extérieurs, reconnaissance, engagements visibles, sièges prolongés, hospice, ravitaillement, écuries, archers et éventuel prestige. Elles ne sont pas des règles livrées.
+## Convois et retours
 
-Ajout de présentation du 22 octobre 2026 : Conseil et archives explicitent l’issue militaire à partir du résultat d’attaque déjà enregistré avec l’illustration : attaque réussie et défense vaincue, ou attaque échouée et défense maintenue. Ce résultat reste distinct du bilan financier du raid. Les lettres de capture reçue identifient aussi la maison attaquante lorsqu’une seule expédition historique correspond à la cité et à la lune du rapport. Ces précisions s’appliquent aux rapports existants sans réécrire leur contenu ; une correspondance absente ou ambiguë et une ancienne lettre sans résultat enregistré ne conduisent à aucune déduction nouvelle. Source : `simulation/presentation.py`, révision du 22 octobre 2026 ; règles et sauvegardes inchangées.
+Convoi entre deux cités amies distinctes reliées au scellement et au départ, de 1 à 500 000 Mesures entières. Un seul convoi confirmé/actif/en retour par origine. Prix : cargaison + frais arrondis au-dessus (10/7/5 % selon transport d’origine). Départ N, réception N+2 après combats et récolte ; seuls la cargaison et l’espace disponible comptent à réception. Aucun homme, escorte ou interception.
 
+Si destination perdue, retour vers origine encore amie, sinon refuge ami déterminé au départ, avec une lune supplémentaire. Vérification de sa propriété à l’arrivée réelle ; sinon cargaison perdue. Débordement perdu, pas de dépôt doublé après répétition.
+
+La capture d’une origine ne transfère pas ses contingents absents à l’armée ennemie. Ceux-ci sont retirés de la population locale et restent comptés sous leur maison pendant le voyage. Au retour : origine amie, sinon refuge fixé au départ et toujours ami avec une lune supplémentaire. Sans refuge valable à l’arrivée : démobilisation parmi les habitants de l’origine, sans devenir Fidèles ennemis, butin perdu. Chaque contingent est déposé une seule fois, y compris les retours répartis sur plusieurs lunes.
+
+## Lecture et décisions
+
+Conseil, Expéditions et Chantiers restent les trois destinations. La carte conserve sa géographie publique ; les informations de décision sont dans les comptes et la préparation : équipement par origine, siège, transport, part à payer, reste disponible, besoin d’un mois de siège, dates et seuil de remboursement. Aucun gain ennemi garanti ni estimation issue de données cachées.
+
+Le Conseil indique frontières accessibles, expéditions engagées, travaux/réservations d’équipe, dommages, risque de ravitaillement et récents événements liés. Les fiches de cité exposent leurs huit familles d’ouvrages. Les notes natives « i » s’ouvrent au clavier et sans JavaScript ; elles expliquent les subtilités, mais ne cachent pas coûts et alertes. Préparation et scellement restent distincts, avec sélection multi-cités.
+
+Les nouveaux rapports relient leur cité, décrivent précisément les pertes propres et qualitativement les pertes adverses : aucune, quelques (1–4), sensibles (5–14), lourdes (15–29), très lourdes (30+). Sous dix témoins : observation non fiable. Observations datées issues uniquement des lettres du destinataire ; aucun rafraîchissement depuis les comptes ennemis. Les observations de forces et d’équipement gardent leurs seuils de témoins existants. Les lettres anciennes ne sont pas réécrites.
+
+## Ouvertures humaines vérifiées
+
+Les tests `test_strategy_openings.py` décrivent des plans fixes réalisables, sans supposer un comportement de bot. Deux armées alternées de 150, réparties 50/50/50, assiègent en lunes 2 et 4 : sans réaction, 900 k ne suffisent pas, capture en 4 pour 700 k de frais. Un convoi lancé après le premier combat, en lune 3, arrive en 5 et ne sauve pas la cité. Un convoi préventif de 500 k lancé en lune 1 arrive en 3 et fait tenir la seconde tentative. Ces ouvertures rendent l’anticipation importante ; une alerte « un mois » n’est pas une garantie contre les tentatives suivantes.
+
+Contre-exemple à une attaque sans risque : la maison défendue envoie simultanément 200 hommes depuis ses deux cités arrière contre l’origine frontalière adverse, affaiblie par les départs. La cible initiale tient son siège, tandis que cette contre-attaque capture la frontière en lune 2 et coupe la route de l’assaillant vers elle. Ce résultat dépend de cette répartition des forces et ne garantit pas une réponse universelle.
+
+Une autre série répète la même armée de 150 tous les trois mois : sans réponse capture en lune 5 ; avec un convoi anticipé capture en 8 ; trois convois de 500/500/300 k aux lunes 2/5/8 permettent quatre sièges tenus jusqu’à la première récolte. Les ressources et frais sont réellement débités. Enfin 51 raiders ordinaires contre 40 défenseurs gagnent militairement dans les deux saisons : départ en 1 donne 3 k de butin conservé et −53 k de solde monétaire ; départ en 10 donne 135 k et +79 k. Morts et production perdue s’ajoutent à ces comptes.
+
+Ces cas établissent des menaces et réponses concrètes, pas l’équilibre du multijoueur. À surveiller en essais humains : pression simultanée sur plusieurs frontières, rotation des armées, timing des convois, saisonnalité des raids et coût d’un retrait de défenseurs pour contre-attaquer.
+
+## Évaluation et limites
+
+`scripts/evaluate_strategy.py` exécute des parties complètes de 120 lunes (ou victoire anticipée) avec commandes normales de trois maisons automatiques et graines explicites. Compare les stocks initiaux 600/900 k avec les mêmes règles nouvelles : ordres et intervalles, occupation des équipes, victoires et rentabilité nette des raids au retour, captures/sièges/conquêtes, destructions, frais, production perdue par absence, réparations et durée des constructions tardives. Ne recalculer aucun ancien journal comme s’il s’agissait d’une simulation.
+
+Le bot actuel n’est pas un joueur optimal : seuil de richesse pour captures, pas de politique de réparation/convoi. Ses périodes sans ordre ne prouvent pas une absence de choix humains. Les études d’ouverture et vérifications arithmétiques complètent ces observations ; elles ne démontrent pas l’équilibre de toutes les stratégies.
+
+Sans action ni perte, première récolte 1,2 M → 2,1 M en grenier. Rigoles commencées en lune 1 : quatre prélèvements à 100 k et huit à 115 k, soit 1,32 M puis 1,92 M en stock après le prix de 300 k. Amortissement marginal à 1 000 présents : 20, environ 26,67 et 21,43 lunes de production améliorée pour les trois passages, hors construction et délai de versement.
+
+Voir `docs/backlog.fr.md` pour reconnaissance, sièges prolongés, hospice, recrutement acheté, nouveaux bâtiments militaires, sabotage ciblé et chronique narrative tous joueurs. Ces idées restent différées.
 
 ## Livre de fin de règne — 22 octobre 2026
 

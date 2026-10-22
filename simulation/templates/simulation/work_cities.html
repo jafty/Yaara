@@ -16,6 +16,10 @@
                 </dl>
                 {% if view.local_funding and city.shortfall %}<p class="work-shortfall">{% blocktranslate with amount=city.shortfall %}Il manque {{ amount }} Mesures dans cette cité.{% endblocktranslate %}</p>{% endif %}
             {% endif %}
+            {% if city.work_name %}<p>{% blocktranslate with finish=city.finish_moon effect=city.first_effect_moon remaining=city.stock_after %}Achèvement : lune {{ finish }}. Premier effet : lune {{ effect }}. Réserves après paiement : {{ remaining }} Mesures.{% endblocktranslate %}</p>
+                {% if city.siege_shortfall_after %}<p class="reserve-warning">{% translate "Attention : moins d’un mois de réserves de siège après ce chantier." %}</p>{% endif %}
+                {% if city.effect_after_reign %}<p class="reserve-warning">{% translate "Le premier effet économique arriverait après la fin du règne." %}</p>{% endif %}
+            {% endif %}
             {% if city.reason %}<p class="work-reason">{{ city.reason }}</p>{% endif %}
         </div>
     </div>

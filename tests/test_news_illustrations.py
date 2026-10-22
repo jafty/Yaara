@@ -42,7 +42,7 @@ from tests.stubs import FixedRandom
     ],
 )
 def test_action_start_artwork_http(user, language, tab, heading, kind, scene):
-    game = services.create_game(user, "Action artwork", opponents="passive")
+    game = services.create_game(user, "Action artwork", opponents="passive", economy_version=3)
     phrase = STARTED_ACTION_PHRASES[kind]
     title = phrase if heading == "action" else message("Votre décret entre en vigueur")
     body = message(
@@ -83,7 +83,7 @@ def test_action_start_artwork_http(user, language, tab, heading, kind, scene):
     ["sealed", "cancelled", "invalidated", "original", "unknown", "plain-body", "other-kind"],
 )
 def test_action_start_artwork_fallback(user, variation):
-    game = services.create_game(user, "Neutral artwork", opponents="passive")
+    game = services.create_game(user, "Neutral artwork", opponents="passive", economy_version=3)
     title = message(
         {
             "sealed": "Décret scellé",
@@ -208,7 +208,7 @@ def test_combat_artwork(monkeypatch, kind, outcome, expected):
 def test_combat_artwork_http(
     user, monkeypatch, language, tab, recipient, direction, kind, outcome, expected
 ):
-    game = services.create_game(user, "News artwork", opponents="passive")
+    game = services.create_game(user, "News artwork", opponents="passive", economy_version=3)
     game.state, events = combat_news(monkeypatch, kind, outcome)
     game.memberships.update(actor=recipient)
     services.persist(game, events)
@@ -239,7 +239,7 @@ def test_combat_artwork_http(
 @pytest.mark.usefixtures("test_static_storage")
 @pytest.mark.parametrize("variation", ["original", "structured", "unknown-scene", "other-kind"])
 def test_archive_artwork(user, variation):
-    game = services.create_game(user, "Archive", opponents="passive")
+    game = services.create_game(user, "Archive", opponents="passive", economy_version=3)
     content = {
         "title": {"template": "Old title", "values": {}},
         "body": {"template": "Old body", "values": {}},
@@ -339,7 +339,11 @@ def test_launched_action_heading(kind, french, english):
     When the order starts at Moon closure.
     Then its report heading names the launched action in French and English.
     """
-    state = engine.new_state(opponents="passive") if kind != "equipment" else rich_state()
+    state = (
+        engine.new_state(opponents="passive", economy_version=3)
+        if kind != "equipment"
+        else rich_state()
+    )
     for city in state["cities"].values():
         city["stock"] = 2_400_000
     if kind == "repair":

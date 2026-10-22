@@ -85,7 +85,7 @@ def test_map(user, language):
 )
 @pytest.mark.parametrize("language", ["fr", "en"])
 def test_map_house_emblems(user, language):
-    game = services.create_game(user, "Seals", opponents="passive")
+    game = services.create_game(user, "Seals", opponents="passive", economy_version=3)
     # A captured city bears its current owner's emblem.
     game.state["cities"]["c1"]["owner"] = "p2"
     game.save()

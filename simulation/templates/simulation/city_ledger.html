@@ -8,6 +8,8 @@
     </dl>
     {% if not view.finished %}<p class="aside-text">{% blocktranslate with v0=view.harvest_moon %}Le prélèvement s’accumule à chaque clôture et reste indisponible jusqu’au versement, à la clôture de la lune {{ v0 }}. Ce montant n’est pas une prévision de la récolte finale.{% endblocktranslate %}</p>{% endif %}
     {% if view.local_funding %}<p>{% translate "Chaque cité finance ses travaux. Les cités qui fournissent une expédition en paient les frais ; aucun autre grenier ne contribue." %}</p>{% else %}<p>{% translate "Les dépenses sont réparties automatiquement entre les greniers de votre maison. Les réserves restent locales pour les pillages et le stockage." %}</p>{% endif %}
+    <p>{% blocktranslate with count=view.free_teams harvest=view.harvest_moon %}Équipes libres : {{ count }}. Prochaine récolte : lune {{ harvest }}.{% endblocktranslate %}{% if view.next_free_team_moon %} {% blocktranslate with moon=view.next_free_team_moon %}Prochaine équipe libérée : lune {{ moon }}.{% endblocktranslate %}{% endif %}</p>
+    {% if view.rules == 'V1' %}{% include 'simulation/ledger_help.html' with topic='siege' %}{% endif %}
     <ul class="city-ledger">{% for city in view.owned_cities %}
         <li class="city-entry" id="city-{{ city.id }}">
             {% include 'simulation/illustration.html' with scene='city' variant=city.id compact=True %}
@@ -16,8 +18,14 @@
                 <div><dt>{% translate "Grenier" %}</dt><dd>{{ city.stock }} / {{ city.capacity }}</dd></div>
                 <div><dt>{% translate "Disponible" %}</dt><dd>{{ city.available_stock }}</dd></div>
                 <div><dt>{% translate "Prélèvement en préparation" %}</dt><dd>{{ city.tax }}</dd></div>
+                <div><dt>{% translate "Fidèles disponibles" %}</dt><dd>{{ city.available_fideles }}</dd></div>
                 <div><dt>{% translate "Équipes" %}</dt><dd>{% if city.busy %}{% translate "Occupées" %}{% else %}{% translate "Libres" %}{% endif %}</dd></div>
             </dl>
+            <p class="city-situation">{% if city.engaged %}<strong>{% translate "Une expédition est engagée vers cette cité." %}</strong>{% elif city.frontier %}{% translate "Cité de frontière : accessible à une maison ennemie." %}{% else %}{% translate "Cité intérieure : pas de frontière ennemie directe." %}{% endif %}</p>
+            {% if city.siege_shortfall %}<p class="reserve-warning">{% blocktranslate with need=city.siege_food missing=city.siege_shortfall %}Moins d’un mois de siège : besoin de {{ need }} Mesures ; manque de {{ missing }} après les réservations.{% endblocktranslate %}</p>{% endif %}
+            {% if city.busy %}<p>{% for task in city.team_tasks %}{{ task }} · {% endfor %}{% blocktranslate with moon=city.team_free_moon %}Équipe disponible à la lune {{ moon }}.{% endblocktranslate %}</p>{% endif %}
+            {% for building in city.buildings %}{% if building.damaged %}<p class="reserve-warning">{{ building.name }} · {% translate "Ouvrage endommagé" %}</p>{% endif %}{% endfor %}
+            {% if city.recent_report %}<p><a href="?tab=letters#report-{{ city.recent_report.id }}">{% blocktranslate with moon=city.recent_report.month %}Lune {{ moon }}{% endblocktranslate %} · {{ city.recent_report.title }} →</a></p>{% endif %}
         </li>
     {% empty %}<li>{% translate "Aucune cité ne demeure sous votre sceau." %}</li>{% endfor %}</ul>
 </section>

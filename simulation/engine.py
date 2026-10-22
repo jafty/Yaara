@@ -16,22 +16,27 @@ from .narration import (
     completed_work_phrase,
     military_losses,
     number,
+    observed_losses,
     raid_finances,
     returned_loot,
 )
 from .rules import (
+    ACTION_LABELS,
     EQUIPMENT_LABELS,
-    EXPEDITION_PRICES,
     OUTCOME_LABELS,
     RuleError,
     allocate,
     capacities,
     capture_result,
+    effective_level,
     equipment_labels,
     equipment_values,
+    expedition_prices,
+    integrity_after_combat,
     losses,
     raid_result,
     rule_family,
+    strategic_raid_result,
     tax_yield,
     wall_multiplier,
     work_prices,
@@ -54,7 +59,7 @@ def new_state(
     calendar_version=2,
     forge_version=2,
     map_version=3,
-    economy_version=3,
+    economy_version=4,
 ):
     rule_family(version)
     if reign_months not in (24, 60, 120, 240) or opponents not in ("active", "passive"):
@@ -68,7 +73,7 @@ def new_state(
             "owner": f"p{index // 3 + 1}",
             "population": 1000,
             "fideles": 100,
-            "stock": 600_000,
+            "stock": 900_000 if economy_version >= 4 else 600_000,
             "tax": 0,
             "irrigation": 0,
             "storage": 0,
@@ -81,6 +86,7 @@ def new_state(
                 if economy_version >= 3
                 else {}
             ),
+            **({"integrity": 100, "damaged_works": []} if economy_version >= 4 else {}),
             "military_deaths": 0,
             "civilian_deaths": 0,
         }
@@ -116,6 +122,7 @@ def new_state(
         "orders": [],
         "works": [],
         "expeditions": [],
+        **({"convoys": []} if economy_version >= 4 else {}),
         "result": None,
     }
 
@@ -133,6 +140,8 @@ def absent(state, city_id):
         mission["cohorts"].get(city_id, 0)
         for mission in state["expeditions"]
         if mission["status"] != "completed"
+        and city_id not in mission.get("detached_origins", [])
+        and city_id not in mission.get("arrived_origins", [])
     )
 
 
@@ -234,18 +243,30 @@ def work_spec(state, city, kind):
         raise RuleError(message("Cette action appartient aux règles V1."))
     if kind == "forge" and not local_forges(state):
         raise RuleError(message("Ce règne conserve son projet d’armement commun."))
-    if kind == "repair":
-        if not city["walls"] or not city["damaged"]:
+    strategic = state.get("economy_version", 1) >= 4
+    if kind in ("repair_watch", "repair_shelter"):
+        family = kind.removeprefix("repair_")
+        if family not in city["damaged_works"]:
+            raise RuleError(message("Cet ouvrage ne nécessite aucune réparation."))
+        level = city[family]
+    elif kind == "repair":
+        if city["integrity"] == 100 if strategic else not city["walls"] or not city["damaged"]:
             raise RuleError(message("Cette enceinte ne nécessite aucune réparation."))
         level = city["walls"]
     else:
+        if strategic and kind in city["damaged_works"]:
+            raise RuleError(message("Il faut réparer cet ouvrage avant de l’améliorer."))
         level = city[kind] + 1
         maximum = len(prices[kind]) if state.get("economy_version", 1) >= 3 else rules.max_level
         if level > maximum:
             raise RuleError(message("Le niveau maximal de cet ouvrage est déjà atteint."))
         if kind == "walls" and city["damaged"]:
             raise RuleError(message("Il faut réparer l’enceinte avant de la renforcer."))
-    cost, duration = prices[kind][level - 1]
+    cost, duration = (
+        (20_000, 2) if strategic and kind == "repair" and level == 0 else prices[kind][level - 1]
+    )
+    if strategic and closing_moon(state) + duration > state["config"]["reign_months"]:
+        raise RuleError(message("Ce chantier s’achèverait après la fin du règne."))
     if kind == "forge" and state.get("economy_version", 1) < 3:
         cost = max(cost, (600 if level == 1 else 1400) * city["population"])
     return {"city": city["id"], "kind": kind, "level": level, "cost": cost, "duration": duration}
@@ -277,6 +298,7 @@ def prepare_order(state, actor, spec, order_id):
         city["id"]: city["stock"] - funds[city["id"]] for city in owned_cities(state, actor)
     }
     kind = spec.get("kind")
+    prices = expedition_prices(state.get("economy_version", 1))
     order = {
         "id": order_id,
         "actor": actor,
@@ -310,6 +332,30 @@ def prepare_order(state, actor, spec, order_id):
                 message("Votre forge est déjà engagée ou son organisation est achevée.")
             )
         order.update(equipment_spec(state, actor))
+    elif kind == "convoy" and state.get("economy_version", 1) >= 4:
+        origin, target, cargo = spec.get("origin"), spec.get("target"), spec.get("cargo")
+        if origin not in available or target not in available or origin == target:
+            raise RuleError(message("Choisissez deux cités distinctes de votre maison."))
+        if target not in connected_component(state, origin):
+            raise RuleError(message("Le convoi exige un chemin entièrement amical."))
+        if isinstance(cargo, bool) or not isinstance(cargo, int) or not 1 <= cargo <= 500_000:
+            raise RuleError(message("La cargaison doit contenir de 1 à 500 000 Mesures entières."))
+        if any(
+            item["kind"] == "convoy"
+            and item.get("origin") == origin
+            and item["status"] in ("confirmed", "active", "returning")
+            for item in state["orders"]
+        ):
+            raise RuleError(message("Un convoi est déjà engagé depuis cette cité."))
+        fee = (cargo * [10, 7, 5][state["cities"][origin]["transport"]] + 99) // 100
+        order.update(
+            origin=origin,
+            target=target,
+            cargo=cargo,
+            fee=fee,
+            cost=cargo + fee,
+            funding={origin: cargo + fee},
+        )
     elif kind in ("raid", "capture"):
         target = spec.get("target")
         if target not in state["cities"] or state["cities"][target]["owner"] == actor:
@@ -355,8 +401,7 @@ def prepare_order(state, actor, spec, order_id):
             {
                 "target": target,
                 "contributions": contributions,
-                "cost": EXPEDITION_PRICES[kind]["base"]
-                + EXPEDITION_PRICES[kind]["per_person"] * total,
+                "cost": prices[kind]["base"] + prices[kind]["per_person"] * total,
             }
         )
     else:
@@ -366,10 +411,10 @@ def prepare_order(state, actor, spec, order_id):
             for task in order["tasks"]:
                 task["funding"] = {task["city"]: task["cost"]}
                 order["funding"][task["city"]] = task["cost"]
-        else:
-            fees = allocate(EXPEDITION_PRICES[kind]["base"], contributions)
+        elif kind != "convoy":
+            fees = allocate(prices[kind]["base"], contributions)
             order["funding"] = {
-                city_id: fees[city_id] + EXPEDITION_PRICES[kind]["per_person"] * count
+                city_id: fees[city_id] + prices[kind]["per_person"] * count
                 for city_id, count in contributions.items()
             }
         for city_id, amount in order["funding"].items():
@@ -439,10 +484,14 @@ def random_stream(seed, month, purpose):
     return random.Random(int.from_bytes(digest, "big"))
 
 
-def report(events, recipient, kind, title, body, *, scene=None):
+def report(events, recipient, kind, title, body, *, scene=None, city_id=None, observation=None):
     content = {"title": describe(title), "body": describe(body)}
     if scene:
         content["scene"] = scene
+    if city_id:
+        content["city_id"] = city_id
+    if observation is not None:
+        content["observation"] = describe(observation)
     events.append(
         {
             "recipient": recipient,
@@ -491,7 +540,79 @@ def harvest_city(state, city, events):
             p5=number(city["population"]),
             p6=city["military_deaths"] + city["civilian_deaths"],
         ),
+        city_id=city["id"] if state.get("economy_version", 1) >= 4 else None,
     )
+
+
+def departure_refuge(state, origin):
+    return next(iter(sorted(connected_component(state, origin) - {origin})), None)
+
+
+def detach_absent_contingents(state, city_id):
+    """Only people physically present change house when their city is captured."""
+    for mission in state["expeditions"]:
+        if (
+            mission["status"] != "completed"
+            and city_id in mission["cohorts"]
+            and city_id not in mission["detached_origins"]
+            and city_id not in mission["arrived_origins"]
+        ):
+            state["cities"][city_id]["population"] -= mission["cohorts"][city_id]
+            mission["detached_origins"].append(city_id)
+
+
+def return_convoys(state, events):
+    for convoy in state.get("convoys", []):
+        if convoy["status"] == "completed" or convoy["arrival_month"] > state["month"]:
+            continue
+        actor = convoy["actor"]
+        target = state["cities"][convoy["target"]]
+        if target["owner"] != actor and convoy["status"] == "outbound":
+            destination = (
+                convoy["origin"]
+                if state["cities"][convoy["origin"]]["owner"] == actor
+                else convoy["refuge"]
+            )
+            if destination and state["cities"][destination]["owner"] == actor:
+                convoy.update(
+                    target=destination, status="returning", arrival_month=state["month"] + 1
+                )
+                report(
+                    events,
+                    actor,
+                    "return",
+                    message("Le convoi fait demi-tour"),
+                    message(
+                        "La destination a changé de maître. Le convoi tentera de rejoindre {city} à la lune {moon}.",
+                        city=state["cities"][destination]["name"],
+                        moon=convoy["arrival_month"],
+                    ),
+                )
+                continue
+        deposited = (
+            min(convoy["cargo"], capacity(target, state["economy_version"]) - target["stock"])
+            if target["owner"] == actor
+            else 0
+        )
+        target["stock"] += deposited
+        convoy.update(status="completed", deposited=deposited, lost=convoy["cargo"] - deposited)
+        next(order for order in state["orders"] if order["id"] == convoy["id"])["status"] = (
+            "completed"
+        )
+        report(
+            events,
+            actor,
+            "return",
+            message("Le compte du convoi"),
+            message(
+                "Cargaison conservée à {city} : {kept} Mesures ; cargaison perdue ou sans place : {lost}. Frais payés : {fee} Mesures.",
+                city=target["name"],
+                kept=number(deposited),
+                lost=number(convoy["lost"]),
+                fee=number(convoy["fee"]),
+            ),
+            city_id=target["id"],
+        )
 
 
 def depart_orders(state, events):
@@ -518,8 +639,17 @@ def depart_orders(state, events):
                 < state["cities"][order["target"]]["raid_protected_until"]
             ):
                 reason = message("La protection contre le pillage est encore active.")
+        if order["kind"] == "convoy" and order["target"] not in connected_component(
+            state, order["origin"]
+        ):
+            reason = message("Le chemin du convoi n’est plus amical.")
         for task in order["tasks"]:
             city = state["cities"][task["city"]]
+            if state.get("economy_version", 1) >= 4 and (
+                state["month"] + task["duration"] > state["config"]["reign_months"]
+                or task["kind"] in city["damaged_works"]
+            ):
+                reason = message("Le délai du règne ou un dommage empêche ce chantier.")
             if city["owner"] != actor or (task["kind"] == "walls" and city["damaged"]):
                 reason = message("La cité ou l’état de l’enceinte ne permet plus ces travaux.")
         if reason:
@@ -537,7 +667,21 @@ def depart_orders(state, events):
             state["cities"][city_id]["stock"] -= amount
         order["status"] = "active"
         order["executed_month"] = state["month"]
-        if order["kind"] in ("raid", "capture"):
+        if order["kind"] == "convoy":
+            state["convoys"].append(
+                {
+                    "id": order["id"],
+                    "actor": actor,
+                    "origin": order["origin"],
+                    "target": order["target"],
+                    "cargo": order["cargo"],
+                    "fee": order["fee"],
+                    "refuge": departure_refuge(state, order["origin"]),
+                    "arrival_month": state["month"] + 2,
+                    "status": "outbound",
+                }
+            )
+        elif order["kind"] in ("raid", "capture"):
             for city_id, count in order["contributions"].items():
                 state["cities"][city_id]["fideles"] -= count
             state["expeditions"].append(
@@ -571,6 +715,12 @@ def depart_orders(state, events):
                         city_id: state["cities"][city_id][attribute]
                         for city_id in order["contributions"]
                     }
+            if state.get("economy_version", 1) >= 4:
+                mission["refuges"] = {
+                    origin: departure_refuge(state, origin) for origin in mission["cohorts"]
+                }
+                mission["detached_origins"] = []
+                mission["arrived_origins"] = []
         else:
             tasks = (
                 order["tasks"]
@@ -626,8 +776,12 @@ def finish_works(state, events):
             )
         else:
             city = state["cities"][work["city"]]
-            if work["kind"] == "repair":
+            if work["kind"] in ("repair_watch", "repair_shelter"):
+                city["damaged_works"].remove(work["kind"].removeprefix("repair_"))
+            elif work["kind"] == "repair":
                 city["damaged"] = False
+                if state.get("economy_version", 1) >= 4:
+                    city["integrity"] = 100
             else:
                 city[work["kind"]] = work["level"]
             recipient = city["owner"]
@@ -639,11 +793,18 @@ def finish_works(state, events):
                     work["kind"], work["level"], state.get("economy_version", 1)
                 ),
             )
-        report(events, recipient, "work", title, body)
+        report(
+            events,
+            recipient,
+            "work",
+            title,
+            body,
+            city_id=work.get("city") if state.get("economy_version", 1) >= 4 else None,
+        )
     active = {work["order_id"] for work in state["works"] if work["status"] == "active"}
     for order in state["orders"]:
         if (
-            order["kind"] not in ("raid", "capture")
+            order["kind"] not in ("raid", "capture", "convoy")
             and order["status"] == "active"
             and order["id"] not in active
         ):
@@ -656,6 +817,13 @@ def relief_allocations(state, missions, priority):
     for city_id in priority:
         city = state["cities"][city_id]
         component = connected_component(state, city_id)
+        if state.get("economy_version", 1) >= 4 and any(
+            mission["kind"] == "capture"
+            and mission["target"] == city_id
+            and mission["actor"] != city["owner"]
+            for mission in missions
+        ):
+            continue
         threats = {
             mission["id"]: mission_strength(mission)
             for mission in missions
@@ -712,7 +880,8 @@ def lose_attackers(state, mission, dead, priority):
     split = allocate(dead, mission["cohorts"], priority)
     for origin, count in split.items():
         mission["cohorts"][origin] -= count
-        military_deaths(state, origin, count)
+        if origin not in mission.get("detached_origins", []):
+            military_deaths(state, origin, count)
 
 
 def observation(enemy_count, own_survivors, equipment, economy_version=1):
@@ -752,6 +921,39 @@ def siege_reduction(mission):
     )
 
 
+def raid_aftermath(state, target, survivors, engaged_survivors, result, draw, relief_away=0):
+    noncombat_dead = 0
+    if result.stolen or result.destroyed:
+        present = target["population"] - absent(state, target["id"]) - relief_away
+        unengaged = present - engaged_survivors
+        ceiling = min(unengaged * 2 // 1000, survivors * 5 // 100)
+        noncombat_dead = draw.randint(0, ceiling)
+        unengaged_fideles = target["fideles"] - engaged_survivors
+        faithful_dead = sum(
+            index < unengaged_fideles for index in draw.sample(range(unengaged), noncombat_dead)
+        )
+        target["population"] -= noncombat_dead
+        target["fideles"] -= faithful_dead
+        target["civilian_deaths"] += noncombat_dead
+    damaged = None
+    candidates = [
+        family
+        for family in ("watch", "shelter")
+        if target[family] and family not in target["damaged_works"]
+    ]
+    if (
+        result.outcome in ("unopposed", "success", "contested_win")
+        and survivors
+        and candidates
+        and draw.randrange(100) < 20
+    ):
+        selected = draw.choice(candidates)
+        if selected == "watch" or draw.randrange(4) == 0:
+            target["damaged_works"].append(selected)
+            damaged = selected
+    return noncombat_dead, damaged
+
+
 def resolve_combats(state, seed, events):
     due = [
         mission
@@ -771,6 +973,9 @@ def resolve_combats(state, seed, events):
         "relief": audit_relief,
         "encounters": {},
     }
+    strategic = state.get("economy_version", 1) >= 4
+    if strategic:
+        audit["outcomes"] = {}
     for mission in due:
         target = state["cities"][mission["target"]]
         defender = target["owner"]
@@ -813,43 +1018,104 @@ def resolve_combats(state, seed, events):
                     ),
                 )
                 continue
+            watch = effective_level(target, "watch") if state.get("economy_version", 1) >= 3 else 0
             fraction = (
-                [0, 40, 60][target["watch"]]
-                if state.get("economy_version", 1) >= 3 and target["watch"]
+                [0, 40, 60][watch]
+                if watch
                 else random_stream(seed, state["month"], f"raid:{mission['id']}").choice(
                     [20, 30, 40]
                 )
             )
             audit["encounters"][mission["id"]] = fraction
             encountered = max(1, target["fideles"] * fraction // 100) if target["fideles"] else 0
-            result = raid_result(
-                attackers,
-                Fraction(attack_strength, attackers),
-                encountered,
-                defense_combativity,
-                max(0, target["tax"] - [200_000, 400_000, 800_000][target["shelter"]])
-                if state.get("economy_version", 1) >= 3
-                else target["stock"],
-                (lambda dead: carrying_capacity(mission, dead, priority))
-                if state.get("economy_version", 1) >= 3
-                else None,
-            )
+            if strategic:
+                draw = random_stream(seed, state["month"], f"raid-effects:{mission['id']}")
+                intercepted = (
+                    attack_strength < encountered * defense_combativity * Fraction(3, 4)
+                    and draw.randrange(100) < [10, 20, 30][watch]
+                )
+                result = strategic_raid_result(
+                    attackers,
+                    attack_strength,
+                    encountered,
+                    encountered * defense_combativity,
+                    target["tax"],
+                    [200_000, 400_000, 800_000][effective_level(target, "shelter")],
+                    intercepted,
+                    lambda dead: carrying_capacity(mission, dead, priority),
+                )
+            else:
+                result = raid_result(
+                    attackers,
+                    Fraction(attack_strength, attackers),
+                    encountered,
+                    defense_combativity,
+                    max(0, target["tax"] - [200_000, 400_000, 800_000][target["shelter"]])
+                    if state.get("economy_version", 1) >= 3
+                    else target["stock"],
+                    (lambda dead: carrying_capacity(mission, dead, priority))
+                    if state.get("economy_version", 1) >= 3
+                    else None,
+                )
             lose_attackers(state, mission, result.attacker_losses, priority)
             target["fideles"] -= result.defender_losses
             military_deaths(state, target["id"], result.defender_losses)
             seasonal = state.get("economy_version", 1) >= 3
             target["tax" if seasonal else "stock"] -= result.stolen + result.destroyed
             mission["loot"] = result.stolen
-            scene_outcome = "success" if result.outcome == "success" else "failure"
-            if result.outcome == "success" and (
-                not seasonal or result.stolen + result.destroyed > 0
+            won = result.outcome in ("success", "contested_win", "unopposed")
+            scene_outcome = "success" if won else "failure"
+            civilian_dead, damaged_work = (
+                raid_aftermath(
+                    state,
+                    target,
+                    attackers - result.attacker_losses,
+                    encountered - result.defender_losses,
+                    result,
+                    draw,
+                    relief_away=sum(
+                        item["count"] for item in relief if item["origin"] == target["id"]
+                    ),
+                )
+                if strategic
+                else (0, None)
+            )
+            if strategic and (
+                result.stolen + result.destroyed + result.defender_losses + civilian_dead > 0
+                or damaged_work
+            ):
+                target["raid_protected_until"] = state["month"] + 3
+            if (
+                not strategic
+                and result.outcome == "success"
+                and (not seasonal or result.stolen + result.destroyed > 0)
             ):
                 target["raid_protected_until"] = state["month"] + (3 if seasonal else 12)
+            if strategic:
+                audit["outcomes"][mission["id"]] = {
+                    "kind": "raid",
+                    "outcome": result.outcome,
+                    "target": target["id"],
+                    "attacker": actor,
+                    "defender": defender,
+                    "attacker_deaths": result.attacker_losses,
+                    "defender_deaths": result.defender_losses,
+                    "noncombat_deaths": civilian_dead,
+                    "stolen": result.stolen,
+                    "destroyed": result.destroyed,
+                    "damaged_work": damaged_work,
+                }
             report(
                 events,
                 actor,
                 "battle",
-                message("{p0} à {p1}", p0=OUTCOME_LABELS[result.outcome], p1=target["name"]),
+                message(
+                    "{p0} à {p1}",
+                    p0=message("Pillage sans opposition")
+                    if result.outcome == "unopposed"
+                    else OUTCOME_LABELS[result.outcome],
+                    p1=target["name"],
+                ),
                 raid_finances(
                     order["cost"],
                     [
@@ -877,8 +1143,39 @@ def resolve_combats(state, seed, events):
                     attackers - result.attacker_losses,
                     defender_equipment,
                     state.get("economy_version", 1),
+                )
+                + (
+                    message(
+                        " Nos survivants sont au nombre de {count}. ",
+                        count=attackers - result.attacker_losses,
+                    )
+                    + observed_losses(result.defender_losses, attackers - result.attacker_losses)
+                    + (
+                        message(" Nos hommes ont incendié une partie des récoltes accessibles.")
+                        if result.destroyed and attackers - result.attacker_losses >= 10
+                        else ""
+                    )
+                    + (
+                        message(
+                            " Un ouvrage a été endommagé : {work}.",
+                            work=ACTION_LABELS[damaged_work],
+                        )
+                        if damaged_work and attackers - result.attacker_losses >= 10
+                        else ""
+                    )
+                    if strategic
+                    else ""
                 ),
                 scene=f"offensive-raid-{scene_outcome}",
+                city_id=target["id"] if strategic else None,
+                observation=observation(
+                    encountered,
+                    attackers - result.attacker_losses,
+                    defender_equipment,
+                    state.get("economy_version", 1),
+                )
+                if strategic
+                else None,
             )
             report(
                 events,
@@ -903,8 +1200,29 @@ def resolve_combats(state, seed, events):
                     p0=result.defender_losses,
                     p1=number(result.stolen),
                     p2=number(result.destroyed),
+                )
+                + (
+                    message(
+                        " Victimes parmi les habitants non engagés : {count}. ", count=civilian_dead
+                    )
+                    + message(
+                        " Nos survivants sont au nombre de {count}. ",
+                        count=encountered - result.defender_losses,
+                    )
+                    + observed_losses(result.attacker_losses, encountered - result.defender_losses)
+                    + (
+                        message(
+                            " Un ouvrage a été endommagé : {work}. Il fonctionne au niveau inférieur jusqu’à sa réparation.",
+                            work=ACTION_LABELS[damaged_work],
+                        )
+                        if damaged_work
+                        else ""
+                    )
+                    if strategic
+                    else ""
                 ),
                 scene=f"received-raid-{scene_outcome}",
+                city_id=target["id"] if strategic else None,
             )
             continue
         support = [
@@ -927,11 +1245,15 @@ def resolve_combats(state, seed, events):
         reinforcement = sum(item["count"] for item in support)
         relief_strength = sum(item["count"] * item["combativity"] for item in support)
         field = local * defense_combativity + relief_strength
+        reduction = (
+            siege_reduction(mission) if state.get("economy_version", 1) >= 3 else Fraction(0)
+        )
         wall = wall_multiplier(
             target["walls"],
             target["damaged"],
-            siege_reduction(mission) if state.get("economy_version", 1) >= 3 else Fraction(0),
+            reduction,
             state.get("economy_version", 1),
+            integrity=target.get("integrity", 100),
         )
         fortified = local * defense_combativity * wall + relief_strength
         exported = sum(item["count"] for item in relief if item["origin"] == target["id"])
@@ -943,6 +1265,7 @@ def resolve_combats(state, seed, events):
             fortified,
             target["stock"],
             present_population,
+            economy_version=state.get("economy_version", 1),
         )
         attacker_dead = losses(attackers, result.attacker_rate)
         defender_dead = losses(local + reinforcement, result.defender_rate)
@@ -963,7 +1286,25 @@ def resolve_combats(state, seed, events):
         target["population"] -= civilian_dead
         target["civilian_deaths"] += civilian_dead
         target["stock"] -= result.food_used
+        if strategic:
+            audit["outcomes"][mission["id"]] = {
+                "kind": "capture",
+                "outcome": result.outcome,
+                "target": target["id"],
+                "attacker": actor,
+                "defender": defender,
+                "attacker_deaths": attacker_dead,
+                "defender_deaths": defender_dead,
+                "noncombat_deaths": civilian_dead,
+                "food_used": result.food_used,
+            }
+            target["integrity"] = integrity_after_combat(
+                target["integrity"], result.outcome, reduction
+            )
+            target["damaged"] = target["integrity"] != 100
         if result.captured:
+            if strategic:
+                detach_absent_contingents(state, target["id"])
             target["owner"] = actor
             if (
                 rule_family(state["rules"]).siege
@@ -983,6 +1324,22 @@ def resolve_combats(state, seed, events):
                         p1=state["players"][actor]["name"],
                     ),
                 )
+        if strategic:
+            for item in support:
+                report(
+                    events,
+                    defender,
+                    "battle",
+                    message("Les secours de {city}", city=state["cities"][item["origin"]]["name"]),
+                    message(
+                        "À {target}, le contingent de {origin} a perdu {dead} Fidèles ; {survivors} ont survécu et restent attachés à votre maison.",
+                        target=target["name"],
+                        origin=state["cities"][item["origin"]]["name"],
+                        dead=split[item["origin"]],
+                        survivors=item["count"],
+                    ),
+                    city_id=item["origin"],
+                )
         scene_outcome = "success" if result.captured else "failure"
         report(
             events,
@@ -998,8 +1355,27 @@ def resolve_combats(state, seed, events):
                 attackers - attacker_dead,
                 defender_equipment,
                 state.get("economy_version", 1),
+            )
+            + (
+                message(
+                    " Survivants : {survivors}. Coût payé : {cost} Mesures. ",
+                    survivors=attackers - attacker_dead,
+                    cost=number(order["cost"]),
+                )
+                + observed_losses(defender_dead, attackers - attacker_dead)
+                if strategic
+                else ""
             ),
             scene=f"offensive-capture-{scene_outcome}",
+            city_id=target["id"] if strategic else None,
+            observation=observation(
+                local + reinforcement,
+                attackers - attacker_dead,
+                defender_equipment,
+                state.get("economy_version", 1),
+            )
+            if strategic
+            else None,
         )
         report(
             events,
@@ -1026,8 +1402,22 @@ def resolve_combats(state, seed, events):
                 local + reinforcement - defender_dead,
                 attacker_equipment,
                 state.get("economy_version", 1),
+            )
+            + (
+                message(
+                    " Les assaillants portaient le sceau de {house}. ",
+                    house=state["players"][actor]["name"],
+                )
+                + message(
+                    " Nos survivants sont au nombre de {count}. ",
+                    count=local + reinforcement - defender_dead,
+                )
+                + observed_losses(attacker_dead, local + reinforcement - defender_dead)
+                if strategic
+                else ""
             ),
             scene=f"received-capture-{scene_outcome}",
+            city_id=target["id"] if strategic else None,
         )
     # Relief stays away throughout the whole phase, even after its battle.
     for item in relief:
@@ -1035,9 +1425,105 @@ def resolve_combats(state, seed, events):
     return audit
 
 
+def return_contingents(state, mission, events):
+    """Settle each origin once, preserving detached people until actual arrival."""
+    actor = mission["actor"]
+    order = next(item for item in state["orders"] if item["id"] == mission["id"])
+    if "loot_shares" not in mission:
+        mission["loot_shares"] = allocate(mission["loot"], mission["cohorts"])
+        mission["return_routes"] = {}
+        mission["recovered_loot"] = 0
+    diverted = False
+    for origin, survivors in mission["cohorts"].items():
+        if origin in mission["arrived_origins"]:
+            continue
+        city = state["cities"][origin]
+        route = mission["return_routes"].get(origin)
+        if route is None and city["owner"] != actor and survivors:
+            refuge = mission["refuges"][origin]
+            if refuge and state["cities"][refuge]["owner"] == actor:
+                mission["return_routes"][origin] = refuge
+                diverted = True
+                report(
+                    events,
+                    actor,
+                    "return",
+                    message("Le contingent cherche refuge"),
+                    message(
+                        "{count} Fidèles de {origin} se dirigent vers {refuge}. Leur arrivée est prévue à la lune {moon}.",
+                        count=survivors,
+                        origin=city["name"],
+                        refuge=state["cities"][refuge]["name"],
+                        moon=state["month"] + 1,
+                    ),
+                )
+                continue
+        destination = state["cities"][route] if route else city
+        friendly = destination["owner"] == actor
+        if not friendly:
+            destination = city
+        if origin in mission["detached_origins"]:
+            destination["population"] += survivors
+        if friendly:
+            destination["fideles"] += survivors
+        loot = mission["loot_shares"][origin]
+        deposited = (
+            min(loot, capacity(destination, state["economy_version"]) - destination["stock"])
+            if friendly
+            else 0
+        )
+        destination["stock"] += deposited
+        mission["loot"] -= loot
+        mission["recovered_loot"] += deposited
+        mission["arrived_origins"].append(origin)
+        report(
+            events,
+            actor,
+            "return",
+            message("Retour du contingent de {city}", city=city["name"]),
+            message(
+                "{count} survivants ont rejoint {city}. {fate} Butin conservé : {kept} Mesures ; perdu ou sans place : {lost}.",
+                count=survivors,
+                city=destination["name"],
+                fate=message("Ils rejoignent les Fidèles de votre maison.")
+                if friendly
+                else message(
+                    "Ils sont démobilisés parmi les habitants, sans rejoindre les Fidèles du nouveau souverain."
+                ),
+                kept=number(deposited),
+                lost=number(loot - deposited),
+            ),
+            city_id=destination["id"],
+        )
+    if diverted:
+        mission["return_month"] = state["month"] + 1
+        return
+    if mission["kind"] == "raid":
+        report(
+            events,
+            actor,
+            "return",
+            message("Le bilan du raid"),
+            raid_finances(
+                order["cost"],
+                [
+                    (state["cities"][origin]["name"], amount)
+                    for origin, amount in order["funding"].items()
+                ],
+                mission["recovered_loot"],
+                settled=True,
+            ),
+        )
+    mission["loot"] = 0
+    mission["status"] = order["status"] = "completed"
+
+
 def return_expeditions(state, events):
     for mission in state["expeditions"]:
         if mission["status"] == "completed" or mission["return_month"] > state["month"]:
+            continue
+        if state.get("economy_version", 1) >= 4:
+            return_contingents(state, mission, events)
             continue
         shares = allocate(mission["loot"], mission["cohorts"])
         order = next(item for item in state["orders"] if item["id"] == mission["id"])
@@ -1103,13 +1589,25 @@ def return_expeditions(state, events):
         order["status"] = "completed"
 
 
+def displaced_population(state, actor):
+    return sum(
+        count
+        for mission in state["expeditions"]
+        if mission["actor"] == actor and mission["status"] != "completed"
+        for origin, count in mission["cohorts"].items()
+        if origin in mission.get("detached_origins", [])
+        and origin not in mission.get("arrived_origins", [])
+    )
+
+
 def standings(state):
     rows = [
         {
             "actor": actor,
             "name": player["name"],
             "cities": len(owned_cities(state, actor)),
-            "population": sum(city["population"] for city in owned_cities(state, actor)),
+            "population": sum(city["population"] for city in owned_cities(state, actor))
+            + displaced_population(state, actor),
         }
         for actor, player in state["players"].items()
     ]
@@ -1217,6 +1715,7 @@ def advance_month(state, seed):
         for city in state["cities"].values():
             harvest_city(state, city, events)
     return_expeditions(state, events)
+    return_convoys(state, events)
     check_end(state, events)
     if open_calendar(state) and state["status"] == "active":
         state["month"] += 1
@@ -1249,7 +1748,8 @@ def bot_orders(state, seed):
                     for city in cities
                     if city["id"] in eligible
                 }
-                budget = max(0, (wealth - 900_000) // 18000)
+                capture_price = expedition_prices(state.get("economy_version", 1))["capture"]
+                budget = max(0, (wealth - capture_price["base"]) // capture_price["per_person"])
                 total = min(240, budget, sum(contributions.values()))
                 if total >= 150:
                     contributions = allocate(total, contributions)

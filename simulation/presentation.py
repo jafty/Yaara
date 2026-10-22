@@ -19,6 +19,9 @@ ACTION_START_SCENES = {
     "shelter": "start-shelter",
     "transport": "start-transport",
     "siege": "start-siege",
+    "repair_watch": "start-watch",
+    "repair_shelter": "start-shelter",
+    "convoy": "return",
 }
 
 REPORT_SCENES = frozenset(
@@ -56,6 +59,7 @@ def report_view(report, *, state=None):
             state is not None
             and isinstance(title, dict)
             and title.get("template") == "La bataille de {p0}"
+            and not report.content.get("city_id")
         ):
             city_name = title["values"]["p0"]
             candidates = [
@@ -84,8 +88,15 @@ def report_view(report, *, state=None):
                 else message("L’attaque a échoué ; la défense a tenu.")
             )
             body = localize_message(outcome, language) + "\n\n" + body
+    city_id = report.content.get("city_id")
+    if state is not None and city_id not in state["cities"]:
+        city_id = None
     return {
         "id": report.pk,
+        "city_id": city_id,
+        "observation": render(report.content["observation"], language)
+        if report.content.get("observation")
+        else "",
         "month": max(1, report.month),
         "title": render(report.content["title"], language) if report.content else report.title,
         "body": body,
