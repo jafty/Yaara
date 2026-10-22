@@ -1,5 +1,10 @@
 # Implementation decisions
 
+## 2026-10-22 · Match the map to the existing frescoes
+
+- Replace the yellow, finely shaded terrain background with a redraw using the actual Council and cityscape images as style references. Match Council's pale ivory fibrous papyrus, rubbed mineral pigment and softly abraded edges; simplify mountains, dunes, rocks and scrub into flat shapes with stronger brown contours. Avoid the previous golden wash, realistic crag shading and heavy cracked/burnt parchment treatment.
+- Keep the existing background filename, sparse placement and complete-sheet proportions. Only the decorative raster asset changes; map controls, city labels, legend, geometry, gameplay and archived data remain unchanged. Use the same Presentation checkpoint and visual review of the current and legacy map layouts.
+
 ## 2026-10-21 · Painted terrain on worn parchment
 
 - The owner's follow-up replaces the first vector-decoration pass with one generated raster terrain background. Use visibly worn pale papyrus, fibres, cracks, rubbed mineral pigment and weathered edges, with sparse desert mountains, dunes, rocks and scrub around open areas. Keep the original map layout, borders, city markers, Roman house marks, typography and legend.
