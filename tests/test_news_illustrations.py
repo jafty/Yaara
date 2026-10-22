@@ -7,11 +7,110 @@ from django.test import Client
 from django.urls import reverse
 
 from simulation import engine, services
-from simulation.messages import render
+from simulation.messages import describe, message, render
 from simulation.models import Report
+from simulation.narration import STARTED_ACTION_PHRASES
 from tests.builders import rich_state
 from tests.cases import case
 from tests.stubs import FixedRandom
+
+
+@case(
+    "news-action-start-artwork",
+    "Owner: launched actions use contextual beginning scenes in Council and full letters, including older headings",
+)
+@pytest.mark.integration
+@pytest.mark.usefixtures("test_static_storage")
+@pytest.mark.parametrize("language", ["fr", "en"])
+@pytest.mark.parametrize("tab", ["domain", "letters"])
+@pytest.mark.parametrize("heading", ["action", "historical"])
+@pytest.mark.parametrize(
+    "kind,scene",
+    [
+        ("raid", "start-army"),
+        ("capture", "start-army"),
+        ("storage", "start-storage"),
+        ("forge", "start-forge"),
+        ("equipment", "start-forge"),
+        ("walls", "start-walls"),
+        ("repair", "start-walls"),
+        ("irrigation", "start-irrigation"),
+        ("watch", "start-watch"),
+        ("shelter", "start-shelter"),
+        ("transport", "start-transport"),
+        ("siege", "start-siege"),
+    ],
+)
+def test_action_start_artwork_http(user, language, tab, heading, kind, scene):
+    game = services.create_game(user, "Action artwork", opponents="passive")
+    phrase = STARTED_ACTION_PHRASES[kind]
+    title = phrase if heading == "action" else message("Votre décret entre en vigueur")
+    body = message(
+        "{p0} J’ai fait prélever {p1} Mesures dans les greniers qui les avaient promises. Les nouvelles vous seront rapportées à leur échéance.",
+        p0=phrase,
+        p1="200 000",
+    )
+    report = Report.objects.create(
+        game=game,
+        recipient="p1",
+        month=1,
+        kind="order",
+        title=title,
+        body=body,
+        content={"title": describe(title), "body": describe(body)},
+    )
+    original = deepcopy(report.content)
+    client = Client()
+    client.force_login(user)
+    client.cookies["django_language"] = language
+    page = client.get(reverse("game", args=[game.id]), {"tab": tab})
+    assert page.status_code == 200
+    size = " illustration-small" if tab == "domain" else ""
+    assert f'class="illustration illustration-{scene}{size}"' in page.content.decode()
+    assert render(original["title"], language) in page.content.decode()
+    report.refresh_from_db()
+    assert report.content == original
+
+
+@case(
+    "news-action-start-artwork-fallback",
+    "Owner: unstarted or unrecognized decrees keep neutral artwork without guessing an action",
+)
+@pytest.mark.integration
+@pytest.mark.usefixtures("test_static_storage")
+@pytest.mark.parametrize(
+    "variation",
+    ["sealed", "cancelled", "invalidated", "original", "unknown", "plain-body", "other-kind"],
+)
+def test_action_start_artwork_fallback(user, variation):
+    game = services.create_game(user, "Neutral artwork", opponents="passive")
+    title = message(
+        {
+            "sealed": "Décret scellé",
+            "cancelled": "Décret retiré",
+            "invalidated": "Ordre invalidé",
+        }.get(variation, "Original title")
+    )
+    body = message("Original body")
+    if variation == "other-kind":
+        title = STARTED_ACTION_PHRASES["raid"]
+    content = {} if variation == "original" else {"title": describe(title), "body": describe(body)}
+    if variation == "plain-body":
+        content["body"] = "Original body"
+    Report.objects.create(
+        game=game,
+        recipient="p1",
+        month=1,
+        kind="letter" if variation == "other-kind" else "order",
+        title=title,
+        body=body,
+        content=content,
+    )
+    client = Client()
+    client.force_login(user)
+    page = client.get(reverse("game", args=[game.id]), {"tab": "letters"})
+    assert page.status_code == 200
+    assert 'class="illustration illustration-letter"' in page.content.decode()
 
 
 def combat_news(monkeypatch, kind, outcome):

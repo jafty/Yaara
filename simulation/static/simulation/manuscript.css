@@ -835,6 +835,37 @@ input[type="number"] {
 .illustration-siege { --scene-x: 0; --scene-y: 100%; }
 .illustration-return { --scene-x: 50%; --scene-y: 100%; }
 .illustration-letter { --scene-x: 100%; --scene-y: 100%; }
+.illustration-start-army,
+.illustration-start-storage,
+.illustration-start-forge,
+.illustration-start-walls,
+.illustration-start-irrigation,
+.illustration-start-watch,
+.illustration-start-shelter,
+.illustration-start-transport,
+.illustration-start-siege { --scene-image: url("illustrations/action-starts.png"); }
+.illustration-start-army,
+.illustration-start-storage,
+.illustration-start-forge { --scene-size: 300% calc(100% * 1024 / 360); }
+.illustration-start-walls,
+.illustration-start-irrigation,
+.illustration-start-watch {
+  /* Generated atlas rows meet at source pixels 360 and 690 of 1024. */
+  --scene-size: 300% calc(100% * 1024 / 330);
+  --scene-y: calc(100% * 360 / 694);
+}
+.illustration-start-shelter,
+.illustration-start-transport,
+.illustration-start-siege { --scene-size: 300% calc(100% * 1024 / 334); }
+.illustration-start-army { --scene-x: 0; --scene-y: 0; }
+.illustration-start-storage { --scene-x: 50%; --scene-y: 0; }
+.illustration-start-forge { --scene-x: 100%; --scene-y: 0; }
+.illustration-start-walls { --scene-x: 0; }
+.illustration-start-irrigation { --scene-x: 50%; }
+.illustration-start-watch { --scene-x: 100%; }
+.illustration-start-shelter { --scene-x: 0; --scene-y: 100%; }
+.illustration-start-transport { --scene-x: 50%; --scene-y: 100%; }
+.illustration-start-siege { --scene-x: 100%; --scene-y: 100%; }
 .illustration-city { --scene-image: url("illustrations/cityscapes.png"); }
 .illustration-city-c1 { --scene-x: 0; --scene-y: 0; }
 .illustration-city-c2 { --scene-x: 50%; --scene-y: 0; }

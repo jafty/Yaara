@@ -385,6 +385,11 @@ with sync_playwright() as playwright:
             page.locator('.bookmarks a[data-section="domain"]').click()
             page.locator("#turn-page button.primary-action").click()
             expect(page.locator(".resource-ribbon")).to_contain_text(str(moon + 1))
+            if moon == 1:
+                illustration_asset(
+                    page.locator(".illustration-start-army.illustration-small"),
+                    "action-starts.png",
+                )
         page.locator('.bookmarks a[href$="?tab=wars"]').click()
         expect(
             page.get_by_role("heading", name="Expeditions" if en else "Expéditions", exact=True)
@@ -423,6 +428,7 @@ with sync_playwright() as playwright:
             page.locator(".illustration-offensive-raid-success"), "offensive-raid-success.jpg"
         )
         expect(page.locator(".letter-entry .illustration-small")).to_have_count(0)
+        illustration_asset(page.locator(".illustration-start-army"), "action-starts.png")
         for letter in page.locator(".letter-entry").all():
             expect(letter.locator(":scope > .illustration")).to_have_count(1)
             image_width = letter.locator(":scope > .illustration").bounding_box()["width"]
@@ -436,6 +442,33 @@ with sync_playwright() as playwright:
         )
         page.evaluate("document.documentElement.style.removeProperty('font-size')")
         page.set_viewport_size({"width": 1440, "height": 1100})
+        # HTTP cases cover action selection; review and decode each beginning scene.
+        for family in (
+            "army",
+            "storage",
+            "forge",
+            "walls",
+            "irrigation",
+            "watch",
+            "shelter",
+            "transport",
+            "siege",
+        ):
+            scene_name = f"start-{family}"
+            page.locator("main").evaluate(
+                """(root, scene) => {
+                  const el = document.createElement('div');
+                  el.id = 'action-artwork-check';
+                  el.className = 'illustration illustration-' + scene;
+                  el.setAttribute('aria-hidden', 'true');
+                  root.append(el);
+                }""",
+                scene_name,
+            )
+            scene = page.locator("#action-artwork-check")
+            illustration_asset(scene, "action-starts.png")
+            scene.screenshot(path=str(artifacts / f"{scene_name}-{language}.png"))
+            scene.evaluate("el => el.remove()")
         # HTTP cases cover every recipient/outcome; decode all eight CSS assets here.
         for direction in ("offensive", "received"):
             for kind in ("raid", "capture"):

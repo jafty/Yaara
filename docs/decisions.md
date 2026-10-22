@@ -1,5 +1,11 @@
 # Implementation decisions
 
+## 2026-10-22 · Contextual beginnings in decree news
+
+- Replace the scribe in action-start letters with a matching beginning: marching troops for both raids and captures, first granary foundations, forge preparation, wall work, canal digging, watch-platform assembly, protected-storage excavation, cart assembly and siege-workshop preparation. Repairs share wall-work artwork; legacy equipment shares forge preparation. Keep the existing papyrus fresco style and decorative 3:2 images in Council thumbnails and full letters.
+- Select scenes at the authorized presentation boundary from the existing structured action-start heading or the action embedded in older generic-heading letters. No text parsing, current-state lookup, archive rewrite or new saved metadata is needed. Sealed, cancelled, invalidated, unstructured and unrecognized decrees retain neutral artwork. Combat outcomes retain their separate recipient-specific scenes.
+- Use Presentation verification: reviewed independent bilingual HTTP cases for every action on Council and full letters, older headings and neutral fallbacks; PostgreSQL 17, lint/format, full case-catalog collection and the bilingual browser journey with decoded images, narrow/enlarged layouts and no-JavaScript navigation. Game rules and disclosed facts are unchanged, so the gameplay reference needs no revision.
+
 ## 2026-10-22 · Action headings and full report images
 
 - New departure reports use the existing bilingual action-start narration as their heading instead of the generic decree heading. Existing stored reports retain their original wording; no archive is rewritten. No new catalog entries are required because both languages already translate these phrases.
