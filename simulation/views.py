@@ -239,7 +239,7 @@ def desk(request, game_id):
             if tab == "constructions" or action_kind
             else "domain",
             "selected": selected,
-            "reports": [report_view(report) for report in reports],
+            "reports": [report_view(report, state=game.state) for report in reports],
             "news_moon": max(1, news_month),
             "action": action,
             "section_orders": [

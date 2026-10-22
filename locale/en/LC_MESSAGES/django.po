@@ -4236,3 +4236,9 @@ msgstr "Dispersed villages: a new raid may arrive from Moon %(moon)s. Capture re
 
 msgid "Bonus défensif local restauré : +{before} % → +{after} %."
 msgstr "Restored local defense bonus: +{before}% → +{after}%."
+
+msgid "L’attaque a réussi ; la défense a cédé."
+msgstr "The attack succeeded; the defense gave way."
+
+msgid "L’attaque a échoué ; la défense a tenu."
+msgstr "The attack failed; the defense held."

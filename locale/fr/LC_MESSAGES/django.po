@@ -2952,3 +2952,9 @@ msgstr "Villages dispersés : un nouveau pillage pourra arriver à partir de la 
 
 msgid "Bonus défensif local restauré : +{before} % → +{after} %."
 msgstr "Bonus défensif local restauré : +{before} % → +{after} %."
+
+msgid "L’attaque a réussi ; la défense a cédé."
+msgstr "L’attaque a réussi ; la défense a cédé."
+
+msgid "L’attaque a échoué ; la défense a tenu."
+msgstr "L’attaque a échoué ; la défense a tenu."

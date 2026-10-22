@@ -1,5 +1,11 @@
 # Implementation decisions
 
+## 2026-10-22 · Explicit combat outcomes and historical attacker identity
+
+- The owner reported that received capture letters omitted the attacking house and received raids did not plainly identify success or failure. Add a bilingual outcome sentence at presentation time from the saved, allowlisted combat scene: success always means the attacker prevailed, failure means the defense held. Military success remains independent of loot and the existing provisional/final cash balance.
+- Received capture letters recover the public attacking house from a unique saved capture expedition matching the report Moon and named city. Use the historical mission actor, never today's city owner or troop/stock values. Missing or ambiguous matches add no identity. Apply this to existing and future letters in Council and the full archive without writing to reports or replaying combat. Older letters without a saved scene retain their original outcome wording; no outcome is guessed from loot.
+- This disclosure change uses the Full local checkpoint. Regression cases cover both languages, both recipient perspectives, raid/capture success/failure, immutable archive/state, absent/ambiguous/wrong-Moon/own-mission matches, and PostgreSQL-backed Council/archive delivery.
+
 ## 2026-10-22 · Contextual beginnings in decree news
 
 - Replace the scribe in action-start letters with a matching beginning: marching troops for both raids and captures, first granary foundations, forge preparation, wall work, canal digging, watch-platform assembly, protected-storage excavation, cart assembly and siege-workshop preparation. Repairs share wall-work artwork; legacy equipment shares forge preparation. Keep the existing papyrus fresco style and decorative 3:2 images in Council thumbnails and full letters.

@@ -2,7 +2,7 @@
 
 from django.utils.translation import get_language
 
-from .messages import describe, render
+from .messages import describe, message, render
 from .messages import localize as localize_message
 from .narration import STARTED_ACTION_PHRASES
 
@@ -33,7 +33,7 @@ def localize(value):
     return localize_message(value, get_language() or "fr")
 
 
-def report_view(report):
+def report_view(report, *, state=None):
     language = get_language() or "fr"
     scene = report.content.get("scene")
     start_scene = None
@@ -49,11 +49,46 @@ def report_view(report):
             ),
             None,
         )
+    body = render(report.content["body"], language) if report.content else report.body
+    if report.kind == "battle":
+        title = report.content.get("title", {})
+        if (
+            state is not None
+            and isinstance(title, dict)
+            and title.get("template") == "La bataille de {p0}"
+        ):
+            city_name = title["values"]["p0"]
+            candidates = [
+                mission
+                for mission in state["expeditions"]
+                if mission["kind"] == "capture"
+                and mission["combat_month"] == report.month
+                and mission["actor"] != report.recipient
+                and state["cities"][mission["target"]]["name"] == city_name
+            ]
+            if len(candidates) == 1:
+                body = (
+                    localize_message(
+                        message(
+                            "Les assaillants portaient le sceau de {house}. ",
+                            house=state["players"][candidates[0]["actor"]]["name"],
+                        ),
+                        language,
+                    )
+                    + body
+                )
+        if scene in REPORT_SCENES:
+            outcome = (
+                message("L’attaque a réussi ; la défense a cédé.")
+                if scene.endswith("-success")
+                else message("L’attaque a échoué ; la défense a tenu.")
+            )
+            body = localize_message(outcome, language) + "\n\n" + body
     return {
         "id": report.pk,
         "month": max(1, report.month),
         "title": render(report.content["title"], language) if report.content else report.title,
-        "body": render(report.content["body"], language) if report.content else report.body,
+        "body": body,
         "original_archive": not report.content,
         "scene": start_scene
         or (
