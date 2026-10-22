@@ -4242,3 +4242,33 @@ msgstr "The attack succeeded; the defense gave way."
 
 msgid "L’attaque a échoué ; la défense a tenu."
 msgstr "The attack failed; the defense held."
+
+msgid "Le livre du règne"
+msgstr "The book of the reign"
+
+msgid "Le règne est achevé. Voici les lettres conservées, dans l’ordre des lunes, et les comptes enregistrés à leur clôture."
+msgstr "The reign is over. Here are the preserved letters in Moon order, and the accounts recorded at each closure."
+
+msgid "Les maisons du livre"
+msgstr "Houses in the book"
+
+msgid "Toutes les maisons"
+msgstr "All houses"
+
+msgid "Télécharger le livre pour analyse (JSON)"
+msgstr "Download the book for analysis (JSON)"
+
+msgid "Les lettres d’un même événement peuvent figurer pour plusieurs destinataires : ce sont leurs témoignages, pas des événements supplémentaires. Les comptes décrivent la fin de chaque lune enregistrée."
+msgstr "Letters about one event may appear for several recipients: they are their accounts, not additional events. The accounts describe the end of each recorded Moon."
+
+msgid "Certains comptes mensuels n’ont pas été conservés. Les lettres disponibles et les comptes finaux restent accessibles ; les mois manquants sont signalés dans le téléchargement, sans reconstitution."
+msgstr "Some monthly accounts were not preserved. Available letters and final accounts remain accessible; missing Moons are listed in the download, without reconstruction."
+
+msgid "Les comptes conservés"
+msgstr "Preserved accounts"
+
+msgid "Les comptes finaux"
+msgstr "Final accounts"
+
+msgid "Habitants : %(population)s. Mesures en réserve : %(stock)s. Prélèvement accumulé : %(tax)s."
+msgstr "Inhabitants: %(population)s. Stored Measures: %(stock)s. Accrued levy: %(tax)s."

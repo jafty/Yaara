@@ -15,6 +15,7 @@ from django.utils.translation import gettext as _
 from django.views.decorators.http import require_GET, require_http_methods, require_POST
 
 from . import engine, services
+from .archives import reign_archive as build_reign_archive
 from .calendar import closing_moon
 from .forms import GameForm, SignupForm
 from .models import Game, Report
@@ -270,6 +271,34 @@ def desk(request, game_id):
             },
         },
     )
+
+
+@login_required
+@require_GET
+def reign_archive(request, game_id):
+    game, actor = authorized_game(request, game_id)
+    scope = request.GET.get("scope", "player")
+    output = request.GET.get("format", "html")
+    if scope not in {"player", "all"} or output not in {"html", "json"}:
+        raise Http404
+    archive = build_reign_archive(game, request.user, actor, scope)
+    if output == "json":
+        response = JsonResponse(archive, json_dumps_params={"ensure_ascii": False, "indent": 2})
+        response["Content-Disposition"] = f'attachment; filename="yaara-{game.pk}-{scope}.json"'
+    else:
+        response = render(
+            request,
+            "simulation/reign_archive.html",
+            {
+                "game": metadata(game),
+                "view": localize(player_view(game.state, actor)),
+                "archive": archive,
+                "can_read_all": game.owner_id == request.user.pk,
+                "tab": "domain",
+            },
+        )
+    response["Cache-Control"] = "private, no-store"
+    return response
 
 
 @login_required

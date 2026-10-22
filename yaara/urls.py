@@ -17,6 +17,7 @@ urlpatterns = [
     path("games/new/", views.new_game, name="new_game"),
     path("games/<uuid:game_id>/", views.desk, name="game"),
     path("games/<uuid:game_id>/state/", views.state_view, name="state"),
+    path("games/<uuid:game_id>/archive/", views.reign_archive, name="reign_archive"),
     path("games/<uuid:game_id>/orders/preview/", views.preview_order, name="preview"),
     path("games/<uuid:game_id>/orders/confirm/", views.confirm_order, name="confirm"),
     path("games/<uuid:game_id>/orders/<uuid:order_id>/cancel/", views.cancel_order, name="cancel"),

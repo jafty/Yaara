@@ -738,6 +738,49 @@ with sync_playwright() as playwright:
             page.request.get(automatic_url + "state/").json()["game"]["deadline"]
             == started["game"]["deadline"]
         )
+        # A completed reign opens a native literary archive and scoped analysis download.
+        page.goto(base_url + "/games/new/")
+        page.locator("#id_title").fill("Archive journey")
+        page.locator("#id_opponents").select_option("passive")
+        page.locator("#id_reign_months").select_option("24")
+        page.locator(".game-setup button").click()
+        archive_game_url = page.url.split("?")[0]
+        page.goto(archive_game_url)
+        for _ in range(24):
+            page.locator("#turn-page button.primary-action").click()
+        page.locator('.epilogue a[href$="/archive/"]').click()
+        expect(page.locator("h1")).to_have_text(
+            "The book of the reign" if en else "Le livre du règne"
+        )
+        page.locator('a[href="?scope=all"]').click()
+        assert page.locator(".letter-entry").count() >= 3
+        with page.expect_download() as download_info:
+            page.locator('a[href="?scope=all&format=json"]').click()
+        assert download_info.value.suggested_filename.endswith("-all.json")
+        archive = page.request.get(archive_game_url + "archive/?scope=all&format=json").json()
+        assert len(archive["accounts"]) == 24
+        assert archive["coverage"]["missing_account_moons"] == []
+        assert set(archive["final_accounts"]) == {"p1", "p2", "p3"}
+        for width in (320, 390):
+            page.set_viewport_size({"width": width, "height": 844})
+            no_overflow(page)
+            page.evaluate("document.documentElement.style.fontSize = '125%'")
+            no_overflow(page)
+            page.evaluate("document.documentElement.style.removeProperty('font-size')")
+        native_archive = browser.new_context(
+            storage_state=context.storage_state(),
+            java_script_enabled=False,
+            viewport={"width": 320, "height": 844},
+        )
+        native_archive_page = native_archive.new_page()
+        native_archive_page.goto(archive_game_url + "archive/")
+        native_archive_page.locator('a[href="?scope=all"]').click()
+        native_archive_page.locator("#archive-accounts details summary").first.click()
+        expect(native_archive_page.locator("#archive-accounts details").first).to_have_attribute(
+            "open", ""
+        )
+        no_overflow(native_archive_page)
+        native_archive.close()
         page.locator(".book-footer > form:last-child button").click()
         expect(page.locator("#id_username")).to_be_visible()
         page.locator("#id_username").fill(username)

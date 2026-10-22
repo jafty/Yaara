@@ -2958,3 +2958,33 @@ msgstr "L’attaque a réussi ; la défense a cédé."
 
 msgid "L’attaque a échoué ; la défense a tenu."
 msgstr "L’attaque a échoué ; la défense a tenu."
+
+msgid "Le livre du règne"
+msgstr "Le livre du règne"
+
+msgid "Le règne est achevé. Voici les lettres conservées, dans l’ordre des lunes, et les comptes enregistrés à leur clôture."
+msgstr "Le règne est achevé. Voici les lettres conservées, dans l’ordre des lunes, et les comptes enregistrés à leur clôture."
+
+msgid "Les maisons du livre"
+msgstr "Les maisons du livre"
+
+msgid "Toutes les maisons"
+msgstr "Toutes les maisons"
+
+msgid "Télécharger le livre pour analyse (JSON)"
+msgstr "Télécharger le livre pour analyse (JSON)"
+
+msgid "Les lettres d’un même événement peuvent figurer pour plusieurs destinataires : ce sont leurs témoignages, pas des événements supplémentaires. Les comptes décrivent la fin de chaque lune enregistrée."
+msgstr "Les lettres d’un même événement peuvent figurer pour plusieurs destinataires : ce sont leurs témoignages, pas des événements supplémentaires. Les comptes décrivent la fin de chaque lune enregistrée."
+
+msgid "Certains comptes mensuels n’ont pas été conservés. Les lettres disponibles et les comptes finaux restent accessibles ; les mois manquants sont signalés dans le téléchargement, sans reconstitution."
+msgstr "Certains comptes mensuels n’ont pas été conservés. Les lettres disponibles et les comptes finaux restent accessibles ; les mois manquants sont signalés dans le téléchargement, sans reconstitution."
+
+msgid "Les comptes conservés"
+msgstr "Les comptes conservés"
+
+msgid "Les comptes finaux"
+msgstr "Les comptes finaux"
+
+msgid "Habitants : %(population)s. Mesures en réserve : %(stock)s. Prélèvement accumulé : %(tax)s."
+msgstr "Habitants : %(population)s. Mesures en réserve : %(stock)s. Prélèvement accumulé : %(tax)s."

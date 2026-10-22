@@ -8,6 +8,7 @@
     {% if tab == 'domain' %}{% include 'simulation/illustration.html' with scene='council' %}{% elif tab == 'constructions' and not action %}{% include 'simulation/illustration.html' with scene='work' %}{% endif %}
     {% if view.finished %}
         <section class="epilogue"><h2>{% translate "La dernière page du règne" %}</h2>
+            <p class="reading-links"><a href="{% url 'reign_archive' game.id %}">{% translate "Le livre du règne" %} →</a></p>
             {% for rank in view.ranking %}{% if rank.rank == 1 %}<p>{% blocktranslate with v0=rank.name %}<strong>{{ v0 }}</strong> figure au premier rang.{% endblocktranslate %}</p>{% endif %}{% endfor %}
             <p>{% blocktranslate with v0=view.epilogue_missions %}Expéditions encore en route : <strong>{{ v0 }}</strong>. Leur retour ne changera plus le résultat du règne.{% endblocktranslate %}</p>
         </section>

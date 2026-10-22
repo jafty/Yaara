@@ -1,0 +1,4 @@
+{% load i18n %}
+<h3>{{ account.realm }}</h3>
+<p>{% blocktranslate with population=account.population stock=account.stock tax=account.tax %}Habitants : {{ population }}. Mesures en réserve : {{ stock }}. Prélèvement accumulé : {{ tax }}.{% endblocktranslate %}</p>
+{% for city in account.owned_cities %}<p><strong>{{ city.name }}</strong> — {% blocktranslate with population=city.population stock=city.stock tax=city.tax %}Habitants : {{ population }}. Mesures en réserve : {{ stock }}. Prélèvement accumulé : {{ tax }}.{% endblocktranslate %}</p>{% endfor %}

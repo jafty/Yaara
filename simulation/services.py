@@ -11,6 +11,7 @@ from django.db import transaction
 from django.utils import timezone
 
 from . import engine
+from .archives import chronicle_accounts
 from .calendar import closing_moon
 from .messages import describe, message
 from .models import CommandReceipt, Game, Participant, Report, TargetEngagement, TickExecution
@@ -259,6 +260,7 @@ def tick(game_id, expected_month, user=None):
     audit["accepted_orders"] = [
         order["id"] for order in game.state["orders"] if order["execute_month"] == expected_month
     ]
+    audit["chronicle"] = {"schema_version": 1, "houses": chronicle_accounts(game.state)}
     execution = TickExecution.objects.create(
         game=game, month=expected_month, rules=game.state["rules"], trace=audit
     )

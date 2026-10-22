@@ -1,0 +1,32 @@
+{% extends 'simulation/manuscript.html' %}{% load i18n %}
+{% block content %}
+<header class="chapter-heading compact-heading"><h1>{% translate "Le livre du règne" %}</h1></header>
+<p>{% translate "Le règne est achevé. Voici les lettres conservées, dans l’ordre des lunes, et les comptes enregistrés à leur clôture." %}</p>
+<nav class="reading-links" aria-label="{% translate 'Les maisons du livre' %}">
+    <a href="?scope=player"{% if archive.scope == 'player' %} aria-current="page"{% endif %}>{% translate "Votre maison" %}</a>
+    {% if can_read_all %}<a href="?scope=all"{% if archive.scope == 'all' %} aria-current="page"{% endif %}>{% translate "Toutes les maisons" %}</a>{% endif %}
+</nav>
+<p class="reading-links"><a href="?scope={{ archive.scope }}&amp;format=json">{% translate "Télécharger le livre pour analyse (JSON)" %}</a></p>
+<p>{% translate "Les lettres d’un même événement peuvent figurer pour plusieurs destinataires : ce sont leurs témoignages, pas des événements supplémentaires. Les comptes décrivent la fin de chaque lune enregistrée." %}</p>
+{% if archive.coverage.missing_account_moons %}<p class="marginal-note">{% translate "Certains comptes mensuels n’ont pas été conservés. Les lettres disponibles et les comptes finaux restent accessibles ; les mois manquants sont signalés dans le téléchargement, sans reconstitution." %}</p>{% endif %}
+<p class="reading-links"><a href="#archive-accounts">{% translate "Les comptes conservés" %} ↓</a></p>
+<section class="correspondence" aria-label="{% translate 'Rapports' %}">
+{% for report in archive.reports %}
+    <article class="letter-entry" id="archive-report-{{ report.id }}">
+        <p class="letter-date">{% blocktranslate with v0=report.month %}Lune {{ v0 }}{% endblocktranslate %} · {{ report.house }}{% if report.original_archive %} · {% translate "Archive originale en français" %}{% endif %}</p>
+        <h2>{{ report.title }}</h2>
+        <div class="letter-text">{{ report.body|linebreaks }}</div>
+    </article>
+{% empty %}<p>{% translate "Le scribe n’a rien de nouveau à consigner." %}</p>{% endfor %}
+</section>
+<section id="archive-accounts" class="chapter-section"><h2>{% translate "Les comptes conservés" %}</h2>
+{% for entry in archive.accounts %}
+    <details><summary>{% blocktranslate with v0=entry.moon %}Lune {{ v0 }}{% endblocktranslate %}</summary>
+    {% for actor, account in entry.houses.items %}{% include 'simulation/archive_account.html' %}{% endfor %}
+    </details>
+{% endfor %}
+<h2>{% translate "Les comptes finaux" %}</h2>
+{% for actor, account in archive.final_accounts.items %}{% include 'simulation/archive_account.html' %}{% endfor %}
+</section>
+<p class="reading-links"><a href="{% url 'game' game.id %}">← {% translate "Retour au conseil" %}</a></p>
+{% endblock %}
