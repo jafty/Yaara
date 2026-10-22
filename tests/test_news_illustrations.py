@@ -7,6 +7,7 @@ from django.test import Client
 from django.urls import reverse
 
 from simulation import engine, services
+from simulation.messages import render
 from simulation.models import Report
 from tests.builders import rich_state
 from tests.cases import case
@@ -89,7 +90,7 @@ def test_combat_artwork(monkeypatch, kind, outcome, expected):
 
 @case(
     "news-combat-artwork-bilingual",
-    "Owner artwork: recipient thumbnails render in Council and full reports in both languages",
+    "Owner: Council keeps thumbnails and full reports show complete large images in both languages",
 )
 @pytest.mark.integration
 @pytest.mark.usefixtures("test_static_storage")
@@ -119,9 +120,10 @@ def test_combat_artwork_http(
     page = client.get(reverse("game", args=[game.id]), {"tab": tab})
     assert page.status_code == 200
     scene = f"{direction}-{kind}-{expected}"
+    size = " illustration-small" if tab == "domain" else ""
     assert (
         page.content.decode().count(
-            f'class="illustration illustration-{scene} illustration-small" aria-hidden="true"'
+            f'class="illustration illustration-{scene}{size}" aria-hidden="true"'
         )
         == 1
     )
@@ -163,6 +165,92 @@ def test_archive_artwork(user, variation):
     client.force_login(user)
     page = client.get(reverse("game", args=[game.id]), {"tab": "letters"})
     scene = "work" if variation == "other-kind" else "raid"
-    assert f'class="illustration illustration-{scene} illustration-small"' in page.content.decode()
+    assert f'class="illustration illustration-{scene}"' in page.content.decode()
     report.refresh_from_db()
     assert report.content == original
+
+
+@case("launched-action-heading", "Owner: departure headings identify the action in both languages")
+@pytest.mark.logic
+@pytest.mark.parametrize(
+    "kind,french,english",
+    [
+        (
+            "raid",
+            "Nos hommes sont partis piller les villages.",
+            "Our people have departed to raid the villages.",
+        ),
+        (
+            "capture",
+            "Nos hommes sont partis conquérir la cité.",
+            "Our people have departed to capture the city.",
+        ),
+        ("irrigation", "Les travaux des canaux ont commencé.", "Work on the canals has begun."),
+        ("storage", "Les travaux des greniers ont commencé.", "Work on the granaries has begun."),
+        ("forge", "Les travaux des forges ont commencé.", "Work on the forges has begun."),
+        (
+            "walls",
+            "Les travaux des fortifications ont commencé.",
+            "Work on the fortifications has begun.",
+        ),
+        (
+            "repair",
+            "Les réparations de l’enceinte ont commencé.",
+            "Repairs to the wall have begun.",
+        ),
+        (
+            "equipment",
+            "Les maîtres de la forge ont commencé leur ouvrage.",
+            "The masters of the forge have begun their work.",
+        ),
+        ("watch", "Les travaux de surveillance ont commencé.", "Work on surveillance has begun."),
+        (
+            "shelter",
+            "Les travaux des réserves protégées ont commencé.",
+            "Work on protected reserves has begun.",
+        ),
+        (
+            "transport",
+            "Les ateliers de transport ont commencé leur ouvrage.",
+            "The transport workshops have begun their work.",
+        ),
+        (
+            "siege",
+            "La préparation du matériel de siège a commencé.",
+            "Preparation of siege equipment has begun.",
+        ),
+    ],
+    ids=[
+        "raid",
+        "capture",
+        "irrigation",
+        "storage",
+        "forge",
+        "walls",
+        "repair",
+        "equipment",
+        "watch",
+        "shelter",
+        "transport",
+        "siege",
+    ],
+)
+def test_launched_action_heading(kind, french, english):
+    """Given a sealed {kind} order.
+    When the order starts at Moon closure.
+    Then its report heading names the launched action in French and English.
+    """
+    state = engine.new_state(opponents="passive") if kind != "equipment" else rich_state()
+    for city in state["cities"].values():
+        city["stock"] = 2_400_000
+    if kind == "repair":
+        state["cities"]["c1"].update(walls=1, damaged=True)
+    if kind in ("raid", "capture"):
+        spec = {"kind": kind, "target": "c4", "contributions": {"c3": 80}}
+    else:
+        spec = {"kind": kind, "cities": ["c1"]}
+    engine.confirm_order(state, "p1", spec, "heading")
+    events, _ = engine.advance_month(state, "heading")
+    event = next(event for event in events if event["kind"] == "order")
+    assert event["title"] == french
+    assert render(event["content"]["title"], "en") == english

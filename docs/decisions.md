@@ -1,5 +1,11 @@
 # Implementation decisions
 
+## 2026-10-22 · Action headings and full report images
+
+- New departure reports use the existing bilingual action-start narration as their heading instead of the generic decree heading. Existing stored reports retain their original wording; no archive is rewritten. No new catalog entries are required because both languages already translate these phrases.
+- Council previews retain their compact thumbnails. Full reports place the complete 3:2 illustration above the date, heading and letter, spanning the reading column. Shared report markup and existing artwork remain in use.
+- This uses the Behavior local checkpoint because native report narration changes: complete database-free core coverage, affected PostgreSQL HTTP cases, lint/format, reviewed case catalog and the bilingual browser smoke with narrow/enlarged layouts and native navigation. The gameplay reference needs no change: rules, balance, dates and disclosed facts are unchanged.
+
 ## 2026-10-22 · Quiet parchment map and house emblems
 
 - The owner's follow-up supersedes the painted terrain direction below: remove mountains, dunes, rocks and scrub while preserving the pale worn parchment, fibres and rubbed edges. Only tiny faded palm sketches remain in two corners; no prominent relief competes with the cities.

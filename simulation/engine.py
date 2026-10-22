@@ -599,7 +599,7 @@ def depart_orders(state, events):
             events,
             actor,
             "order",
-            message("Votre décret entre en vigueur"),
+            STARTED_ACTION_PHRASES[order["kind"]],
             message(
                 "{p0} J’ai fait prélever {p1} Mesures dans les greniers qui les avaient promises. Les nouvelles vous seront rapportées à leur échéance.",
                 p0=STARTED_ACTION_PHRASES[order["kind"]],

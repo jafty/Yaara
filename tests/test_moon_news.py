@@ -50,7 +50,7 @@ def test_sealing_receipts(user, language, status, original_archive):
     assert receipt.pk not in [report["id"] for report in news]
     expected = {
         "sealed": None,
-        "departed": "Votre décret entre en vigueur",
+        "departed": "Nos hommes sont partis piller les villages.",
         "cancelled": "Décret retiré",
         "invalidated": "Ordre invalidé",
     }[status]

@@ -422,15 +422,17 @@ with sync_playwright() as playwright:
         illustration_asset(
             page.locator(".illustration-offensive-raid-success"), "offensive-raid-success.jpg"
         )
-        expect(page.locator(".letter-entry > .illustration")).to_have_count(0)
+        expect(page.locator(".letter-entry .illustration-small")).to_have_count(0)
         for letter in page.locator(".letter-entry").all():
-            expect(letter.locator(".letter-heading .illustration-small")).to_have_count(1)
+            expect(letter.locator(":scope > .illustration")).to_have_count(1)
+            image_width = letter.locator(":scope > .illustration").bounding_box()["width"]
+            assert abs(image_width - letter.bounding_box()["width"]) < 2
         for width in (390, 320):
             page.set_viewport_size({"width": width, "height": 844})
             page.evaluate("document.documentElement.style.fontSize = '125%'")
             no_overflow(page)
         page.screenshot(
-            path=str(artifacts / f"letters-thumbnails-mobile-{language}.png"), full_page=True
+            path=str(artifacts / f"letters-full-images-mobile-{language}.png"), full_page=True
         )
         page.evaluate("document.documentElement.style.removeProperty('font-size')")
         page.set_viewport_size({"width": 1440, "height": 1100})
