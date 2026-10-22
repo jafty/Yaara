@@ -566,6 +566,14 @@ with sync_playwright() as playwright:
         forge.locator('input[value="c2"]').check()
         forge.locator('button[type="submit"]').click()
         page.locator(".wax-seal").click()
+        page.goto(game_url)
+        commitment = page.locator('#city-c2 [data-crew-phase="reserved"]')
+        expect(commitment).to_contain_text("Small arsenal" if en else "Petit arsenal")
+        expect(commitment).to_contain_text("Expected finish: Moon" if en else "Fin prévue : lune")
+        page.goto(game_url + "?tab=city&city=c2")
+        expect(page.locator('[data-local-accounts] [data-crew-phase="reserved"]')).to_contain_text(
+            "Small arsenal" if en else "Petit arsenal"
+        )
         page.goto(game_url + "?tab=constructions&action=storage")
         storage = page.locator("#work-storage")
         expect(storage.locator('input[value="c2"]')).to_be_disabled()
@@ -574,6 +582,9 @@ with sync_playwright() as playwright:
             "Crew occupied" if en else "Équipe occupée"
         )
         expect(storage.locator('[data-team-state="available"]')).to_have_count(2)
+        expect(storage.locator('[data-crew-phase="reserved"]')).to_contain_text(
+            "Small arsenal" if en else "Petit arsenal"
+        )
         expect(storage.locator(".work-transition").first).to_have_text(
             "Additional granaries → Silo complex"
             if en
@@ -656,6 +667,9 @@ with sync_playwright() as playwright:
         expect(
             plain_page.locator('#city-c2 .city-identity [data-team-state="occupied"]')
         ).to_be_visible()
+        expect(plain_page.locator('#city-c2 [data-crew-phase="reserved"]')).to_contain_text(
+            "Small arsenal" if en else "Petit arsenal"
+        )
         plain_page.locator('.city-entry a[href*="city=c1"]').click()
         expect(plain_page.locator("[data-local-accounts]")).to_be_visible()
         expect(plain_page.locator(".illustration-city-c1")).to_be_visible()

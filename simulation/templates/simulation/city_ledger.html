@@ -22,7 +22,6 @@
             </dl>
             <p class="city-situation">{% if city.engaged %}<strong>{% translate "Une expédition est engagée vers cette cité." %}</strong>{% elif city.frontier %}{% translate "Cité de frontière : accessible à une maison ennemie." %}{% else %}{% translate "Cité intérieure : pas de frontière ennemie directe." %}{% endif %}</p>
             {% if city.siege_shortfall %}<p class="reserve-warning">{% blocktranslate with need=city.siege_food missing=city.siege_shortfall %}Moins d’un mois de siège : besoin de {{ need }} Mesures ; manque de {{ missing }} après les réservations.{% endblocktranslate %}</p>{% endif %}
-            {% if city.busy %}<p>{% for task in city.team_tasks %}{{ task }} · {% endfor %}{% blocktranslate with moon=city.team_free_moon %}Équipe disponible à la lune {{ moon }}.{% endblocktranslate %}</p>{% endif %}
             {% for building in city.buildings %}{% if building.damaged %}<p class="reserve-warning">{{ building.name }} · {% translate "Ouvrage endommagé" %}</p>{% endif %}{% endfor %}
             {% if city.recent_report %}<p><a href="?tab=letters#report-{{ city.recent_report.id }}">{% blocktranslate with moon=city.recent_report.month %}Lune {{ moon }}{% endblocktranslate %} · {{ city.recent_report.title }} →</a></p>{% endif %}
         </li>

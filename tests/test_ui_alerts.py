@@ -98,7 +98,48 @@ def test_crew_status(user, language, stage):
     assert label in identity
     choices = client.get(url, {"tab": "constructions", "action": "storage"}).content.decode()
     assert choices.count(f'data-team-state="{expected}"') == (1 if busy else 3)
+    if not busy:
+        assert "data-crew-phase" not in identity
     if busy:
+        assert ("Expected finish: Moon 4" if language == "en" else "Fin prévue : lune 4") in roster
+
+
+@case("ui-crew-assignment", "Owner: lists and city details name the crew's actual work and dates")
+@pytest.mark.parametrize("language", ["fr", "en"])
+@pytest.mark.parametrize("phase", ["sealed", "active"])
+@pytest.mark.parametrize(
+    "kind,french,english,finish",
+    [
+        ("irrigation", "Rigoles et petites digues", "Channels and small dikes", 4),
+        ("forge", "Petit arsenal", "Small arsenal", 4),
+        ("repair", "Défenses de la cité", "City defenses", 3),
+    ],
+    ids=["irrigation", "forge", "initial-defence-repair"],
+)
+def test_crew_assignment(user, language, phase, kind, french, english, finish):
+    game = services.create_game(user, "Crew assignments", opponents="passive")
+    if kind == "repair":
+        game.state["cities"]["c2"].update(damaged=True, integrity=50)
+    engine.confirm_order(game.state, "p1", {"kind": kind, "cities": ["c2"]}, str(uuid.uuid4()))
+    if phase == "active":
+        engine.advance_month(game.state, "begin")
+    game.save()
+    original = deepcopy(game.state)
+    client = Client()
+    client.force_login(user)
+    client.cookies["django_language"] = language
+    name = english if language == "en" else french
+    expected_phase = "reserved" if phase == "sealed" else "active"
+    for query in ({}, {"tab": "city", "city": "c2"}, {"tab": "constructions", "action": "storage"}):
+        html = client.get(reverse("game", args=[game.id]), query).content.decode()
+        assignments = re.findall(r'<span class="crew-assignment".*?</span>', html, re.S)
+        assert len(assignments) == 1
+        assert name in assignments[0] and f'data-crew-phase="{expected_phase}"' in assignments[0]
         assert (
-            "Crew available at Moon 4" if language == "en" else "Équipe disponible à la lune 4"
-        ) in roster
+            f"Expected finish: Moon {finish}" if language == "en" else f"Fin prévue : lune {finish}"
+        ) in assignments[0]
+        if query.get("tab") == "city":
+            assert ("Start: Moon 1" if language == "en" else "Début : lune 1") in assignments[0]
+        assert ("#orders-heading" if phase == "sealed" else "#active-works") in assignments[0]
+    game.refresh_from_db()
+    assert game.state == original

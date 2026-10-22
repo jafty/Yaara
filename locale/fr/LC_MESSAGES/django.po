@@ -3477,3 +3477,17 @@ msgstr "Examiner les défenses"
 #. Public threat and crew visibility.
 msgid "Équipe libre"
 msgstr "Équipe libre"
+
+#. Named crew commitments.
+msgid "Décret scellé · en attente de démarrage"
+msgstr "Décret scellé · en attente de démarrage"
+
+#. Named crew commitments.
+#, python-format
+msgid "Fin prévue : lune %(moon)s"
+msgstr "Fin prévue : lune %(moon)s"
+
+#. Named crew commitments.
+#, python-format
+msgid "Début : lune %(moon)s"
+msgstr "Début : lune %(moon)s"

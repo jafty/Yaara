@@ -109,10 +109,43 @@ def desk(request, game_id):
     game, actor = authorized_game(request, game_id)
     view = localize(player_view(game.state, actor))
     for city in view["owned_cities"]:
+        city["crew_assignments"] = [
+            {
+                "name": localize(
+                    work_phrase(work["kind"], work["level"], game.state.get("economy_version", 1))
+                ),
+                "phase": "active",
+                "start_moon": work["start_month"],
+                "finish_moon": work["finish_month"],
+            }
+            for work in game.state["works"]
+            if work.get("city") == city["id"] and work["status"] == "active"
+        ]
+        city["crew_assignments"].extend(
+            {
+                "name": localize(
+                    work_phrase(task["kind"], task["level"], game.state.get("economy_version", 1))
+                ),
+                "phase": "reserved",
+                "start_moon": order["execute_month"],
+                "finish_moon": order["execute_month"] + task["duration"],
+            }
+            for order in game.state["orders"]
+            if order["actor"] == actor and order["status"] == "confirmed"
+            for task in order["tasks"]
+            if task["city"] == city["id"]
+        )
         try:
             city["contribution"] = max(0, int(request.GET.get(f"men_{city['id']}", "0")))
         except ValueError:
             city["contribution"] = 0
+    owned_by_id = {city["id"]: city for city in view["owned_cities"]}
+    for city in view["cities"]:
+        if city["id"] in owned_by_id:
+            city["crew_assignments"] = owned_by_id[city["id"]]["crew_assignments"]
+    for action in view["work_actions"]:
+        for option in action.get("cities", []):
+            option["crew_assignments"] = owned_by_id[option["id"]]["crew_assignments"]
     mission_kind = "capture" if request.GET.get("mission") == "capture" else "raid"
     price = view["expedition_prices"][mission_kind]
     contributions = {city["id"]: city["contribution"] for city in view["owned_cities"]}

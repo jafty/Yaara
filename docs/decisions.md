@@ -1,5 +1,11 @@
 # Implementation decisions
 
+## 2026-10-22 · Named crew assignments in city lists and details
+
+- The owner requested the purpose of occupied crews in both city lists and detail folios. Reuse one assignment summary beneath the availability badge in Council, work-selection lists and city details: the specific named construction or repair, sealed/awaiting-start versus active status, and expected completion Moon. The detail folio also includes the start Moon. Links open the pending-order or active-work register, as appropriate.
+- Assemble this display metadata at the HTTP boundary from work and order commitments for currently owned cities; sealed orders must belong to the current actor. Use the existing localized work vocabulary and saved start/duration/finish values, rather than forecasting costs or rerunning simulation. Completed/cancelled assignments disappear under the existing status rules. Old saves retain their own vocabulary and timing.
+- Replace generic crew prose in the city details and the duplicate task/date paragraph below Council city accounts. Costs, crews, reservations, scheduling, authorization and the core projection remain unchanged. Use Presentation verification: twelve bilingual named-assignment cases across irrigation, arsenals and initial-defence repairs, existing lifecycle cases, affected PostgreSQL checks, lint/format, case collection, catalog compilation and the bilingual browser journey with native forms and narrow/enlarged layouts. The current gameplay reference remains accurate without a rule change.
+
 ## 2026-10-22 · Incoming threats and visible crew availability
 
 - The owner requested an explicit incoming-enemy warning and clearer city-team status. Keep knowledge of committed targets as basic public information, consistent with the existing map markers; no surveillance upgrade is required. Surveillance retains its existing mobilization and interception effects.

@@ -17,8 +17,7 @@
         {% include 'simulation/ledger_help.html' with topic='forecast' %}
         <h2>{% translate "Les ouvrages et les équipes" %}</h2>
         {% if view.rules == 'V1' %}<p>{% if view.local_forges %}{% blocktranslate with name=selected.forge_name equipment=selected.equipment %}<strong>{{ name }}</strong> : <strong>{{ equipment }}</strong> pour les Fidèles de cette cité.{% endblocktranslate %}{% else %}{{ selected.equipment }}.{% endif %}</p>{% endif %}
-        {% for work in selected.works %}<p>{% blocktranslate with v0=work.label|lower v1=work.finish_month %}Les équipes poursuivent <em>{{ v0 }}</em>. L’ouvrage doit s’achever à la <strong>lune {{ v1 }}</strong>.{% endblocktranslate %}</p>
-        {% empty %}<p>{% if selected.busy %}{% translate "Les équipes attendent l’entrée en vigueur d’un décret scellé." %}{% else %}{% translate "Les équipes sont libres de recevoir un chantier." %}{% endif %}</p>{% endfor %}
+        {% include 'simulation/team_status.html' with city=selected detailed=True %}
         {% include 'simulation/ledger_help.html' with topic='crew' %}
         {% if selected.buildings %}<ul class="building-ledger">{% for building in selected.buildings %}<li>
             {% include 'simulation/illustration.html' with scene=building.kind compact=True %}
