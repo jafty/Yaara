@@ -1,1 +1,10 @@
-{% if owner == 'p1' %}I{% elif owner == 'p2' %}II{% else %}III{% endif %}
+<svg class="house-emblem" data-house-emblem="{% if owner == 'p1' %}sun{% elif owner == 'p2' %}lotus{% else %}palm{% endif %}" viewBox="-12 -12 24 24" x="-12" y="-12" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+    {% if owner == 'p1' %}
+        <circle r="4"/>
+        <path d="M0-10V-7M0 7V10M-10 0H-7M7 0H10M-7-7-5-5M5 5 7 7M-7 7-5 5M5-5 7-7"/>
+    {% elif owner == 'p2' %}
+        <path d="M0 5C-5 1-4-5 0-9 4-5 5 1 0 5ZM0 5C-7 5-10 0-9-5-4-5-1-1 0 5ZM0 5C7 5 10 0 9-5 4-5 1-1 0 5ZM-7 9H7M0 5V9"/>
+    {% else %}
+        <path d="M-2 10C0 5 1 0 0-5M0-5C-4-10-8-8-10-4M0-5C4-10 8-8 10-4M0-5C-5-6-8-2-8 1M0-5C5-6 8-2 8 1M0-5V-10M-5 10H4"/>
+    {% endif %}
+</svg>

@@ -80,6 +80,31 @@ def test_map(user, language):
 
 
 @case(
+    "folio-map-house-emblems",
+    "Owner map revision: distinct house emblems replace Roman numerals and match the legend",
+)
+@pytest.mark.parametrize("language", ["fr", "en"])
+def test_map_house_emblems(user, language):
+    game = services.create_game(user, "Seals", opponents="passive")
+    # A captured city bears its current owner's emblem.
+    game.state["cities"]["c1"]["owner"] = "p2"
+    game.save()
+    client = Client()
+    client.force_login(user)
+    client.cookies["django_language"] = language
+    html = client.get(reverse("game", args=[game.id]), {"tab": "wars"}).content.decode()
+    atlas = re.search(r'<figure class="realm-map".*?</figure>', html, re.S).group()
+    for owner, emblem in (("p1", "sun"), ("p2", "lotus"), ("p3", "palm")):
+        cities = re.findall(rf'<a class="map-city house-{owner}".*?</a>', atlas, re.S)
+        assert cities
+        assert all(f'data-house-emblem="{emblem}"' in city for city in cities)
+        legend = re.search(rf'<li class="house-{owner}">.*?</li>', atlas, re.S).group()
+        assert f'data-house-emblem="{emblem}"' in legend
+        assert 'aria-hidden="true"' in legend
+    assert 'class="map-sigil"' not in atlas
+
+
+@case(
     "folio-local-forge-http",
     "Local forge: Works exposes a multi-city form and one read-only preview/seal",
 )

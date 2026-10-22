@@ -253,6 +253,8 @@ folio-map-context/c4-en
 folio-map-context/c4-fr
 folio-map-context/c6-en
 folio-map-context/c6-fr
+folio-map-house-emblems/en
+folio-map-house-emblems/fr
 folio-map-order/capture
 folio-map-order/raid
 folio-map-unavailable/eliminated

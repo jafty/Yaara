@@ -1,5 +1,11 @@
 # Implementation decisions
 
+## 2026-10-22 · Quiet parchment map and house emblems
+
+- The owner's follow-up supersedes the painted terrain direction below: remove mountains, dunes, rocks and scrub while preserving the pale worn parchment, fibres and rubbed edges. Only tiny faded palm sketches remain in two corners; no prominent relief competes with the cities.
+- Keep the local `map-terrain.png` background and public territory geometry. Replace Roman house numbers with restrained vector seals: sun for p1, lotus for p2 and palm for p3, shared by city markers and the house legend. Current ownership determines the seal; accessible city/house names and all reach/engagement markers remain intact.
+- This is Presentation work: lint/format, complete case-catalog collection, affected bilingual map and illustration cases on real PostgreSQL 17, and the bilingual browser smoke with narrow/enlarged layouts and no-JavaScript navigation. Review current and legacy maps and background decoding visually. No gameplay reference update is needed because game behavior is unchanged.
+
 ## 2026-10-22 · Match the map to the existing frescoes
 
 - Replace the yellow, finely shaded terrain background with a redraw using the actual Council and cityscape images as style references. Match Council's pale ivory fibrous papyrus, rubbed mineral pigment and softly abraded edges; simplify mountains, dunes, rocks and scrub into flat shapes with stronger brown contours. Avoid the previous golden wash, realistic crag shading and heavy cracked/burnt parchment treatment.

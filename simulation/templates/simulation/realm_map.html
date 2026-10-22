@@ -10,7 +10,7 @@
                     <polygon class="map-territory" points="{{ city.territory }}"/>
                     <g transform="translate({{ city.x|unlocalize }} {{ city.y|unlocalize }})">
                         {% include 'simulation/map_marker.html' with owned=city.owned reachable=city.reachable engaged=city.engaged %}
-                        <text class="map-sigil" y="6" text-anchor="middle" aria-hidden="true">{% include 'simulation/house_mark.html' with owner=city.owner %}</text>
+                        {% include 'simulation/house_mark.html' with owner=city.owner %}
                         <text class="map-name" y="62" text-anchor="middle">{{ city.name }}</text>
                     </g>
                 </a>
