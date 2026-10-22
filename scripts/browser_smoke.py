@@ -183,6 +183,14 @@ with sync_playwright() as playwright:
         ).to_be_visible()
         expect(page.locator("#recent-letters")).to_be_visible()
         expect(page.locator("#upcoming-heading")).to_be_visible()
+        expect(page.locator(".alerts-trigger")).to_have_attribute("data-alert-count", "0")
+        page.locator(".alerts-trigger").focus()
+        page.keyboard.press("Enter")
+        expect(page.locator("#realm-alerts")).to_have_attribute("open", "")
+        expect(page.locator("#alert-list")).to_contain_text(
+            "No current alerts" if en else "Aucune alerte en cours"
+        )
+        page.locator("#realm-alerts > summary").click()
         expect(page.locator('.city-identity [data-team-state="available"]')).to_have_count(3)
         links = page.locator(".council-links a").all()
         for first, second in zip(links, links[1:]):
@@ -654,6 +662,11 @@ with sync_playwright() as playwright:
         )
         plain_page = plain.new_page()
         plain_page.goto(game_url + "?tab=help")
+        plain_page.locator(".alerts-trigger").focus()
+        plain_page.keyboard.press("Enter")
+        expect(plain_page.locator("#realm-alerts")).to_have_attribute("open", "")
+        no_overflow(plain_page)
+        plain_page.locator("#realm-alerts > summary").click()
         expect(plain_page.locator("#victory")).to_be_visible()
         no_overflow(plain_page)
         plain_page.locator("[data-prologue-replay]").click()

@@ -1,0 +1,30 @@
+{% load i18n %}
+<details id="realm-alerts" class="alert-center" {% if alert_center.count and tab == 'domain' or alert_center.urgent %}open{% endif %}>
+    <summary>{% translate "Alertes" %} · {{ alert_center.count }}{% if alert_center.damage_count %}<span class="alert-summary-damage"> · {% translate "Ouvrages endommagés" %} : {{ alert_center.damage_count }}</span>{% endif %}</summary>
+    <div id="alert-list" tabindex="-1">
+    {% if alert_center.items %}<ul class="alert-list">
+        {% for alert in alert_center.items %}<li data-alert-kind="{{ alert.kind }}" data-alert-city="{{ alert.city_id }}" {% if alert.kind == 'damage' %}data-alert-building="{{ alert.family }}" data-repair-phase="{{ alert.repair_phase }}"{% endif %}>
+        {% if alert.kind == 'threat' %}
+            <aside class="threat-notice" data-threat-city="{{ alert.city_id }}" role="status">
+                {% include 'simulation/nav_icon.html' with icon='blades' %}
+                <p><strong>{% blocktranslate with city=alert.city_name %}Expédition ennemie engagée vers {{ city }}.{% endblocktranslate %}</strong> <a href="{% url 'game' game.id %}?tab=city&amp;city={{ alert.city_id }}">{% translate "Examiner les défenses" %} →</a></p>
+            </aside>
+        {% elif alert.kind == 'damage' %}
+            <div class="alert-detail">
+                {% include 'simulation/nav_icon.html' with icon='damage' %}
+                <div><p><strong>{{ alert.city_name }} · {{ alert.building }}</strong><br>{% translate "Ouvrage endommagé" %}</p>
+                {% if alert.repair_phase != 'none' %}<p class="cost-hint">{% if alert.repair_phase == 'active' %}{% translate "Réparation en cours" %}{% else %}{% translate "Réparation prévue" %}{% endif %} · {% blocktranslate with moon=alert.finish_moon %}Fin prévue : lune {{ moon }}{% endblocktranslate %}</p>
+                    <a href="{% url 'game' game.id %}?tab=constructions{% if alert.repair_phase == 'active' %}#active-works{% else %}#orders-heading{% endif %}">{% translate "Suivre la réparation" %} →</a>
+                {% else %}<a href="{% url 'game' game.id %}?{{ alert.query }}">{% translate "Examiner la réparation" %} →</a>{% endif %}</div>
+            </div>
+        {% else %}
+            <div class="alert-detail">
+                {% include 'simulation/nav_icon.html' with icon='grain' %}
+                <div><p><strong>{{ alert.city_name }} · {% translate "Réserves de siège insuffisantes" %}</strong><br>{% blocktranslate with missing=alert.missing %}Il manque {{ missing }} Mesures pour tenir un mois de siège après les réservations.{% endblocktranslate %}</p><a href="{% url 'game' game.id %}?tab=city&amp;city={{ alert.city_id }}">{% translate "Les comptes de la cité" %} →</a></div>
+            </div>
+        {% endif %}
+        </li>{% endfor %}
+    </ul><p class="aside-text">{% translate "Les alertes restent visibles jusqu’à résolution. Les rapports conservent l’historique." %}</p>
+    {% else %}<p>{% translate "Aucune alerte en cours." %}</p>{% endif %}
+    </div>
+</details>

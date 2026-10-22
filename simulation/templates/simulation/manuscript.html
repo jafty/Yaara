@@ -1,4 +1,4 @@
-{% load static i18n %}{% get_current_language as current_language %}
+{% load static i18n folio_alerts %}{% get_current_language as current_language %}{% build_alert_center view as alert_center %}
 <!DOCTYPE html>
 <html lang="{{ current_language }}">
     <head>
@@ -19,11 +19,11 @@
                     <p class="book-title">{{ game.title }}</p>
                 </div>
                 {% if view %}
-                    <div class="resource-ribbon" aria-label="{% translate "Les moyens libres de votre maison" %}">
+                    <div class="header-status"><div class="resource-ribbon" aria-label="{% translate "Les moyens libres de votre maison" %}">
                         <span class="resource-value" title="{% translate 'Mesures libres' %}">{% include 'simulation/nav_icon.html' with icon='grain' %}<strong>{{ view.available_stock }}</strong><span class="visually-hidden">{% translate 'Mesures libres' %}</span></span>
                         <span class="resource-value" title="{% translate 'Fidèles disponibles' %}">{% include 'simulation/nav_icon.html' with icon='warrior' %}<strong>{{ view.available_fideles }}</strong><span class="visually-hidden">{% translate 'Fidèles disponibles' %}</span></span>
                         <span class="resource-value" title="{% translate 'Lune' %}">{% include 'simulation/nav_icon.html' with icon='moon' %}<span class="visually-hidden">{% translate 'Lune' %}</span><strong>{% if view.finished %}{{ view.closed_moon }}{% else %}{{ view.open_moon }}{% endif %}</strong></span>
-                    </div>
+                    </div><a class="alerts-trigger{% if alert_center.count %} has-alerts{% endif %}" href="#alert-list" aria-controls="realm-alerts" data-alert-count="{{ alert_center.count }}">{% include 'simulation/nav_icon.html' with icon='bell' %}<span>{% translate "Alertes" %} <strong>{{ alert_center.count }}</strong></span></a></div>
 
                 {% endif %}
             </div>
@@ -51,7 +51,7 @@
         <div class="book">
             <main id="main">
                 {% if messages %}<div class="notices" aria-live="polite">{% for message in messages %}<p class="notice {{ message.tags }}">{{ message }}</p>{% endfor %}</div>{% endif %}
-                {% include 'simulation/incoming_threats.html' %}
+                {% include 'simulation/alert_center.html' %}
                 {% block content %}{% endblock %}
             </main>
             <nav class="folio-tools" aria-label="{% translate 'Les repères du livre' %}">

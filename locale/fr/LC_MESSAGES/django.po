@@ -3491,3 +3491,44 @@ msgstr "Fin prévue : lune %(moon)s"
 #, python-format
 msgid "Début : lune %(moon)s"
 msgstr "Début : lune %(moon)s"
+
+#. Persistent alert centre.
+msgid "Alertes"
+msgstr "Alertes"
+
+#. Persistent alert centre.
+msgid "Ouvrages endommagés"
+msgstr "Ouvrages endommagés"
+
+#. Persistent alert centre.
+msgid "Réparation en cours"
+msgstr "Réparation en cours"
+
+#. Persistent alert centre.
+msgid "Réparation prévue"
+msgstr "Réparation prévue"
+
+#. Persistent alert centre.
+msgid "Suivre la réparation"
+msgstr "Suivre la réparation"
+
+#. Persistent alert centre.
+msgid "Examiner la réparation"
+msgstr "Examiner la réparation"
+
+#. Persistent alert centre.
+msgid "Réserves de siège insuffisantes"
+msgstr "Réserves de siège insuffisantes"
+
+#. Persistent alert centre.
+#, python-format
+msgid "Il manque %(missing)s Mesures pour tenir un mois de siège après les réservations."
+msgstr "Il manque %(missing)s Mesures pour tenir un mois de siège après les réservations."
+
+#. Persistent alert centre.
+msgid "Les alertes restent visibles jusqu’à résolution. Les rapports conservent l’historique."
+msgstr "Les alertes restent visibles jusqu’à résolution. Les rapports conservent l’historique."
+
+#. Persistent alert centre.
+msgid "Aucune alerte en cours."
+msgstr "Aucune alerte en cours."

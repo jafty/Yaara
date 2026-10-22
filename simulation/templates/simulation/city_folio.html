@@ -19,12 +19,12 @@
         {% if view.rules == 'V1' %}<p>{% if view.local_forges %}{% blocktranslate with name=selected.forge_name equipment=selected.equipment %}<strong>{{ name }}</strong> : <strong>{{ equipment }}</strong> pour les Fidèles de cette cité.{% endblocktranslate %}{% else %}{{ selected.equipment }}.{% endif %}</p>{% endif %}
         {% include 'simulation/team_status.html' with city=selected detailed=True %}
         {% include 'simulation/ledger_help.html' with topic='crew' %}
-        {% if selected.buildings %}<ul class="building-ledger">{% for building in selected.buildings %}<li>
+        {% if selected.buildings %}<ul class="building-ledger">{% for building in selected.buildings %}<li id="building-{{ building.kind }}" {% if building.damaged %}class="damaged-building" data-damaged-building="{{ building.kind }}"{% endif %}>
             {% include 'simulation/illustration.html' with scene=building.kind compact=True %}
-            <div><h3>{{ building.name }}</h3><p>{% blocktranslate with built=building.level effective=building.effective_level %}Niveau bâti : {{ built }} · Niveau en service : {{ effective }}.{% endblocktranslate %}</p>
-            <p>{{ building.effect }}</p>{% if building.damaged %}<p class="reserve-warning">{% translate "Ouvrage endommagé" %}</p>{% endif %}
+            <div><h3>{{ building.name }}</h3>{% if building.damaged %}{% include 'simulation/damage_state.html' %}{% endif %}<p>{% blocktranslate with built=building.level effective=building.effective_level %}Niveau bâti : {{ built }} · Niveau en service : {{ effective }}.{% endblocktranslate %}</p>
+            <p>{{ building.effect }}</p>
             {% if building.finish_moon %}<p>{% blocktranslate with moon=building.finish_moon %}Travaux en cours ou réservés jusqu’à la lune {{ moon }}.{% endblocktranslate %}</p>{% endif %}
-            <a href="?tab=constructions&amp;action={{ building.kind }}&amp;city={{ selected.id }}">{% translate "Examiner les travaux possibles" %} →</a></div>
+            {% if building.damaged %}<a href="?tab=constructions&amp;action={% if building.kind == 'walls' %}repair{% else %}repair_{{ building.kind }}{% endif %}&amp;city={{ selected.id }}">{% translate "Examiner la réparation" %} →</a>{% else %}<a href="?tab=constructions&amp;action={{ building.kind }}&amp;city={{ selected.id }}">{% translate "Examiner les travaux possibles" %} →</a>{% endif %}</div>
         </li>{% endfor %}</ul>{% endif %}
         {% if selected.deaths %}<p>{% blocktranslate with v0=selected.deaths %}Depuis le début du règne, <strong>{{ v0 }} habitants</strong> ont perdu la vie.{% endblocktranslate %}</p>{% endif %}
         {% if not view.finished and not view.eliminated and not game.paused %}<p class="reading-links"><a href="?tab=decrees&city={{ selected.id }}">{% blocktranslate with v0=selected.name %}Dicter un décret pour {{ v0 }}{% endblocktranslate %} →</a></p>{% endif %}

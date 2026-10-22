@@ -4775,3 +4775,44 @@ msgstr "Expected finish: Moon %(moon)s"
 #, python-format
 msgid "Début : lune %(moon)s"
 msgstr "Start: Moon %(moon)s"
+
+#. Persistent alert centre.
+msgid "Alertes"
+msgstr "Alerts"
+
+#. Persistent alert centre.
+msgid "Ouvrages endommagés"
+msgstr "Damaged buildings"
+
+#. Persistent alert centre.
+msgid "Réparation en cours"
+msgstr "Repair in progress"
+
+#. Persistent alert centre.
+msgid "Réparation prévue"
+msgstr "Repair scheduled"
+
+#. Persistent alert centre.
+msgid "Suivre la réparation"
+msgstr "Track repair"
+
+#. Persistent alert centre.
+msgid "Examiner la réparation"
+msgstr "Inspect repair"
+
+#. Persistent alert centre.
+msgid "Réserves de siège insuffisantes"
+msgstr "Low siege reserves"
+
+#. Persistent alert centre.
+#, python-format
+msgid "Il manque %(missing)s Mesures pour tenir un mois de siège après les réservations."
+msgstr "You need %(missing)s more Measures to withstand one Month of siege after reservations."
+
+#. Persistent alert centre.
+msgid "Les alertes restent visibles jusqu’à résolution. Les rapports conservent l’historique."
+msgstr "Alerts remain until resolved. Reports keep the history."
+
+#. Persistent alert centre.
+msgid "Aucune alerte en cours."
+msgstr "No current alerts."

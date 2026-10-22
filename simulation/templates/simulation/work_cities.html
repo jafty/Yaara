@@ -7,7 +7,7 @@
         </label>{% else %}<strong class="work-city-heading">{{ city.name }}</strong>{% endif %}
         {% include 'simulation/team_status.html' %}
         <div class="work-city-details">
-            <p class="work-transition">{{ city.current_name }}{% if city.current_damaged %} ({% translate "endommagée" %}){% endif %}{% if city.work_name %} → {{ city.work_name }}{% endif %}</p>
+            <p class="work-transition">{{ city.current_name }}{% if city.work_name %} → {{ city.work_name }}{% endif %}</p>{% if city.current_damaged %}{% include 'simulation/damage_state.html' %}{% endif %}
             {% if city.benefit %}<p class="work-benefit">{{ city.benefit }}</p>{% endif %}
             {% if city.work_name %}
                 <dl class="work-facts">

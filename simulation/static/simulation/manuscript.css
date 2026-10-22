@@ -176,6 +176,37 @@ button:hover {
   padding: 0.35rem 0 0.5rem;
   font-variant-numeric: tabular-nums;
 }
+.header-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.alerts-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-shrink: 0;
+  min-height: 44px;
+  color: var(--muted);
+  font-size: 0.75rem;
+  text-decoration: none;
+}
+.alerts-trigger .nav-icon {
+  width: 20px;
+  height: 20px;
+}
+.alerts-trigger.has-alerts {
+  color: var(--accent);
+}
+.alerts-trigger strong {
+  display: inline-block;
+  min-width: 1.25em;
+  padding-inline: 0.15em;
+  text-align: center;
+  border-radius: 50%;
+  border: 1px solid currentColor;
+}
 .resource-value {
   display: inline-flex;
   align-items: center;
@@ -298,6 +329,62 @@ strong {
   display: inline-flex;
   align-items: center;
   min-height: 44px;
+}
+.alert-center {
+  margin-block: 0.75rem;
+  padding-inline: 0.75rem;
+  border: 1px solid var(--rule);
+  background: var(--leaf);
+  scroll-margin-top: 5rem;
+}
+.alert-center > summary {
+  font-size: 1.05rem;
+}
+.alert-summary-damage {
+  color: var(--accent);
+}
+.alert-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.alert-list > li {
+  border-top: 1px solid var(--rule);
+}
+.alert-detail {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  padding-block: 0.75rem;
+  font-size: 0.9rem;
+}
+.alert-detail > .nav-icon {
+  flex-shrink: 0;
+  color: var(--accent);
+}
+.alert-detail a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+#alert-list:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+.damage-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.4rem;
+  font-size: 0.75rem;
+  color: var(--accent);
+  background: #f6eae4;
+  border: 1px solid #dfbdb3;
+}
+.damage-state .nav-icon {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
 }
 .city-entry,
 .decree-choice,
@@ -495,6 +582,11 @@ summary::marker {
   gap: 0.75rem;
   padding-block: 0.9rem;
   border-bottom: 1px solid var(--rule);
+}
+.building-ledger > .damaged-building {
+  padding: 0.75rem;
+  border: 1px solid #dfbdb3;
+  background: #f6eae4;
 }
 .building-ledger h3 {
   margin-top: 0;
@@ -911,8 +1003,8 @@ input[type="number"] {
 .map-context {
   padding: 1rem 0;
   border-block: 1px solid var(--rule);
-  /* Offset the page's 9rem anchor padding so the heading clears the compact header. */
-  scroll-margin-top: -6rem;
+  /* Combine with the page's 9rem anchor padding to clear the resource/alert header. */
+  scroll-margin-top: -4.5rem;
 }
 .map-context h2 {
   margin: 0 0 0.5rem;
@@ -1004,6 +1096,14 @@ input[type="number"] {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0 2rem;
+  }
+  .alert-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 1.5rem;
+  }
+  .alert-list > li[data-alert-kind="threat"] {
+    grid-column: 1 / -1;
   }
   main > section[id^="work-"] {
     max-width: 48rem;

@@ -1,7 +1,0 @@
-{% load i18n %}
-{% if view and not view.finished %}{% for city in view.owned_cities %}{% if city.engaged and not city.own_engagement %}
-<aside class="threat-notice" data-threat-city="{{ city.id }}" role="status">
-    {% include 'simulation/nav_icon.html' with icon='blades' %}
-    <p><strong>{% blocktranslate with city=city.name %}Expédition ennemie engagée vers {{ city }}.{% endblocktranslate %}</strong> <a href="{% url 'game' game.id %}?tab=city&amp;city={{ city.id }}">{% translate "Examiner les défenses" %} →</a></p>
-</aside>
-{% endif %}{% endfor %}{% endif %}
