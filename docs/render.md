@@ -56,11 +56,14 @@ If your service plan does not support pre-deploy commands, set **Docker Command*
 to the following fallback, which migrates before serving traffic:
 
 ```sh
-sh -c 'python manage.py migrate --noinput && exec sh scripts/start.sh'
+sh scripts/start-render.sh
 ```
 
 Use the fallback with a single instance and serialize deployments; do not run
 concurrent migration commands. Do not migrate during the Docker image build.
+Enter the command as plain text, without quotes or JSON brackets. The dedicated
+script applies migrations and starts Gunicorn only if they succeed. Avoid inline
+`sh -c` commands in this field: command parsing can preserve quotes literally.
 
 A new database starts empty: it does not copy Railway accounts or games. To keep
 existing data, restore a tested PostgreSQL backup into a new empty Render database

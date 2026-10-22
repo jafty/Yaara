@@ -1,5 +1,7 @@
 import logging.config
+import os
 import runpy
+import subprocess
 from pathlib import Path
 
 import pytest
@@ -60,3 +62,36 @@ def test_rejected_host_error_reaches_console(monkeypatch, capsys):
         assert "Invalid HTTP_HOST header" in capsys.readouterr().err
     finally:
         parent.handlers, parent.level, parent.propagate = previous
+
+
+@case("render-startup-migrations", "Render deployment: migrations must succeed before HTTP startup")
+@pytest.mark.parametrize("migration_status", [0, 1], ids=["success", "failure"])
+def test_render_startup_migration_boundary(tmp_path, migration_status):
+    """Given a Render startup with migration exit status {migration_status}.
+    When the dedicated startup script runs.
+    Then Gunicorn starts only after successful migrations.
+    """
+    events = tmp_path / "events"
+    python = tmp_path / "python"
+    python.write_text(
+        f'#!/bin/sh\nprintf "migrate %s\\n" "$*" >> "$STARTUP_EVENTS"\nexit {migration_status}\n'
+    )
+    gunicorn = tmp_path / "gunicorn"
+    gunicorn.write_text('#!/bin/sh\nprintf "serve\\n" >> "$STARTUP_EVENTS"\n')
+    python.chmod(0o755)
+    gunicorn.chmod(0o755)
+    result = subprocess.run(
+        ["sh", "scripts/start-render.sh"],
+        cwd=Path(__file__).parents[1],
+        env={
+            **os.environ,
+            "PATH": f"{tmp_path}:{os.environ['PATH']}",
+            "STARTUP_EVENTS": str(events),
+        },
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode == migration_status
+    assert events.read_text().splitlines() == ["migrate manage.py migrate --noinput"] + (
+        ["serve"] if migration_status == 0 else []
+    )

@@ -713,6 +713,8 @@ remarks-report-return/en
 remarks-report-return/fr
 render-host-absent
 render-host-trusted
+render-startup-migrations/failure
+render-startup-migrations/success
 replaying-cancelled-order-cannot-revive-it
 return-loot-capacity/0-0
 return-loot-capacity/1000-1000
