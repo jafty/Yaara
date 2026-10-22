@@ -36,6 +36,7 @@ The default reign lasts ten years. The first harvest arrives at the closure of M
 
 ## Deployment and development
 
+- [Render backup deployment, variables and troubleshooting](docs/render.md)
 - [Railway setup, variables, scheduler and backups](docs/railway.md)
 - [Current gameplay reference](docs/gameplay-review-prompt.fr.md)
 - [Future ideas backlog](docs/backlog.fr.md)

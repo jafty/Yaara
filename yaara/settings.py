@@ -21,6 +21,19 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 if os.getenv("RAILWAY_PUBLIC_DOMAIN"):
     CSRF_TRUSTED_ORIGINS.append("https://" + os.environ["RAILWAY_PUBLIC_DOMAIN"])
+if os.getenv("RENDER_EXTERNAL_HOSTNAME"):
+    ALLOWED_HOSTS.append(os.environ["RENDER_EXTERNAL_HOSTNAME"])
+    CSRF_TRUSTED_ORIGINS.append("https://" + os.environ["RENDER_EXTERNAL_HOSTNAME"])
+
+# Platform logs capture stderr, including rejected hosts and CSRF failures.
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {"console": {"class": "logging.StreamHandler"}},
+    "loggers": {
+        "django": {"handlers": ["console"], "level": "INFO", "propagate": False},
+    },
+}
 INSTALLED_APPS = [
     "django.contrib.auth",
     "django.contrib.contenttypes",

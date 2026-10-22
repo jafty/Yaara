@@ -210,6 +210,7 @@ departure-invalidated/missing-funds
 departure-invalidated/missing-troops
 departure-invalidated/new-raid-protection
 departure-invalidated/new-wall-damage
+deployment-errors-console
 disconnected-origins-must-touch-same-frontier/both-components-touch
 disconnected-origins-must-touch-same-frontier/one-component-touches
 draft-language-switch
@@ -710,6 +711,8 @@ remarks-reopen-rejection/funds
 remarks-reopen-rejection/revision
 remarks-report-return/en
 remarks-report-return/fr
+render-host-absent
+render-host-trusted
 replaying-cancelled-order-cannot-revive-it
 return-loot-capacity/0-0
 return-loot-capacity/1000-1000
