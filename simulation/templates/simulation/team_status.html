@@ -1,0 +1,2 @@
+{% load i18n %}
+<span class="team-status" data-team-state="{% if city.busy %}occupied{% else %}available{% endif %}">{% include 'simulation/nav_icon.html' with icon='works' %}<span>{% if city.busy %}{% translate "Équipe occupée" %}{% else %}{% translate "Équipe libre" %}{% endif %}</span></span>

@@ -5,6 +5,7 @@
             <input type="checkbox" name="cities" value="{{ city.id }}" data-cost="{{ city.cost|unlocalize }}" data-shortfall="{{ city.shortfall|unlocalize }}" {% if not city.available %}disabled{% elif city.id in selected_cities or city_requested and selected.id == city.id %}checked{% endif %}>
             <strong>{{ city.name }}</strong>
         </label>{% else %}<strong class="work-city-heading">{{ city.name }}</strong>{% endif %}
+        {% include 'simulation/team_status.html' %}
         <div class="work-city-details">
             <p class="work-transition">{{ city.current_name }}{% if city.current_damaged %} ({% translate "endommagée" %}){% endif %}{% if city.work_name %} → {{ city.work_name }}{% endif %}</p>
             {% if city.benefit %}<p class="work-benefit">{{ city.benefit }}</p>{% endif %}

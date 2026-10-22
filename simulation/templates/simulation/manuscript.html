@@ -51,6 +51,7 @@
         <div class="book">
             <main id="main">
                 {% if messages %}<div class="notices" aria-live="polite">{% for message in messages %}<p class="notice {{ message.tags }}">{{ message }}</p>{% endfor %}</div>{% endif %}
+                {% include 'simulation/incoming_threats.html' %}
                 {% block content %}{% endblock %}
             </main>
             <nav class="folio-tools" aria-label="{% translate 'Les repères du livre' %}">

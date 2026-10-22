@@ -1,5 +1,12 @@
 # Implementation decisions
 
+## 2026-10-22 · Incoming threats and visible crew availability
+
+- The owner requested an explicit incoming-enemy warning and clearer city-team status. Keep knowledge of committed targets as basic public information, consistent with the existing map markers; no surveillance upgrade is required. Surveillance retains its existing mobilization and interception effects.
+- Every in-game folio shows a compact warning naming each owned city with an existing enemy engagement, linking to its defence accounts. This includes sealed attacks before departure and active expeditions, and persists while paused. It clears with the existing target reservation after cancellation or combat and is hidden once the reign finishes. The copy says “committed”, without implying confirmed marching or revealing an attacker, force size, mission type, hidden equipment or arrival date.
+- City-account names and work-selection lists share explicit “Crew available / Crew occupied” labels. Sealed work reserves a crew immediately; active work keeps it occupied, cancellation and completion free it under the existing rules. Existing task names and availability Moons remain visible in city accounts. Remove the duplicate crew figure from the account table.
+- This uses the Presentation checkpoint. Only templates, styles, translations and their checks change; authorized projections, simulation, reservations and building effects remain intact. The current gameplay reference still accurately describes exposed engagements and team commitments, so no rule-reference revision is needed.
+
 ## 2026-10-22 · Compact preparation and desktop folios
 
 - The owner authorized a presentation-only desktop redesign while retaining mobile navigation and flow. Large screens use a left navigation rail, a wider reading area, adjacent Council news/accounts, two-column work families and a sticky atlas beside expedition preparation. Narrow screens keep the bottom navigation and map above preparation. Enlarged text falls back through the same responsive rules.

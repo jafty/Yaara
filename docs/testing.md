@@ -227,3 +227,7 @@ Local evidence for this increment: 1,123 tests passed on disposable PostgreSQL 1
 ## Compact preparation and desktop folios — October 22
 
 Presentation regressions cover collapsed origin details with visible funding/warnings, native mixed-transport ceilings, selected-city connections from each saved road network, and city-labelled ongoing works before the catalogue. Existing bilingual letters now assert the approved foray/pillage terminology. The browser journey verifies adjacent desktop map/preparation, the retained stacked mobile flow, upright legends, keyboard and no-JavaScript origin disclosures, 320px/390px layouts, enlarged text, live capacity changes and capture hiding loot information. This is a Presentation change; simulation, transactions and saved data are unchanged.
+
+## Incoming threats and crew availability — October 22
+
+Bilingual presentation cases cover quiet/confirmed/active/paused/cancelled/resolved/finished/outgoing expedition states on Council, Expeditions and Works, with unchanged saves and warnings limited to existing owned-city engagement flags. Crew cases cover free, sealed, active, completed and cancelled construction in city-account headings and work-selection lists. The shared browser journey checks translated crew labels with JavaScript and native forms; an additional real-server browser reproduction verifies enemy-warning links, desktop/320px/390px layouts, enlarged text and keyboard operation in both languages with and without JavaScript. Presentation verification applies; there is no new disclosure or game rule.

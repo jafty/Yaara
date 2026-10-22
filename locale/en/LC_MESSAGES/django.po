@@ -4748,3 +4748,16 @@ msgstr "Borders are illustrative; only roads connect cities. Select a city to se
 #. UI refinement, October 22, 2026.
 msgid "Routes directes"
 msgstr "Direct routes"
+
+#. Public threat and crew visibility.
+#, python-format
+msgid "Expédition ennemie engagée vers %(city)s."
+msgstr "Enemy expedition committed against %(city)s."
+
+#. Public threat and crew visibility.
+msgid "Examiner les défenses"
+msgstr "Review defences"
+
+#. Public threat and crew visibility.
+msgid "Équipe libre"
+msgstr "Crew available"

@@ -183,6 +183,7 @@ with sync_playwright() as playwright:
         ).to_be_visible()
         expect(page.locator("#recent-letters")).to_be_visible()
         expect(page.locator("#upcoming-heading")).to_be_visible()
+        expect(page.locator('.city-identity [data-team-state="available"]')).to_have_count(3)
         links = page.locator(".council-links a").all()
         for first, second in zip(links, links[1:]):
             a, b = first.bounding_box(), second.bounding_box()
@@ -569,6 +570,10 @@ with sync_playwright() as playwright:
         storage = page.locator("#work-storage")
         expect(storage.locator('input[value="c2"]')).to_be_disabled()
         expect(storage.locator('input[value="c1"]')).to_be_enabled()
+        expect(storage.locator('[data-team-state="occupied"]')).to_have_text(
+            "Crew occupied" if en else "Équipe occupée"
+        )
+        expect(storage.locator('[data-team-state="available"]')).to_have_count(2)
         expect(storage.locator(".work-transition").first).to_have_text(
             "Additional granaries → Silo complex"
             if en
@@ -648,6 +653,9 @@ with sync_playwright() as playwright:
         plain_page.locator("[data-prologue-previous]").click()
         plain_page.locator("[data-prologue-skip]").click()
         illustration_asset(plain_page.locator("#city-c1 .illustration-small"), "cityscapes.png")
+        expect(
+            plain_page.locator('#city-c2 .city-identity [data-team-state="occupied"]')
+        ).to_be_visible()
         plain_page.locator('.city-entry a[href*="city=c1"]').click()
         expect(plain_page.locator("[data-local-accounts]")).to_be_visible()
         expect(plain_page.locator(".illustration-city-c1")).to_be_visible()

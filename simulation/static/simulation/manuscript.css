@@ -277,6 +277,28 @@ strong {
 .marginal-note {
   margin-block: 0.8rem;
 }
+.threat-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  margin-block: 0.75rem;
+  padding: 0.75rem 1rem;
+  color: var(--accent);
+  background: #f6eae4;
+  border: 1px solid #dfbdb3;
+  font-size: 0.9rem;
+}
+.threat-notice > .nav-icon {
+  flex-shrink: 0;
+}
+.threat-notice p {
+  margin: 0;
+}
+.threat-notice a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
 .city-entry,
 .decree-choice,
 .order-entry,
@@ -338,6 +360,26 @@ strong {
   display: inline-flex;
   align-items: center;
   min-height: 44px;
+}
+.team-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  max-width: 100%;
+  padding: 0.2rem 0.45rem;
+  border: 1px solid var(--rule);
+  color: var(--muted);
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+.team-status .nav-icon {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+}
+.team-status[data-team-state="occupied"] {
+  color: var(--accent);
+  background: #f6eae4;
 }
 .ledger-figures {
   display: grid;
