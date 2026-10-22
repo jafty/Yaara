@@ -289,6 +289,10 @@ def desk(request, game_id):
             "convoy_cargo": request.GET.get("cargo", ""),
             "expedition_total": sum(contributions.values()),
             "expedition_cost": price["base"] + sum(contributions.values()) * price["per_person"],
+            "expedition_capacity": sum(
+                city["contribution"] * city.get("carry_per_survivor", 5000)
+                for city in view["owned_cities"]
+            ),
             "selected_cities": request.GET.getlist("cities"),
             "constructions": constructions,
             "construction_count": len(constructions) + len(view["equipment_work"]),

@@ -1053,6 +1053,15 @@ strategy-work-warning
 target-exclusivity-rejects-without-mutation
 tick-retry-does-not-resolve-twice
 tick-transaction-rolls-back
+ui-compact-origins/en
+ui-compact-origins/fr
+ui-loot-capacity/en
+ui-loot-capacity/fr
+ui-selected-routes/1
+ui-selected-routes/2
+ui-selected-routes/3
+ui-works-first/en
+ui-works-first/fr
 unaffordable-batch-is-atomic
 unknown-work-spec-rejected
 upgrade-keeps-damage-and-repair-restores-existing-level

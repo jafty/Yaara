@@ -90,6 +90,10 @@ if (targetSelect) {
     const kind = kinds.find(input => input.checked).value;
     const price = prices[kind];
     const cost = price.base + total * price.per_person;
+    form.querySelector("[data-carry-limit]").textContent = format.format(
+      rows.reduce((sum, row, index) => sum + counts[index] * Number(row.dataset.carry), 0),
+    );
+    form.querySelector("[data-loot-preview]").hidden = kind !== "raid";
     document.querySelector("#army-total").textContent = format.format(total);
     document.querySelector("#army-cost").textContent = format.format(
       cost,

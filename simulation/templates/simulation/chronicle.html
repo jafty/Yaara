@@ -15,14 +15,14 @@
     {% elif view.eliminated %}<p class="marginal-note">{% translate "Aucune cité ne reconnaît plus votre autorité. Je continuerai pourtant de tenir ce livre jusqu’à la fin du règne." %}</p>
     {% elif game.paused %}<p class="marginal-note">{% translate "Le calendrier est suspendu. Reprenez-le avant de dicter de nouveaux ordres." %}</p>{% endif %}
     {% if tab == 'domain' %}
-        <p class="reading-links"><a href="#city-ledgers">{% translate "Les comptes de vos cités" %} ↓</a></p>
+        <div class="council-layout"><div class="council-dispatches"><p class="reading-links"><a href="#city-ledgers">{% translate "Les comptes de vos cités" %} ↓</a></p>
         <section class="briefing-news" aria-labelledby="recent-letters">
             <h2 id="recent-letters">{% blocktranslate with v0=news_moon %}Les nouvelles de la lune {{ v0 }}{% endblocktranslate %}</h2>
             {% if not view.closed_moon %}<p>{% translate "Votre règne commence. Le conseil rassemble vos nouvelles et vos engagements. Confiez vos premiers ouvrages aux cités ou préparez une expédition." %}</p>{% endif %}
             {% include 'simulation/letter_entries.html' with compact=True %}
             <p class="reading-links"><a href="?tab=letters">{% translate "Tous les rapports" %} →</a></p>
         </section>
-        {% include 'simulation/city_ledger.html' %}
+        </div>{% include 'simulation/city_ledger.html' %}</div>
         {% if not view.finished %}<section class="chapter-section" aria-labelledby="upcoming-heading">
             <h2 id="upcoming-heading">{% translate "Les prochaines échéances" %}</h2>
             {% if game.paused %}<p class="aside-text">{% translate "Ces échéances attendent la reprise du calendrier." %}</p>{% endif %}

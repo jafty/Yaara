@@ -277,7 +277,7 @@ def test_archive_artwork(user, variation):
         (
             "raid",
             "Nos hommes sont partis piller les villages.",
-            "Our people have departed to raid the villages.",
+            "Our people have departed to plunder the villages.",
         ),
         (
             "capture",

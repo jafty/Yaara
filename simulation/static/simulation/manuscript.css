@@ -535,12 +535,12 @@ input[type="number"] {
   text-align: center;
 }
 .contribution {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 0.5rem 1rem;
-  padding: 0.45rem 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.3rem 0.75rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--rule);
 }
 .contribution small {
   display: block;
@@ -553,9 +553,65 @@ input[type="number"] {
 .origin-note {
   display: block;
 }
+.origin-heading label {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+}
+.origin-funding,
+.contribution > .reserve-warning,
+.origin-details {
+  grid-column: 1 / -1;
+}
+.contribution > .reserve-warning:empty,
+.origin-note:empty {
+  display: none;
+}
+.origin-details summary {
+  font-size: 1rem;
+  color: var(--muted);
+}
+.origin-means {
+  display: grid;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  margin: 0.25rem 0 0.5rem;
+}
+.origin-means > div {
+  display: grid;
+  grid-template-columns: 7rem minmax(0, 1fr);
+  gap: 0.5rem;
+}
+.origin-means dt {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+.origin-means .nav-icon {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  align-self: start;
+  margin-top: 0.15rem;
+}
+.origin-means dd {
+  margin: 0;
+}
 .manpower-input {
-  white-space: nowrap;
-  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.manpower-input .nav-icon {
+  width: 1.1rem;
+  height: 1.1rem;
+  vertical-align: middle;
+}
+.loot-preview {
+  padding: 0.75rem;
+  margin-block: 0.75rem;
+  background: var(--leaf);
+  border: 1px solid var(--rule);
 }
 .expedition-summary {
   padding-top: 0.5rem;
@@ -690,6 +746,14 @@ input[type="number"] {
   display: block;
   width: 100%;
 }
+.map-connections {
+  pointer-events: none;
+  stroke: var(--ink);
+  stroke-width: 2;
+  stroke-dasharray: 5 6;
+  stroke-linecap: round;
+  opacity: 0.65;
+}
 .map-city {
   color: var(--muted);
   text-decoration: none;
@@ -730,7 +794,7 @@ input[type="number"] {
   stroke: var(--map-paper);
   stroke-width: 6;
   paint-order: stroke;
-  font-size: 30px;
+  font-size: 25px;
 }
 .house-p1 {
   color: #884725;
@@ -742,9 +806,9 @@ input[type="number"] {
   color: #586249;
 }
 .map-legend {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.3rem 1rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.4rem 0.75rem;
   list-style: none;
   padding: 0;
   margin: 0.6rem 0;
@@ -754,6 +818,9 @@ input[type="number"] {
   display: flex;
   align-items: center;
   gap: 0.3rem;
+  min-width: 0;
+  font-style: normal;
+  line-height: 1.35;
 }
 .house-seal {
   display: inline-grid;
@@ -762,6 +829,7 @@ input[type="number"] {
   height: 1.3rem;
   border: 1px solid currentColor;
   border-radius: 50%;
+  flex-shrink: 0;
 }
 .house-seal .house-emblem {
   width: 1rem;
@@ -797,8 +865,118 @@ input[type="number"] {
   margin-bottom: 0.6rem;
   font-size: 0.9rem;
 }
+.map-neighbors a {
+  display: inline-block;
+  padding-block: 0.25rem;
+}
 #expedition-order {
   scroll-margin-top: 8rem;
+}
+@media (min-width: 1100px) and (min-height: 600px) {
+  body {
+    display: grid;
+    grid-template-columns: 12rem minmax(0, 1fr);
+    align-items: start;
+    padding-bottom: 0;
+  }
+  .reign-header,
+  .moon-banner {
+    grid-column: 1 / -1;
+  }
+  .book-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    width: calc(100% - 4rem);
+    padding-block: 0.75rem;
+  }
+  .resource-ribbon {
+    padding: 0;
+    flex-shrink: 0;
+    font-size: 0.85rem;
+  }
+  .bookmarks {
+    position: sticky;
+    top: 5rem;
+    left: auto;
+    transform: none;
+    grid-column: 1;
+    grid-template-columns: 1fr;
+    width: auto;
+    padding: 1rem;
+    border: 0;
+  }
+  .bookmarks a {
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    border-top: 0;
+    border-left: 2px solid transparent;
+    font-size: 1rem;
+  }
+  body > .book {
+    grid-column: 2;
+    width: min(100% - 4rem, 76rem);
+  }
+  main > .illustration,
+  .correspondence,
+  .decree-reading,
+  .prologue-leaf,
+  main > p {
+    max-width: 42rem;
+  }
+  .council-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+    gap: 2.5rem;
+    align-items: start;
+  }
+  .council-layout .chapter-section,
+  .council-layout .reading-links:first-child {
+    margin-top: 0;
+  }
+  .city-ledger .city-entry {
+    grid-template-columns: 5rem minmax(0, 1fr);
+  }
+  .city-ledger .ledger-figures {
+    grid-column: 1 / -1;
+  }
+  .work-choices {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 2rem;
+  }
+  main > section[id^="work-"] {
+    max-width: 48rem;
+  }
+  .expedition-atlas {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: 2rem;
+    align-items: start;
+  }
+  .expedition-atlas > .realm-map {
+    position: sticky;
+    top: 5rem;
+  }
+  .map-context {
+    padding-top: 0;
+    border-top: 0;
+  }
+  .map-context > .illustration {
+    width: min(45%, 14rem);
+    float: right;
+    margin: 0 0 1rem 1rem;
+  }
+  .decree-form {
+    clear: both;
+  }
+  .folio-tools {
+    display: flex;
+    gap: 2rem;
+  }
 }
 @media (max-width: 600px) {
   .city-ledger .city-entry {
@@ -937,6 +1115,7 @@ input[type="number"] {
 .work-card h2 { margin: 0 0 0.2rem; font-size: 1.05rem; }
 .work-card p { font-size: 0.85rem; margin: 0.2rem 0; }
 .work-card-prices { color: var(--muted); }
+.work-price { display: inline-block; }
 .work-card:hover h2 { color: var(--accent); text-decoration: underline; }
 .mission-options { display: flex; gap: 0.5rem; padding: 0; }
 .mission-options label { position: relative; flex: 1; cursor: pointer; }

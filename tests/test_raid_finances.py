@@ -182,8 +182,8 @@ def test_finance_translation(departed_raid):
     events = []
     engine.return_expeditions(state, events)
     content = json.loads(json.dumps(events[0]["content"]["body"]))
-    assert "Coût payé pour ce raid : 95\u202f000" in render(content, "fr")
+    assert "Coût payé pour ce pillage : 95\u202f000" in render(content, "fr")
     english = render(content, "en")
-    assert "Paid cost of this raid: 95,000" in english
+    assert "Paid cost of this foray: 95,000" in english
     assert "Tamesh: 31,667 Measures paid" in english
     assert "Final Measures balance: deficit of 95,000" in english

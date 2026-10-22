@@ -87,7 +87,7 @@ msgstr ""
 
 #: simulation/engine.py:278
 msgid "Les villages ne constituent pas une cible de pillage disponible."
-msgstr "These villages are not available as a raid target."
+msgstr "These villages are not available as a foray target."
 
 #: simulation/engine.py:286
 msgid ""
@@ -153,7 +153,7 @@ msgstr "The contributions can no longer reach this frontier."
 
 #: simulation/engine.py:421
 msgid "La protection contre le pillage est encore active."
-msgstr "Protection against raiding is still active."
+msgstr "Protection against plundering is still active."
 
 #: simulation/engine.py:425
 msgid "La cité ou l’état de l’enceinte ne permet plus ces travaux."
@@ -247,7 +247,7 @@ msgstr ""
 
 #: simulation/engine.py:653
 msgid "Pillage impossible"
-msgstr "Raid impossible"
+msgstr "Foray impossible"
 
 #: simulation/engine.py:655
 msgid ""
@@ -290,7 +290,7 @@ msgid ""
 "assaillants ont emporté {p1} Mesures et en ont détruit {p2} autres. Ces "
 "pertes sont inscrites dans le grenier de la cité. "
 msgstr ""
-"The raid on our villages cost {p0} of our Faithful their lives. The "
+"The foray on our villages cost {p0} of our Faithful their lives. The "
 "attackers carried away {p1} Measures and destroyed another {p2}. These "
 "losses are recorded in the city’s granary. "
 
@@ -587,7 +587,7 @@ msgstr "The masters of the forge have begun their work."
 
 #: simulation/narration.py:68
 msgid "Nos hommes sont partis piller les villages."
-msgstr "Our people have departed to raid the villages."
+msgstr "Our people have departed to plunder the villages."
 
 #: simulation/narration.py:69
 msgid "Nos hommes sont partis conquérir la cité."
@@ -671,7 +671,7 @@ msgstr "Organise armament"
 
 #: simulation/rules.py:143
 msgid "Piller les villages"
-msgstr "Raid the villages"
+msgstr "Plunder the villages"
 
 #: simulation/rules.py:144
 msgid "Capturer une cité"
@@ -707,7 +707,7 @@ msgstr "Attack repelled"
 
 #: simulation/rules.py:154
 msgid "Pillage réussi"
-msgstr "Successful raid"
+msgstr "Successful foray"
 
 #: simulation/services.py:22
 msgid "Vous ne participez pas à cette partie."
@@ -1542,7 +1542,7 @@ msgid ""
 msgstr ""
 "The Faithful are inhabitants of your cities, not people added to their "
 "population. Those who leave no longer defend their origin. Relief forces "
-"protect our cities from capture; walls do not protect villages from raids."
+"protect our cities from capture; walls do not protect villages from forays."
 
 #: simulation/templates/simulation/chronicle.html:268
 #, python-format
@@ -1614,7 +1614,7 @@ msgid ""
 "venus du dehors."
 msgstr ""
 "Raise the defences of the centre. They will protect those who remain there, "
-"but will not shelter villages from raids or strengthen relief forces from "
+"but will not shelter villages from forays or strengthen relief forces from "
 "elsewhere."
 
 #: simulation/templates/simulation/chronicle_decrees.html:33
@@ -1662,7 +1662,7 @@ msgid ""
 "soumettre. Nos communautés reliées à cette frontière pourront réunir leurs "
 "hommes sous un même commandement."
 msgstr ""
-"You may raid a neighbouring city’s villages or attempt to subdue it. Our "
+"You may plunder a neighbouring city’s villages or attempt to subdue it. Our "
 "communities connected to that frontier can unite their people under one "
 "command."
 
@@ -1676,7 +1676,7 @@ msgstr "Let our people depart to…"
 
 #: simulation/templates/simulation/chronicle_decrees.html:80
 msgid "Piller les villages — au moins 20 Fidèles"
-msgstr "Raid the villages — at least 20 Faithful"
+msgstr "Plunder the villages — at least 20 Faithful"
 
 #: simulation/templates/simulation/chronicle_decrees.html:81
 msgid "Capturer la cité — au moins 80 Fidèles"
@@ -2715,7 +2715,7 @@ msgid ""
 "assaillants ont emporté {value1} Mesures et en ont détruit {value2} autres. "
 "Ces pertes sont inscrites dans le grenier de la cité. "
 msgstr ""
-"The raid on our villages cost {value0} of our Faithful their lives. The "
+"The foray on our villages cost {value0} of our Faithful their lives. The "
 "attackers took {value1} Measures and destroyed {value2} more. These losses "
 "are recorded in the city’s granary. "
 
@@ -2806,7 +2806,7 @@ msgid ""
 "les villages d’un raid."
 msgstr ""
 "Walls strengthen the garrison against capture; they do not protect villages "
-"from raids."
+"from forays."
 
 msgid "Les ouvrages et les équipes"
 msgstr "Works and building teams"
@@ -2962,7 +2962,7 @@ msgid ""
 "%(raid_min)s Fidèles.<br>Capture : %(capture_base)s Mesures + "
 "%(capture_person)s par Fidèle, au moins %(capture_min)s Fidèles."
 msgstr ""
-"Raid: %(raid_base)s Measures + %(raid_person)s per Faithful, at least "
+"Foray: %(raid_base)s Measures + %(raid_person)s per Faithful, at least "
 "%(raid_min)s Faithful.<br>Capture: %(capture_base)s Measures + "
 "%(capture_person)s per Faithful, at least %(capture_min)s Faithful."
 
@@ -3073,7 +3073,7 @@ msgid ""
 "les villages d’un raid."
 msgstr ""
 "An army reaches a border through your connected lands. Relief defends cities"
-" against capture; walls do not protect villages from raids."
+" against capture; walls do not protect villages from forays."
 
 msgid "Une expédition y est déjà engagée"
 msgstr "An expedition is already committed"
@@ -3288,7 +3288,7 @@ msgid "<strong>%(free)s Mesures</strong> libres ; <strong>%(reserved)s</strong> 
 msgstr "<strong>%(free)s Measures</strong> available; <strong>%(reserved)s</strong> reserved.<br>Tax accruing: <strong>%(tax)s Measures</strong>, not yet available."
 
 msgid "Les dépenses sont réparties automatiquement entre les greniers de votre maison. Les réserves restent locales pour les pillages et le stockage."
-msgstr "Spending is shared automatically among your house’s granaries. Stocks remain local for raids and storage."
+msgstr "Spending is shared automatically among your house’s granaries. Stocks remain local for forays and storage."
 
 msgid "Forge de niveau <strong>%(level)s</strong> : <strong>%(equipment)s</strong> pour les Fidèles de cette cité."
 msgstr "Level <strong>%(level)s</strong> forge: <strong>%(equipment)s</strong> for this city’s Faithful."
@@ -3369,7 +3369,7 @@ msgid "Monseigneur, choisissez une oasis sur la carte. Ses fortifications et les
 msgstr "My lord, choose an oasis on the map. Its fortifications and available orders will be recorded here."
 
 msgid "Un raid vise les réserves ; une attaque cherche à prendre la cité. Les hommes partis ne défendent plus leurs foyers jusqu’au retour."
-msgstr "A raid targets supplies; an attack aims to take the city. Departed men cannot defend their homes until they return."
+msgstr "A foray targets supplies; an attack aims to take the city. Departed men cannot defend their homes until they return."
 
 msgid "Mesures libres"
 msgstr "Available measures"
@@ -3474,7 +3474,7 @@ msgid "Agrandir le grenier ne crée pas de grain. La capacité reste propre à c
 msgstr "Enlarging a granary creates no grain. Capacity belongs to each city; harvest or loot that cannot fit is lost."
 
 msgid "L’enceinte protège la garnison locale contre les captures, sans renforcer les secours. Elle ne protège pas contre le pillage des villages."
-msgstr "The wall protects the local garrison against capture without strengthening relief forces. It does not protect against raids on the villages."
+msgstr "The wall protects the local garrison against capture without strengthening relief forces. It does not protect against forays on the villages."
 
 msgid "La réparation restaure l’enceinte existante sans l’agrandir. Une enceinte endommagée doit être réparée avant de pouvoir être renforcée."
 msgstr "Repair restores the existing wall without enlarging it. A damaged wall must be repaired before it can be strengthened."
@@ -3540,7 +3540,7 @@ msgid "Les Mesures sont vos réserves de nourriture. Chaque cité possède son g
 msgstr "Measures are your food reserves. Each city has its own granary: the Council shows its stock, capacity and remaining available share. Funds promised to sealed orders remain in stock but are no longer available."
 
 msgid "Les dépenses sont réparties entre les fonds libres de vos cités. Les pillages et les limites de stockage concernent chaque grenier séparément. Agrandir un grenier augmente sa capacité, sans créer de nourriture."
-msgstr "Expenses are shared between your cities’ free funds. Raids and storage limits affect each granary separately. Enlarging a granary increases its capacity without creating food."
+msgstr "Expenses are shared between your cities’ free funds. Forays and storage limits affect each granary separately. Enlarging a granary increases its capacity without creating food."
 
 msgid "Les Fidèles font partie des habitants. Partis en expédition, ils ne défendent plus leur cité et ne contribuent plus à son impôt jusqu’à leur retour. L’impôt se prépare chaque lune et est versé toutes les douze lunes."
 msgstr "The Faithful are part of the population. While away on an expedition, they neither defend their city nor contribute to its tax until their return. Tax accrues each Moon and is paid every twelve Moons."
@@ -3567,7 +3567,7 @@ msgid "Chaque cité dispose d’une équipe : un chantier ou un décret de trava
 msgstr "Each city has one team: an active work or sealed building decree occupies it. One selection can include several cities, even at different stages. Each row shows the current state, proposed work, benefit, price and duration. Benefits begin at completion."
 
 msgid "Les canaux améliorent le prélèvement ; les enceintes protègent la cité lors des captures, sans abriter les villages d’un raid. Une enceinte endommagée peut être réparée."
-msgstr "Canals improve tax yield; walls protect the city during captures but do not shelter villages from raids. Damaged walls can be repaired."
+msgstr "Canals improve tax yield; walls protect the city during captures but do not shelter villages from forays. Damaged walls can be repaired."
 
 msgid "Chaque cité peut recevoir une forge. Ses armes bénéficient à toute votre maison ; perdre ou gagner une forge par capture transfère son bénéfice au nouveau propriétaire."
 msgstr "Each city can receive a forge. Its weapons benefit your whole house; losing or gaining a forge through capture transfers its benefit to the new owner."
@@ -3576,7 +3576,7 @@ msgid "Dans ce règne ancien, la forge équipe toute la maison et conserve son c
 msgstr "In this older reign, the forge equips the whole house and keeps its work separate from city teams."
 
 msgid "Un raid cherche du butin dans les villages ; une capture cherche à prendre la cité. Les bordures de la carte représentent des territoires, pas les routes : les mentions de portée indiquent les cibles accessibles par vos possessions reliées. Une seule attaque peut être engagée vers une cible."
-msgstr "A raid seeks loot in the villages; a capture seeks control of the city. Map borders represent territories rather than roads: reach labels identify targets accessible through your connected holdings. Only one attack can be committed against a target."
+msgstr "A foray seeks loot in the villages; a capture seeks control of the city. Map borders represent territories rather than roads: reach labels identify targets accessible through your connected holdings. Only one attack can be committed against a target."
 
 msgid "La carte montre les propriétaires et les fortifications publiques. Les forces et les stocks rivaux restent secrets ; vos rapports gardent les observations du jour où ils ont été écrits. Le devis annonce départ, combat et retour prévu. Un siège peut prolonger l’expédition."
 msgstr "The map shows owners and public fortifications. Rival troops and stocks remain secret; reports preserve observations from the day they were written. The review gives departure, combat and expected return dates. A siege may prolong an expedition."
@@ -3624,7 +3624,7 @@ msgid "Au-delà des murailles"
 msgstr "Beyond the walls"
 
 msgid "Dans « Expéditions », choisissez une cité sur la carte. Son feuillet indique son maître, ses fortifications et votre portée. Pillez pour le butin, capturez pour étendre votre autorité. Les rapports vous renseigneront sur les rencontres ; les forces rivales restent secrètes."
-msgstr "Under “Expeditions”, choose a city on the map. Its folio shows its ruler, fortifications and your reach. Raid for loot, capture to extend your authority. Reports tell you about encounters; rival forces remain secret."
+msgstr "Under “Expeditions”, choose a city on the map. Its folio shows its ruler, fortifications and your reach. Plunder for loot, capture to extend your authority. Reports tell you about encounters; rival forces remain secret."
 
 msgid "Quand vos décisions sont prises, revenez au conseil pour clore la lune. Vous pouvez laisser passer une lune sans donner d’ordre. Le scribe avancera les ouvrages et les voyages."
 msgstr "Once your decisions are made, return to the Council to close the Moon. You may let a Moon pass without giving orders. The scribe will advance works and journeys."
@@ -3696,7 +3696,7 @@ msgid "Feuillet %(page)s sur 4"
 msgstr "Page %(page)s of 4"
 
 msgid "Il faut au moins %(raid)s Fidèles pour un raid, %(capture)s pour une capture. Le formulaire précise les cités capables de fournir les hommes."
-msgstr "A raid requires at least %(raid)s Faithful, a capture %(capture)s. The form identifies cities able to supply troops."
+msgstr "A foray requires at least %(foray)s Faithful, a capture %(capture)s. The form identifies cities able to supply troops."
 
 msgid "Achèvement prévu à la clôture de la lune %(moon)s."
 msgstr "Completion expected when Moon %(moon)s closes."
@@ -3804,7 +3804,7 @@ msgid "Le scribe pose deux comptes devant vous : les Mesures des greniers et les
 msgstr "The scribe sets two accounts before you: Measures in the granaries and available Faithful. These warriors are also inhabitants: while away, they neither defend their city nor produce tax."
 
 msgid "Dans « Expéditions », choisissez une cité sur la carte. Son feuillet indique son maître, ses fortifications et votre portée. Pillez pour le butin ou capturez pour étendre votre autorité. Les rapports vous renseigneront sur les rencontres ; les forces rivales restent secrètes."
-msgstr "In Expeditions, choose a city on the map. Its folio shows its ruler, fortifications and your reach. Raid for loot or capture to extend your authority. Reports will tell you about encounters; rival forces remain secret."
+msgstr "In Expeditions, choose a city on the map. Its folio shows its ruler, fortifications and your reach. Plunder for loot or capture to extend your authority. Reports will tell you about encounters; rival forces remain secret."
 
 msgid "Retour au conseil"
 msgstr "Return to Council"
@@ -3822,7 +3822,7 @@ msgid "Après une pause, la reprise conserve le temps restant et rejoint le prem
 msgstr "After a pause, resuming preserves the remaining time and uses the first mark that allows it."
 
 msgid "Pillage : %(raid_base)s Mesures + %(raid_person)s par Fidèle. Capture : %(capture_base)s Mesures + %(capture_person)s par Fidèle."
-msgstr "Raid: %(raid_base)s Measures + %(raid_person)s per Faithful. Capture: %(capture_base)s Measures + %(capture_person)s per Faithful."
+msgstr "Foray: %(raid_base)s Measures + %(raid_person)s per Faithful. Capture: %(capture_base)s Measures + %(capture_person)s per Faithful."
 
 msgid "Part de cette cité : %(charge)s Mesures ; disponibles : %(available)s."
 msgstr "This city’s share: %(charge)s Measures; available: %(available)s."
@@ -3873,7 +3873,7 @@ msgid "J’ai réuni les lettres qui vous sont destinées. Chacune garde sa date
 msgstr "I have gathered the letters addressed to you. Each keeps its date; yesterday’s observations do not necessarily describe today’s forces."
 
 msgid "Coût payé pour ce raid : {cost} Mesures."
-msgstr "Paid cost of this raid: {cost} Measures."
+msgstr "Paid cost of this foray: {cost} Measures."
 
 msgid "\n{city} : {amount} Mesures payées."
 msgstr "\n{city}: {amount} Measures paid."
@@ -3906,7 +3906,7 @@ msgid " Ce solde ne chiffre ni les pertes humaines ni les prélèvements perdus 
 msgstr " This balance does not value human losses or levies lost during the absence."
 
 msgid "Le bilan du raid"
-msgstr "The raid account"
+msgstr "The foray account"
 
 msgid "Les survivants ont rejoint des cités qui ne relèvent plus de votre maison."
 msgstr "The survivors have joined cities that no longer belong to your house."
@@ -3920,7 +3920,7 @@ msgstr "Action"
 
 #. Approved playability revision, October 2026.
 msgid "Après un pillage victorieux ayant causé des pertes agricoles, les villages restent dispersés deux lunes : pillés en lune 7, ils peuvent de nouveau être pillés en lune 10. Une capture reste possible. Les raids de la lune de récolte sont déduits avant son versement."
-msgstr "After a successful raid causing crop losses, the villagers remain dispersed for two Moons: raided in Moon 7, they can be raided again in Moon 10. Capture remains possible. Raids in the harvest Moon are deducted before payment."
+msgstr "After a successful foray causing crop losses, the villagers remain dispersed for two Moons: plundered in Moon 7, they can be plundered again in Moon 10. Capture remains possible. Forays in the harvest Moon are deducted before payment."
 
 #. Approved playability revision, October 2026.
 msgid "Ateliers de bât"
@@ -3976,11 +3976,11 @@ msgstr "In this older reign, a seal is final. No confirmed decree can be cancell
 
 #. Approved playability revision, October 2026.
 msgid "Défense des raids : 40 % des Fidèles disponibles."
-msgstr "Raid defense: 40% of available Fidèles."
+msgstr "Foray defense: 40% of available Fidèles."
 
 #. Approved playability revision, October 2026.
 msgid "Défense des raids : 60 % des Fidèles disponibles."
-msgstr "Raid defense: 60% of available Fidèles."
+msgstr "Foray defense: 60% of available Fidèles."
 
 #. Approved playability revision, October 2026.
 msgid "Défense locale contre capture : ×2 à pleine efficacité."
@@ -4048,7 +4048,7 @@ msgstr "Preparation of siege equipment has begun."
 
 #. Approved playability revision, October 2026.
 msgid "Le raid sur nos villages a coûté la vie à {p0} de nos Fidèles. Les assaillants ont emporté {p1} Mesures et en ont détruit {p2} autres. Ces pertes diminuent la récolte en préparation ; la production continue. "
-msgstr "The raid on our villages cost {p0} of our Fidèles their lives. The attackers carried off {p1} Measures and destroyed another {p2}. These losses reduce the pending harvest; production continues. "
+msgstr "The foray on our villages cost {p0} of our Fidèles their lives. The attackers carried off {p1} Measures and destroyed another {p2}. These losses reduce the pending harvest; production continues. "
 
 #. Approved playability revision, October 2026.
 msgid "Le rendement par habitant présent progresse de 100 à 115, 130 puis 200 Mesures par lune. Les revenus restent indisponibles jusqu’au versement annuel."
@@ -4084,7 +4084,7 @@ msgstr "Shelter part of the harvest."
 
 #. Approved playability revision, October 2026.
 msgid "Mobiliser davantage de défenseurs contre les raids."
-msgstr "Mobilize more defenders against raids."
+msgstr "Mobilize more defenders against forays."
 
 #. Approved playability revision, October 2026.
 msgid "Murailles"
@@ -4112,7 +4112,7 @@ msgstr "Small arsenal"
 
 #. Approved playability revision, October 2026.
 msgid "Piller"
-msgstr "Raid"
+msgstr "Plunder"
 
 #. Approved playability revision, October 2026.
 msgid "Postes de veille"
@@ -4152,7 +4152,7 @@ msgstr "Harvest protected from theft and destruction: 800,000 Measures."
 
 #. Approved playability revision, October 2026.
 msgid "Récoltes et pillages"
-msgstr "Harvests and raids"
+msgstr "Harvests and forays"
 
 #. Approved playability revision, October 2026.
 msgid "Réduire l’avantage des fortifications adverses."
@@ -4192,7 +4192,7 @@ msgstr "Ordinary transport"
 
 #. Approved playability revision, October 2026.
 msgid "Un raid vise la récolte en préparation, jamais le grenier. Après protection de 200 000, 400 000 ou 800 000 Mesures, un quart du reste est exposé. Une victoire permet d’en emporter 60 %, dans la limite du transport, et en détruit 20 %. Ces pertes réduisent le versement annuel, sans interrompre la production ni les chantiers."
-msgstr "A raid targets the pending harvest, never the granary. After protecting 200,000, 400,000 or 800,000 Measures, a quarter of the remainder is exposed. Victory can carry away 60% of that portion, within transport capacity, and destroys 20%. These losses reduce annual payment without interrupting production or works."
+msgstr "A foray targets the pending harvest, never the granary. After protecting 200,000, 400,000 or 800,000 Measures, a quarter of the remainder is exposed. Victory can carry away 60% of that portion, within transport capacity, and destroys 20%. These losses reduce annual payment without interrupting production or works."
 
 #. Approved playability revision, October 2026.
 msgid "Valider l’action"
@@ -4232,7 +4232,7 @@ msgstr "Small arsenal equipment"
 
 #. Approved playability revision, October 2026.
 msgid "Villages dispersés : un nouveau pillage pourra arriver à partir de la lune %(moon)s. La capture reste possible."
-msgstr "Dispersed villages: a new raid may arrive from Moon %(moon)s. Capture remains possible."
+msgstr "Dispersed villages: a new foray may arrive from Moon %(moon)s. Capture remains possible."
 
 msgid "Bonus défensif local restauré : +{before} % → +{after} %."
 msgstr "Restored local defense bonus: +{before}% → +{after}%."
@@ -4375,7 +4375,7 @@ msgstr "This warning measures supply capacity, not an announced attack. Automati
 
 #: Strategic preparation and recipient reports
 msgid "Cette projection conserve les habitants présents et le rendement actuels jusqu’à la récolte. Elle exclut les futurs mouvements, pertes, pillages et changements de rendement, y compris les chantiers en cours. Ce repère n’est ni un revenu garanti ni de l’argent déjà dépensable."
-msgstr "This projection holds the current population present and yield constant until the harvest. It excludes future movements, losses, raids and changes in yield, including ongoing works. This estimate is neither guaranteed income nor money already available to spend."
+msgstr "This projection holds the current population present and yield constant until the harvest. It excludes future movements, losses, forays and changes in yield, including ongoing works. This estimate is neither guaranteed income nor money already available to spend."
 
 #: Strategic preparation and recipient reports
 msgid "Chaque cité finance ses travaux. Pour une expédition, chaque origine paie ses hommes et une part des frais fixes proportionnelle à son effectif."
@@ -4551,7 +4551,7 @@ msgstr "Moon %(moon)s"
 
 #: Strategic preparation and recipient reports
 msgid "L’arsenal équipe les Fidèles de son origine en attaque comme en défense. Le matériel de siège réduit l’avantage des murs lors d’une capture ; il ne sert pas au pillage. Le transport augmente le butin que les survivants peuvent rapporter."
-msgstr "The arsenal equips its city's Faithful in attack and defense. Siege equipment reduces the walls' advantage during a capture; it has no use in raids. Transport increases the spoils survivors can bring home."
+msgstr "The arsenal equips its city's Faithful in attack and defense. Siege equipment reduces the walls' advantage during a capture; it has no use in forays. Transport increases the spoils survivors can bring home."
 
 #: Strategic preparation and recipient reports
 msgid "L’ouvrage retrouvera toute son efficacité ; l’équipe sera occupée pendant la réparation."
@@ -4591,11 +4591,11 @@ msgstr "Damaged structure"
 
 #: Strategic preparation and recipient reports
 msgid "Pillage remporté de haute lutte"
-msgstr "Hard-fought raid victory"
+msgstr "Hard-fought foray victory"
 
 #: Strategic preparation and recipient reports
 msgid "Pillage sans opposition"
-msgstr "Unopposed raid"
+msgstr "Unopposed foray"
 
 #: Strategic preparation and recipient reports
 msgid "Prochaine équipe libérée : lune %(moon)s."
@@ -4611,7 +4611,7 @@ msgstr "A few enemy fighters fell."
 
 #: Strategic preparation and recipient reports
 msgid "Raid interrompu"
-msgstr "Raid abandoned"
+msgstr "Foray abandoned"
 
 #: Strategic preparation and recipient reports
 msgid "Restaurer l’efficacité de cet ouvrage endommagé."
@@ -4663,15 +4663,15 @@ msgstr "A convoy carries at most 500,000 Measures between two connected friendly
 
 #: Strategic preparation and recipient reports
 msgid "Un raid qui fait perdre des ressources, des habitants ou un ouvrage à sa cible déclenche deux lunes de répit, même après une défaite des assaillants. Une attaque sans perte pour la cible ne déclenche aucun répit. Les dégâts de la lune de récolte sont retirés avant son versement."
-msgstr "A raid that costs its target resources, inhabitants or a structure triggers two Moons of respite, even after the attackers' defeat. An attack causing no loss to its target triggers no respite. Damage in the harvest Moon is deducted before payment."
+msgstr "A foray that costs its target resources, inhabitants or a structure triggers two Moons of respite, even after the attackers' defeat. An attack causing no loss to its target triggers no respite. Damage in the harvest Moon is deducted before payment."
 
 #: Strategic preparation and recipient reports
 msgid "Un raid vise le prélèvement accumulé. Les abris protègent au plus 90 % de cette récolte ; un quart du reste est exposé. Une victoire nette permet d’en emporter 60 %, une victoire disputée 30 %. Le transport des survivants limite toujours le butin. Les destructions restent limitées par les hommes qui survivent ; production et chantiers continuent."
-msgstr "A raid targets the accrued levy. Shelters protect at most 90 % of this crop; a quarter of the remainder is exposed. A clear victory allows 60 % to be taken, a hard-fought victory 30 %. Survivors' transport always limits the spoils. Destruction is limited by surviving men; production and works continue."
+msgstr "A foray targets the accrued levy. Shelters protect at most 90 % of this crop; a quarter of the remainder is exposed. A clear victory allows 60 % to be taken, a hard-fought victory 30 %. Survivors' transport always limits the spoils. Destruction is limited by surviving men; production and works continue."
 
 #: Strategic preparation and recipient reports
 msgid "Un raid vise les prélèvements accumulés avant la récolte annuelle, pas les réserves déjà engrangées. Les abris et les pillages précédents réduisent les prises possibles. Une victoire militaire peut donc rester déficitaire."
-msgstr "A raid targets levies accrued before the annual harvest, not reserves already in store. Shelters and earlier raids reduce potential spoils. A military victory may therefore still lose money."
+msgstr "A foray targets levies accrued before the annual harvest, not reserves already in store. Shelters and earlier forays reduce potential spoils. A military victory may therefore still lose money."
 
 #: Strategic preparation and recipient reports
 msgid "Un siège ponctuel représente un mois. Si l’armée ennemie dépasse la défense de campagne sans pouvoir franchir les murs, chaque habitant présent exige 500 Mesures déjà engrangées. À l’égalité exacte, la cité tient et consomme ce montant ; en dessous, elle consomme ce qui reste et capitule."
@@ -4720,3 +4720,31 @@ msgstr "Free crews: %(count)s. Next harvest: Moon %(harvest)s."
 #: Strategic preparation and recipient reports
 msgid "État initial de cet ouvrage."
 msgstr "Initial state of this structure."
+
+#. UI refinement, October 22, 2026.
+msgid "Détails du contingent"
+msgstr "Ledger details"
+
+#. UI refinement, October 22, 2026.
+msgid "Siège"
+msgstr "Siege"
+
+#. UI refinement, October 22, 2026.
+msgid "Transport"
+msgstr "Transport"
+
+#. UI refinement, October 22, 2026.
+msgid "Capacité de retour"
+msgstr "Return carrying capacity"
+
+#. UI refinement, October 22, 2026.
+msgid "Plafond si tous les hommes reviennent. Le butin réel reste inconnu : il dépend des récoltes exposées et des survivants."
+msgstr "Ceiling if every man returns. Actual loot remains unknown: it depends on exposed crops and survivors."
+
+#. UI refinement, October 22, 2026.
+msgid "Les frontières sont indicatives ; seules les routes relient les cités. Sélectionnez une cité pour voir ses liaisons."
+msgstr "Borders are illustrative; only roads connect cities. Select a city to see its routes."
+
+#. UI refinement, October 22, 2026.
+msgid "Routes directes"
+msgstr "Direct routes"

@@ -8,10 +8,9 @@
     {% elif action.kind == 'equipment' %}<p>{{ action.benefit }}</p>
     {% else %}{% include 'simulation/work_cities.html' with interactive=False %}{% endif %}</section>
 {% else %}
+    {% include 'simulation/active_works.html' %}
     {% include 'simulation/work_choices.html' %}
 {% endif %}
-{% if construction_count %}<section aria-labelledby="active-works"><h2 id="active-works">{% translate "Les travaux en cours" %}</h2>
-    {% for work in constructions %}<article class="order-entry"><h3>{{ work.label }} · <a href="?tab=city&amp;city={{ work.city_id }}">{{ work.city }}</a></h3><p>{% blocktranslate with v0=work.finish_month %}Achèvement prévu à la lune <strong>{{ v0 }}</strong>.{% endblocktranslate %}</p></article>{% endfor %}
-    {% for work in view.equipment_work %}<article class="order-entry"><h3>{% translate "Armement" %}</h3><p>{% blocktranslate with v0=work.finish_month %}Achèvement prévu à la lune <strong>{{ v0 }}</strong>.{% endblocktranslate %}</p></article>{% endfor %}
-</section>{% endif %}
+{% if action %}{% include 'simulation/active_works.html' %}
+{% endif %}
 {% include 'simulation/orders_register.html' %}

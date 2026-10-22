@@ -44,7 +44,7 @@ def test_raid_financial_letter_http(user, language):
         assert "Solde final des Mesures : déficit de 50\u202f000 Mesures" in html
         assert "Tamesh : 31\u202f667 Mesures payées" in html
     else:
-        assert "Successful raid at Sefra" in html
+        assert "Successful foray at Sefra" in html
         assert "Provisional balance: deficit of 50,000 Measures" in html
         assert "Final Measures balance: deficit of 50,000 Measures" in html
         assert "Tamesh: 31,667 Measures paid" in html

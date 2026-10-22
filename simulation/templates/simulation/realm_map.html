@@ -5,6 +5,9 @@
         <svg class="map-sheet" viewBox="0 0 680 500" aria-labelledby="map-title map-description">
             <title id="map-title">{% translate "Carte des oasis de Yaara" %}</title>
             <desc id="map-description">{% translate "Chaque cité possède un territoire teinté aux couleurs de sa maison. Les sceaux identifient les propriétaires. Double cercle : votre domaine ; losange : cité à portée ; cercle simple : hors de portée ; pointillés : expédition engagée." %}</desc>
+            {% if city_requested %}<g class="map-connections" aria-hidden="true">
+                {% for link in view.links %}{% if link.first.id == selected.id or link.second.id == selected.id %}<line class="map-connection" data-first="{{ link.first.id }}" data-second="{{ link.second.id }}" x1="{{ link.first.x|unlocalize }}" y1="{{ link.first.y|unlocalize }}" x2="{{ link.second.x|unlocalize }}" y2="{{ link.second.y|unlocalize }}"/>{% endif %}{% endfor %}
+            </g>{% endif %}
             {% for city in view.cities %}
                 <a class="map-city house-{{ city.owner }}" data-map-state="{% if city.engaged %}engaged{% elif city.owned %}owned{% elif city.reachable %}reachable{% else %}unreachable{% endif %}" href="?tab=wars&amp;city={{ city.id }}#map-context" {% if city_requested and selected.id == city.id %}aria-current="location"{% endif %} aria-label="{{ city.name }} · {{ city.owner_name }} · {{ city.wall_label }} · {% include 'simulation/map_status.html' %}">
                     <polygon class="map-territory" points="{{ city.territory }}"/>
@@ -24,5 +27,5 @@
         <li><svg class="map-key" viewBox="-40 -40 80 80" aria-hidden="true">{% include 'simulation/map_marker.html' with owned=False reachable=False engaged=False %}</svg>{% translate "Hors de portée" %}</li>
         <li><svg class="map-key" viewBox="-40 -40 80 80" aria-hidden="true">{% include 'simulation/map_marker.html' with owned=False reachable=False engaged=True %}</svg>{% translate "Expédition engagée" %}</li>
     </ul>
-    <p class="aside-text">{% translate "Les frontières sont indicatives ; la portée suit les routes. Toute expédition suit le même calendrier." %}</p>
+    <p class="aside-text">{% translate "Les frontières sont indicatives ; seules les routes relient les cités. Sélectionnez une cité pour voir ses liaisons." %}</p>
 </figure>

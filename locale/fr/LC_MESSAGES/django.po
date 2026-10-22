@@ -887,7 +887,7 @@ msgid ""
 "assaillants ont emporté {value1} Mesures et en ont détruit {value2} autres. "
 "Ces pertes sont inscrites dans le grenier de la cité. "
 msgstr ""
-"Le raid sur nos villages a coûté la vie à {value0} de nos Fidèles. Les "
+"Le pillage sur nos villages a coûté la vie à {value0} de nos Fidèles. Les "
 "assaillants ont emporté {value1} Mesures et en ont détruit {value2} autres. "
 "Ces pertes sont inscrites dans le grenier de la cité. "
 
@@ -1042,7 +1042,7 @@ msgid ""
 "les villages d’un raid."
 msgstr ""
 "Les murs renforcent la garnison contre une capture ; ils ne protègent pas "
-"les villages d’un raid."
+"les villages d’un pillage."
 
 msgid "Les ouvrages confiés à nos cités"
 msgstr "Les ouvrages confiés à nos cités"
@@ -1505,7 +1505,7 @@ msgid ""
 msgstr ""
 "Une armée rejoint une frontière par vos possessions reliées entre elles. Les"
 " secours défendent les cités contre les captures ; les murs n’abritent pas "
-"les villages d’un raid."
+"les villages d’un pillage."
 
 msgid ""
 "Une autre expédition est déjà engagée vers cette cité. Aucun moyen n’a été "
@@ -2085,7 +2085,7 @@ msgid "Monseigneur, choisissez une oasis sur la carte. Ses fortifications et les
 msgstr "Monseigneur, choisissez une oasis sur la carte. Ses fortifications et les ordres possibles seront consignés ici."
 
 msgid "Un raid vise les réserves ; une attaque cherche à prendre la cité. Les hommes partis ne défendent plus leurs foyers jusqu’au retour."
-msgstr "Un raid vise les réserves ; une attaque cherche à prendre la cité. Les hommes partis ne défendent plus leurs foyers jusqu’au retour."
+msgstr "Un pillage vise les réserves ; une attaque cherche à prendre la cité. Les hommes partis ne défendent plus leurs foyers jusqu’au retour."
 
 msgid "Mesures libres"
 msgstr "Mesures libres"
@@ -2283,7 +2283,7 @@ msgid "Chaque cité dispose d’une équipe : un chantier ou un décret de trava
 msgstr "Chaque cité dispose d’une équipe : un chantier ou un décret de travaux scellé l’occupe. Une seule sélection peut réunir plusieurs cités, même à des stades différents. Chaque ligne indique l’état actuel, l’ouvrage proposé, son bénéfice, son prix et sa durée. Les bénéfices commencent à l’achèvement."
 
 msgid "Les canaux améliorent le prélèvement ; les enceintes protègent la cité lors des captures, sans abriter les villages d’un raid. Une enceinte endommagée peut être réparée."
-msgstr "Les canaux améliorent le prélèvement ; les enceintes protègent la cité lors des captures, sans abriter les villages d’un raid. Une enceinte endommagée peut être réparée."
+msgstr "Les canaux améliorent le prélèvement ; les enceintes protègent la cité lors des captures, sans abriter les villages d’un pillage. Une enceinte endommagée peut être réparée."
 
 msgid "Chaque cité peut recevoir une forge. Ses armes bénéficient à toute votre maison ; perdre ou gagner une forge par capture transfère son bénéfice au nouveau propriétaire."
 msgstr "Chaque cité peut recevoir une forge. Ses armes bénéficient à toute votre maison ; perdre ou gagner une forge par capture transfère son bénéfice au nouveau propriétaire."
@@ -2292,7 +2292,7 @@ msgid "Dans ce règne ancien, la forge équipe toute la maison et conserve son c
 msgstr "Dans ce règne ancien, la forge équipe toute la maison et conserve son chantier distinct des équipes des cités."
 
 msgid "Un raid cherche du butin dans les villages ; une capture cherche à prendre la cité. Les bordures de la carte représentent des territoires, pas les routes : les mentions de portée indiquent les cibles accessibles par vos possessions reliées. Une seule attaque peut être engagée vers une cible."
-msgstr "Un raid cherche du butin dans les villages ; une capture cherche à prendre la cité. Les bordures de la carte représentent des territoires, pas les routes : les mentions de portée indiquent les cibles accessibles par vos possessions reliées. Une seule attaque peut être engagée vers une cible."
+msgstr "Un pillage cherche du butin dans les villages ; une capture cherche à prendre la cité. Les bordures de la carte représentent des territoires, pas les routes : les mentions de portée indiquent les cibles accessibles par vos possessions reliées. Une seule attaque peut être engagée vers une cible."
 
 msgid "La carte montre les propriétaires et les fortifications publiques. Les forces et les stocks rivaux restent secrets ; vos rapports gardent les observations du jour où ils ont été écrits. Le devis annonce départ, combat et retour prévu. Un siège peut prolonger l’expédition."
 msgstr "La carte montre les propriétaires et les fortifications publiques. Les forces et les stocks rivaux restent secrets ; vos rapports gardent les observations du jour où ils ont été écrits. Le devis annonce départ, combat et retour prévu. Un siège peut prolonger l’expédition."
@@ -2412,7 +2412,7 @@ msgid "Feuillet %(page)s sur 4"
 msgstr "Feuillet %(page)s sur 4"
 
 msgid "Il faut au moins %(raid)s Fidèles pour un raid, %(capture)s pour une capture. Le formulaire précise les cités capables de fournir les hommes."
-msgstr "Il faut au moins %(raid)s Fidèles pour un raid, %(capture)s pour une capture. Le formulaire précise les cités capables de fournir les hommes."
+msgstr "Il faut au moins %(pillage)s Fidèles pour un pillage, %(capture)s pour une capture. Le formulaire précise les cités capables de fournir les hommes."
 
 msgid "Achèvement prévu à la clôture de la lune %(moon)s."
 msgstr "Achèvement prévu à la clôture de la lune %(moon)s."
@@ -2589,7 +2589,7 @@ msgid "J’ai réuni les lettres qui vous sont destinées. Chacune garde sa date
 msgstr "J’ai réuni les lettres qui vous sont destinées. Chacune garde sa date ; les observations d’hier ne décrivent pas nécessairement les forces d’aujourd’hui."
 
 msgid "Coût payé pour ce raid : {cost} Mesures."
-msgstr "Coût payé pour ce raid : {cost} Mesures."
+msgstr "Coût payé pour ce pillage : {cost} Mesures."
 
 msgid "\n{city} : {amount} Mesures payées."
 msgstr "\n{city} : {amount} Mesures payées."
@@ -2622,7 +2622,7 @@ msgid " Ce solde ne chiffre ni les pertes humaines ni les prélèvements perdus 
 msgstr " Ce solde ne chiffre ni les pertes humaines ni les prélèvements perdus pendant l’absence."
 
 msgid "Le bilan du raid"
-msgstr "Le bilan du raid"
+msgstr "Le bilan du pillage"
 
 msgid "Les survivants ont rejoint des cités qui ne relèvent plus de votre maison."
 msgstr "Les survivants ont rejoint des cités qui ne relèvent plus de votre maison."
@@ -2636,7 +2636,7 @@ msgstr "Action"
 
 #. Approved playability revision, October 2026.
 msgid "Après un pillage victorieux ayant causé des pertes agricoles, les villages restent dispersés deux lunes : pillés en lune 7, ils peuvent de nouveau être pillés en lune 10. Une capture reste possible. Les raids de la lune de récolte sont déduits avant son versement."
-msgstr "Après un pillage victorieux ayant causé des pertes agricoles, les villages restent dispersés deux lunes : pillés en lune 7, ils peuvent de nouveau être pillés en lune 10. Une capture reste possible. Les raids de la lune de récolte sont déduits avant son versement."
+msgstr "Après un pillage victorieux ayant causé des pertes agricoles, les villages restent dispersés deux lunes : pillés en lune 7, ils peuvent de nouveau être pillés en lune 10. Une capture reste possible. Les pillages de la lune de récolte sont déduits avant son versement."
 
 #. Approved playability revision, October 2026.
 msgid "Ateliers de bât"
@@ -2692,11 +2692,11 @@ msgstr "Dans ce règne ancien, un sceau est définitif. Aucun décret confirmé 
 
 #. Approved playability revision, October 2026.
 msgid "Défense des raids : 40 % des Fidèles disponibles."
-msgstr "Défense des raids : 40 % des Fidèles disponibles."
+msgstr "Défense des pillages : 40 % des Fidèles disponibles."
 
 #. Approved playability revision, October 2026.
 msgid "Défense des raids : 60 % des Fidèles disponibles."
-msgstr "Défense des raids : 60 % des Fidèles disponibles."
+msgstr "Défense des pillages : 60 % des Fidèles disponibles."
 
 #. Approved playability revision, October 2026.
 msgid "Défense locale contre capture : ×2 à pleine efficacité."
@@ -2764,7 +2764,7 @@ msgstr "La préparation du matériel de siège a commencé."
 
 #. Approved playability revision, October 2026.
 msgid "Le raid sur nos villages a coûté la vie à {p0} de nos Fidèles. Les assaillants ont emporté {p1} Mesures et en ont détruit {p2} autres. Ces pertes diminuent la récolte en préparation ; la production continue. "
-msgstr "Le raid sur nos villages a coûté la vie à {p0} de nos Fidèles. Les assaillants ont emporté {p1} Mesures et en ont détruit {p2} autres. Ces pertes diminuent la récolte en préparation ; la production continue. "
+msgstr "Le pillage sur nos villages a coûté la vie à {p0} de nos Fidèles. Les assaillants ont emporté {p1} Mesures et en ont détruit {p2} autres. Ces pertes diminuent la récolte en préparation ; la production continue. "
 
 #. Approved playability revision, October 2026.
 msgid "Le rendement par habitant présent progresse de 100 à 115, 130 puis 200 Mesures par lune. Les revenus restent indisponibles jusqu’au versement annuel."
@@ -2800,7 +2800,7 @@ msgstr "Mettre une partie de la récolte à l’abri."
 
 #. Approved playability revision, October 2026.
 msgid "Mobiliser davantage de défenseurs contre les raids."
-msgstr "Mobiliser davantage de défenseurs contre les raids."
+msgstr "Mobiliser davantage de défenseurs contre les pillages."
 
 #. Approved playability revision, October 2026.
 msgid "Murailles"
@@ -2908,7 +2908,7 @@ msgstr "Transport ordinaire"
 
 #. Approved playability revision, October 2026.
 msgid "Un raid vise la récolte en préparation, jamais le grenier. Après protection de 200 000, 400 000 ou 800 000 Mesures, un quart du reste est exposé. Une victoire permet d’en emporter 60 %, dans la limite du transport, et en détruit 20 %. Ces pertes réduisent le versement annuel, sans interrompre la production ni les chantiers."
-msgstr "Un raid vise la récolte en préparation, jamais le grenier. Après protection de 200 000, 400 000 ou 800 000 Mesures, un quart du reste est exposé. Une victoire permet d’en emporter 60 %, dans la limite du transport, et en détruit 20 %. Ces pertes réduisent le versement annuel, sans interrompre la production ni les chantiers."
+msgstr "Un pillage vise la récolte en préparation, jamais le grenier. Après protection de 200 000, 400 000 ou 800 000 Mesures, un quart du reste est exposé. Une victoire permet d’en emporter 60 %, dans la limite du transport, et en détruit 20 %. Ces pertes réduisent le versement annuel, sans interrompre la production ni les chantiers."
 
 #. Approved playability revision, October 2026.
 msgid "Valider l’action"
@@ -3327,7 +3327,7 @@ msgstr "Quelques combattants adverses sont tombés."
 
 #: Strategic preparation and recipient reports
 msgid "Raid interrompu"
-msgstr "Raid interrompu"
+msgstr "Pillage interrompu"
 
 #: Strategic preparation and recipient reports
 msgid "Restaurer l’efficacité de cet ouvrage endommagé."
@@ -3379,15 +3379,15 @@ msgstr "Un convoi transporte au plus 500 000 Mesures entre deux cités amicales 
 
 #: Strategic preparation and recipient reports
 msgid "Un raid qui fait perdre des ressources, des habitants ou un ouvrage à sa cible déclenche deux lunes de répit, même après une défaite des assaillants. Une attaque sans perte pour la cible ne déclenche aucun répit. Les dégâts de la lune de récolte sont retirés avant son versement."
-msgstr "Un raid qui fait perdre des ressources, des habitants ou un ouvrage à sa cible déclenche deux lunes de répit, même après une défaite des assaillants. Une attaque sans perte pour la cible ne déclenche aucun répit. Les dégâts de la lune de récolte sont retirés avant son versement."
+msgstr "Un pillage qui fait perdre des ressources, des habitants ou un ouvrage à sa cible déclenche deux lunes de répit, même après une défaite des assaillants. Une attaque sans perte pour la cible ne déclenche aucun répit. Les dégâts de la lune de récolte sont retirés avant son versement."
 
 #: Strategic preparation and recipient reports
 msgid "Un raid vise le prélèvement accumulé. Les abris protègent au plus 90 % de cette récolte ; un quart du reste est exposé. Une victoire nette permet d’en emporter 60 %, une victoire disputée 30 %. Le transport des survivants limite toujours le butin. Les destructions restent limitées par les hommes qui survivent ; production et chantiers continuent."
-msgstr "Un raid vise le prélèvement accumulé. Les abris protègent au plus 90 % de cette récolte ; un quart du reste est exposé. Une victoire nette permet d’en emporter 60 %, une victoire disputée 30 %. Le transport des survivants limite toujours le butin. Les destructions restent limitées par les hommes qui survivent ; production et chantiers continuent."
+msgstr "Un pillage vise le prélèvement accumulé. Les abris protègent au plus 90 % de cette récolte ; un quart du reste est exposé. Une victoire nette permet d’en emporter 60 %, une victoire disputée 30 %. Le transport des survivants limite toujours le butin. Les destructions restent limitées par les hommes qui survivent ; production et chantiers continuent."
 
 #: Strategic preparation and recipient reports
 msgid "Un raid vise les prélèvements accumulés avant la récolte annuelle, pas les réserves déjà engrangées. Les abris et les pillages précédents réduisent les prises possibles. Une victoire militaire peut donc rester déficitaire."
-msgstr "Un raid vise les prélèvements accumulés avant la récolte annuelle, pas les réserves déjà engrangées. Les abris et les pillages précédents réduisent les prises possibles. Une victoire militaire peut donc rester déficitaire."
+msgstr "Un pillage vise les prélèvements accumulés avant la récolte annuelle, pas les réserves déjà engrangées. Les abris et les pillages précédents réduisent les prises possibles. Une victoire militaire peut donc rester déficitaire."
 
 #: Strategic preparation and recipient reports
 msgid "Un siège ponctuel représente un mois. Si l’armée ennemie dépasse la défense de campagne sans pouvoir franchir les murs, chaque habitant présent exige 500 Mesures déjà engrangées. À l’égalité exacte, la cité tient et consomme ce montant ; en dessous, elle consomme ce qui reste et capitule."
@@ -3436,3 +3436,31 @@ msgstr "Équipes libres : %(count)s. Prochaine récolte : lune %(harvest)s."
 #: Strategic preparation and recipient reports
 msgid "État initial de cet ouvrage."
 msgstr "État initial de cet ouvrage."
+
+#. UI refinement, October 22, 2026.
+msgid "Détails du contingent"
+msgstr "Détails du contingent"
+
+#. UI refinement, October 22, 2026.
+msgid "Siège"
+msgstr "Siège"
+
+#. UI refinement, October 22, 2026.
+msgid "Transport"
+msgstr "Transport"
+
+#. UI refinement, October 22, 2026.
+msgid "Capacité de retour"
+msgstr "Capacité de retour"
+
+#. UI refinement, October 22, 2026.
+msgid "Plafond si tous les hommes reviennent. Le butin réel reste inconnu : il dépend des récoltes exposées et des survivants."
+msgstr "Plafond si tous les hommes reviennent. Le butin réel reste inconnu : il dépend des récoltes exposées et des survivants."
+
+#. UI refinement, October 22, 2026.
+msgid "Les frontières sont indicatives ; seules les routes relient les cités. Sélectionnez une cité pour voir ses liaisons."
+msgstr "Les frontières sont indicatives ; seules les routes relient les cités. Sélectionnez une cité pour voir ses liaisons."
+
+#. UI refinement, October 22, 2026.
+msgid "Routes directes"
+msgstr "Routes directes"

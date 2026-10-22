@@ -42,7 +42,7 @@ def readable_hierarchy(page):
 
 
 def city_heading_starts_panel(page):
-    """A city jump starts with its heading below the sticky resource header."""
+    """A city jump opens beside the desktop map or beneath it on mobile."""
     heading = page.locator("#context-title")
     expect(heading).to_be_in_viewport()
     # Browser-side timers do not run in the JavaScript-disabled journey.
@@ -52,7 +52,11 @@ def city_heading_starts_panel(page):
       const heading = document.querySelector('#context-title').getBoundingClientRect();
       const map = document.querySelector('.realm-map').getBoundingClientRect();
       const gap = heading.top - header.bottom;
-      return gap >= 0 && gap <= 20 && map.bottom <= header.bottom;
+      const panel = document.querySelector('#map-context').getBoundingClientRect();
+      const desktop = matchMedia('(min-width: 1100px) and (min-height: 600px)').matches;
+      return desktop
+        ? gap >= 0 && panel.left >= map.right && map.top >= header.bottom
+        : gap >= 0 && gap <= 20 && map.bottom <= header.bottom;
     }""")
         if aligned:
             return
@@ -352,8 +356,24 @@ with sync_playwright() as playwright:
         illustration_asset(page.locator("#map-context > .illustration"), "army-preparation.jpg")
         atlas = page.locator(".realm-map").bounding_box()
         panel = page.locator("#map-context").bounding_box()
-        assert panel["y"] >= atlas["y"] + atlas["height"]
-        assert panel["width"] >= atlas["width"] - 1
+        assert panel["x"] >= atlas["x"] + atlas["width"]
+        assert atlas["y"] >= page.locator(".reign-header").bounding_box()["height"]
+        expect(page.locator(".origin-details[open]")).to_have_count(0)
+        origin_note = page.locator(".origin-details").first
+        origin_note.locator("summary").focus()
+        page.keyboard.press("Enter")
+        expect(origin_note.locator("[data-origin-means]")).to_be_visible()
+        page.keyboard.press("Enter")
+        expect(origin_note).not_to_have_attribute("open", "")
+        for width in (320, 390):
+            page.set_viewport_size({"width": width, "height": 844})
+            no_overflow(page)
+            for item in page.locator(".map-legend li").all():
+                assert item.evaluate("el => getComputedStyle(el).fontStyle") == "normal"
+            page.evaluate("document.documentElement.style.fontSize = '125%'")
+            no_overflow(page)
+            page.evaluate("document.documentElement.style.removeProperty('font-size')")
+        page.set_viewport_size({"width": 1440, "height": 1100})
         expect(page.locator("#mission-target")).to_have_value("c4")
         for origin in ("c1", "c2", "c3"):
             page.locator(f'input[name="men_{origin}"]').fill("20")
@@ -380,6 +400,11 @@ with sync_playwright() as playwright:
             expect(page.locator(f'[data-origin="{origin}"] .origin-funding')).to_contain_text(
                 amount
             )
+        expect(page.locator("[data-carry-limit]")).to_have_text("150,000" if en else "150\u202f000")
+        expect(page.locator("[data-loot-preview]")).to_be_visible()
+        page.locator('input[name="kind"][value="capture"]').check()
+        expect(page.locator("[data-loot-preview]")).to_be_hidden()
+        page.locator('input[name="kind"][value="raid"]').check()
         page.locator('input[name="men_c1"]').fill("0")
         page.locator('input[name="men_c2"]').fill("0")
         page.locator('input[name="men_c3"]').fill("60")
@@ -411,7 +436,7 @@ with sync_playwright() as playwright:
             == page.locator(".letter-entry").count()
         )
         for title in (
-            ("Return of the contingent from Namar", "Successful raid at Sefra")
+            ("Return of the contingent from Namar", "Successful foray at Sefra")
             if en
             else ("Retour du contingent de Namar", "Pillage réussi à Sefra")
         ):
@@ -419,9 +444,9 @@ with sync_playwright() as playwright:
                 page.locator(".correspondence").get_by_role("heading", name=title)
             ).to_be_visible()
         expect(page.locator(".correspondence")).to_contain_text(
-            "Paid cost of this raid: 65,000 Measures"
+            "Paid cost of this foray: 65,000 Measures"
             if en
-            else "Coût payé pour ce raid : 65\u202f000 Mesures"
+            else "Coût payé pour ce pillage : 65\u202f000 Mesures"
         )
         expect(page.locator(".correspondence")).to_contain_text(
             "Namar: 65,000 Measures paid" if en else "Namar : 65\u202f000 Mesures payées"
@@ -673,7 +698,12 @@ with sync_playwright() as playwright:
         expect(plain_page.locator("#map-context > .illustration")).to_have_class(
             "illustration illustration-army"
         )
+        note = plain_page.locator(".origin-details").first
+        note.locator("summary").focus()
+        plain_page.keyboard.press("Enter")
+        expect(note.locator("[data-origin-means]")).to_be_visible()
         no_overflow(plain_page)
+        plain_page.keyboard.press("Enter")
         plain_page.screenshot(
             path=str(artifacts / f"map-context-mobile-{language}.png"), full_page=True
         )
