@@ -15,6 +15,7 @@ from django.utils.translation import gettext as _
 from django.views.decorators.http import require_GET, require_http_methods, require_POST
 
 from . import engine, services
+from .archives import condense_archive
 from .archives import reign_archive as build_reign_archive
 from .calendar import closing_moon
 from .forms import GameForm, SignupForm
@@ -348,10 +349,18 @@ def reign_archive(request, game_id):
     game, actor = authorized_game(request, game_id)
     scope = request.GET.get("scope", "player")
     output = request.GET.get("format", "html")
-    if scope not in {"player", "all"} or output not in {"html", "json"}:
+    if scope not in {"player", "all"} or output not in {"html", "json", "compact"}:
         raise Http404
     archive = build_reign_archive(game, request.user, actor, scope)
-    if output == "json":
+    if output == "compact":
+        response = JsonResponse(
+            condense_archive(archive),
+            json_dumps_params={"ensure_ascii": False, "separators": (",", ":")},
+        )
+        response["Content-Disposition"] = (
+            f'attachment; filename="yaara-{game.pk}-{scope}-compact.json"'
+        )
+    elif output == "json":
         response = JsonResponse(archive, json_dumps_params={"ensure_ascii": False, "indent": 2})
         response["Content-Disposition"] = f'attachment; filename="yaara-{game.pk}-{scope}.json"'
     else:

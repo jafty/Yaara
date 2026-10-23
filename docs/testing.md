@@ -241,3 +241,13 @@ Twelve independent bilingual HTTP variations specify sealed and active irrigatio
 ## Persistent alert centre — October 22
 
 Twenty-eight bilingual HTTP cases specify walls/watch/shelter damage, repair-needed/sealed/active/cancelled/completed states, empty and combined alerts, pause and completion, hidden rival damage and legacy walls. They verify counts, ordered issue kinds, direct repair links, damage markers, repair tracking and read-only saves. The existing incoming-threat lifecycle cases now exercise the centralized markup. The shared browser journey checks the header link's native disclosure behavior in both languages, including JavaScript disabled; the additional real-server journey completes a repair from its alert and checks damage clearing, four simultaneous issues, 320px/390px/desktop layouts and enlarged text. This is presentation work using already authorized city facts.
+
+## Retroactive compact archive
+
+Ten independent compact-export cases cover player/all scopes, unchanged stored history,
+missing accounts, city and order transitions, final-only cancelled orders, completion,
+outsider/member access and authentication. The bilingual browser journey downloads both
+JSON formats and compares their letters. The existing polling fixture now supplies the
+empty authorized alert collections expected by the current manuscript. The creation
+assertion excludes the random hidden CSRF input when checking for forbidden visible
+V0/V1 labels, avoiding token-dependent false failures.

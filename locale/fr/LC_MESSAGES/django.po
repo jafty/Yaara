@@ -3532,3 +3532,6 @@ msgstr "Les alertes restent visibles jusqu’à résolution. Les rapports conser
 #. Persistent alert centre.
 msgid "Aucune alerte en cours."
 msgstr "Aucune alerte en cours."
+
+msgid "Télécharger le résumé pour discussion (JSON compact)"
+msgstr "Télécharger le résumé pour discussion (JSON compact)"

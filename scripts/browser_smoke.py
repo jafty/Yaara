@@ -910,6 +910,12 @@ with sync_playwright() as playwright:
             page.locator('a[href="?scope=all&format=json"]').click()
         assert download_info.value.suggested_filename.endswith("-all.json")
         archive = page.request.get(archive_game_url + "archive/?scope=all&format=json").json()
+        with page.expect_download() as compact_download:
+            page.locator('a[href="?scope=all&format=compact"]').click()
+        assert compact_download.value.suggested_filename.endswith("-all-compact.json")
+        compact = page.request.get(archive_game_url + "archive/?scope=all&format=compact").json()
+        assert compact["reports"] == archive["reports"]
+        assert len(compact["economy"]["rows"]) == 72
         assert len(archive["accounts"]) == 24
         assert archive["coverage"]["missing_account_moons"] == []
         assert set(archive["final_accounts"]) == {"p1", "p2", "p3"}

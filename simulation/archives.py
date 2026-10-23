@@ -98,3 +98,149 @@ def reign_archive(game, user, actor, scope):
         },
         "ranking": localize(player_view(game.state, actor)["ranking"]),
     }
+
+
+# Analysis data deliberately excludes map geometry, UI labels and forecasts.
+ECONOMY_FIELDS = (
+    "population",
+    "stock",
+    "available_stock",
+    "reserved_stock",
+    "capacity",
+    "available_fideles",
+    "absent",
+    "tax",
+    "eliminated",
+)
+CITY_FIELDS = (
+    "id",
+    "name",
+    "population",
+    "present_population",
+    "fideles",
+    "absent",
+    "available_fideles",
+    "reserved_fideles",
+    "stock",
+    "capacity",
+    "available_stock",
+    "reserved_stock",
+    "tax",
+    "yield",
+    "irrigation",
+    "storage",
+    "forge",
+    "equipment",
+    "walls",
+    "damaged",
+    "raid_available_moon",
+    "deaths",
+    "works",
+)
+BUILDING_FIELDS = ("kind", "level", "effective_level", "damaged", "finish_moon")
+
+
+def compact_city(city):
+    return {key: city[key] for key in CITY_FIELDS if key in city} | {
+        "buildings": [
+            {key: building[key] for key in BUILDING_FIELDS if key in building}
+            for building in city.get("buildings", [])
+        ]
+    }
+
+
+def condense_archive(archive):
+    """Reduce an already-authorized v1 archive; never inspect private simulation state.
+
+    Account deltas are observations at closure, not inferred causes or replayed events.
+    Letters retain full evidence, including old unstructured narration.
+    """
+    previous_cities = {}
+    previous_orders = {}
+    city_changes = []
+    order_changes = []
+    economy = []
+    for entry in archive["accounts"]:
+        moon = entry["moon"]
+        for actor, account in entry["houses"].items():
+            economy.append([moon, actor] + [account.get(key) for key in ECONOMY_FIELDS])
+            cities = {city["id"]: compact_city(city) for city in account["owned_cities"]}
+            old_cities = previous_cities.get(actor, {})
+            for city_id, city in cities.items():
+                old = old_cities.get(city_id, {})
+                changed = {
+                    key: value for key, value in city.items() if key not in old or old[key] != value
+                }
+                removed = sorted(old.keys() - city.keys())
+                if changed or removed:
+                    city_changes.append(
+                        {
+                            "moon": moon,
+                            "actor": actor,
+                            "city": city_id,
+                            "set": changed,
+                            "unset": removed,
+                        }
+                    )
+            for city_id in sorted(old_cities.keys() - cities.keys()):
+                city_changes.append(
+                    {
+                        "moon": moon,
+                        "actor": actor,
+                        "city": city_id,
+                        "no_longer_owned": True,
+                    }
+                )
+            previous_cities[actor] = cities
+            for order in account["orders"]:
+                key = (actor, order["id"])
+                if previous_orders.get(key) != order:
+                    order_changes.append({"moon": moon, "actor": actor, "order": order})
+                    previous_orders[key] = order
+    # Orders sealed/cancelled between observations may only survive in the final register.
+    for actor, account in archive["final_accounts"].items():
+        for order in account["orders"]:
+            if previous_orders.get((actor, order["id"])) != order:
+                order_changes.append(
+                    {
+                        "moon": archive["game"]["final_moon"],
+                        "actor": actor,
+                        "source": "final_account",
+                        "order": order,
+                    }
+                )
+    return {
+        "format": "yaara-condensed",
+        "schema_version": 1,
+        **{
+            key: archive[key]
+            for key in (
+                "game",
+                "scope",
+                "language",
+                "rule_versions",
+                "coverage",
+                "ranking",
+            )
+        },
+        "reading_guide": {
+            "economy": "Rows follow the columns header; null means unavailable, not zero. Tax is accrued levy, not income already paid.",
+            "city_changes": "Apply set/unset per actor and city in order; no_longer_owned removes that city's previous observation. Changes span missing account Moons when coverage has gaps.",
+            "order_changes": "Each entry is a changed observation of an order ID, not an additional purchase. Cost is a quote/commitment; cancellation and invalidation must be considered before treating it as spending.",
+            "reports": "Complete recipient letters in Moon/record order. Multiple recipients can describe the same battle; do not count letters as battles.",
+            "limitations": "No reconstruction of missing history, alert response times, private combat rolls or hypothetical outcomes. Monthly balances alone do not establish raid profitability or causes of losses. Repeated mission snapshots and UI/map descriptions are omitted; surviving missions remain in final accounts.",
+        },
+        "economy": {"columns": ["moon", "actor", *ECONOMY_FIELDS], "rows": economy},
+        "city_changes": city_changes,
+        "order_changes": order_changes,
+        "reports": archive["reports"],
+        "final_accounts": {
+            actor: {
+                key: value
+                for key, value in account.items()
+                if key not in {"owned_cities", "orders"}
+            }
+            | {"owned_cities": [compact_city(city) for city in account["owned_cities"]]}
+            for actor, account in archive["final_accounts"].items()
+        },
+    }

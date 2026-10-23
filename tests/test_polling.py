@@ -33,7 +33,7 @@ def test_polling_uses_rendered_revision(rendered, current, expected):
                 "deadline": datetime(2030, 1, 1, tzinfo=timezone.utc),
                 "revision": rendered,
             },
-            "view": {"finished": False},
+            "view": {"finished": False, "work_actions": [], "owned_cities": []},
         },
     )
     catalog = JavaScriptCatalog.as_view()(RequestFactory().get("/i18n/js/")).content

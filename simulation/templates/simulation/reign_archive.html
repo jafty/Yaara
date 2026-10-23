@@ -6,6 +6,7 @@
     <a href="?scope=player"{% if archive.scope == 'player' %} aria-current="page"{% endif %}>{% translate "Votre maison" %}</a>
     {% if can_read_all %}<a href="?scope=all"{% if archive.scope == 'all' %} aria-current="page"{% endif %}>{% translate "Toutes les maisons" %}</a>{% endif %}
 </nav>
+<p class="reading-links"><a href="?scope={{ archive.scope }}&amp;format=compact">{% translate "Télécharger le résumé pour discussion (JSON compact)" %}</a></p>
 <p class="reading-links"><a href="?scope={{ archive.scope }}&amp;format=json">{% translate "Télécharger le livre pour analyse (JSON)" %}</a></p>
 <p>{% translate "Les lettres d’un même événement peuvent figurer pour plusieurs destinataires : ce sont leurs témoignages, pas des événements supplémentaires. Les comptes décrivent la fin de chaque lune enregistrée." %}</p>
 {% if archive.coverage.missing_account_moons %}<p class="marginal-note">{% translate "Certains comptes mensuels n’ont pas été conservés. Les lettres disponibles et les comptes finaux restent accessibles ; les mois manquants sont signalés dans le téléchargement, sans reconstitution." %}</p>{% endif %}

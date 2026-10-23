@@ -164,7 +164,9 @@ def test_creation(user):
     client.force_login(user)
     page = client.get(reverse("new_game"))
     assert b'name="version"' not in page.content
-    assert b"V0" not in page.content and b"V1" not in page.content
+    # Random CSRF tokens may contain V0/V1; they are not visible rules labels.
+    markup = re.sub(rb'<input[^>]*name="csrfmiddlewaretoken"[^>]*>', b"", page.content)
+    assert b"V0" not in markup and b"V1" not in markup
     response = client.post(
         reverse("new_game"),
         {

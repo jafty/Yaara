@@ -31,7 +31,7 @@ Django does not load `.env` automatically. It is ignored by Git. In the current 
 - Decree previews, atomic confirmation, target reservation and pre-departure cancellation.
 - Dated private reports in French and English, a persistent resource ribbon, textual house accounts, optional city folios, realm-wide multi-city work checklists and expedition forms, and an explicit draft/seal flow. Account and reign-selection pages retain their conventional layout. Change languages in the footer, including on an unsealed draft.
 - Manual Moons or a five/ten-minute worker; persistent games and fixed results. New reigns open at Moon 1; saved legacy calendars retain their timing.
-- End-of-reign book for your house or all houses (owner only), with chronological letters and JSON downloads. Monthly accounts begin with newly recorded closures; older gaps are explicit.
+- End-of-reign book for your house or all houses (owner only), with chronological letters and complete or compact JSON downloads. For a past game, open the book, choose your house or all houses, and use “Download the discussion summary (compact JSON)”. It retains letters, monthly economy, city/order changes and final accounts without replaying the game. Monthly accounts begin with newly recorded closures; older gaps are explicit.
 
 The default reign lasts ten years. The first harvest arrives at the closure of Moon 12; initial captures are deliberately unaffordable. The game includes a rules summary. Older reports without structured narration remain labelled original French archives; new reports switch languages when read.
 

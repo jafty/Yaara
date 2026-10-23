@@ -229,6 +229,16 @@ combat-outcome-readable/fr-success-offensive-raid
 combat-outcome-readable/fr-success-received-capture
 combat-outcome-readable/fr-success-received-raid
 command-rolls-back-after-save-if-reporting-fails
+condensed-access/active
+condensed-access/anonymous
+condensed-access/member-all
+condensed-access/member-own
+condensed-access/outsider
+condensed-final-orders
+condensed-gaps
+condensed-retroactive/all
+condensed-retroactive/player
+condensed-transitions
 configuration-rejected/unknown-rules
 configuration-rejected/unsupported-duration
 configuration-rejected/unsupported-opponents
