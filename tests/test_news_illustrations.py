@@ -16,6 +16,175 @@ from tests.stubs import FixedRandom
 
 
 @case(
+    "news-completed-work-artwork",
+    "Owner: completed works show their recorded building in Council and full letters without rewriting archives",
+)
+@pytest.mark.integration
+@pytest.mark.usefixtures("test_static_storage")
+@pytest.mark.parametrize("language", ["fr", "en"])
+@pytest.mark.parametrize("tab", ["domain", "letters"])
+@pytest.mark.parametrize(
+    "phrase,scene",
+    [
+        (message("ont achevé {work}", work=message("Rigoles et petites digues")), "irrigation"),
+        (message("ont achevé {work}", work=message("Premiers canaux")), "irrigation"),
+        (message("ont achevé {work}", work=message("Grand réseau hydraulique")), "irrigation"),
+        (message("ont achevé {work}", work=message("Greniers supplémentaires")), "storage"),
+        (message("ont achevé {work}", work=message("Ensemble de silos")), "storage"),
+        (message("ont achevé {work}", work=message("Grands magasins")), "storage"),
+        (message("ont achevé {work}", work=message("Petit arsenal")), "forge"),
+        (message("ont achevé {work}", work=message("Ateliers d’armement")), "forge"),
+        (message("ont achevé {work}", work=message("Grand arsenal")), "forge"),
+        (message("ont achevé {work}", work=message("Palissades de bois")), "walls"),
+        (message("ont achevé {work}", work=message("Palais renforcé")), "walls"),
+        (message("ont achevé {work}", work=message("Murailles")), "walls"),
+        (message("ont achevé {work}", work=message("Postes de veille")), "watch"),
+        (message("ont achevé {work}", work=message("Tours de guet")), "watch"),
+        (message("ont achevé {work}", work=message("Réserves souterraines")), "shelter"),
+        (message("ont achevé {work}", work=message("Dépôts renforcés")), "shelter"),
+        (message("ont achevé {work}", work=message("Ateliers de bât")), "transport"),
+        (message("ont achevé {work}", work=message("Train de transport")), "transport"),
+        (message("ont achevé {work}", work=message("Échelles d’assaut")), "siege"),
+        (message("ont achevé {work}", work=message("Béliers")), "siege"),
+        (message("ont restauré {work}", work=message("Défenses de la cité")), "walls"),
+        (message("ont restauré {work}", work=message("Murailles")), "walls"),
+        (message("ont restauré {work}", work=message("Tours de guet")), "watch"),
+        (message("ont restauré {work}", work=message("Dépôts renforcés")), "shelter"),
+        (message("ont aménagé la forge"), "forge"),
+        (message("ont renforcé la forge"), "forge"),
+        (message("ont aménagé les premiers canaux"), "irrigation"),
+        (message("ont étendu le réseau de canaux"), "irrigation"),
+        (message("ont agrandi le grenier"), "storage"),
+        (message("ont érigé des silos"), "storage"),
+        (message("ont érigé une enceinte de terre crue"), "walls"),
+        (message("ont élevé une grande enceinte"), "walls"),
+        (message("ont réparé l’enceinte de terre crue"), "walls"),
+        (message("ont réparé la grande enceinte"), "walls"),
+        (None, "forge"),
+    ],
+    ids=[
+        "irrigation-1",
+        "irrigation-2",
+        "irrigation-3",
+        "storage-1",
+        "storage-2",
+        "storage-3",
+        "forge-1",
+        "forge-2",
+        "forge-3",
+        "walls-1",
+        "walls-2",
+        "walls-3",
+        "watch-1",
+        "watch-2",
+        "shelter-1",
+        "shelter-2",
+        "transport-1",
+        "transport-2",
+        "siege-1",
+        "siege-2",
+        "repair-initial-defenses",
+        "repair-walls",
+        "repair-watch",
+        "repair-shelter",
+        "legacy-forge-1",
+        "legacy-forge-2",
+        "legacy-irrigation-1",
+        "legacy-irrigation-2",
+        "legacy-storage-1",
+        "legacy-storage-2",
+        "legacy-walls-1",
+        "legacy-walls-2",
+        "legacy-repair-1",
+        "legacy-repair-2",
+        "legacy-equipment",
+    ],
+)
+def test_completed_work_artwork(user, language, tab, phrase, scene):
+    game = services.create_game(user, "Completed artwork", opponents="passive")
+    title = (
+        message("Travaux achevés à {p0}", p0="Qasr")
+        if phrase is not None
+        else message("La forge a achevé son œuvre")
+    )
+    body = message(
+        "Les équipes de {p0} {p1}. L’ouvrage est désormais en service ; j’en tiendrai compte dans les registres à venir.",
+        p0="Qasr",
+        p1=phrase or message("Original equipment body"),
+    )
+    report = Report.objects.create(
+        game=game,
+        recipient="p1",
+        month=1,
+        kind="work",
+        title=title,
+        body=body,
+        content={"title": describe(title), "body": describe(body)},
+    )
+    saved = deepcopy(report.content)
+    # Today's buildings must not replace the historical completed building.
+    game.state["cities"]["c1"].update(irrigation=3, storage=3, forge=3, walls=3)
+    game.save()
+    client = Client()
+    client.force_login(user)
+    client.cookies["django_language"] = language
+    html = client.get(reverse("game", args=[game.id]), {"tab": tab}).content.decode()
+    size = " illustration-small" if tab == "domain" else ""
+    assert f'class="illustration illustration-{scene}{size}"' in html
+    report.refresh_from_db()
+    assert report.content == saved
+
+
+@case(
+    "news-completion-neutral-fallback",
+    "Owner: unidentified completion archives retain neutral artwork",
+)
+@pytest.mark.integration
+@pytest.mark.usefixtures("test_static_storage")
+@pytest.mark.parametrize(
+    "variation", ["original", "unknown", "unknown-building", "plain-body", "other-kind"]
+)
+def test_completion_neutral_fallback(user, variation):
+    game = services.create_game(user, "Completion archives", opponents="passive")
+    body = (
+        message("Original body")
+        if variation != "other-kind"
+        else message(
+            "Les équipes de {p0} {p1}. L’ouvrage est désormais en service ; j’en tiendrai compte dans les registres à venir.",
+            p0="Qasr",
+            p1=message("ont aménagé la forge"),
+        )
+    )
+    content = {"title": describe(message("Original title")), "body": describe(body)}
+    if variation == "original":
+        content = {}
+    elif variation == "unknown-building":
+        content["body"] = describe(
+            message(
+                "Les équipes de {p0} {p1}. L’ouvrage est désormais en service ; j’en tiendrai compte dans les registres à venir.",
+                p0="Qasr",
+                p1=message("ont achevé {work}", work=message("Unknown building")),
+            )
+        )
+    elif variation == "plain-body":
+        content["body"] = "Original body"
+    Report.objects.create(
+        game=game,
+        recipient="p1",
+        month=1,
+        kind="letter" if variation == "other-kind" else "work",
+        title="Original title",
+        body=body,
+        content=content,
+    )
+    client = Client()
+    client.force_login(user)
+    html = client.get(reverse("game", args=[game.id]), {"tab": "letters"}).content.decode()
+    scene = "letter" if variation == "other-kind" else "work"
+    assert f'class="illustration illustration-{scene}"' in html
+
+
+@case(
     "news-action-start-artwork",
     "Owner: launched actions use contextual beginning scenes in Council and full letters, including older headings",
 )

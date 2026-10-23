@@ -3,6 +3,8 @@
 import re
 import uuid
 from copy import deepcopy
+from html import unescape
+from urllib.parse import urlsplit
 
 import pytest
 from django.test import Client
@@ -12,6 +14,63 @@ from simulation import engine, services
 from tests.cases import case
 
 pytestmark = [pytest.mark.integration, pytest.mark.usefixtures("test_static_storage")]
+
+
+@case(
+    "alerts-precise-destination",
+    "Owner: alert links land on the relevant accounts or repair section",
+)
+@pytest.mark.parametrize("language", ["fr", "en"])
+@pytest.mark.parametrize(
+    "issue,anchor",
+    [
+        ("threat", "city-defenses"),
+        ("reserves", "city-stocks"),
+        ("repair", "work-selection"),
+        ("repair_watch", "work-selection"),
+        ("repair_shelter", "work-selection"),
+        ("sealed", "orders-heading"),
+        ("active", "active-works"),
+    ],
+)
+def test_alert_destination(user, language, issue, anchor):
+    game, client, url = open_game(user, language)
+    if issue == "threat":
+        engine.confirm_order(
+            game.state,
+            "p2",
+            {"kind": "raid", "target": "c3", "contributions": {"c4": 20}},
+            "incoming",
+        )
+    elif issue == "reserves":
+        game.state["cities"]["c3"]["stock"] = 100
+    else:
+        if issue in ("repair_watch", "repair_shelter"):
+            family = issue.removeprefix("repair_")
+            game.state["cities"]["c3"].update(**{family: 1}, damaged_works=[family])
+        else:
+            game.state["cities"]["c3"].update(damaged=True, integrity=50)
+        if issue in ("sealed", "active"):
+            engine.confirm_order(
+                game.state, "p1", {"kind": "repair", "cities": ["c3"]}, str(uuid.uuid4())
+            )
+            if issue == "active":
+                engine.advance_month(game.state, "departure")
+    game.save()
+    original = deepcopy(game.state)
+    html = client.get(url).content.decode()
+    alert = re.search(r"<li[^>]*data-alert-kind=.*?</li>", html, re.S)[0]
+    link = unescape(re.search(r'href="([^"]+)"', alert)[1])
+    destination = urlsplit(link)
+    assert destination.fragment == anchor
+    target = client.get(link).content.decode()
+    assert target.count(f'id="{anchor}"') == 1
+    if issue not in ("sealed", "active"):
+        assert re.search(rf'<[^>]+id="{anchor}"[^>]+tabindex="-1"', target)
+    if issue.startswith("repair"):
+        assert re.search(r'<input[^>]+name="cities"[^>]+value="c3"[^>]+\bchecked', target)
+    game.refresh_from_db()
+    assert game.state == original
 
 
 def open_game(user, language, economy=4):

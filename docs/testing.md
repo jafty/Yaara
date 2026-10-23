@@ -104,6 +104,8 @@ depend on the active browser language.
 
 ## Local verification levels
 
+The October 23 presentation fixes add independent bilingual alert-destination cases for defense, reserves, each repair family and sealed/active tracking. Completion artwork cases cover each current building level, repaired families, original vocabulary and legacy equipment in Council and full letters; unknown and unstructured archives retain neutral scenes. Stored report content remains unchanged. The shared bilingual browser journey checks native defense/granary fragments above the fold below the sticky header on desktop, 320px/390px, enlarged text and without JavaScript, plus a decoded granary image from an actual completed work.
+
 The owner's 2026-10-19 follow-up replaces the blanket full-local-suite requirement with risk-based local verification. Choose by affected behavior, not line count or perceived coding difficulty. State the chosen level and the tests run in the delivery summary. Mixed changes use the highest applicable level; unclear impact, unexpected failures or a broad refactor escalate to the full checkpoint. Fix failures before pushing.
 
 | Level | Applies to | Local checks before pushing |

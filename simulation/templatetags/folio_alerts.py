@@ -43,6 +43,13 @@ def build_alert_center(view):
                     if repair in available_kinds
                     else urlencode({"tab": "city", "city": city["id"]})
                 )
+                query += (
+                    "#work-selection"
+                    if repair in available_kinds
+                    else (
+                        f"#building-{building['kind']}" if city["buildings"] else "#city-defenses"
+                    )
+                )
                 damage.append(
                     {
                         **common,

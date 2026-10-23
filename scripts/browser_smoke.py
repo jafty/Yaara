@@ -64,6 +64,21 @@ def city_heading_starts_panel(page):
     raise AssertionError("The city heading must be the first content below the header")
 
 
+def section_jump_lands(page, selector):
+    """Native alert destinations clear the sticky header and skip preceding content."""
+    expect(page.locator(selector)).to_be_in_viewport()
+    for _ in range(100):
+        if page.locator(selector).evaluate("""el => {
+          const top = el.getBoundingClientRect().top;
+          const header = document.querySelector('.reign-header').getBoundingClientRect();
+          const padding = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop);
+          return top >= header.bottom && top <= padding + 2;
+        }"""):
+            return
+        page.wait_for_timeout(100)
+    raise AssertionError("The alert destination must appear below the header")
+
+
 def scannable_layout(page):
     """The title remains readable and secondary actions stay below the folio."""
     title = page.locator(".book-title")
@@ -248,6 +263,18 @@ with sync_playwright() as playwright:
         page.evaluate("document.documentElement.style.removeProperty('font-size')")
         page.set_viewport_size({"width": 1440, "height": 1100})
         assert page.locator(".sidebar, .stats-strip, img, table").count() == 0
+        for width in (1440, 390, 320):
+            page.set_viewport_size({"width": width, "height": 844})
+            for anchor in ("city-defenses", "city-stocks"):
+                page.goto(game_url + "?tab=city&city=c3#" + anchor)
+                section_jump_lands(page, "#" + anchor)
+                page.evaluate("document.documentElement.style.fontSize = '125%'")
+                page.locator("#" + anchor).evaluate("el => el.scrollIntoView()")
+                section_jump_lands(page, "#" + anchor)
+                no_overflow(page)
+                page.evaluate("document.documentElement.style.removeProperty('font-size')")
+        page.set_viewport_size({"width": 1440, "height": 1100})
+        page.goto(game_url)
         assert page.locator(".city-entry details").count() == 0
         expect(page.locator("body")).to_have_css("background-color", "rgb(253, 251, 247)")
         expect(page.locator(".dateline")).to_have_count(0)
@@ -568,6 +595,13 @@ with sync_playwright() as playwright:
         for _ in range(5):
             page.locator('.bookmarks a[data-section="domain"]').click()
             page.locator("#turn-page button.primary-action").click()
+        page.goto(game_url + "?tab=letters")
+        completion = page.locator(".letter-entry").filter(
+            has=page.get_by_role(
+                "heading", name="Works completed in Qasr" if en else "Travaux achevés à Qasr"
+            )
+        )
+        illustration_asset(completion.locator(".illustration"), "granary.jpg")
         page.goto(game_url + "?tab=constructions")
         page.goto(game_url + "?tab=constructions&action=forge")
         forge = page.locator("#work-forge")
@@ -688,6 +722,9 @@ with sync_playwright() as playwright:
         expect(plain_page.locator(".illustration-city-c1")).to_be_visible()
         illustration_asset(plain_page.locator(".illustration-city-c1"), "cityscapes.png")
         no_overflow(plain_page)
+        for anchor in ("city-defenses", "city-stocks"):
+            plain_page.goto(game_url + "?tab=city&city=c1#" + anchor)
+            section_jump_lands(plain_page, "#" + anchor)
         plain_page.goto(game_url + "?tab=wars&action=convoy")
         convoy_help = plain_page.locator("#convoy-order .ledger-help")
         convoy_help.locator("summary").focus()

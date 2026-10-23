@@ -4,7 +4,7 @@ from django.utils.translation import get_language
 
 from .messages import describe, message, render
 from .messages import localize as localize_message
-from .narration import STARTED_ACTION_PHRASES
+from .narration import COMPLETED_WORK_PHRASES, CURRENT_WORK_NAMES, STARTED_ACTION_PHRASES
 
 ACTION_START_SCENES = {
     "raid": "start-army",
@@ -34,6 +34,33 @@ REPORT_SCENES = frozenset(
 
 def localize(value):
     return localize_message(value, get_language() or "fr")
+
+
+def completed_work_scene(content):
+    """Read the completed family from the letter, independent of today's city state."""
+    if content.get("title") == describe(message("La forge a achevé son œuvre")):
+        return "forge"
+    body = content.get("body")
+    completion = body.get("values", {}).get("p1") if isinstance(body, dict) else None
+    for kind, phrases in COMPLETED_WORK_PHRASES.items():
+        if completion in [describe(phrase) for phrase in phrases]:
+            return "walls" if kind == "repair" else kind
+    if not isinstance(completion, dict) or completion.get("template") not in (
+        "ont achevé {work}",
+        "ont restauré {work}",
+    ):
+        return None
+    building = completion.get("values", {}).get("work")
+    if building == describe(message("Défenses de la cité")):
+        return "walls"
+    return next(
+        (
+            "walls" if kind == "repair" else kind
+            for kind, names in CURRENT_WORK_NAMES.items()
+            if building in [describe(name) for name in names]
+        ),
+        None,
+    )
 
 
 def report_view(report, *, state=None):
@@ -102,6 +129,7 @@ def report_view(report, *, state=None):
         "body": body,
         "original_archive": not report.content,
         "scene": start_scene
+        or (completed_work_scene(report.content) if report.kind == "work" else None)
         or (
             scene
             if report.kind == "battle" and scene in REPORT_SCENES

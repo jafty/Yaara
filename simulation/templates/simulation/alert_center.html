@@ -7,7 +7,7 @@
         {% if alert.kind == 'threat' %}
             <aside class="threat-notice" data-threat-city="{{ alert.city_id }}" role="status">
                 {% include 'simulation/nav_icon.html' with icon='blades' %}
-                <p><strong>{% blocktranslate with city=alert.city_name %}Expédition ennemie engagée vers {{ city }}.{% endblocktranslate %}</strong> <a href="{% url 'game' game.id %}?tab=city&amp;city={{ alert.city_id }}">{% translate "Examiner les défenses" %} →</a></p>
+                <p><strong>{% blocktranslate with city=alert.city_name %}Expédition ennemie engagée vers {{ city }}.{% endblocktranslate %}</strong> <a href="{% url 'game' game.id %}?tab=city&amp;city={{ alert.city_id }}#city-defenses">{% translate "Examiner les défenses" %} →</a></p>
             </aside>
         {% elif alert.kind == 'damage' %}
             <div class="alert-detail">
@@ -20,7 +20,7 @@
         {% else %}
             <div class="alert-detail">
                 {% include 'simulation/nav_icon.html' with icon='grain' %}
-                <div><p><strong>{{ alert.city_name }} · {% translate "Réserves de siège insuffisantes" %}</strong><br>{% blocktranslate with missing=alert.missing %}Il manque {{ missing }} Mesures pour tenir un mois de siège après les réservations.{% endblocktranslate %}</p><a href="{% url 'game' game.id %}?tab=city&amp;city={{ alert.city_id }}">{% translate "Les comptes de la cité" %} →</a></div>
+                <div><p><strong>{{ alert.city_name }} · {% translate "Réserves de siège insuffisantes" %}</strong><br>{% blocktranslate with missing=alert.missing %}Il manque {{ missing }} Mesures pour tenir un mois de siège après les réservations.{% endblocktranslate %}</p><a href="{% url 'game' game.id %}?tab=city&amp;city={{ alert.city_id }}#city-stocks">{% translate "Les comptes de la cité" %} →</a></div>
             </div>
         {% endif %}
         </li>{% endfor %}
