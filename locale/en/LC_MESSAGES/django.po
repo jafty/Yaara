@@ -4819,3 +4819,15 @@ msgstr "No current alerts."
 
 msgid "Télécharger le résumé pour discussion (JSON compact)"
 msgstr "Download the discussion summary (compact JSON)"
+
+msgid "Dans ce conseil"
+msgstr "In this council"
+
+msgid "Sélectionnez une cité pour voir ses liaisons."
+msgstr "Select a city to see its routes."
+
+msgid "Les frontières sont indicatives ; seules les routes relient les cités."
+msgstr "Borders are illustrative; only roads connect cities."
+
+msgid "Entrée en vigueur"
+msgstr "Takes effect"

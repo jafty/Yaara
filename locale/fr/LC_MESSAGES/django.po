@@ -3535,3 +3535,15 @@ msgstr "Aucune alerte en cours."
 
 msgid "Télécharger le résumé pour discussion (JSON compact)"
 msgstr "Télécharger le résumé pour discussion (JSON compact)"
+
+msgid "Dans ce conseil"
+msgstr "Dans ce conseil"
+
+msgid "Sélectionnez une cité pour voir ses liaisons."
+msgstr "Sélectionnez une cité pour voir ses liaisons."
+
+msgid "Les frontières sont indicatives ; seules les routes relient les cités."
+msgstr "Les frontières sont indicatives ; seules les routes relient les cités."
+
+msgid "Entrée en vigueur"
+msgstr "Entrée en vigueur"

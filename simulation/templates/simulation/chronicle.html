@@ -1,11 +1,11 @@
 {% extends 'simulation/manuscript.html' %}{% load i18n %}
 {% block title %}{{ view.realm }} · Yaara{% endblock %}
 {% block content %}
-    <header class="chapter-heading compact-heading">
+    <header class="chapter-heading compact-heading{% if tab == 'domain' or tab == 'city' %} illustrated-heading{% endif %}">
         <h1>{% if tab == 'domain' %}{% translate "Le conseil de votre maison" %}{% elif tab == 'city' %}{% blocktranslate with v0=selected.name %}Le feuillet de {{ v0 }}{% endblocktranslate %}{% elif tab == 'decrees' %}{% translate "Ce que vous dicterez" %}{% elif tab == 'constructions' %}{% translate "Chantiers" %}{% elif tab == 'wars' %}{% translate "Expéditions" %}{% elif tab == 'help' %}{% translate "Comment jouer" %}{% elif tab == 'prologue' %}{% translate "Premiers pas" %}{% else %}{% translate "Rapports" %}{% endif %}</h1>
+        {% if tab == 'domain' %}{% include 'simulation/illustration.html' with scene='council' %}{% elif tab == 'city' %}{% include 'simulation/illustration.html' with scene='city' variant=selected.id %}{% endif %}
         <p class="visually-hidden">{% blocktranslate with v0=view.realm %}Au service de {{ v0 }}.{% endblocktranslate %}</p>
     </header>
-    {% if tab == 'domain' %}{% include 'simulation/illustration.html' with scene='council' %}{% elif tab == 'constructions' and not action %}{% include 'simulation/illustration.html' with scene='work' %}{% endif %}
     {% if view.finished %}
         <section class="epilogue"><h2>{% translate "La dernière page du règne" %}</h2>
             <p class="reading-links"><a href="{% url 'reign_archive' game.id %}">{% translate "Le livre du règne" %} →</a></p>
@@ -15,14 +15,14 @@
     {% elif view.eliminated %}<p class="marginal-note">{% translate "Aucune cité ne reconnaît plus votre autorité. Je continuerai pourtant de tenir ce livre jusqu’à la fin du règne." %}</p>
     {% elif game.paused %}<p class="marginal-note">{% translate "Le calendrier est suspendu. Reprenez-le avant de dicter de nouveaux ordres." %}</p>{% endif %}
     {% if tab == 'domain' %}
-        <div class="council-layout"><div class="council-dispatches"><p class="reading-links"><a href="#city-ledgers">{% translate "Les comptes de vos cités" %} ↓</a></p>
+        <nav class="council-jumps reading-links" aria-label="{% translate 'Dans ce conseil' %}">{% if not view.finished %}<a href="#upcoming-heading">{% translate "Les prochaines échéances" %} ↓</a>{% endif %}<a href="#city-ledgers">{% translate "Les comptes de vos cités" %} ↓</a></nav>
+        <div class="council-layout"><div class="council-dispatches">
         <section class="briefing-news" aria-labelledby="recent-letters">
             <h2 id="recent-letters">{% blocktranslate with v0=news_moon %}Les nouvelles de la lune {{ v0 }}{% endblocktranslate %}</h2>
             {% if not view.closed_moon %}<p>{% translate "Votre règne commence. Le conseil rassemble vos nouvelles et vos engagements. Confiez vos premiers ouvrages aux cités ou préparez une expédition." %}</p>{% endif %}
             {% include 'simulation/letter_entries.html' with compact=True %}
             <p class="reading-links"><a href="?tab=letters">{% translate "Tous les rapports" %} →</a></p>
         </section>
-        </div>{% include 'simulation/city_ledger.html' %}</div>
         {% if not view.finished %}<section class="chapter-section" aria-labelledby="upcoming-heading">
             <h2 id="upcoming-heading">{% translate "Les prochaines échéances" %}</h2>
             {% if game.paused %}<p class="aside-text">{% translate "Ces échéances attendent la reprise du calendrier." %}</p>{% endif %}
@@ -32,6 +32,7 @@
             </li>{% endfor %}</ol>
             {% if not view.eliminated and not game.paused %}<p class="reading-links"><a href="?tab=decrees">{% translate "Préparer un décret" %} →</a></p>{% endif %}
         </section>{% endif %}
+        </div>{% include 'simulation/city_ledger.html' %}</div>
         {% include 'simulation/standings.html' %}
         {% include 'simulation/orders_register.html' %}
     {% elif tab == 'help' %}{% include 'simulation/help.html' %}

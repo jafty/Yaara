@@ -104,6 +104,15 @@ depend on the active browser language.
 
 ## Local verification levels
 
+The light redesign adds independent bilingual contracts for news/date/account order,
+visible resource captions with retained icons, immutable report reading order, native
+optional map explanations, individually named work quotes, and direct batch selection.
+The existing navigation variations now require the parent destination on secondary
+folios; their changed expectation is reflected in the reviewed case catalog. The shared
+browser journey retains the full existing play flow and adds 200% text reflow checks,
+native legend operation and restrained report proportions. This is Presentation work;
+simulation rules, authorization and stored data remain unchanged.
+
 The October 23 presentation fixes add independent bilingual alert-destination cases for defense, reserves, each repair family and sealed/active tracking. Completion artwork cases cover each current building level, repaired families, original vocabulary and legacy equipment in Council and full letters; unknown and unstructured archives retain neutral scenes. Stored report content remains unchanged. The shared bilingual browser journey checks native defense/granary fragments above the fold below the sticky header on desktop, 320px/390px, enlarged text and without JavaScript, plus a decoded granary image from an actual completed work.
 
 The owner's 2026-10-19 follow-up replaces the blanket full-local-suite requirement with risk-based local verification. Choose by affected behavior, not line count or perceived coding difficulty. State the chosen level and the tests run in the delivery summary. Mixed changes use the highest applicable level; unclear impact, unexpected failures or a broad refactor escalate to the full checkpoint. Fix failures before pushing.

@@ -56,7 +56,8 @@ def city_heading_starts_panel(page):
       const desktop = matchMedia('(min-width: 1100px) and (min-height: 600px)').matches;
       return desktop
         ? gap >= 0 && panel.left >= map.right && map.top >= header.bottom
-        : gap >= 0 && gap <= 20 && map.bottom <= header.bottom;
+        : gap >= 0 && heading.bottom <= innerHeight
+          && map.bottom <= heading.top;
     }""")
         if aligned:
             return
@@ -71,12 +72,28 @@ def section_jump_lands(page, selector):
         if page.locator(selector).evaluate("""el => {
           const top = el.getBoundingClientRect().top;
           const header = document.querySelector('.reign-header').getBoundingClientRect();
-          const padding = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop);
-          return top >= header.bottom && top <= padding + 2;
+          const nav = document.querySelector('.bookmarks');
+          const bottom = getComputedStyle(nav).position === 'fixed'
+            ? nav.getBoundingClientRect().top : innerHeight;
+          const line = parseFloat(getComputedStyle(el).lineHeight);
+          // Native navigation may keep an already visible target in place.
+          return location.hash === '#' + el.id
+            && top >= header.bottom && top + line <= bottom;
         }"""):
             return
         page.wait_for_timeout(100)
-    raise AssertionError("The alert destination must appear below the header")
+    geometry = page.evaluate(
+        """selector => ({
+      width: innerWidth,
+      font: getComputedStyle(document.documentElement).fontSize,
+      padding: getComputedStyle(document.documentElement).scrollPaddingTop,
+      target: document.querySelector(selector).getBoundingClientRect().top,
+      header: document.querySelector('.reign-header').getBoundingClientRect().bottom
+    })""",
+        selector,
+    )
+    page.screenshot(path=str(artifacts / "fragment-failure.png"))
+    raise AssertionError(f"The alert destination must appear below the header: {geometry}")
 
 
 def scannable_layout(page):
@@ -87,17 +104,21 @@ def scannable_layout(page):
     expect(page.locator('.resource-ribbon [data-icon="moon"]')).to_have_count(1)
     expect(page.locator(".resource-ribbon .resource-value")).to_have_count(3)
     assert page.locator('.reign-header a[href*="tab="]').count() == 0
-    tab = page.evaluate("new URL(location.href).searchParams.get('tab') || 'domain'")
-    expected = (
-        tab
-        if tab in ("domain", "wars", "constructions")
-        and not page.locator(".decree-reading").count()
-        else None
-    )
+    if page.locator(".decree-reading").count():
+        return_url = page.locator(".decree-reading > .reading-links a").get_attribute("href")
+        expected = "wars" if "tab=wars" in return_url else "constructions"
+    else:
+        expected = page.evaluate("""() => {
+          const query = new URL(location.href).searchParams;
+          const tab = query.get('tab') || 'domain';
+          const action = query.get('action');
+          if (tab === 'wars' || action === 'expedition' || action === 'convoy') return 'wars';
+          if (tab === 'constructions' || action) return 'constructions';
+          return 'domain';
+        }""")
     active = page.locator('.bookmarks a[aria-current="page"]')
-    expect(active).to_have_count(1 if expected else 0)
-    if expected:
-        expect(active).to_have_attribute("data-section", expected)
+    expect(active).to_have_count(1)
+    expect(active).to_have_attribute("data-section", expected)
     for selector in (".council-links a", ".guide-index a"):
         links = page.locator(selector).all()
         for first, second in zip(links, links[1:]):
@@ -107,6 +128,34 @@ def scannable_layout(page):
     for note in page.locator(".notice, .marginal-note, .unsealed-leaf").all():
         assert note.evaluate("el => getComputedStyle(el).borderLeftWidth") == "0px"
         assert note.evaluate("el => getComputedStyle(el).boxShadow") != "none"
+
+
+def redesign_reflow(page):
+    """The reading and decision layouts remain usable with enlarged text."""
+    viewport = page.viewport_size
+    for width in (320, 390, 1440):
+        page.set_viewport_size({"width": width, "height": 844})
+        for scale in ("100%", "125%", "200%"):
+            page.evaluate("scale => document.documentElement.style.fontSize = scale", scale)
+            no_overflow(page)
+            if (
+                width == 390
+                and scale == "100%"
+                and page.evaluate("new URL(location.href).searchParams.get('tab') || 'domain'")
+                == "domain"
+                and page.locator('.alerts-trigger[data-alert-count="0"]').count()
+                and page.locator(".letter-entry").count()
+            ):
+                page.evaluate("scrollTo({top: 0, behavior: 'instant'})")
+                excerpt = page.locator(".letter-entry .letter-text > p").first
+                first_line = excerpt.bounding_box()["y"] + excerpt.evaluate(
+                    "el => parseFloat(getComputedStyle(el).lineHeight)"
+                )
+                assert first_line <= page.locator(".bookmarks").bounding_box()["y"]
+            for caption in page.locator(".resource-caption").all():
+                expect(caption).to_be_visible()
+    page.evaluate("document.documentElement.style.removeProperty('font-size')")
+    page.set_viewport_size(viewport)
 
 
 def illustration_asset(scene, filename):
@@ -198,6 +247,7 @@ with sync_playwright() as playwright:
         ).to_be_visible()
         expect(page.locator("#recent-letters")).to_be_visible()
         expect(page.locator("#upcoming-heading")).to_be_visible()
+        redesign_reflow(page)
         expect(page.locator(".alerts-trigger")).to_have_attribute("data-alert-count", "0")
         page.locator(".alerts-trigger").focus()
         page.keyboard.press("Enter")
@@ -241,6 +291,7 @@ with sync_playwright() as playwright:
             page.goto(game_url + "?tab=constructions&action=" + family)
             illustration_asset(page.locator(".illustration"), filename)
             no_overflow(page)
+        redesign_reflow(page)
         page.locator("[data-works-return]").focus()
         page.keyboard.press("Enter")
         expect(page.locator(".work-choices")).to_be_visible()
@@ -312,7 +363,9 @@ with sync_playwright() as playwright:
         expect(page.locator(".decree-reading")).to_contain_text(
             "Small arsenal equipment" if en else "Équipement du petit arsenal"
         )
-        expect(page.locator('.bookmarks a[aria-current="page"]')).to_have_count(0)
+        expect(page.locator('.bookmarks a[aria-current="page"]')).to_have_attribute(
+            "data-section", "constructions"
+        )
         page.locator(".wax-seal").click()
         expect(page.locator(".resource-ribbon")).to_contain_text(
             "2,400,000" if en else "2\u00a0400\u00a0000"
@@ -377,19 +430,28 @@ with sync_playwright() as playwright:
         )
         assert page.locator(".map-road").count() == 0
         expect(page.locator(".illustration")).to_have_count(0)
+        reference = page.locator(".map-reference")
+        expect(reference).not_to_have_attribute("open", "")
+        reference.locator("summary").focus()
+        page.keyboard.press("Enter")
+        expect(reference.locator(".map-states")).to_be_visible()
+        page.keyboard.press("Enter")
+        expect(reference).not_to_have_attribute("open", "")
         page.locator('.map-city[href*="city=c4"]').focus()
         page.keyboard.press("Enter")
         assert page.locator("[data-local-accounts]").count() == 0
         expect(page.locator("#map-context")).to_contain_text("Sefra")
         city_heading_starts_panel(page)
-        illustration_asset(page.locator("#map-context > .illustration"), "army-preparation.jpg")
+        illustration_asset(page.locator("#map-context .illustration"), "army-preparation.jpg")
         page.screenshot(path=str(artifacts / f"map-context-desktop-{language}.png"), full_page=True)
         page.locator('input[name="kind"][value="capture"]').check()
         expect(page.locator('input[name="kind"][value="capture"]')).to_be_checked()
-        expect(page.locator("#map-context > .illustration")).to_have_class(
+        expect(page.locator("#map-context .illustration")).to_have_class(
             "illustration illustration-army"
         )
-        illustration_asset(page.locator("#map-context > .illustration"), "army-preparation.jpg")
+        illustration_asset(page.locator("#map-context .illustration"), "army-preparation.jpg")
+        redesign_reflow(page)
+        page.goto(page.url)
         atlas = page.locator(".realm-map").bounding_box()
         panel = page.locator("#map-context").bounding_box()
         assert panel["x"] >= atlas["x"] + atlas["width"]
@@ -499,11 +561,12 @@ with sync_playwright() as playwright:
             page.locator(".illustration-offensive-raid-success"), "offensive-raid-success.jpg"
         )
         expect(page.locator(".letter-entry .illustration-small")).to_have_count(0)
+        redesign_reflow(page)
         illustration_asset(page.locator(".illustration-start-army"), "action-starts.png")
         for letter in page.locator(".letter-entry").all():
             expect(letter.locator(":scope > .illustration")).to_have_count(1)
             image_width = letter.locator(":scope > .illustration").bounding_box()["width"]
-            assert abs(image_width - letter.bounding_box()["width"]) < 2
+            assert abs(image_width - min(letter.bounding_box()["width"], 192)) < 2
         for width in (390, 320):
             page.set_viewport_size({"width": width, "height": 844})
             page.evaluate("document.documentElement.style.fontSize = '125%'")
@@ -721,6 +784,7 @@ with sync_playwright() as playwright:
         expect(plain_page.locator("[data-local-accounts]")).to_be_visible()
         expect(plain_page.locator(".illustration-city-c1")).to_be_visible()
         illustration_asset(plain_page.locator(".illustration-city-c1"), "cityscapes.png")
+        redesign_reflow(plain_page)
         no_overflow(plain_page)
         for anchor in ("city-defenses", "city-stocks"):
             plain_page.goto(game_url + "?tab=city&city=c1#" + anchor)
@@ -767,7 +831,7 @@ with sync_playwright() as playwright:
         plain_page.locator('.map-city[href*="city=c4"]').click()
         expect(plain_page.locator("#map-context")).to_contain_text("Sefra")
         city_heading_starts_panel(plain_page)
-        expect(plain_page.locator("#map-context > .illustration")).to_have_class(
+        expect(plain_page.locator("#map-context .illustration")).to_have_class(
             "illustration illustration-army"
         )
         note = plain_page.locator(".origin-details").first

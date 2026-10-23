@@ -5,6 +5,11 @@
     <section class="decree-reading">
         <div class="unsealed-leaf" role="status"><h2>{% translate "Brouillon sans sceau" %}</h2>
             <p>{% blocktranslate with v0=order.cost %}Aucun fonds, homme ou chantier n’est encore réservé. Relisez les termes, puis apposez votre sceau pour engager <strong>{{ v0 }} Mesures</strong>.{% endblocktranslate %}</p>
+            <dl class="review-facts">
+                <div><dt>{% translate "Action" %}</dt><dd>{{ label }}{% if target %} · {{ target }}{% endif %}</dd></div>
+                <div><dt>{% translate "Coût" %}</dt><dd>{{ order.cost }} {% translate "Mesures" %}</dd></div>
+                <div><dt>{% translate "Entrée en vigueur" %}</dt><dd>{% blocktranslate with v0=order.execute_month %}Lune {{ v0 }}{% endblocktranslate %}</dd></div>
+            </dl>
             <p class="decree-steps">{% translate "Valider l’action" %} · {% translate "Confirmer et sceller l’ordre" %}</p>
         </div>
         <p class="salutation">{% translate "Monseigneur, voici les termes que j’ai couchés pour vous." %}</p>

@@ -4,7 +4,7 @@
     {% if not action.repair or action.prices %}<a id="work-{{ action.kind }}" class="work-card ledger-note" href="?tab=constructions&amp;action={{ action.kind }}{% if city_requested %}&amp;city={{ selected.id }}{% endif %}">
         {% include 'simulation/illustration.html' with scene=action.scene compact=True %}
         <div><h2>{{ action.label }}</h2><p>{{ action.purpose }}</p>
-        <p>{{ action.prices.0.name }}</p><p class="work-card-prices">{% for price in action.prices %}<span class="work-price">{{ price.cost }} {% translate "Mesures" %} · {{ price.duration }} {% translate "lunes" %}</span>{% if not forloop.last %} / {% endif %}{% empty %}{% translate "Aucun nouvel ouvrage disponible." %}{% endfor %}</p></div>
+        <p class="work-card-prices">{% for price in action.prices %}<span class="work-price"><em class="work-price-name">{{ price.name }}</em> {{ price.cost }} {% translate "Mesures" %} · {{ price.duration }} {% translate "lunes" %}</span>{% empty %}{% translate "Aucun nouvel ouvrage disponible." %}{% endfor %}</p></div>
         <span aria-hidden="true">→</span>
     </a>{% endif %}
     {% endfor %}
