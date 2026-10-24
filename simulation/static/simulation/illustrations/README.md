@@ -1,21 +1,20 @@
-# Material surface
+# Material and illustration assets
 
-`papyrus.webp` was generated for the October 24, 2026 visual revision: pale handmade
-papyrus fibers and lime-plaster grain, evenly lit, without drawings, lettering,
-darkened edges or ornamental borders. The original generation is preserved in
-the task's `generated_images` directory. The WebP is a format-optimized copy.
+Original narrative images and sprite atlases are unchanged. Landscape frames
+span the reading column below report and selected-work titles. The inner scene
+keeps its 3:2 proportions inside a centered 2:1 crop; atlas cells remain isolated.
+There are no thumbnail illustrations beside headings or in work/city summaries.
 
-The white-manuscript revision retains `map-terrain.png` on the map only. The
-owner rejected repeating that texture beneath reading text and behind artwork
-that already depicts parchment. Pages, letters, work rows, headers and navigation
-use clean surfaces; the existing illustrations supply the visual material.
-Building artwork is larger, with catalogue titles spanning the row above it. `papyrus.webp` remains
-the source asset from the earlier material exploration; it is no longer loaded
-by the interface. Solid background colors remain when images are disabled.
+`deckled-edge.png` is a generated alpha mask for restrained irregular paper edges.
+It does not repaint or blur the scene. It is applied once to the shared frame;
+unsupported CSS masking leaves the original rectangular frame. The original
+successful generation is preserved at
+`/workspace/generated_images/exec-d1766189-27cf-42ed-b8a0-9c7d6c11d260.png` in this
+workspace. The first experimental white-frame output was rejected because its
+center was transparent; it is not used by the interface.
 
-Existing contextual artwork and atlases are unchanged. The shared manuscript
-illustration component displays its original 3:2 composition inside a centered
-2:1 crop for noncompact scenes; compact thumbnails retain 3:2. The background
-and atlas coordinates belong to the inner pseudo-element, so changing the frame
-never stretches a scene or reveals an adjacent cell. No replacement illustration
-or generated ornament is needed for this pass.
+`map-terrain.png` remains on the map only. Reading text uses clean surfaces.
+`papyrus.webp`, generated for the earlier October 24 material revision, now
+supplies the subtle mission-button texture. The header uses solid pale stone;
+the bottom menu uses solid mineral green with cream labels. Fallback surface
+colors remain when images are disabled.

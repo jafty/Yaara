@@ -1,11 +1,11 @@
 {% extends 'simulation/manuscript.html' %}{% load i18n %}
 {% block title %}{{ view.realm }} · Yaara{% endblock %}
 {% block content %}
-    <header class="chapter-heading compact-heading{% if tab == 'domain' or tab == 'city' %} illustrated-heading{% endif %}">
+    <header class="chapter-heading compact-heading">
         <h1>{% if tab == 'domain' %}{% translate "Le conseil de votre maison" %}{% elif tab == 'city' %}{% blocktranslate with v0=selected.name %}Le feuillet de {{ v0 }}{% endblocktranslate %}{% elif tab == 'decrees' %}{% translate "Ce que vous dicterez" %}{% elif tab == 'constructions' %}{% translate "Chantiers" %}{% elif tab == 'wars' %}{% translate "Expéditions" %}{% elif tab == 'help' %}{% translate "Comment jouer" %}{% elif tab == 'prologue' %}{% translate "Premiers pas" %}{% else %}{% translate "Rapports" %}{% endif %}</h1>
-        {% if tab == 'domain' %}{% include 'simulation/illustration.html' with scene='council' %}{% elif tab == 'city' %}{% include 'simulation/illustration.html' with scene='city' variant=selected.id %}{% endif %}
         <p class="visually-hidden">{% blocktranslate with v0=view.realm %}Au service de {{ v0 }}.{% endblocktranslate %}</p>
     </header>
+    {% if tab == 'city' %}{% include 'simulation/illustration.html' with scene='city' variant=selected.id %}{% endif %}
     {% if view.finished %}
         <section class="epilogue"><h2>{% translate "La dernière page du règne" %}</h2>
             <p class="reading-links"><a href="{% url 'reign_archive' game.id %}">{% translate "Le livre du règne" %} →</a></p>

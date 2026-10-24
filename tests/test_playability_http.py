@@ -26,6 +26,7 @@ def test_current_pages(user, language):
     url = reverse("game", args=[game.id])
     catalogue = client.get(url, {"tab": "constructions"}).content.decode()
     assert catalogue.count('class="work-card ledger-note"') == 8
+    assert 'class="illustration ' not in catalogue
     assert "work-selection" not in catalogue and 'id="active-works"' not in catalogue
     assert "action=repair" not in catalogue
     family = client.get(url, {"tab": "constructions", "action": "irrigation"})
@@ -68,7 +69,7 @@ def test_direct_attack(user, language, kind):
     assert 'id="mission-target" value="c4"' in text
     assert '<select name="target"' not in text
     assert "data-expedition-kind" not in text
-    assert text.count('class="illustration illustration-army"') == 1
+    assert 'class="illustration ' not in text
     assert "illustration-expedition" not in text
     assert "illustration-raid" not in text and "illustration-capture" not in text
     assert "1234567" not in text and "2345678" not in text
@@ -110,19 +111,19 @@ def test_city_folio_illustration(user, language, city_id):
         'aria-hidden="true"></div>'
     )
     assert text.count(scene) == 1
-    assert text.count('class="illustration ') == (9 if city_id in ("c1", "c2", "c3") else 1)
+    assert text.count('class="illustration ') == 1
 
 
 @case(
-    "illustrations-city-list-thumbnails",
-    "Owner imagery revision: city accounts show each owned city's matching decorative thumbnail",
+    "layout-city-list-text-only",
+    "Owner wide-art revision: city summaries keep names and links without decorative thumbnails",
 )
 @pytest.mark.parametrize("language", ["fr", "en"])
 @pytest.mark.parametrize(
     "actor,city_ids",
     [("p1", ["c1", "c2", "c3"]), ("p2", ["c4", "c5", "c6"]), ("p3", ["c7", "c8", "c9"])],
 )
-def test_city_list_thumbnails(user, language, actor, city_ids):
+def test_city_list_text_only(user, language, actor, city_ids):
     game = services.create_game(user, "City thumbnails", opponents="passive", economy_version=3)
     game.memberships.update(actor=actor)
     client = Client()
@@ -133,9 +134,9 @@ def test_city_list_thumbnails(user, language, actor, city_ids):
     entries = re.findall(r'<li class="city-entry".*?</li>', text, re.S)
     assert len(entries) == 3
     for entry, city_id in zip(entries, city_ids, strict=True):
-        assert f'illustration-city-{city_id} illustration-small" aria-hidden="true"' in entry
+        assert "illustration" not in entry
         assert f"?tab=city&amp;city={city_id}" in entry
-    assert text.count('class="illustration illustration-city ') == 3
+    assert 'class="illustration illustration-city ' not in text
 
 
 @case(

@@ -1,16 +1,19 @@
 # Implementation decisions
 
-## 2026-10-24 · White manuscript and local parchment
+## 2026-10-24 · White manuscript and landscape scenes
 
-The owner's new three-maquette request supersedes the uniform papyrus page and
-dark bottom navigation from the preceding material revision. Keep the literary
-structure and existing flows, with near-white pages, stronger type hierarchy,
-terracotta actions and light navigation. The owner rejected the first screenshot
-pass with textured text panels and small nested illustrations. Use open editorial
-rows, clean reading surfaces and larger building artwork instead. Keep parchment
-in the map and the existing illustrations;
-noncompact scenes use a shallower frame without stretching their composition.
-Retain realm-wide city checklists and the separate review/seal/closure stages.
+The owner's maquettes and subsequent screenshot reviews supersede the earlier
+uniform papyrus page, tiny heading illustrations and repeated parchment panels.
+Use clean reading surfaces, full-column scenes below story and work-family
+titles, and compact text-only catalogues and city summaries. Council and
+expedition headings have no decorative thumbnail. Keep the original scene files;
+a generated alpha mask supplies subtle worn edges without blurring the drawings.
+
+Trial a pale stone header and a deep mineral-green bottom menu with cream labels
+and light terracotta selection. Mission controls reuse the existing pictograms
+and light papyrus texture. Preserve realm-wide city checklists, report content,
+and the separate review/seal/closure stages. This remains a local design candidate
+for the owner's visual review; no deployment is claimed.
 
 The current SVG map can support painted scenery without a data-contract change.
 This first pass refines its existing parchment, boundaries, house colors and

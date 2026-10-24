@@ -35,7 +35,7 @@ def test_council_priority(folio):
     assert text.index('id="upcoming-heading"') < text.index('id="city-ledgers"')
     assert 'href="#upcoming-heading"' in text and 'href="#city-ledgers"' in text
     heading = re.search(r'<header class="chapter-heading.*?</header>', text, re.S).group()
-    assert "illustration-council" in heading
+    assert "illustration" not in heading
     game.refresh_from_db()
     assert game.state == original
 
@@ -81,6 +81,7 @@ def test_report_reading_order(folio):
             rf'<article class="letter-entry" id="report-{report.pk}">.*?</article>', text, re.S
         ).group()
         assert entry.index("An immutable account.") < entry.index("?tab=city")
+        assert entry.index("A dated encounter") < entry.index("illustration-offensive-raid-success")
         if compact:
             assert entry.index("An immutable account.") < entry.index(
                 f"?tab=letters#report-{report.pk}"

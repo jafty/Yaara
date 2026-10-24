@@ -546,12 +546,6 @@ illustrations-city-folio-identity/c8-en
 illustrations-city-folio-identity/c8-fr
 illustrations-city-folio-identity/c9-en
 illustrations-city-folio-identity/c9-fr
-illustrations-city-list-thumbnails/p1-city_ids0-en
-illustrations-city-list-thumbnails/p1-city_ids0-fr
-illustrations-city-list-thumbnails/p2-city_ids1-en
-illustrations-city-list-thumbnails/p2-city_ids1-fr
-illustrations-city-list-thumbnails/p3-city_ids2-en
-illustrations-city-list-thumbnails/p3-city_ids2-fr
 illustrations-city-retains-identity
 illustrations-expeditions-map-only/en
 illustrations-expeditions-map-only/fr
@@ -590,6 +584,12 @@ launched-action-heading/storage
 launched-action-heading/transport
 launched-action-heading/walls
 launched-action-heading/watch
+layout-city-list-text-only/p1-city_ids0-en
+layout-city-list-text-only/p1-city_ids0-fr
+layout-city-list-text-only/p2-city_ids1-en
+layout-city-list-text-only/p2-city_ids1-fr
+layout-city-list-text-only/p3-city_ids2-en
+layout-city-list-text-only/p3-city_ids2-fr
 layout-council-priority/en
 layout-council-priority/fr
 layout-family-decision/en

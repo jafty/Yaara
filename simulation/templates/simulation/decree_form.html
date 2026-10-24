@@ -4,8 +4,8 @@
         {% csrf_token %}
         {% if action.kind == 'expedition' %}
             <fieldset class="mission-options"><legend class="visually-hidden">{% translate "Action" %}</legend>
-                <label><input type="radio" name="kind" value="raid" {% if mission_kind != 'capture' %}checked{% endif %}><span>{% translate "Piller" %}</span></label>
-                <label><input type="radio" name="kind" value="capture" {% if mission_kind == 'capture' %}checked{% endif %}><span>{% translate "Capturer" %}</span></label>
+                <label><input type="radio" name="kind" value="raid" {% if mission_kind != 'capture' %}checked{% endif %}><span>{% include 'simulation/nav_icon.html' with icon='blades' %}{% translate "Piller" %}</span></label>
+                <label><input type="radio" name="kind" value="capture" {% if mission_kind == 'capture' %}checked{% endif %}><span>{% include 'simulation/nav_icon.html' with icon='council' %}{% translate "Capturer" %}</span></label>
             </fieldset>
             {% if selected_target %}<input type="hidden" name="target" id="mission-target" value="{{ selected.id }}">
             {% else %}<p><label for="mission-target">{% translate "Vers quelle cité ?" %}</label><select name="target" id="mission-target" required><option value="">{% translate "Désigner une cité à notre portée" %}</option>{% for target in view.attack_targets %}<option value="{{ target.id }}" {% if target.engaged %}disabled{% endif %}>{{ target.name }} · {{ target.owner_name }}</option>{% endfor %}</select></p>{% endif %}

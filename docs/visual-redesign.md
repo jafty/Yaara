@@ -9,30 +9,38 @@ The implementation starts from deployment commit `defde11`.
 ## Art direction
 
 Keep the manuscript, scribe, self-hosted Alegreya, Egyptian pylon icon and
-existing contextual illustrations. Use near-white `#fdfcf9` for the page, header
-and navigation, charcoal `#302c26` for text, terracotta `#954a35` for actions,
+existing contextual illustrations. Use near-white `#fdfcf9` for the reading area,
+pale stone `#f0eee9` for the header, deep mineral green `#263f40` for the bottom
+menu, charcoal `#302c26` for text, and terracotta `#954a35` for actions. Use
 mineral blue `#285c69` for reading links, and muted brown rules. The beige is
 carried by the illustrations and map, rather than a tint over the entire game.
 
 The owner rejected the first screenshot pass: repeated parchment rectangles
 felt blocky, reduced text contrast, and duplicated the texture already baked
 into the small illustrations. The revised direction keeps reading text on a
-clean surface and uses open editorial rows with fine rules. Only the map and
-existing artwork carry worn parchment; callouts use a quiet, solid tint.
+clean surface and uses open editorial rows with fine rules. The map and
+existing artwork carry worn parchment; callouts use a quiet, solid tint. The
+mission buttons also use the existing light papyrus asset, with small pictograms
+and a terracotta selected state.
 
-Building illustrations are substantially larger in the catalogue and city
-folios. Catalogue titles span the full row above the illustration and facts;
-they are no longer squeezed beside tiny thumbnails. Selected work-family art
-also has more room. Keep default body text at 17px and avoid synthetic torn
-edges, stains, decorative gradients and additional ornamental borders.
+The subsequent review rejects illustrations squeezed alongside headings. Council
+and expedition headings are now text-only. The Works catalogue, building
+register and city summaries stay compact and text-only; opening a work family
+or a city folio reveals its landscape illustration. Council stories and full
+reports place their scene below the title, spanning the reading column.
+
+The original scene files remain unchanged. A generated alpha-mask image gives
+landscape frames a restrained irregular paper edge without blurring the artwork.
+The earlier thumbnail styles and the unused compact illustration parameter are
+removed. Keep default body text at 17px, visible labels and generous touch areas.
 
 ## What to retain and adapt
 
 | Reference | Decision and reason |
 | --- | --- |
 | Large literary headings and thin dividers | Adopt. Give the hierarchy more room without replacing the scribe's voice. |
-| Light three-destination bottom menu | Adopt. Keep the current destinations, labels, icons and active state. |
-| Short landscape illustrations | Adopt a 2:1 frame for noncompact scenes, cropping a centered 3:2 composition. Thumbnails retain 3:2. Existing atlas cells keep their proportions and cannot bleed into neighboring scenes. |
+| Three-destination bottom menu | Keep destinations, labels and icons. The latest review trials a deep mineral-green background, cream text and a light terracotta active state to distinguish it from the page. |
+| Short landscape illustrations | Use full-column 2:1 landscape frames below titles, cropping a centered 3:2 composition. No decorative heading thumbnails. Existing atlas cells keep their proportions and cannot bleed into neighboring scenes. |
 | Parchment everywhere | Keep it in the artwork and map. The rejected first pass showed that textured text panels compete with the existing parchment-backed illustrations. |
 | One city dropdown for works | Do not copy. Yaara deliberately supports choosing several cities and reviewing/sealing one atomic order. Improve the existing checklist's grouping and selected state. |
 | Expand a building within the catalogue | Keep the existing family page and native return link. Moving the form into an accordion would be a flow change. |
@@ -86,7 +94,7 @@ gameplay reference remains accurate; no rule documentation update is required.
 
 ## Local verification
 
-- Ruff lint and format checks passed; all 1,552 case IDs collected unchanged.
+- Ruff lint and format checks passed; all 1,552 cases collected. The six city-summary variants have reviewed replacement IDs for the text-only contract.
 - 536 affected presentation, map, work, alert and illustration cases passed on
   disposable PostgreSQL 17, with no skipped cases.
 - The complete French/English game browser journey passed, including 320px and

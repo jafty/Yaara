@@ -1,13 +1,10 @@
 {% load i18n l10n %}
 {% for report in reports %}<article class="letter-entry" id="report-{{ report.id|unlocalize }}">
-    <div class="letter-heading{% if compact %} letter-heading-compact{% endif %}">
-        {% if compact %}{% include "simulation/illustration.html" with scene=report.scene compact=True %}{% endif %}
-        <div>
-            <p class="letter-date">{% blocktranslate with v0=report.month %}Lune {{ v0 }}{% endblocktranslate %}{% if report.original_archive %} · {% translate "Archive originale en français" %}{% endif %}</p>
-            <h3>{% include 'simulation/nav_icon.html' with icon=report.icon %}{{ report.title }}</h3>
-        </div>
+    <div class="letter-heading">
+        <p class="letter-date">{% blocktranslate with v0=report.month %}Lune {{ v0 }}{% endblocktranslate %}{% if report.original_archive %} · {% translate "Archive originale en français" %}{% endif %}</p>
+        <h3>{% include 'simulation/nav_icon.html' with icon=report.icon %}{{ report.title }}</h3>
     </div>
-    {% if not compact %}{% include "simulation/illustration.html" with scene=report.scene compact=False %}{% endif %}
+    {% include "simulation/illustration.html" with scene=report.scene %}
     <div class="letter-text">
         {% if compact %}<p>{{ report.body|truncatewords:35 }}</p>{% else %}{{ report.body|linebreaks }}<p class="signature">{% blocktranslate with v0=report.month %}Consigné par votre scribe à la lune {{ v0 }}.{% endblocktranslate %}</p>{% endif %}
         <div class="letter-actions reading-links">

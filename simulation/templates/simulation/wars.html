@@ -2,12 +2,12 @@
 <div class="expedition-atlas">
     {% include 'simulation/realm_map.html' %}
     {% if action.kind == "convoy" %}{% include "simulation/convoy_form.html" %}{% elif city_requested or action %}<section id="map-context" class="map-context" aria-labelledby="context-title">
-        <header class="illustrated-heading map-heading"><div>
+        <header class="map-heading">
         {% if city_requested %}
         <h2 id="context-title">{{ selected.name }}</h2>
         <p class="map-status">{% include 'simulation/map_status.html' with city=selected %} · {{ selected.wall_label }}{% if selected.damaged %}, {% translate "endommagée" %}{% endif %}</p>
         {% else %}<h2 id="context-title">{% translate "Préparer une expédition" %}</h2>{% endif %}
-        </div>{% if action and not view.finished and not view.eliminated and not game.paused %}{% if selected_target or not city_requested %}{% include 'simulation/illustration.html' with scene='army' %}{% endif %}{% endif %}</header>
+        </header>
         {% if city_requested %}
         <p class="map-neighbors">{% translate "Routes directes" %} : {% for neighbor in neighbors %}<a href="?tab=wars&amp;city={{ neighbor.id }}#map-context">{{ neighbor.name }}</a>{% if not forloop.last %} · {% endif %}{% empty %}{% translate "Aucune" %}{% endfor %}.</p>
         {% if selected.owned %}

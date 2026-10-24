@@ -129,8 +129,7 @@ def test_completed_work_artwork(user, language, tab, phrase, scene):
     client.force_login(user)
     client.cookies["django_language"] = language
     html = client.get(reverse("game", args=[game.id]), {"tab": tab}).content.decode()
-    size = " illustration-small" if tab == "domain" else ""
-    assert f'class="illustration illustration-{scene}{size}"' in html
+    assert f'class="illustration illustration-{scene}"' in html
     report.refresh_from_db()
     assert report.content == saved
 
@@ -234,8 +233,7 @@ def test_action_start_artwork_http(user, language, tab, heading, kind, scene):
     client.cookies["django_language"] = language
     page = client.get(reverse("game", args=[game.id]), {"tab": tab})
     assert page.status_code == 200
-    size = " illustration-small" if tab == "domain" else ""
-    assert f'class="illustration illustration-{scene}{size}"' in page.content.decode()
+    assert f'class="illustration illustration-{scene}"' in page.content.decode()
     assert render(original["title"], language) in page.content.decode()
     report.refresh_from_db()
     assert report.content == original
@@ -388,11 +386,8 @@ def test_combat_artwork_http(
     page = client.get(reverse("game", args=[game.id]), {"tab": tab})
     assert page.status_code == 200
     scene = f"{direction}-{kind}-{expected}"
-    size = " illustration-small" if tab == "domain" else ""
     assert (
-        page.content.decode().count(
-            f'class="illustration illustration-{scene}{size}" aria-hidden="true"'
-        )
+        page.content.decode().count(f'class="illustration illustration-{scene}" aria-hidden="true"')
         == 1
     )
     other = "received" if direction == "offensive" else "offensive"

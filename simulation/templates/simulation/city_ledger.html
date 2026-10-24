@@ -13,7 +13,6 @@
     <ul class="city-ledger">{% for city in view.owned_cities %}
         <li class="city-entry" id="city-{{ city.id }}">
             {% if city.restricted_fideles %}<p class="aside-text">{% blocktranslate with city=city.name count=city.restricted_fideles moon=city.restricted_until %}{{ city }} : {{ count }} Fidèles hérités assurent la défense locale. Départs et secours possibles à partir de la lune {{ moon }}.{% endblocktranslate %}</p>{% endif %}
-            {% include 'simulation/illustration.html' with scene='city' variant=city.id compact=True %}
             <div class="city-identity"><h3><a href="?tab=city&amp;city={{ city.id }}">{{ city.name }} →</a></h3>{% include 'simulation/team_status.html' %}</div>
             <dl class="ledger-figures">
                 <div><dt>{% translate "Grenier" %}</dt><dd>{{ city.stock }} / {{ city.capacity }}</dd></div>

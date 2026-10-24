@@ -20,7 +20,6 @@
         {% include 'simulation/team_status.html' with city=selected detailed=True %}
         {% include 'simulation/ledger_help.html' with topic='crew' %}
         {% if selected.buildings %}<ul class="building-ledger">{% for building in selected.buildings %}<li id="building-{{ building.kind }}" {% if building.damaged %}class="damaged-building" data-damaged-building="{{ building.kind }}"{% endif %}>
-            {% include 'simulation/illustration.html' with scene=building.kind compact=True %}
             <div><h3>{{ building.name }}</h3>{% if building.damaged %}{% include 'simulation/damage_state.html' %}{% endif %}<p>{% blocktranslate with built=building.level effective=building.effective_level %}Niveau bâti : {{ built }} · Niveau en service : {{ effective }}.{% endblocktranslate %}</p>
             <p>{{ building.effect }}</p>
             {% if building.finish_moon %}<p>{% blocktranslate with moon=building.finish_moon %}Travaux en cours ou réservés jusqu’à la lune {{ moon }}.{% endblocktranslate %}</p>{% endif %}

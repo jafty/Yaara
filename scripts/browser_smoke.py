@@ -23,7 +23,7 @@ def no_overflow(page):
     for scene in page.locator(".illustration").all():
         box = scene.bounding_box()
         framed = scene.evaluate("el => getComputedStyle(el, '::before').content !== 'none'")
-        ratio = 1.5 if not framed or "illustration-small" in scene.get_attribute("class") else 2
+        ratio = 2 if framed else 1.5
         assert abs(box["width"] / box["height"] - ratio) < 0.02
         if framed:
             # Crop the original composition; never stretch a scene or expose adjacent atlas cells.
@@ -145,12 +145,14 @@ def scannable_layout(page):
     ):
         for element in page.locator(selector).all():
             assert element.evaluate("el => parseFloat(getComputedStyle(el).borderLeftWidth)") == 0
-    if page.locator(".illustration-council").count():
-        # Artwork remains a small contextual vignette, including with enlarged text.
-        scene = page.locator(".illustration-council").bounding_box()
-        heading = page.locator(".chapter-heading").bounding_box()
-        assert scene["width"] <= heading["width"] * 0.3
-        assert scene["height"] <= heading["height"]
+    expect(
+        page.locator(".chapter-heading .illustration, .map-heading .illustration")
+    ).to_have_count(0)
+    for scene in page.locator(
+        ".letter-entry > .illustration, .family-heading > .illustration"
+    ).all():
+        assert scene.evaluate("""el => Math.abs(el.getBoundingClientRect().width
+          - el.parentElement.getBoundingClientRect().width) < 2""")
     for selector in (".guide-index a",):
         # Measure adjacent links together: a native smooth jump can move the page
         # between separate browser calls, especially without JavaScript enabled.
@@ -193,11 +195,12 @@ def redesign_reflow(page):
                 and page.locator(".letter-entry").count()
             ):
                 page.evaluate("scrollTo({top: 0, behavior: 'instant'})")
-                excerpt = page.locator(".letter-entry .letter-text > p").first
-                first_line = excerpt.bounding_box()["y"] + excerpt.evaluate(
-                    "el => parseFloat(getComputedStyle(el).lineHeight)"
+                # The wide story image follows a visible headline; long prose can scroll.
+                heading = page.locator(".letter-entry h3").first.bounding_box()
+                assert (
+                    heading["y"] + heading["height"]
+                    <= page.locator(".bookmarks").bounding_box()["y"]
                 )
-                assert first_line <= page.locator(".bookmarks").bounding_box()["y"]
             for caption in page.locator(".resource-caption").all():
                 expect(caption).to_be_visible()
     page.evaluate("document.documentElement.style.removeProperty('font-size')")
@@ -348,7 +351,7 @@ with sync_playwright() as playwright:
         page.evaluate("document.documentElement.style.removeProperty('font-size')")
         page.screenshot(path=str(artifacts / f"works-named-{language}.png"), full_page=True)
         page.goto(game_url)
-        illustration_asset(page.locator(".illustration-council"), "council.jpg")
+        expect(page.locator(".chapter-heading .illustration")).to_have_count(0)
         assert page.locator("body").evaluate("el => getComputedStyle(el).backgroundImage") == "none"
         assert (
             page.locator("body").evaluate("el => getComputedStyle(el).backgroundColor")
@@ -360,10 +363,7 @@ with sync_playwright() as playwright:
         )
         assert page.evaluate("document.fonts.check('16px Alegreya')")
         assert page.locator(".city-entry").count() == 3
-        for number in range(1, 4):
-            thumbnail = page.locator(f"#city-c{number} .illustration-small")
-            illustration_asset(thumbnail, "cityscapes.png")
-            expect(thumbnail).to_have_attribute("aria-hidden", "true")
+        expect(page.locator(".city-entry .illustration")).to_have_count(0)
         for width in (390, 320):
             page.set_viewport_size({"width": width, "height": 844})
             page.evaluate("document.documentElement.style.fontSize = '125%'")
@@ -502,14 +502,12 @@ with sync_playwright() as playwright:
         assert page.locator("[data-local-accounts]").count() == 0
         expect(page.locator("#map-context")).to_contain_text("Sefra")
         city_heading_starts_panel(page)
-        illustration_asset(page.locator("#map-context .illustration"), "army-preparation.jpg")
+        expect(page.locator("#map-context .illustration")).to_have_count(0)
         page.screenshot(path=str(artifacts / f"map-context-desktop-{language}.png"), full_page=True)
         page.locator('input[name="kind"][value="capture"]').check()
         expect(page.locator('input[name="kind"][value="capture"]')).to_be_checked()
-        expect(page.locator("#map-context .illustration")).to_have_class(
-            "illustration illustration-army"
-        )
-        illustration_asset(page.locator("#map-context .illustration"), "army-preparation.jpg")
+        expect(page.locator("#map-context .illustration")).to_have_count(0)
+        expect(page.locator("#map-context .illustration")).to_have_count(0)
         redesign_reflow(page)
         page.goto(page.url)
         atlas = page.locator(".realm-map").bounding_box()
@@ -580,7 +578,7 @@ with sync_playwright() as playwright:
             expect(page.locator(".resource-ribbon")).to_contain_text(str(moon + 1))
             if moon == 1:
                 illustration_asset(
-                    page.locator(".illustration-start-army.illustration-small"),
+                    page.locator(".illustration-start-army"),
                     "action-starts.png",
                 )
         page.locator('.bookmarks a[href$="?tab=wars"]').click()
@@ -626,7 +624,7 @@ with sync_playwright() as playwright:
         for letter in page.locator(".letter-entry").all():
             expect(letter.locator(":scope > .illustration")).to_have_count(1)
             image_width = letter.locator(":scope > .illustration").bounding_box()["width"]
-            assert abs(image_width - min(letter.bounding_box()["width"], 192)) < 2
+            assert abs(image_width - letter.bounding_box()["width"]) < 2
         for width in (390, 320):
             page.set_viewport_size({"width": width, "height": 844})
             page.evaluate("document.documentElement.style.fontSize = '125%'")
@@ -834,7 +832,7 @@ with sync_playwright() as playwright:
         )
         plain_page.locator("[data-prologue-previous]").click()
         plain_page.locator("[data-prologue-skip]").click()
-        illustration_asset(plain_page.locator("#city-c1 .illustration-small"), "cityscapes.png")
+        expect(plain_page.locator(".city-entry .illustration")).to_have_count(0)
         expect(
             plain_page.locator('#city-c2 .city-identity [data-team-state="occupied"]')
         ).to_be_visible()
@@ -892,9 +890,7 @@ with sync_playwright() as playwright:
         plain_page.locator('.map-city[href*="city=c4"]').click()
         expect(plain_page.locator("#map-context")).to_contain_text("Sefra")
         city_heading_starts_panel(plain_page)
-        expect(plain_page.locator("#map-context .illustration")).to_have_class(
-            "illustration illustration-army"
-        )
+        expect(plain_page.locator("#map-context .illustration")).to_have_count(0)
         note = plain_page.locator(".origin-details").first
         note.locator("summary").focus()
         plain_page.keyboard.press("Enter")
