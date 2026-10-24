@@ -5,8 +5,10 @@
 The owner's new three-maquette request supersedes the uniform papyrus page and
 dark bottom navigation from the preceding material revision. Keep the literary
 structure and existing flows, with near-white pages, stronger type hierarchy,
-terracotta actions and light navigation. Reuse the existing map parchment on
-notes, letters and individual work/building entries. Keep the illustrations;
+terracotta actions and light navigation. The owner rejected the first screenshot
+pass with textured text panels and small nested illustrations. Use open editorial
+rows, clean reading surfaces and larger building artwork instead. Keep parchment
+in the map and the existing illustrations;
 noncompact scenes use a shallower frame without stretching their composition.
 Retain realm-wide city checklists and the separate review/seal/closure stages.
 

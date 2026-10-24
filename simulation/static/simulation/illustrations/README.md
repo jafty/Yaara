@@ -5,9 +5,11 @@ papyrus fibers and lime-plaster grain, evenly lit, without drawings, lettering,
 darkened edges or ornamental borders. The original generation is preserved in
 the task's `generated_images` directory. The WebP is a format-optimized copy.
 
-The later white-manuscript revision uses `map-terrain.png`, the existing worn
-map parchment, on notes, letters and individual work/building entries. Pages,
-headers and navigation are near-white without a texture. `papyrus.webp` remains
+The white-manuscript revision retains `map-terrain.png` on the map only. The
+owner rejected repeating that texture beneath reading text and behind artwork
+that already depicts parchment. Pages, letters, work rows, headers and navigation
+use clean surfaces; the existing illustrations supply the visual material.
+Building artwork is larger, with catalogue titles spanning the row above it. `papyrus.webp` remains
 the source asset from the earlier material exploration; it is no longer loaded
 by the interface. Solid background colors remain when images are disabled.
 

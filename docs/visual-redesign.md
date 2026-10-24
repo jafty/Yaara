@@ -2,7 +2,7 @@
 
 The October 24 references (`1000062811.jpg`, `1000062810.jpg`, and
 `1000062809.jpg`) support an evolution of Yaara's literary interface: a white
-reading surface, a clear type hierarchy, and individual parchment documents.
+reading surface, a clear type hierarchy, and visible contextual illustrations.
 They should guide the visual composition, not supply game facts or new flows.
 The implementation starts from deployment commit `defde11`.
 
@@ -12,13 +12,19 @@ Keep the manuscript, scribe, self-hosted Alegreya, Egyptian pylon icon and
 existing contextual illustrations. Use near-white `#fdfcf9` for the page, header
 and navigation, charcoal `#302c26` for text, terracotta `#954a35` for actions,
 mineral blue `#285c69` for reading links, and muted brown rules. The beige is
-local to documents, rather than a tint over the entire game.
+carried by the illustrations and map, rather than a tint over the entire game.
 
-The existing map parchment supplies the material for letters, notes, building
-entries and work choices. It is an actual image, with a solid fallback. Avoid
-CSS-generated torn edges, synthetic stains, decorative gradients and additional
-ornamental borders. Keep default body text at 17px; titles and section headings
-carry the hierarchy instead of many competing badges.
+The owner rejected the first screenshot pass: repeated parchment rectangles
+felt blocky, reduced text contrast, and duplicated the texture already baked
+into the small illustrations. The revised direction keeps reading text on a
+clean surface and uses open editorial rows with fine rules. Only the map and
+existing artwork carry worn parchment; callouts use a quiet, solid tint.
+
+Building illustrations are substantially larger in the catalogue and city
+folios. Catalogue titles span the full row above the illustration and facts;
+they are no longer squeezed beside tiny thumbnails. Selected work-family art
+also has more room. Keep default body text at 17px and avoid synthetic torn
+edges, stains, decorative gradients and additional ornamental borders.
 
 ## What to retain and adapt
 
@@ -27,7 +33,7 @@ carry the hierarchy instead of many competing badges.
 | Large literary headings and thin dividers | Adopt. Give the hierarchy more room without replacing the scribe's voice. |
 | Light three-destination bottom menu | Adopt. Keep the current destinations, labels, icons and active state. |
 | Short landscape illustrations | Adopt a 2:1 frame for noncompact scenes, cropping a centered 3:2 composition. Thumbnails retain 3:2. Existing atlas cells keep their proportions and cannot bleed into neighboring scenes. |
-| Parchment everywhere | Restrict to documents and selected lists. A white page makes those materials meaningful and removes the yellow cast. |
+| Parchment everywhere | Keep it in the artwork and map. The rejected first pass showed that textured text panels compete with the existing parchment-backed illustrations. |
 | One city dropdown for works | Do not copy. Yaara deliberately supports choosing several cities and reviewing/sealing one atomic order. Improve the existing checklist's grouping and selected state. |
 | Expand a building within the catalogue | Keep the existing family page and native return link. Moving the form into an accordion would be a flow change. |
 | Direct “validate” button on preparation | Keep preparation → review → seal → Moon closure. A visual redesign must not make an unsealed order look committed. |
@@ -74,7 +80,7 @@ also distort markers and make the closest cities harder to select on mobile.
 
 This is the Presentation verification level in `docs/testing.md`. The existing
 browser checks now distinguish the landscape frame from the undistorted source
-composition, require the white page and decode the reused parchment. Existing
+composition, require the white page and decode the existing map parchment. Existing
 HTTP contracts protect information, navigation and batch workflows. The current
 gameplay reference remains accurate; no rule documentation update is required.
 

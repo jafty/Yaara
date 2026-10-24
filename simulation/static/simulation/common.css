@@ -22,14 +22,13 @@
 :root {
   color-scheme: light;
   --paper: #fdfcf9;
-  --leaf: #f3ede2;
+  --leaf: #f7f4ee;
   --ink: #302c26;
   --muted: #696157;
   --rule: #d5cbbd;
   --accent: #954a35;
   --mineral: #285c69;
   --ochre: #9a8058;
-  --material: url("illustrations/map-terrain.png");
 }
 * { box-sizing: border-box; }
 body { margin: 0; }
@@ -47,7 +46,7 @@ legend { margin-bottom: .4rem; }
 .skip-link { position: fixed; top: .5rem; left: .5rem; padding: .5rem; background: white; color: #222; transform: translateY(-150%); z-index: 20; }
 .skip-link:focus { transform: translateY(0); }
 .notice, .marginal-note, .unsealed-leaf {
-  background: var(--leaf) var(--material) center / 100% 100% no-repeat;
+  background: var(--leaf);
   border-block: 1px solid var(--rule);
   padding: .8rem 1rem;
 }

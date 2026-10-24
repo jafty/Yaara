@@ -354,7 +354,10 @@ with sync_playwright() as playwright:
             page.locator("body").evaluate("el => getComputedStyle(el).backgroundColor")
             == "rgb(253, 252, 249)"
         )
-        illustration_asset(page.locator(".first-decisions"), "map-terrain.png")
+        assert (
+            page.locator(".first-decisions").evaluate("el => getComputedStyle(el).backgroundImage")
+            == "none"
+        )
         assert page.evaluate("document.fonts.check('16px Alegreya')")
         assert page.locator(".city-entry").count() == 3
         for number in range(1, 4):
@@ -477,6 +480,7 @@ with sync_playwright() as playwright:
         expect(page.locator(".orders-register")).to_have_count(0)
         page.locator('.bookmarks a[data-section="wars"]').click()
         assert page.locator(".map-city").count() == 9
+        illustration_asset(page.locator(".map-frame"), "map-terrain.png")
         assert page.locator(".map-territory").count() == 9
         assert page.locator('[data-map-state="owned"]').count() == 3
         assert page.locator('[data-map-state="reachable"]').count() == 2
