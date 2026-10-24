@@ -11,7 +11,7 @@ uv run python manage.py migrate
 uv run python manage.py runserver
 ```
 
-Open the local server, create an account, then start a **manual** reign. SQLite is the default local solo fallback. Use PostgreSQL for production and concurrency tests.
+Open the local server and start a private **manual** reign without registration. Saving into an account is optional. SQLite is the default local solo fallback. Use PostgreSQL for production and concurrency tests.
 
 For PostgreSQL, copy `.env.example` to `.env`, choose a local password and random secret, export those variables in your shell, then:
 
@@ -25,7 +25,8 @@ Django does not load `.env` automatically. It is ignored by Git. In the current 
 
 ## Playable features
 
-- Nine-city map, immediate guest solo against computer opponents, and invitation-based three-human shared reigns.
+- Nine-city map, immediate guest solo against computer opponents, and three-human shared reigns with self-selected territories, custom house names, remaining spots and automatic start at 3/3.
+- Optional confirmed email subscriptions for guests and accounts: starts, captures, annual harvests and an opt-in daily raid digest, using standard SMTP or local sendmail.
 - Current rules with local funding, seasonal crop raids, annual harvest, growth and Fidèle renewal; older saves retain their rules.
 - Eight building families, batched local construction, origin-specific equipment/transport/siege gear, raids, captures, relief and returns.
 - Decree previews, atomic confirmation, target reservation and pre-departure cancellation.
@@ -33,7 +34,7 @@ Django does not load `.env` automatically. It is ignored by Git. In the current 
 - Manual Moons or a five/ten-minute worker; persistent games and fixed results. New reigns open at Moon 1; saved legacy calendars retain their timing.
 - End-of-reign book for your house or all houses (owner only), with chronological letters and complete or compact JSON downloads. For a past game, open the book, choose your house or all houses, and use “Download the discussion summary (compact JSON)”. It retains letters, monthly economy, city/order changes and final accounts without replaying the game. Monthly accounts begin with newly recorded closures; older gaps are explicit.
 
-The default reign lasts ten years. The first harvest arrives at the closure of Moon 12; initial captures are deliberately unaffordable. The game includes a rules summary. Older reports without structured narration remain labelled original French archives; new reports switch languages when read.
+The default reign lasts ten years. The first harvest arrives at the closure of Moon 12. The game includes a rules summary. Older reports without structured narration remain labelled original French archives; new reports switch languages when read.
 
 ## Deployment and development
 
@@ -75,15 +76,17 @@ Bootstrap an existing registered operator account after migrations:
 uv run python manage.py grant_operator USERNAME
 ```
 
-Open `/manage/`, choose the duration, cadence and agreed play windows, then send each
-player their own private seat link. Opening the link joins a persistent, separate seat
-identity without signup; its waiting page enters the Council when the operator starts.
-Keep each link private: it also restores that player's seat. A registered operator can
+Open `/manage/`, choose the duration, cadence and agreed play windows, then share the
+room's recruitment link. Each guest chooses an available starting territory and a
+house name. Remaining spots update as players join; the third claim starts the game
+automatically and waiting players enter Council. Keep the separate private return
+link shown in the lobby and email-preferences page: the common recruitment link
+cannot reopen an occupied house. A registered operator can
 join a house while retaining their management session. A returning anonymous link
 authenticates only the low-privilege seat, never that linked registered account.
 
-The operator starts when all three houses have joined and all three invitations remain
-active. There is no extra readiness step. Ten-minute shared Moons receive a full first
+Existing rooms retain their operator start; new rooms start at three claimed houses
+with active invitations. There is no extra readiness step. Shared Moons receive a full first
 interval and use the server scheduler. A standard 120-Moon reign spans twenty hours of
 advancing calendar time, so advertise common play windows and pause between sessions.
 An absent player gives no new orders; there is no automatic replacement bot.
@@ -97,3 +100,10 @@ completion. Existing solo saves retain their rules, clock alignment and archive 
 
 See [the shared-reign behavior contract](docs/multiplayer-contract.md) and
 [Railway deployment and scheduler instructions](docs/railway.md).
+
+Players can optionally open **Email notifications**, enter an address without
+registering, select updates and confirm their address. Raid emails default off and
+group into at most one digest per 24 hours. The database queue is drained by the
+existing calendar worker or `python manage.py send_notifications`. Outgoing email
+stays disabled until standard SMTP or local sendmail is configured on web and worker;
+see [the notification contract](docs/recruitment-notifications.md) and Railway setup.

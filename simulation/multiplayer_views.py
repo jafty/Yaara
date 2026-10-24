@@ -1,10 +1,13 @@
 """Cohesive operator, private seat entry and waiting-room web flows."""
 
+import uuid
+
 from django import forms
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
+from django.db import transaction
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
@@ -74,6 +77,9 @@ def room_context(game, include_tokens=False):
         ],
         "can_start": multiplayer.can_start(game),
         "can_read_all": game.state["status"] == "finished",
+        "occupied": game.memberships.count(),
+        "capacity": len(multiplayer.ACTORS),
+        "spots_left": len(multiplayer.ACTORS) - game.memberships.count(),
     }
     return context
 
@@ -124,6 +130,8 @@ def operator_room(request, game_id):
                 multiplayer.revoke_invitation(request.user, game.pk, request.POST["actor"])
             elif action == "cancel":
                 multiplayer.cancel_shared(request.user, game.pk)
+            elif action == "rotate_recruitment":
+                multiplayer.rotate_recruitment(request.user, game.pk)
             else:
                 raise PermissionDenied
         except RuleError as error:
@@ -131,6 +139,9 @@ def operator_room(request, game_id):
         return redirect("shared_operator_room", game_id=game.pk)
     context = room_context(game, include_tokens=True)
     context["own_seat"] = game.memberships.filter(multiplayer.member_query(request.user)).exists()
+    context["recruitment_url"] = request.build_absolute_uri(
+        reverse("shared_recruit", args=[multiplayer.recruitment_token(game)])
+    )
     for seat in context["seats"]:
         seat["url"] = request.build_absolute_uri(reverse("shared_invite", args=[seat["token"]]))
     return private_response(render(request, "simulation/shared_operator.html", context))
@@ -144,6 +155,17 @@ def waiting_status(game):
         "seats": seats,
         "can_start": multiplayer.can_start(game),
         "url": reverse("game", args=[game.pk]),
+        "occupied": sum(seats.values()),
+        "capacity": len(multiplayer.ACTORS),
+        "spots_left": len(multiplayer.ACTORS) - sum(seats.values()),
+        "houses": {
+            actor: localize(game.state["players"][actor]["name"]) for actor in multiplayer.ACTORS
+        },
+        "available": list(
+            game.invitations.filter(revoked=False)
+            .exclude(actor__in=[actor for actor, claimed in seats.items() if claimed])
+            .values_list("actor", flat=True)
+        ),
     }
 
 
@@ -152,6 +174,114 @@ def waiting_status(game):
 def operator_state(request, game_id):
     multiplayer.require_operator(request.user)
     game = get_object_or_404(Game, pk=game_id, kind="multiplayer")
+    return private_response(JsonResponse(waiting_status(game)))
+
+
+class HouseNameForm(forms.Form):
+    house_name = forms.CharField(label=gettext_lazy("Nom de votre maison"), max_length=80)
+
+
+class RecruitmentForm(HouseNameForm):
+    actor = forms.ChoiceField(
+        label=gettext_lazy("Votre territoire de départ"), widget=forms.RadioSelect
+    )
+
+    def __init__(self, game, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        occupied = game.memberships.values_list("actor", flat=True)
+        self.fields["actor"].choices = [
+            (
+                invite.actor,
+                " · ".join(
+                    city["name"]
+                    for city in game.state["cities"].values()
+                    if city["owner"] == invite.actor
+                ),
+            )
+            for invite in game.invitations.filter(revoked=False)
+            .exclude(actor__in=occupied)
+            .order_by("actor")
+        ]
+        self.order_fields(["actor", "house_name"])
+
+
+def enter_seat(request, seat_user, game):
+    from .guest_views import guest_origin_for_handoff
+
+    origin = guest_origin_for_handoff(request)
+    keep_account = (
+        request.user.is_authenticated and seat_user.shared_identity.account_id == request.user.pk
+    )
+    grants = request.session.get("shared_seat_access", {}).copy()
+    if not keep_account:
+        login(request, seat_user, backend="django.contrib.auth.backends.ModelBackend")
+    invitation = game.invitations.get(actor=services.membership(game, seat_user))
+    grants[str(game.pk)] = invitation.version
+    request.session["shared_seat_access"] = grants
+    if origin is not None:
+        request.session["yaara_guest_origin"] = origin
+    request.session.set_expiry(60 * 60 * 24 * 30)
+
+
+@require_http_methods(["GET", "POST"])
+def recruit(request, token):
+    game = multiplayer.resolve_recruitment(token)
+    if (
+        request.user.is_authenticated
+        and game.memberships.filter(multiplayer.member_query(request.user)).exists()
+    ):
+        multiplayer.check_seat_session(request, game)
+        return private_response(redirect("shared_lobby", game_id=game.pk))
+    claims = request.session.get("recruitment_claims", {}).copy()
+    if str(game.pk) not in claims:
+        claims[str(game.pk)] = str(uuid.uuid4())
+        request.session["recruitment_claims"] = claims
+    if (
+        request.method == "POST"
+        and game.memberships.filter(claim_key=claims[str(game.pk)]).exists()
+    ):
+        seat = multiplayer.choose_seat(
+            token,
+            request.POST.get("actor"),
+            request.POST.get("house_name", ""),
+            claims[str(game.pk)],
+            user=request.user,
+        )
+        enter_seat(request, seat, game)
+        return private_response(redirect("shared_lobby", game_id=game.pk))
+    form = RecruitmentForm(game, request.POST or None)
+    if request.method == "POST" and form.is_valid():
+        try:
+            seat = multiplayer.choose_seat(
+                token,
+                form.cleaned_data["actor"],
+                form.cleaned_data["house_name"],
+                claims[str(game.pk)],
+                user=request.user,
+            )
+        except RuleError as error:
+            form.add_error(None, localize(error.args[0]))
+        else:
+            enter_seat(request, seat, game)
+            return private_response(redirect("shared_lobby", game_id=game.pk))
+    context = {
+        **room_context(game),
+        "form": form,
+        "status_url": reverse("shared_recruit_state", args=[token]),
+    }
+    return private_response(
+        render(
+            request,
+            "simulation/shared_recruit.html",
+            context,
+            status=409 if request.method == "POST" else 200,
+        )
+    )
+
+
+@require_GET
+def recruit_state(request, token):
+    game = multiplayer.resolve_recruitment(token)
     return private_response(JsonResponse(waiting_status(game)))
 
 
@@ -210,17 +340,30 @@ def invitation(request, token):
 
 
 def member_room(request, game_id):
-    game = get_object_or_404(Game, pk=game_id, kind="multiplayer")
+    rows = Game.objects.select_for_update() if request.method == "POST" else Game.objects.all()
+    game = get_object_or_404(rows, pk=game_id, kind="multiplayer")
     multiplayer.check_seat_session(request, game)
     return game, services.membership(game, request.user)
 
 
 @login_required
-@require_GET
+@require_http_methods(["GET", "POST"])
+@transaction.atomic
 def lobby(request, game_id):
     game, actor = member_room(request, game_id)
     if game.lobby_status == "running":
         return private_response(redirect("game", game_id=game.pk))
+    form = HouseNameForm(
+        request.POST or None, initial={"house_name": game.state["players"][actor]["name"]}
+    )
+    if request.method == "POST" and form.is_valid():
+        try:
+            multiplayer.rename_house(request.user, game.pk, form.cleaned_data["house_name"])
+        except RuleError as error:
+            form.add_error(None, localize(error.args[0]))
+        else:
+            return redirect("shared_lobby", game_id=game.pk)
+    invitation = game.invitations.get(actor=actor)
     return private_response(
         render(
             request,
@@ -228,6 +371,10 @@ def lobby(request, game_id):
             {
                 **room_context(game),
                 "house": localize(game.state["players"][actor]["name"]),
+                "house_form": form,
+                "return_url": request.build_absolute_uri(
+                    reverse("shared_invite", args=[multiplayer.invitation_token(invitation)])
+                ),
             },
         )
     )

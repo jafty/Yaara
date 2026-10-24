@@ -72,7 +72,7 @@ def persist(game, events=()):
         }
         for event in events
     ]
-    Report.objects.bulk_create(
+    reports = Report.objects.bulk_create(
         [
             Report(
                 game=game,
@@ -82,6 +82,9 @@ def persist(game, events=()):
             for event in events
         ]
     )
+    from .notifications import queue_reports
+
+    queue_reports(game, reports)
 
 
 @transaction.atomic

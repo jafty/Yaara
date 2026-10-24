@@ -39,9 +39,9 @@ After migrations, grant the existing organizer account permission in a Railway s
 python manage.py grant_operator USERNAME
 ```
 
-Open `/manage/`, create a shared reign, and send each player their own private house link. The organizer may also follow one link to play while retaining management access. The other players need no account: following their link enters the waiting room automatically with JavaScript, or offers a native Join button without JavaScript. Retain those links for return visits; they are private credentials for their house only.
+Open `/manage/`, create a shared reign, and share its recruitment link. Players choose an available starting territory and name their house without an account. The page shows remaining spots; the third claim starts the reign automatically. Each player must keep their separate private return link, available in the waiting room and email-preferences page. The common recruitment link never grants access to an occupied house. The organizer may also choose a spot while retaining management access.
 
-The management page updates as players enter. Start when all three houses have joined and their invitations are active. Waiting players enter their Council automatically. The organizer can pause/resume the common calendar or replace/suspend a private link from the same room. Rotation invalidates previous bearer links and seat sessions; an already linked registered account retains its account access. See `docs/multiplayer-contract.md` for the authorization boundary.
+The management page updates as players enter. Existing rooms retain their operator Start button; new rooms start at 3/3 with active invitations. Waiting players enter Council automatically, with a native refresh link when JavaScript is unavailable. The organizer can pause/resume the common calendar, rotate recruitment, or replace/suspend a private link from the same room. Private-link rotation invalidates previous bearer links and seat sessions; an already linked registered account retains its account access. See `docs/multiplayer-contract.md` for the authorization boundary.
 
 Shared games require the cron service or continuous worker below. Their first Moon receives one full interval from the organizer's start, unlike the aligned first deadline of an individually configured automatic solo game. No browser advances the shared calendar. Verify the scheduler on the production database before recruiting a live group.
 
@@ -75,6 +75,51 @@ Use either this worker or the cron setup above. The worker checks more regularly
 All calendar entry points use the same transactional service. Deadlines advance from the stored calendar. A delay greater than one full interval pauses the game and records a letter; the owner resumes with a fresh interval. Manual games never advance on a page request.
 
 ## Verification and backups
+
+### Optional email notifications
+
+Apply migration `0005_game_auto_start_game_recruitment_version_and_more` before
+updating web and calendar services. Email is disabled by default. It uses Django's
+built-in SMTP backend; no notification API, broker or new dependency is required.
+Set these on **both web and cron/worker services**:
+
+| Variable | Value |
+| --- | --- |
+| `EMAIL_NOTIFICATIONS_ENABLED` | `1` after transport is ready |
+| `PUBLIC_BASE_URL` | Canonical HTTPS origin, for example `https://your-hostname` |
+| `DEFAULT_FROM_EMAIL` | Sender address accepted by your mail server |
+| `EMAIL_HOST`, `EMAIL_PORT` | Your SMTP server and port |
+| `EMAIL_HOST_USER`, `EMAIL_HOST_PASSWORD` | Credentials if the server needs them |
+| `EMAIL_USE_TLS` | `1` for STARTTLS, commonly port 587 |
+| `EMAIL_USE_SSL` | `1` for implicit TLS, commonly port 465; do not enable both TLS modes |
+
+A self-hosted/local MTA is also possible using
+`EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend` and its host/port, or
+`django.core.mail.backends.sendmail.EmailBackend` when a sendmail binary exists
+in the deployment image. The standard image does not install an MTA. SMTP is a
+transport requirement, not an external notification processor. Configure sender
+DNS and mail-server access in your hosting environment; this change supplies no
+SMTP credentials and does not establish live deliverability.
+
+Players open **Email notifications** in the waiting room or any game, provide an
+optional address, select events, and confirm the email within 48 hours. This
+works for guest seats; event emails include their current private return link.
+Solo guest mail still requires that browser's guest cookie for game access; email
+confirmation does not convert or recover a solo identity. Raids default off and
+are delayed/grouped for at most one digest per 24 hours. Harvest letters from
+one closure are sent together. Clearing the address or using the native POST
+unsubscribe page cancels pending mail without registration. A mail scanner's GET
+does not subscribe or unsubscribe anyone.
+
+`tick_due` drains the outbox after processing games, so the existing cron or
+continuous worker needs no extra service. For installations without that worker,
+schedule `python manage.py send_notifications` every five minutes. The command
+is also safe for manual testing against a disposable mail backend. Failures retry
+with bounded backoff; expired five-minute delivery leases recover worker crashes.
+Transport occurs outside database locks. SMTP delivery is at-least-once, and a
+message already in transport cannot be recalled by unsubscribing. Application
+logs redact invitation, recruitment and email-action credentials; restrict full
+URL logging in the hosting layer as well.
 
 ```sh
 uv sync --frozen

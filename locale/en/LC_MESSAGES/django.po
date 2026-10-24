@@ -5414,3 +5414,159 @@ msgstr "Manage this game"
 #: simulation/guest_views.py
 msgid "Autorisez les cookies de ce site, puis revenez à l’accueil pour commencer."
 msgstr "Allow cookies for this site, then return to the home page to begin."
+
+msgid "Actualiser les places"
+msgstr "Refresh available spots"
+
+msgid "Adresse confirmée."
+msgstr "Address confirmed."
+
+msgid "Adresse confirmée. Vous recevrez uniquement les nouvelles choisies."
+msgstr "Address confirmed. You will receive only the updates you selected."
+
+msgid "Attendez cinq minutes avant de demander un nouvel e-mail de confirmation."
+msgstr "Wait five minutes before requesting another confirmation email."
+
+msgid "Bilan annuel et récoltes"
+msgstr "Annual accounts and harvests"
+
+msgid "CHOISISSEZ VOTRE MAISON"
+msgstr "CHOOSE YOUR HOUSE"
+
+msgid "Ce règne n’accepte plus de nouveaux joueurs."
+msgstr "This reign is closed to new players."
+
+msgid "Ce règne n’accepte plus de nouveaux joueurs. Utilisez votre lien privé pour retrouver une maison déjà choisie."
+msgstr "This reign is closed to new players. Use your private link to return to a house you have already chosen."
+
+msgid "Cette place n’est plus disponible. Choisissez une autre maison."
+msgstr "This spot is no longer available. Choose another house."
+
+msgid "Cette place vient d’être choisie. Sélectionnez un autre territoire ; votre nom est conservé."
+msgstr "Someone just chose this spot. Select another territory; your house name has been kept."
+
+msgid "Choisir une place"
+msgstr "Choose a spot"
+
+msgid "Choisissez les nouvelles de cette maison. Les raids sont désactivés par défaut. Aucun e-mail ne part avant confirmation de votre adresse."
+msgstr "Choose updates for this house. Raid emails are off by default. No updates are sent until you confirm your address."
+
+msgid "Choisissez un nom de maison de 1 à 80 caractères, sur une ligne."
+msgstr "Choose a house name of 1 to 80 characters, on one line."
+
+msgid "Choisissez vos trois cités de départ et donnez un nom à votre maison. Aucune inscription n’est nécessaire."
+msgstr "Choose your three starting cities and name your house. No account is required."
+
+msgid "Confirmation en attente. Vérifiez votre messagerie ; vous pourrez renouveler la demande après une heure."
+msgstr "Confirmation pending. Check your inbox; you can request another confirmation after one hour."
+
+msgid "Confirmer mon adresse"
+msgstr "Confirm my address"
+
+msgid "Confirmez les notifications de Yaara"
+msgstr "Confirm your Yaara notifications"
+
+msgid "Confirmez votre adresse sous 48 heures pour recevoir les nouvelles choisies."
+msgstr "Confirm your address within 48 hours to receive the updates you selected."
+
+msgid "Conquêtes et résultats de capture"
+msgstr "Conquests and capture results"
+
+msgid "Conservez ce lien pour retrouver votre maison sur un autre appareil. Il donne accès à votre place : gardez-le secret."
+msgstr "Keep this link to return to your house on another device. It grants access to your spot: keep it private."
+
+msgid "Des nouvelles de votre maison dans Yaara"
+msgstr "Updates from your house in Yaara"
+
+msgid "Départ du règne"
+msgstr "Reign start"
+
+msgid "Effacez votre adresse pour arrêter tous les envois de cette maison."
+msgstr "Clear your address to stop all email for this house."
+
+msgid "Enregistrer le nom"
+msgstr "Save the name"
+
+msgid "Enregistrer les notifications"
+msgstr "Save notification preferences"
+
+msgid "Indiquez une adresse e-mail valide."
+msgstr "Enter a valid email address."
+
+msgid "Le lien pour choisir sa place"
+msgstr "The link for choosing a spot"
+
+msgid "Le nom de la maison est fixé au départ du règne."
+msgstr "The house name is fixed once the reign starts."
+
+msgid "Le règne commence automatiquement dès que les trois places sont prises. Choisissez votre maison quand vous êtes prêt à jouer."
+msgstr "The reign starts automatically when all three spots are taken. Choose your house when you are ready to play."
+
+msgid "Les notifications par e-mail ne sont pas encore activées."
+msgstr "Email notifications have not been enabled yet."
+
+msgid "Lien de recrutement à transmettre"
+msgstr "Recruitment link to share"
+
+msgid "Lune %(moon)s : %(title)s"
+msgstr "Moon %(moon)s: %(title)s"
+
+msgid "L’organisateur donnera le départ lorsque les trois maisons seront présentes."
+msgstr "The organizer will start the reign when all three houses have joined."
+
+msgid "Nom de votre maison"
+msgstr "Your house name"
+
+msgid "Notifications par e-mail"
+msgstr "Email notifications"
+
+msgid "Partagez ce lien avec vos joueurs. Il permet de choisir une place libre, sans donner accès aux maisons déjà occupées."
+msgstr "Share this link with your players. It lets them choose an available spot without granting access to occupied houses."
+
+msgid "Places restantes :"
+msgstr "Spots left:"
+
+msgid "Prendre cette place"
+msgstr "Take this spot"
+
+msgid "Préférences enregistrées. Si nécessaire, confirmez votre adresse depuis l’e-mail reçu."
+msgstr "Preferences saved. If needed, confirm your address using the email you receive."
+
+msgid "Préparez un règne et partagez son lien. Chaque joueur choisit sa place et son nom de maison ; le règne commence à trois joueurs."
+msgstr "Prepare a reign and share its link. Each player chooses a spot and a house name; the reign starts with three players."
+
+msgid "Remplacer le lien de recrutement"
+msgstr "Replace the recruitment link"
+
+msgid "Retour au règne"
+msgstr "Return to the reign"
+
+msgid "Retrouver votre maison"
+msgstr "Return to your house"
+
+msgid "Résumé des raids : au plus un e-mail par 24 heures"
+msgstr "Raid digest: at most one email every 24 hours"
+
+msgid "Sans inscription. Votre adresse reste privée ; un lien permet de se désabonner."
+msgstr "No account required. Your address stays private; every email includes an unsubscribe link."
+
+msgid "Se désabonner"
+msgstr "Unsubscribe"
+
+msgid "Une autre maison porte déjà ce nom."
+msgstr "Another house already has this name."
+
+msgid "Votre adresse e-mail (facultatif)"
+msgstr "Your email address (optional)"
+
+msgid "Votre lien privé de retour"
+msgstr "Your private return link"
+
+msgid "Votre territoire de départ"
+msgstr "Your starting territory"
+
+msgid "Vous ne recevrez plus d’e-mails pour cette maison."
+msgstr "You will no longer receive email for this house."
+
+msgid "places prises"
+msgstr "spots taken"

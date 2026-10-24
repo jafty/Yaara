@@ -1,5 +1,36 @@
 # Implementation decisions
 
+## 2026-10-24 · Self-selected houses, automatic recruitment and optional email
+
+The owner's follow-up replaces assigned seats for new rooms with a common
+recruitment link, available starting territories, player-chosen house names and
+live occupied/remaining counts. The existing map has three human houses; a room
+starts atomically at 3/3 with a complete first interval. Do not invent variable
+world sizes or convert existing operator-start rooms. Keep their saved behavior,
+private return invitations, operator controls and guest-solo restoration.
+
+Admission locks the game and rechecks availability, cancellation and invitation
+rotation. Session-bound claim keys prevent duplicate identities. A common link
+does not authenticate existing seats; names are unique and editable only before
+start. Both languages retain native forms and refresh links.
+
+Optional per-participant email needs no account, broker or notification vendor.
+Use Django SMTP or local sendmail, explicit address confirmation, separate event
+preferences and unsubscribe. Raid mail defaults off and groups into a digest at
+most once per 24 real hours. Only recipient letter titles enter messages. Queue
+rows commit atomically with reports; workers claim a short delivery lease and
+send outside game/database locks, with retry after transport failure or an
+expired lease. An SMTP acceptance followed by a process crash can duplicate an
+email; do not claim exactly-once external delivery. Unsubscription cancels queued
+mail; it cannot recall a message already handed to transport. Confirmation lasts
+48 hours, can be requested again after an hour, and address changes while
+unconfirmed have a five-minute cooldown. Mail remains disabled until configured.
+
+This is Full verification work. The independent variations and operations are
+recorded in `docs/recruitment-notifications.md`; existing rules, numerical balance,
+saved-state versions and immutable reports remain unchanged. The current gameplay
+reference is updated for the new admission/calendar consequences.
+
 ## 2026-10-24 · White manuscript and landscape scenes
 
 The owner's maquettes and subsequent screenshot reviews supersede the earlier

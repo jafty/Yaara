@@ -1,0 +1,12 @@
+{% extends 'simulation/base.html' %}{% load i18n %}
+{% block content %}
+<header class="page-heading"><div><h1>{% translate "Notifications par e-mail" %}</h1><p>{{ room.title }}</p></div></header>
+<section class="panel padded">
+<p>{% translate "Choisissez les nouvelles de cette maison. Les raids sont désactivés par défaut. Aucun e-mail ne part avant confirmation de votre adresse." %}</p>
+{% if not mail_enabled %}<p role="status">{% translate "Les notifications par e-mail ne sont pas encore activées." %}</p>{% endif %}
+{% if subscription.email %}<p>{% if subscription.verified_at %}{% translate "Adresse confirmée." %}{% else %}{% translate "Confirmation en attente. Vérifiez votre messagerie ; vous pourrez renouveler la demande après une heure." %}{% endif %}</p>{% endif %}
+<form method="post" class="stack-form" data-email-preferences>{% csrf_token %}{{ form.as_p }}<p>{% translate "Effacez votre adresse pour arrêter tous les envois de cette maison." %}</p><button type="submit" class="button primary">{% translate "Enregistrer les notifications" %}</button></form>
+</section>
+{% if return_url %}<section class="chapter-section"><h2>{% translate "Votre lien privé de retour" %}</h2><p>{% translate "Conservez ce lien pour retrouver votre maison sur un autre appareil. Il donne accès à votre place : gardez-le secret." %}</p><p><input class="shared-invitation-url" readonly type="text" value="{{ return_url }}" aria-label="{% translate 'Votre lien privé de retour' %}"></p></section>{% endif %}
+<p class="reading-links"><a href="{% url 'game' room.id %}">{% translate "Retour au règne" %} →</a></p>
+{% endblock %}

@@ -8,6 +8,8 @@ One Python/Django application, one PostgreSQL database, and an optional calendar
 - `simulation/engine.py`: JSON-compatible simulation aggregate. Cities, graph, reservations, works and expeditions. No ORM, HTTP, clocks or global randomness.
 - `simulation/services.py`: authorization, deadlines, transactions, request idempotency, persistence and tick audit.
 - `simulation/models.py`: canonical `Game.state` snapshot; relational memberships, receipts, target engagements, tick executions and recipient reports.
+- `simulation/multiplayer.py`: locked self-selected admission, private seat credentials and shared calendar start/control. New rooms start at three claimed seats; old rooms retain operator start.
+- `simulation/notifications.py`: per-participant confirmed email consent, recipient-report outbox and leased delivery through standard Django mail. Network sends happen outside game transactions and database locks.
 - `simulation/projections.py`: explicit player-facing allowlist. Enemy figures and numerical combativity never leave the server. Ranking reveals rank, not enemy population.
 - Django templates, translation catalogs, local CSS and progressive JavaScript: French and English UI. `common.css` holds shared primitives; the conventional pre-game layout and manuscript layout each load only their own stylesheet. Partial templates share optional folios, inline batch-work checklists and dedicated action forms, correspondence, closing controls and the footer language switch. JavaScript estimates costs from public rule prices; the server independently validates every request.
 - `simulation/calendar.py`: pure compatibility helpers for original elapsed-month snapshots and the version-two open-Moon calendar. The application, scheduler and presentation use the same closure target.
@@ -31,4 +33,4 @@ Follow the standing [pseudo-TDD policy](testing.md): identify use-case variation
 
 `AGENTS.md` contains stable commands and constraints. An ordinary focused coding conversation is enough; additional agent orchestration is unnecessary. Keep each change playable and report assumptions, deviations and evidence.
 
-The aggregate suits nine-city, 120-month prototypes. Measure snapshot size and write contention before splitting it into more tables. Human multiplayer still needs a lobby/membership workflow and coordinated pause/readiness rules; this delivery creates private, unranked solo games.
+The aggregate suits nine-city, 120-month prototypes. Measure snapshot size and write contention before splitting it into more tables. Human multiplayer uses the existing lobby, separate seat principals, whole-game pauses and recipient-specific letters; no distributed framework is needed.

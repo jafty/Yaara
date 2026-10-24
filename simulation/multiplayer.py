@@ -16,6 +16,7 @@ from .rules import RuleError
 
 ACTORS = ("p1", "p2", "p3")
 INVITE_SALT = "yaara-shared-seat"
+RECRUITMENT_SALT = "yaara-shared-recruitment"
 
 
 def is_operator(user):
@@ -63,7 +64,9 @@ def resolve_invitation(token):
 
 
 @transaction.atomic
-def create_shared(operator, title, play_window="", reign_months=120, interval_minutes=10):
+def create_shared(
+    operator, title, play_window="", reign_months=120, interval_minutes=10, auto_start=True
+):
     require_operator(operator)
     game = services.create_game(
         operator,
@@ -78,12 +81,109 @@ def create_shared(operator, title, play_window="", reign_months=120, interval_mi
     game.kind = "multiplayer"
     game.lobby_status = "waiting"
     game.play_window = play_window
+    game.auto_start = auto_start
     game.paused = True
     game.deadline = None
     game.save()
     for actor in ACTORS:
         SharedInvitation.objects.create(game=game, actor=actor)
     return game
+
+
+def recruitment_token(game):
+    return signing.dumps({"id": str(game.pk), "v": game.recruitment_version}, salt=RECRUITMENT_SALT)
+
+
+def resolve_recruitment(token):
+    try:
+        data = signing.loads(token, salt=RECRUITMENT_SALT)
+        return Game.objects.get(pk=data["id"], recruitment_version=data["v"], kind="multiplayer")
+    except (signing.BadSignature, KeyError, ValueError, Game.DoesNotExist) as error:
+        raise PermissionDenied from error
+
+
+@transaction.atomic
+def rotate_recruitment(operator, game_id):
+    require_operator(operator)
+    game = Game.objects.select_for_update().get(pk=game_id, kind="multiplayer")
+    game.recruitment_version += 1
+    game.save(update_fields=["recruitment_version"])
+
+
+def validate_house_name(game, actor, name):
+    name = name.strip()
+    if not name or len(name) > 80 or not name.isprintable():
+        raise RuleError(message("Choisissez un nom de maison de 1 à 80 caractères, sur une ligne."))
+    if any(
+        row["name"].strip().casefold() == name.casefold()
+        for key, row in game.state["players"].items()
+        if key != actor
+    ):
+        raise RuleError(message("Une autre maison porte déjà ce nom."))
+    return name
+
+
+@transaction.atomic
+def choose_seat(token, actor, house_name, claim_key, user=None):
+    preliminary = resolve_recruitment(token)
+    game = Game.objects.select_for_update().get(pk=preliminary.pk)
+    resolve_recruitment(token)  # Recheck rotation after obtaining the game lock.
+    try:
+        claim_key = uuid.UUID(str(claim_key))
+    except (ValueError, TypeError) as error:
+        raise PermissionDenied from error
+    existing = game.memberships.filter(claim_key=claim_key).first()
+    if existing is not None:
+        invitation = game.invitations.get(actor=existing.actor)
+        if (
+            invitation.revoked
+            or invitation.version != existing.claim_version
+            or game.lobby_status == "cancelled"
+        ):
+            raise PermissionDenied
+        return existing.user
+    if (
+        user is not None
+        and user.is_authenticated
+        and game.memberships.filter(member_query(user)).exists()
+    ):
+        raise RuleError(message("Vous disposez déjà d’une maison dans ce règne."))
+    if game.lobby_status != "waiting":
+        raise RuleError(message("Ce règne a déjà commencé ; aucune place ne peut être ajoutée."))
+    invitation = game.invitations.filter(actor=actor, revoked=False).first()
+    if invitation is None or game.memberships.filter(actor=actor).exists():
+        raise RuleError(message("Cette place n’est plus disponible. Choisissez une autre maison."))
+    name = validate_house_name(game, actor, house_name)
+    from .guest_services import is_guest
+
+    account = (
+        user
+        if user is not None
+        and user.is_authenticated
+        and not is_guest(user)
+        and not hasattr(user, "shared_identity")
+        else None
+    )
+    seat = get_user_model().objects.create_user("seat_" + uuid.uuid4().hex)
+    SeatIdentity.objects.create(user=seat, account=account)
+    Participant.objects.create(
+        game=game, user=seat, actor=actor, claim_key=claim_key, claim_version=invitation.version
+    )
+    game.state["players"][actor]["name"] = name
+    game.save(update_fields=["state"])
+    if game.auto_start and can_start(game):
+        start_locked(game)
+    return seat
+
+
+@transaction.atomic
+def rename_house(user, game_id, house_name):
+    game = Game.objects.select_for_update().get(pk=game_id, kind="multiplayer")
+    actor = services.membership(game, user)
+    if game.lobby_status != "waiting":
+        raise RuleError(message("Le nom de la maison est fixé au départ du règne."))
+    game.state["players"][actor]["name"] = validate_house_name(game, actor, house_name)
+    game.save(update_fields=["state"])
 
 
 @transaction.atomic
@@ -97,6 +197,8 @@ def issue_invitation(operator, game_id, actor):
         invitation.version += 1
     invitation.revoked = False
     invitation.save()
+    if game.auto_start and can_start(game):
+        start_locked(game)
     return invitation
 
 
@@ -135,6 +237,8 @@ def claim_invitation(token, account=None):
     seat = get_user_model().objects.create_user("seat_" + uuid.uuid4().hex)
     SeatIdentity.objects.create(user=seat, account=account)
     Participant.objects.create(game=game, user=seat, actor=invitation.actor)
+    if game.auto_start and can_start(game):
+        start_locked(game)
     return seat
 
 
@@ -173,6 +277,11 @@ def start_shared(operator, game_id):
         return
     if not can_start(game):
         raise RuleError(message("Les trois maisons doivent rejoindre le règne avant son départ."))
+    start_locked(game)
+
+
+def start_locked(game):
+    """Start once under the admission/operator caller's game lock and transaction."""
     game.lobby_status = "running"
     game.paused = False
     game.state["awaiting_start"] = False

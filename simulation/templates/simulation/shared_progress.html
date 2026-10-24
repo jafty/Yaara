@@ -1,0 +1,3 @@
+{% load i18n %}
+<p class="shared-progress" aria-live="polite"><strong data-spots-occupied>{{ occupied }}</strong> / <strong>{{ capacity }}</strong> {% translate "places prises" %} · {% translate "Places restantes :" %} <strong data-spots-left>{{ spots_left }}</strong></p>
+{% if room.auto_start %}<p>{% translate "Le règne commence automatiquement dès que les trois places sont prises. Choisissez votre maison quand vous êtes prêt à jouer." %}</p>{% else %}<p>{% translate "L’organisateur donnera le départ lorsque les trois maisons seront présentes." %}</p>{% endif %}

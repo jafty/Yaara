@@ -1,0 +1,15 @@
+{% extends 'simulation/base.html' %}{% load static i18n %}
+{% block content %}
+<section data-shared-recruit data-status-url="{{ status_url }}">
+<header class="page-heading"><div><span class="eyebrow">{% translate "CHOISISSEZ VOTRE MAISON" %}</span><h1>{{ room.title }}</h1><p>{{ room.play_window }}</p></div></header>
+<section class="panel padded">
+{% include 'simulation/shared_progress.html' %}
+<p>{{ room.interval_minutes }} {% translate "minutes par lune" %} · {{ room.state.config.reign_months }} {% translate "lunes" %}</p>
+{% if room.lobby_status == 'waiting' and spots_left %}
+<p>{% translate "Choisissez vos trois cités de départ et donnez un nom à votre maison. Aucune inscription n’est nécessaire." %}</p>
+<form method="post" class="stack-form" data-recruitment-form>{% csrf_token %}{{ form.as_p }}<button class="button primary" type="submit">{% translate "Prendre cette place" %}</button></form>
+{% else %}<p>{% translate "Ce règne n’accepte plus de nouveaux joueurs. Utilisez votre lien privé pour retrouver une maison déjà choisie." %}</p>{% endif %}
+<p role="status" data-shared-status data-closed="{% translate 'Ce règne n’accepte plus de nouveaux joueurs.' %}" data-taken="{% translate 'Cette place vient d’être choisie. Sélectionnez un autre territoire ; votre nom est conservé.' %}"></p>
+<p class="reading-links"><a href="{{ request.path }}">{% translate "Actualiser les places" %} →</a></p>
+</section></section><script defer src="{% static 'simulation/shared.js' %}"></script>
+{% endblock %}

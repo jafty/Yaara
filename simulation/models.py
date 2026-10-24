@@ -21,6 +21,8 @@ class Game(models.Model):
     kind = models.CharField(max_length=16, default="solo")
     lobby_status = models.CharField(max_length=16, blank=True, default="")
     play_window = models.CharField(max_length=240, blank=True, default="")
+    auto_start = models.BooleanField(default=False)
+    recruitment_version = models.PositiveIntegerField(default=1)
 
     class Meta:
         permissions = [("manage_multiplayer_games", "Manage official multiplayer reigns")]
@@ -31,6 +33,8 @@ class Participant(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     actor = models.CharField(max_length=10)
     view_revision = models.PositiveIntegerField(default=0)
+    claim_key = models.UUIDField(null=True, blank=True, unique=True)
+    claim_version = models.PositiveIntegerField(default=0)
 
     class Meta:
         constraints = [
@@ -119,6 +123,42 @@ class Report(models.Model):
     class Meta:
         ordering = ["-month", "-id"]
         indexes = [models.Index(fields=["game", "recipient", "-month"])]
+
+
+class EmailSubscription(models.Model):
+    participant = models.OneToOneField(
+        Participant, on_delete=models.CASCADE, related_name="email_subscription"
+    )
+    email = models.EmailField(blank=True)
+    language = models.CharField(max_length=2, default="fr")
+    token = models.UUIDField(default=uuid.uuid4)
+    requested_at = models.DateTimeField()
+    verified_at = models.DateTimeField(null=True, blank=True)
+    start = models.BooleanField(default=True)
+    capture = models.BooleanField(default=True)
+    yearly = models.BooleanField(default=True)
+    raid = models.BooleanField(default=False)
+    last_raid_sent_at = models.DateTimeField(null=True, blank=True)
+
+
+class NotificationDelivery(models.Model):
+    subscription = models.ForeignKey(
+        EmailSubscription, on_delete=models.CASCADE, related_name="deliveries"
+    )
+    report = models.ForeignKey(Report, on_delete=models.CASCADE, null=True, blank=True)
+    event_key = models.CharField(max_length=80)
+    kind = models.CharField(max_length=10)
+    status = models.CharField(max_length=12, default="pending")
+    available_at = models.DateTimeField(db_index=True)
+    attempts = models.PositiveSmallIntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["subscription", "event_key"], name="one_email_per_recipient_event"
+            )
+        ]
 
 
 from .guest_models import GuestCreationBucket, GuestIdentity  # noqa: E402,F401

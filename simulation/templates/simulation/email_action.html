@@ -1,0 +1,6 @@
+{% extends 'simulation/base.html' %}{% load i18n %}
+{% block content %}
+<section class="panel padded"><h1>{% translate "Notifications par e-mail" %}</h1>
+{% if done %}<p role="status">{% if action == 'confirm' %}{% translate "Adresse confirmée. Vous recevrez uniquement les nouvelles choisies." %}{% else %}{% translate "Vous ne recevrez plus d’e-mails pour cette maison." %}{% endif %}</p>
+{% else %}<form method="post">{% csrf_token %}<button class="button primary" type="submit">{% if action == 'confirm' %}{% translate "Confirmer mon adresse" %}{% else %}{% translate "Se désabonner" %}{% endif %}</button></form>{% endif %}</section>
+{% endblock %}

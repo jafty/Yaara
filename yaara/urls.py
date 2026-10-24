@@ -4,7 +4,7 @@ from django.contrib.auth import views as auth_views
 from django.urls import include, path
 from django.views.i18n import JavaScriptCatalog
 
-from simulation import guest_views, multiplayer_views, views
+from simulation import guest_views, multiplayer_views, notification_views, views
 
 urlpatterns = [
     path("i18n/js/", JavaScriptCatalog.as_view(), name="javascript-catalog"),
@@ -26,7 +26,13 @@ urlpatterns = [
         name="shared_operator_state",
     ),
     path("join/<str:token>/", multiplayer_views.invitation, name="shared_invite"),
+    path("recruit/<str:token>/", multiplayer_views.recruit, name="shared_recruit"),
+    path(
+        "recruit/<str:token>/state/", multiplayer_views.recruit_state, name="shared_recruit_state"
+    ),
     path("games/<uuid:game_id>/lobby/", multiplayer_views.lobby, name="shared_lobby"),
+    path("games/<uuid:game_id>/email/", notification_views.preferences, name="email_settings"),
+    path("email/<str:action>/<str:token>/", notification_views.email_action, name="email_action"),
     path(
         "games/<uuid:game_id>/lobby/state/",
         multiplayer_views.lobby_state,

@@ -1,8 +1,11 @@
 # Shared reign contract
 
 Approved implementation scope: invitation-based three-human reigns on the existing
-nine-city map and current saved rules. Recruitment enters through guest solo; a
-secret seat link enters a shared reign without a signup or readiness gate.
+nine-city map and current saved rules. New rooms expose a common secret recruitment
+link. Guests select an available three-city territory and a unique house name;
+the visible count decreases from three remaining spots to zero. No signup or
+separate readiness gate is required. A common link cannot restore an occupied
+house: the player's separate secret seat link provides returning access.
 
 Each seat owns a separate low-privilege persisted user. Its signed invitation is
 a secret access credential, supports returning access, and can be rotated or
@@ -14,12 +17,14 @@ identity; a server-side session entitlement allows explicitly restoring that
 guest after visiting a shared seat. No posted identity identifier grants access.
 
 Only an explicit multiplayer operator creates rooms, manages invitations and
-starts/pauses/resumes/cancels the common calendar. Ownership alone is not this
+pauses/resumes/cancels the common calendar. Ownership alone is not this
 permission. A nonplaying operator receives no invented participant or live player
 projection. The dedicated operator page uses the same transactional services;
 the Django admin application is not required.
 
-The operator starts after all three seats have been claimed. There is no extra
+New rooms start automatically, inside the third admission transaction, once all
+three seats are claimed and their invitations are active. Existing rooms retain
+their explicit operator start; no saved clock is converted. There is no extra
 ready acknowledgement. Waiting players automatically enter Council after start,
 with native refresh available. Waiting/cancelled rooms reject gameplay and never
 tick. New shared starts grant a complete advertised first interval. Pauses
@@ -42,3 +47,11 @@ chronicles rather than private seeds, combativity or raw tick audit.
 Each logical variation is independently collected in tests/test_multiplayer.py;
 the full repository checkpoint is required because this work changes schema,
 authorization, privacy, scheduling and concurrency.
+
+`tests/test_recruitment.py` adds independent common-link, house-name, remaining
+spot, concurrent admission and automatic-start cases. Session-bound claim keys
+make duplicate submissions idempotent; rotating a seat link also invalidates
+the old claim's ability to reopen it. Names may be edited by their player only
+before start. Operator rotation of the recruitment link does not rotate private
+return credentials. Optional guest-compatible email is described in
+[the recruitment and notification contract](recruitment-notifications.md).

@@ -156,41 +156,74 @@ def create_room(admin):
     ]
     admin.context.grant_permissions(["clipboard-read", "clipboard-write"])
     for index, invitation in enumerate(invitations):
-        field = admin.locator(".shared-invitation-url").nth(index)
+        field = admin.locator("[data-invitation-url]").nth(index)
         expect(field).to_have_value(invitation)
         field.focus()
         field.press("ControlOrMeta+A")
         field.press("ControlOrMeta+C")
         assert admin.evaluate("navigator.clipboard.readText()") == invitation
-    return room_url, invitations
+    return (
+        room_url,
+        invitations,
+        urljoin(BASE_URL, admin.locator("[data-recruitment-link]").get_attribute("href")),
+    )
 
 
 def multiplayer_journey(browser, language, operator):
     admin_context = context_for(browser, language)
     admin = admin_context.new_page()
     login_operator(admin, operator)
-    room_url, invitations = create_room(admin)
+    room_url, invitations, recruitment = create_room(admin)
     players = []
     for seat, invitation in enumerate(invitations, 1):
-        context = context_for(browser, language)
+        context = context_for(browser, language, javascript=seat != 3)
         page = context.new_page()
-        page.goto(invitation)
-        page.wait_for_url(re.compile(r"/games/[0-9a-f-]+/lobby/"))
-        expect(page.locator("[data-shared-lobby]")).to_be_visible()
+        page.goto(recruitment)
+        expect(page.locator("[data-spots-left]")).to_have_text(str(4 - seat))
+        check_layout(page)
+        page.screenshot(
+            path=str(ARTIFACTS / f"choose-house-{language}-p{seat}.png"), full_page=True
+        )
+        observer_context = None
+        if seat == 1:
+            observer_context = context_for(browser, language)
+            observer = observer_context.new_page()
+            observer.goto(recruitment)
+            observer.locator('input[name=actor][value="p1"]').check()
+            observer.locator("input[name=house_name]").fill("A name worth keeping")
+        page.locator(f'input[name=actor][value="p{seat}"]').check()
+        page.locator("input[name=house_name]").fill(f"House Cedar {language} {seat}")
+        page.locator("[data-recruitment-form] button").click()
+        if observer_context is not None:
+            expect(observer.locator('input[name=actor][value="p1"]')).to_be_disabled(timeout=10000)
+            expect(observer.locator("input[name=house_name]")).to_have_value("A name worth keeping")
+            expect(observer.locator("[data-spots-left]")).to_have_text("2")
+            observer_context.close()
+        if seat < 3:
+            page.wait_for_url(re.compile(r"/games/[0-9a-f-]+/lobby/"))
+            expect(page.locator("[data-shared-lobby]")).to_be_visible()
+            expect(page.locator("[data-spots-left]")).to_have_text(str(3 - seat))
+        else:
+            page.wait_for_url(re.compile(r"/games/[0-9a-f-]+/$"))
         assert page.locator("input[type=password]").count() == 0
         check_layout(page)
         page.screenshot(path=str(ARTIFACTS / f"lobby-{language}-p{seat}.png"), full_page=True)
         players.append((context, page))
-    game_url = players[0][1].url.removesuffix("lobby/")
+    game_url = players[-1][1].url
     assert admin.request.get(game_url + "state/", max_redirects=0).status in (403, 404)
-    expect(admin.locator("button[name=action][value=start]")).to_be_enabled(timeout=10000)
+    expect(admin.locator("[data-spots-left]")).to_have_text("0", timeout=10000)
     admin.screenshot(path=str(ARTIFACTS / f"operator-ready-{language}.png"), full_page=True)
-    admin.locator("button[name=action][value=start]").click()
     for _, page in players:
         page.wait_for_url(re.compile(re.escape(game_url) + r"(?:\?.*)?$"), timeout=20000)
         expect(page.locator(".bookmarks a")).to_have_count(3)
         assert page.locator('form[action$="/advance/"]').count() == 0
         assert page.locator('form[action$="/pause/"]').count() == 0
+        page.locator('a[href$="/email/"]').click()
+        expect(page.locator("[data-email-preferences]")).to_be_visible()
+        expect(page.locator('[name="raid"]')).not_to_be_checked()
+        check_layout(page)
+        page.screenshot(path=str(ARTIFACTS / f"email-preferences-{language}.png"), full_page=True)
+        page.goto(game_url)
     for seat, (_, page) in enumerate(players, 1):
         view = state_for(page, game_url)["view"]
         assert {city["id"] for city in view["owned_cities"]} == {
@@ -231,7 +264,7 @@ def identity_handoff_journey(browser, operator):
     admin_context = context_for(browser, "en")
     admin = admin_context.new_page()
     login_operator(admin, operator)
-    room_url, invitations = create_room(admin)
+    room_url, invitations, _recruitment = create_room(admin)
     admin.goto(invitations[0])
     admin.wait_for_url(re.compile(r"/games/[0-9a-f-]+/lobby/"))
     game_url = admin.url.removesuffix("lobby/")
@@ -257,9 +290,7 @@ def identity_handoff_journey(browser, operator):
     third_context = context_for(browser, "en")
     third = third_context.new_page()
     third.goto(invitations[2])
-    expect(third.locator("[data-shared-lobby]")).to_be_visible()
-    admin.goto(room_url)
-    admin.locator("button[name=action][value=start]").click()
+    third.wait_for_url(re.compile(re.escape(game_url) + r"(?:\?.*)?$"))
     admin.goto(game_url)
     assert {city["id"] for city in state_for(admin, game_url)["view"]["owned_cities"]} == {
         "c1",

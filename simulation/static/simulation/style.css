@@ -46,9 +46,16 @@ p { margin: 0 0 .75rem; }
 .plain-list { list-style: none; padding: 0; }
 .plain-list li { margin-bottom: .6rem; }
 .plain-list span { display: block; font-size: .85rem; color: var(--muted); }
+.shared-seats { list-style: none; padding: 0; }
+.shared-seats li { margin: .6rem 0; }
+.shared-invitation-url { width: 100%; min-height: 44px; font: inherit; }
 .scribe-note { padding: 1.5rem 0; }
 .stack-form label { display: block; font-size: .85rem; margin-bottom: .4rem; }
-.stack-form input, .stack-form select { width: 100%; min-height: 44px; padding: .7rem; border: 1px solid #b6a68e; border-radius: 0; background: #fffdf8; }
+.stack-form input:not([type="checkbox"]):not([type="radio"]), .stack-form select { width: 100%; min-height: 44px; padding: .7rem; border: 1px solid #b6a68e; border-radius: 0; background: #fffdf8; }
+.stack-form input[type="checkbox"], .stack-form input[type="radio"] { width: 1.25rem; height: 1.25rem; flex-shrink: 0; accent-color: var(--accent); }
+.stack-form label:has(input[type="radio"]) { display: flex; align-items: center; gap: .6rem; min-height: 44px; font-size: 1rem; }
+.stack-form p:has(> input[type="checkbox"]) { display: flex; align-items: center; gap: .6rem; }
+.stack-form p:has(> input[type="checkbox"]) label { display: flex; align-items: center; order: 1; min-height: 44px; margin: 0; font-size: 1rem; }
 .helptext { display: block; }
 .helptext ul { padding-left: 1rem; }
 .stack-form .errorlist { font-size: .85rem; padding-left: 1rem; }

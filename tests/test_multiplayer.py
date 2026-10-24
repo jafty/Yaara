@@ -39,7 +39,9 @@ def operator(user):
 
 @pytest.fixture
 def room(operator):
-    return multiplayer.create_shared(operator, "Three houses", play_window="Saturday 20–22 UTC")
+    return multiplayer.create_shared(
+        operator, "Three houses", play_window="Saturday 20–22 UTC", auto_start=False
+    )
 
 
 @pytest.fixture

@@ -134,3 +134,16 @@ GUEST_PLAY_ENABLED = os.getenv("GUEST_PLAY_ENABLED", "1") == "1"
 GUEST_RETENTION_DAYS = max(1, int(os.getenv("GUEST_RETENTION_DAYS", "30")))
 GUEST_STARTS_PER_HOUR = max(1, int(os.getenv("GUEST_STARTS_PER_HOUR", "60")))
 GUEST_GLOBAL_STARTS_PER_HOUR = max(1, int(os.getenv("GUEST_GLOBAL_STARTS_PER_HOUR", "500")))
+
+# Standard SMTP or a local sendmail backend; no notification-provider dependency.
+EMAIL_NOTIFICATIONS_ENABLED = os.getenv("EMAIL_NOTIFICATIONS_ENABLED", "0") == "1"
+PUBLIC_BASE_URL = os.getenv("PUBLIC_BASE_URL", "http://localhost:8000")
+EMAIL_BACKEND = os.getenv("EMAIL_BACKEND", "django.core.mail.backends.smtp.EmailBackend")
+EMAIL_HOST = os.getenv("EMAIL_HOST", "localhost")
+EMAIL_PORT = int(os.getenv("EMAIL_PORT", "25"))
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", "")
+EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "0") == "1"
+EMAIL_USE_SSL = os.getenv("EMAIL_USE_SSL", "0") == "1"
+EMAIL_TIMEOUT = 10
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "Yaara <noreply@localhost>")

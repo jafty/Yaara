@@ -4130,3 +4130,159 @@ msgstr "Gérer cette partie"
 #: simulation/guest_views.py
 msgid "Autorisez les cookies de ce site, puis revenez à l’accueil pour commencer."
 msgstr "Autorisez les cookies de ce site, puis revenez à l’accueil pour commencer."
+
+msgid "Actualiser les places"
+msgstr "Actualiser les places"
+
+msgid "Adresse confirmée."
+msgstr "Adresse confirmée."
+
+msgid "Adresse confirmée. Vous recevrez uniquement les nouvelles choisies."
+msgstr "Adresse confirmée. Vous recevrez uniquement les nouvelles choisies."
+
+msgid "Attendez cinq minutes avant de demander un nouvel e-mail de confirmation."
+msgstr "Attendez cinq minutes avant de demander un nouvel e-mail de confirmation."
+
+msgid "Bilan annuel et récoltes"
+msgstr "Bilan annuel et récoltes"
+
+msgid "CHOISISSEZ VOTRE MAISON"
+msgstr "CHOISISSEZ VOTRE MAISON"
+
+msgid "Ce règne n’accepte plus de nouveaux joueurs."
+msgstr "Ce règne n’accepte plus de nouveaux joueurs."
+
+msgid "Ce règne n’accepte plus de nouveaux joueurs. Utilisez votre lien privé pour retrouver une maison déjà choisie."
+msgstr "Ce règne n’accepte plus de nouveaux joueurs. Utilisez votre lien privé pour retrouver une maison déjà choisie."
+
+msgid "Cette place n’est plus disponible. Choisissez une autre maison."
+msgstr "Cette place n’est plus disponible. Choisissez une autre maison."
+
+msgid "Cette place vient d’être choisie. Sélectionnez un autre territoire ; votre nom est conservé."
+msgstr "Cette place vient d’être choisie. Sélectionnez un autre territoire ; votre nom est conservé."
+
+msgid "Choisir une place"
+msgstr "Choisir une place"
+
+msgid "Choisissez les nouvelles de cette maison. Les raids sont désactivés par défaut. Aucun e-mail ne part avant confirmation de votre adresse."
+msgstr "Choisissez les nouvelles de cette maison. Les raids sont désactivés par défaut. Aucun e-mail ne part avant confirmation de votre adresse."
+
+msgid "Choisissez un nom de maison de 1 à 80 caractères, sur une ligne."
+msgstr "Choisissez un nom de maison de 1 à 80 caractères, sur une ligne."
+
+msgid "Choisissez vos trois cités de départ et donnez un nom à votre maison. Aucune inscription n’est nécessaire."
+msgstr "Choisissez vos trois cités de départ et donnez un nom à votre maison. Aucune inscription n’est nécessaire."
+
+msgid "Confirmation en attente. Vérifiez votre messagerie ; vous pourrez renouveler la demande après une heure."
+msgstr "Confirmation en attente. Vérifiez votre messagerie ; vous pourrez renouveler la demande après une heure."
+
+msgid "Confirmer mon adresse"
+msgstr "Confirmer mon adresse"
+
+msgid "Confirmez les notifications de Yaara"
+msgstr "Confirmez les notifications de Yaara"
+
+msgid "Confirmez votre adresse sous 48 heures pour recevoir les nouvelles choisies."
+msgstr "Confirmez votre adresse sous 48 heures pour recevoir les nouvelles choisies."
+
+msgid "Conquêtes et résultats de capture"
+msgstr "Conquêtes et résultats de capture"
+
+msgid "Conservez ce lien pour retrouver votre maison sur un autre appareil. Il donne accès à votre place : gardez-le secret."
+msgstr "Conservez ce lien pour retrouver votre maison sur un autre appareil. Il donne accès à votre place : gardez-le secret."
+
+msgid "Des nouvelles de votre maison dans Yaara"
+msgstr "Des nouvelles de votre maison dans Yaara"
+
+msgid "Départ du règne"
+msgstr "Départ du règne"
+
+msgid "Effacez votre adresse pour arrêter tous les envois de cette maison."
+msgstr "Effacez votre adresse pour arrêter tous les envois de cette maison."
+
+msgid "Enregistrer le nom"
+msgstr "Enregistrer le nom"
+
+msgid "Enregistrer les notifications"
+msgstr "Enregistrer les notifications"
+
+msgid "Indiquez une adresse e-mail valide."
+msgstr "Indiquez une adresse e-mail valide."
+
+msgid "Le lien pour choisir sa place"
+msgstr "Le lien pour choisir sa place"
+
+msgid "Le nom de la maison est fixé au départ du règne."
+msgstr "Le nom de la maison est fixé au départ du règne."
+
+msgid "Le règne commence automatiquement dès que les trois places sont prises. Choisissez votre maison quand vous êtes prêt à jouer."
+msgstr "Le règne commence automatiquement dès que les trois places sont prises. Choisissez votre maison quand vous êtes prêt à jouer."
+
+msgid "Les notifications par e-mail ne sont pas encore activées."
+msgstr "Les notifications par e-mail ne sont pas encore activées."
+
+msgid "Lien de recrutement à transmettre"
+msgstr "Lien de recrutement à transmettre"
+
+msgid "Lune %(moon)s : %(title)s"
+msgstr "Lune %(moon)s : %(title)s"
+
+msgid "L’organisateur donnera le départ lorsque les trois maisons seront présentes."
+msgstr "L’organisateur donnera le départ lorsque les trois maisons seront présentes."
+
+msgid "Nom de votre maison"
+msgstr "Nom de votre maison"
+
+msgid "Notifications par e-mail"
+msgstr "Notifications par e-mail"
+
+msgid "Partagez ce lien avec vos joueurs. Il permet de choisir une place libre, sans donner accès aux maisons déjà occupées."
+msgstr "Partagez ce lien avec vos joueurs. Il permet de choisir une place libre, sans donner accès aux maisons déjà occupées."
+
+msgid "Places restantes :"
+msgstr "Places restantes :"
+
+msgid "Prendre cette place"
+msgstr "Prendre cette place"
+
+msgid "Préférences enregistrées. Si nécessaire, confirmez votre adresse depuis l’e-mail reçu."
+msgstr "Préférences enregistrées. Si nécessaire, confirmez votre adresse depuis l’e-mail reçu."
+
+msgid "Préparez un règne et partagez son lien. Chaque joueur choisit sa place et son nom de maison ; le règne commence à trois joueurs."
+msgstr "Préparez un règne et partagez son lien. Chaque joueur choisit sa place et son nom de maison ; le règne commence à trois joueurs."
+
+msgid "Remplacer le lien de recrutement"
+msgstr "Remplacer le lien de recrutement"
+
+msgid "Retour au règne"
+msgstr "Retour au règne"
+
+msgid "Retrouver votre maison"
+msgstr "Retrouver votre maison"
+
+msgid "Résumé des raids : au plus un e-mail par 24 heures"
+msgstr "Résumé des raids : au plus un e-mail par 24 heures"
+
+msgid "Sans inscription. Votre adresse reste privée ; un lien permet de se désabonner."
+msgstr "Sans inscription. Votre adresse reste privée ; un lien permet de se désabonner."
+
+msgid "Se désabonner"
+msgstr "Se désabonner"
+
+msgid "Une autre maison porte déjà ce nom."
+msgstr "Une autre maison porte déjà ce nom."
+
+msgid "Votre adresse e-mail (facultatif)"
+msgstr "Votre adresse e-mail (facultatif)"
+
+msgid "Votre lien privé de retour"
+msgstr "Votre lien privé de retour"
+
+msgid "Votre territoire de départ"
+msgstr "Votre territoire de départ"
+
+msgid "Vous ne recevrez plus d’e-mails pour cette maison."
+msgstr "Vous ne recevrez plus d’e-mails pour cette maison."
+
+msgid "places prises"
+msgstr "places prises"

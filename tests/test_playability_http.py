@@ -15,7 +15,7 @@ pytestmark = [pytest.mark.integration, pytest.mark.usefixtures("test_static_stor
 
 @case(
     "playability-current-pages",
-    "Owner GO: bilingual illustrated family pages replace nested work disclosures",
+    "Owner GO and October 24 artwork revision: illustrated catalogue and native family pages",
 )
 @pytest.mark.parametrize("language", ["fr", "en"])
 def test_current_pages(user, language):
@@ -26,7 +26,7 @@ def test_current_pages(user, language):
     url = reverse("game", args=[game.id])
     catalogue = client.get(url, {"tab": "constructions"}).content.decode()
     assert catalogue.count('class="work-card ledger-note"') == 8
-    assert 'class="illustration ' not in catalogue
+    assert catalogue.count('class="illustration ') == 8
     assert "work-selection" not in catalogue and 'id="active-works"' not in catalogue
     assert "action=repair" not in catalogue
     family = client.get(url, {"tab": "constructions", "action": "irrigation"})

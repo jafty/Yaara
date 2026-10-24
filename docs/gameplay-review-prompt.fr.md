@@ -1,5 +1,28 @@
 # Yaara — Référence de jouabilité
 
+## Révision du 24 octobre 2026 — Choix des places et notifications
+
+Préparée depuis `b9832f8` de `codex/yaara-deployment`, sans attester un déploiement
+Railway. Les nouveaux règnes partagés proposent un lien de recrutement commun :
+chaque invité choisit un territoire libre de trois cités et nomme sa maison
+(1 à 80 caractères, nom distinct). Le compteur passe de trois places restantes
+à zéro. La troisième arrivée déclenche le départ atomiquement, avec une première
+lune complète. Les salles déjà créées gardent leur départ explicite par
+l’organisateur. Le calendrier, la carte et les règles des sauvegardes ne changent
+pas. Le lien commun ne permet jamais de reprendre une place occupée ; chaque
+joueur conserve son propre lien privé de retour.
+
+Des notifications facultatives, également accessibles aux invités sans compte,
+peuvent annoncer le départ, les captures et les récoltes annuelles. Les raids
+sont désactivés par défaut ; leur option produit un résumé au plus une fois par
+24 heures réelles. L’adresse doit être confirmée et peut être retirée à tout
+moment. Les envois sont désactivés tant que le transport SMTP ou sendmail n’est
+pas configuré ; aucun prestataire de notifications n’est ajouté. Seuls les titres
+des lettres déjà autorisées au destinataire sont repris, avec retour vers sa
+maison. La file d’envoi est enregistrée avec les lettres ; l’envoi intervient
+ensuite, hors transaction de jeu. Sources : `multiplayer.py`, `notifications.py`,
+tests `test_recruitment.py` et `test_notifications.py`.
+
 ## Révision du 24 octobre 2026 — Accès invité et règnes partagés
 
 Implémentation préparée depuis `1754956` de `codex/yaara-deployment`, sans attester
@@ -13,8 +36,9 @@ mène à la clôture ; les téléchargements JSON du livre sont secondaires.
 Un organisateur autorisé prépare les règnes partagés à trois maisons humaines,
 sur la carte existante de neuf cités. Chaque lien privé ouvre une identité distincte
 et permet de revenir à cette maison, sans inscription ni étape de disponibilité
-supplémentaire. L’organisateur donne le départ après l’arrivée des trois joueurs,
-avec trois invitations actives ; les pages d’attente ouvrent alors le conseil.
+supplémentaire. Dans cette première version, les salles attendaient le départ de
+l’organisateur après l’arrivée des trois joueurs ; ce comportement reste celui
+des salles anciennes. Les nouvelles salles suivent la révision ci-dessus.
 Le lien secret n’authentifie jamais le compte inscrit auquel une maison est liée.
 Un organisateur qui joue garde sa session de gestion en rejoignant sa maison.
 

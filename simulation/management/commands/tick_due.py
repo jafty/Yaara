@@ -1,3 +1,4 @@
+from django.core.management import call_command
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 
@@ -18,3 +19,4 @@ class Command(BaseCommand):
                 self.stdout.write(f"{game.id}: {'resolved' if executed else 'unchanged or paused'}")
             except RuleError as error:
                 self.stderr.write(f"{game.id}: {error}")
+        call_command("send_notifications", stdout=self.stdout)

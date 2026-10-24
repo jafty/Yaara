@@ -3,7 +3,7 @@
 import logging
 import re
 
-INVITATION_PATH = re.compile(r"(/join/)[^/\s?#\"'<>]+")
+INVITATION_PATH = re.compile(r"(/(?:join|recruit|email/(?:confirm|unsubscribe))/)[^/\s?#\"'<>]+")
 
 
 def redact_invitations(value):
