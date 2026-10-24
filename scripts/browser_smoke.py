@@ -15,6 +15,7 @@ artifacts.mkdir(exist_ok=True)
 
 
 def no_overflow(page):
+    page.evaluate("document.fonts.ready")
     assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth"), (
         "The page overflows horizontally"
     )
@@ -119,12 +120,35 @@ def scannable_layout(page):
     active = page.locator('.bookmarks a[aria-current="page"]')
     expect(active).to_have_count(1)
     expect(active).to_have_attribute("data-section", expected)
+    labels = page.locator(".bookmarks a span").evaluate_all(
+        "elements => elements.map(el => el.getBoundingClientRect().toJSON())"
+    )
+    for first, second in zip(labels, labels[1:]):
+        assert first["right"] <= second["x"]
+    for selector in (
+        ".notice",
+        ".marginal-note",
+        ".unsealed-leaf",
+        ".next-closure",
+        ".bookmarks a",
+    ):
+        for element in page.locator(selector).all():
+            assert element.evaluate("el => parseFloat(getComputedStyle(el).borderLeftWidth)") == 0
+    if page.locator(".illustration-council").count():
+        # Artwork remains a small contextual vignette, including with enlarged text.
+        scene = page.locator(".illustration-council").bounding_box()
+        heading = page.locator(".chapter-heading").bounding_box()
+        assert scene["width"] <= heading["width"] * 0.3
+        assert scene["height"] <= heading["height"]
     for selector in (".council-links a", ".guide-index a"):
-        links = page.locator(selector).all()
+        # Measure adjacent links together: a native smooth jump can move the page
+        # between separate browser calls, especially without JavaScript enabled.
+        links = page.locator(selector).evaluate_all(
+            "elements => elements.map(el => el.getBoundingClientRect().toJSON())"
+        )
         for first, second in zip(links, links[1:]):
-            a, b = first.bounding_box(), second.bounding_box()
-            assert abs(a["x"] - b["x"]) < 1
-            assert b["y"] >= a["y"] + a["height"]
+            assert abs(first["x"] - second["x"]) < 1
+            assert second["y"] >= first["y"] + first["height"]
     for note in page.locator(".notice, .marginal-note, .unsealed-leaf").all():
         contrast = note.evaluate("""el => {
           const style = getComputedStyle(el);
@@ -313,6 +337,8 @@ with sync_playwright() as playwright:
         page.screenshot(path=str(artifacts / f"works-named-{language}.png"), full_page=True)
         page.goto(game_url)
         illustration_asset(page.locator(".illustration-council"), "council.jpg")
+        illustration_asset(page.locator("body"), "papyrus.webp")
+        assert page.evaluate("document.fonts.check('16px Alegreya')")
         assert page.locator(".city-entry").count() == 3
         for number in range(1, 4):
             thumbnail = page.locator(f"#city-c{number} .illustration-small")
@@ -338,7 +364,7 @@ with sync_playwright() as playwright:
         page.set_viewport_size({"width": 1440, "height": 1100})
         page.goto(game_url)
         assert page.locator(".city-entry details").count() == 0
-        expect(page.locator("body")).to_have_css("background-color", "rgb(247, 241, 230)")
+        expect(page.locator("body")).to_have_css("background-color", "rgb(243, 232, 209)")
         expect(page.locator(".dateline")).to_have_count(0)
         expect(page.locator(".resource-ribbon")).to_contain_text("1")
         page.screenshot(path=str(artifacts / f"domain-desktop-{language}.png"), full_page=True)
@@ -732,7 +758,7 @@ with sync_playwright() as playwright:
                 assert page.locator(".reign-header").bounding_box()["height"] < 130
                 assert (
                     page.locator("body").evaluate("el => parseFloat(getComputedStyle(el).fontSize)")
-                    == 16
+                    == 17
                 )
                 if suffix == "?tab=constructions":
                     page.locator("#work-storage").click()

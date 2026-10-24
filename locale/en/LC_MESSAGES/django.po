@@ -3440,8 +3440,8 @@ msgstr "Within reach"
 msgid "Hors de portée"
 msgstr "Out of reach"
 
-msgid "Lire la carte"
-msgstr "Reading the map"
+msgid "Comprendre la carte"
+msgstr "Understanding the map"
 
 msgid "Les frontières sont indicatives ; la portée suit les routes. Toute expédition suit le même calendrier."
 msgstr "Borders are schematic; reach follows the roads. Every expedition follows the same calendar."

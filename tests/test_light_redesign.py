@@ -101,7 +101,13 @@ def test_map_reference(folio):
     _, client, url = folio
     text = client.get(url, {"tab": "wars", "city": "c4"}).content.decode()
     legend = re.search(r'<details class="map-reference">.*?</details>', text, re.S).group()
-    assert "<summary>" in legend and "map-states" in legend
+    label = (
+        "Understanding the map"
+        if client.cookies["django_language"].value == "en"
+        else "Comprendre la carte"
+    )
+    assert f"<summary>{label}</summary>" in legend and "map-states" in legend
+    assert f'aria-label="{label}"' in legend
     assert not re.search(r"<details[^>]*\bopen", legend)
     assert "target-knowledge" not in legend and "expedition-form" not in legend
     assert 'id="map-context"' in text and 'id="mission-target"' in text

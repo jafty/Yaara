@@ -14,15 +14,14 @@ legend { margin-bottom: .4rem; }
 .skip-link { position: fixed; top: .5rem; left: .5rem; padding: .5rem; background: white; color: #222; transform: translateY(-150%); z-index: 20; }
 .skip-link:focus { transform: translateY(0); }
 .notice, .marginal-note, .unsealed-leaf {
-  background: #eee3ce;
-  border: 0;
-  border-left: 3px solid var(--accent);
+  background: var(--leaf, #eee3ce);
+  border-block: 1px solid var(--rule, #cdb992);
   padding: .8rem 1rem;
 }
 .notice > :last-child, .marginal-note > :last-child, .unsealed-leaf > :last-child { margin-bottom: 0; }
 .notice.error, .errorlist { color: #852419; }
 .notices { margin-top: 1.5rem; }
-.guest-banner { margin-block: .75rem; padding: .6rem .8rem; background: #eee3ce; border-left: 3px solid var(--mineral, #245e70); font-size: .875rem; }
+.guest-banner { margin-block: .75rem; padding: .6rem .8rem; font-size: .875rem; }
 .guest-banner p { margin: 0 0 .3rem; }
 .guest-banner a { display: inline-flex; align-items: center; min-height: 44px; }
 

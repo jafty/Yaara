@@ -2156,8 +2156,8 @@ msgstr "À portée"
 msgid "Hors de portée"
 msgstr "Hors de portée"
 
-msgid "Lire la carte"
-msgstr "Lire la carte"
+msgid "Comprendre la carte"
+msgstr "Comprendre la carte"
 
 msgid "Les frontières sont indicatives ; la portée suit les routes. Toute expédition suit le même calendrier."
 msgstr "Les frontières sont indicatives ; la portée suit les routes. Toute expédition suit le même calendrier."

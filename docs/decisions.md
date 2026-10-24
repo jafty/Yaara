@@ -1,5 +1,24 @@
 # Implementation decisions
 
+## 2026-10-24 · Material manuscript and restrained illustrations
+
+The owner rejected both the ornate earlier mockup and the pale blog/admin-panel
+compromise. Their clarification explicitly keeps illustrations small: no prominent
+Council scene. Retain the contextual frescoes and existing reading/action order.
+Use a locally stored, low-contrast papyrus/plaster texture, self-hosted Alegreya
+with 17px default body text, earthen headings and muted mineral-blue reading links.
+Replace the striped header, left-edge callouts and desktop sidebar with simple
+rules and a continuous dark umber bottom navigation in all viewport sizes. The
+Council icon depicts an Egyptian pylon rather than a columned pediment. Keep
+visible labels, touch targets, focus states and the three existing destinations.
+
+Rename the optional map explanation to “Comprendre la carte” / “Understanding
+the map”, including its accessible label. Native disclosures, forms, exact costs,
+reports and saved rules retain their behavior. The gameplay reference remains
+accurate and needs no rule update. This is Presentation work; validate both
+languages, small contextual art, material decoding, default/enlarged text,
+keyboard and no-JavaScript flows using the existing PostgreSQL and browser checks.
+
 ## 2026-10-24 · Recruitment entrance and invitation-based shared reigns
 
 The owner approved implementation after the three parallel plans, with a fluid
