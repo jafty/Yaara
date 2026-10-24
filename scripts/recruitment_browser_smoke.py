@@ -57,7 +57,7 @@ def work_order(page, game_url, city, seal=True):
     page.locator("form[data-work-form] button[type=submit]").click()
     expect(page.locator(".unsealed-leaf")).to_be_visible()
     if seal:
-        page.locator(".wax-seal").click()
+        page.locator(".decree-reading form button[type=submit]").click()
 
 
 def guest_journey(browser, language, javascript=True):
@@ -202,7 +202,7 @@ def multiplayer_journey(browser, language, operator):
     second_before = state_for(second, game_url)["game"]["revision"]
     work_order(first, game_url, "c1")
     assert state_for(second, game_url)["game"]["revision"] == second_before
-    second.locator(".wax-seal").click()
+    second.locator(".decree-reading form button[type=submit]").click()
     assert state_for(second, game_url)["view"]["sealed_count"] == 1
     assert state_for(first, game_url)["view"]["sealed_count"] == 1
     for seat, invitation in enumerate(invitations, 1):

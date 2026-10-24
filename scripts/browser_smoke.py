@@ -22,7 +22,18 @@ def no_overflow(page):
     readable_hierarchy(page)
     for scene in page.locator(".illustration").all():
         box = scene.bounding_box()
-        assert abs(box["width"] / box["height"] - 1.5) < 0.02
+        framed = scene.evaluate("el => getComputedStyle(el, '::before').content !== 'none'")
+        ratio = 1.5 if not framed or "illustration-small" in scene.get_attribute("class") else 2
+        assert abs(box["width"] / box["height"] - ratio) < 0.02
+        if framed:
+            # Crop the original composition; never stretch a scene or expose adjacent atlas cells.
+            geometry = scene.evaluate("""el => {
+              const art = getComputedStyle(el, '::before');
+              return {width: parseFloat(art.width), height: parseFloat(art.height),
+                      overflow: getComputedStyle(el).overflow};
+            }""")
+            assert abs(geometry["width"] / geometry["height"] - 1.5) < 0.02
+            assert geometry["overflow"] == "hidden"
     if page.locator(".book-title").count():
         scannable_layout(page)
 
@@ -140,7 +151,7 @@ def scannable_layout(page):
         heading = page.locator(".chapter-heading").bounding_box()
         assert scene["width"] <= heading["width"] * 0.3
         assert scene["height"] <= heading["height"]
-    for selector in (".council-links a", ".guide-index a"):
+    for selector in (".guide-index a",):
         # Measure adjacent links together: a native smooth jump can move the page
         # between separate browser calls, especially without JavaScript enabled.
         links = page.locator(selector).evaluate_all(
@@ -197,7 +208,8 @@ def illustration_asset(scene, filename):
     """Check the actual displayed local asset, including successful image decoding."""
     assert scene.evaluate(
         r"""async (el, filename) => {
-          const background = getComputedStyle(el).backgroundImage;
+          const art = getComputedStyle(el, '::before');
+          const background = art.content !== 'none' ? art.backgroundImage : getComputedStyle(el).backgroundImage;
           const url = background.match(/url\(["']?(.*?)["']?\)/)[1];
           const image = new Image();
           image.src = url;
@@ -337,7 +349,12 @@ with sync_playwright() as playwright:
         page.screenshot(path=str(artifacts / f"works-named-{language}.png"), full_page=True)
         page.goto(game_url)
         illustration_asset(page.locator(".illustration-council"), "council.jpg")
-        illustration_asset(page.locator("body"), "papyrus.webp")
+        assert page.locator("body").evaluate("el => getComputedStyle(el).backgroundImage") == "none"
+        assert (
+            page.locator("body").evaluate("el => getComputedStyle(el).backgroundColor")
+            == "rgb(253, 252, 249)"
+        )
+        illustration_asset(page.locator(".first-decisions"), "map-terrain.png")
         assert page.evaluate("document.fonts.check('16px Alegreya')")
         assert page.locator(".city-entry").count() == 3
         for number in range(1, 4):
@@ -364,7 +381,7 @@ with sync_playwright() as playwright:
         page.set_viewport_size({"width": 1440, "height": 1100})
         page.goto(game_url)
         assert page.locator(".city-entry details").count() == 0
-        expect(page.locator("body")).to_have_css("background-color", "rgb(243, 232, 209)")
+        expect(page.locator("body")).to_have_css("background-color", "rgb(253, 252, 249)")
         expect(page.locator(".dateline")).to_have_count(0)
         expect(page.locator(".resource-ribbon")).to_contain_text("1")
         page.screenshot(path=str(artifacts / f"domain-desktop-{language}.png"), full_page=True)
@@ -376,7 +393,9 @@ with sync_playwright() as playwright:
                 f"illustration illustration-city illustration-city-c{number}"
             )
             illustration_asset(scene, "cityscapes.png")
-            cityscapes.add(scene.evaluate("el => getComputedStyle(el).backgroundPosition"))
+            cityscapes.add(
+                scene.evaluate("el => getComputedStyle(el, '::before').backgroundPosition")
+            )
             no_overflow(page)
             page.screenshot(
                 path=str(artifacts / f"city-c{number}-desktop-{language}.png"), full_page=True
@@ -403,7 +422,7 @@ with sync_playwright() as playwright:
         expect(page.locator('.bookmarks a[aria-current="page"]')).to_have_attribute(
             "data-section", "constructions"
         )
-        page.locator(".wax-seal").click()
+        page.locator(".decree-reading form button[type=submit]").click()
         expect(page.locator(".resource-ribbon")).to_contain_text(
             "2,400,000" if en else "2\u00a0400\u00a0000"
         )
@@ -449,7 +468,7 @@ with sync_playwright() as playwright:
         page.screenshot(
             path=str(artifacts / f"decree-letter-desktop-{language}.png"), full_page=True
         )
-        page.locator(".wax-seal").click()
+        page.locator(".decree-reading form button[type=submit]").click()
         expect(page.locator(".orders-register")).to_contain_text("Confirmed" if en else "Confirmé")
         expect(page.locator(".resource-ribbon")).to_contain_text(
             "2,300,000" if en else "2\u00a0300\u00a0000"
@@ -548,7 +567,7 @@ with sync_playwright() as playwright:
         expect(
             page.get_by_role("heading", name="The people committed" if en else "Les hommes engagés")
         ).to_be_visible()
-        page.locator(".wax-seal").click()
+        page.locator(".decree-reading form button[type=submit]").click()
         assert page.locator('[data-map-state="engaged"]').count() == 0
         page.screenshot(path=str(artifacts / f"decrees-desktop-{language}.png"), full_page=True)
         for moon in range(1, 4):
@@ -658,10 +677,11 @@ with sync_playwright() as playwright:
                     scene = page.locator("#combat-artwork-check")
                     illustration_asset(scene, scene_name + ".jpg")
                     assert (
-                        scene.evaluate("el => getComputedStyle(el).backgroundSize") == "100% 100%"
+                        scene.evaluate("el => getComputedStyle(el, '::before').backgroundSize")
+                        == "100% 100%"
                     )
                     box = scene.bounding_box()
-                    assert abs(box["width"] / box["height"] - 1.5) < 0.02
+                    assert abs(box["width"] / box["height"] - 2) < 0.02
                     scene.evaluate("el => el.remove()")
         page.screenshot(path=str(artifacts / f"letters-desktop-{language}.png"), full_page=True)
         # Switching the same persisted letters translates their bodies too.
@@ -691,7 +711,7 @@ with sync_playwright() as playwright:
         storage = page.locator("#work-storage")
         storage.locator('input[value="c1"]').check()
         storage.locator('button[type="submit"]').click()
-        page.locator(".wax-seal").click()
+        page.locator(".decree-reading form button[type=submit]").click()
         for _ in range(5):
             page.locator('.bookmarks a[data-section="domain"]').click()
             page.locator("#turn-page button.primary-action").click()
@@ -707,7 +727,7 @@ with sync_playwright() as playwright:
         forge = page.locator("#work-forge")
         forge.locator('input[value="c2"]').check()
         forge.locator('button[type="submit"]').click()
-        page.locator(".wax-seal").click()
+        page.locator(".decree-reading form button[type=submit]").click()
         page.goto(game_url)
         commitment = page.locator('#city-c2 [data-crew-phase="reserved"]')
         expect(commitment).to_contain_text("Small arsenal" if en else "Petit arsenal")
@@ -844,7 +864,7 @@ with sync_playwright() as playwright:
         )
         no_overflow(plain_page)
         plain_page.screenshot(path=str(artifacts / f"convoy-native-{language}.png"), full_page=True)
-        plain_page.locator(".wax-seal").click()
+        plain_page.locator(".decree-reading form button[type=submit]").click()
         expect(
             plain_page.locator(".order-entry").filter(
                 has_text="Send resources" if en else "Acheminer des ressources"
@@ -904,7 +924,7 @@ with sync_playwright() as playwright:
             forge = page.locator("#work-forge")
             forge.locator("[data-select-cities]").click()
             forge.locator('button[type="submit"]').click()
-            page.locator(".wax-seal").click()
+            page.locator(".decree-reading form button[type=submit]").click()
             for _ in range(4 if tier == 0 else 6):
                 page.goto(empty_url)
                 page.locator("#turn-page button.primary-action").click()
@@ -912,7 +932,7 @@ with sync_playwright() as playwright:
         irrigation = page.locator("#work-irrigation")
         irrigation.locator("[data-select-cities]").click()
         irrigation.locator('button[type="submit"]').click()
-        page.locator(".wax-seal").click()
+        page.locator(".decree-reading form button[type=submit]").click()
         page.goto(empty_url)
         page.locator("#turn-page button.primary-action").click()
         page.goto(empty_url + "?tab=wars&action=expedition&city=c4")

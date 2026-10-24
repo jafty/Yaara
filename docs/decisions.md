@@ -1,5 +1,23 @@
 # Implementation decisions
 
+## 2026-10-24 · White manuscript and local parchment
+
+The owner's new three-maquette request supersedes the uniform papyrus page and
+dark bottom navigation from the preceding material revision. Keep the literary
+structure and existing flows, with near-white pages, stronger type hierarchy,
+terracotta actions and light navigation. Reuse the existing map parchment on
+notes, letters and individual work/building entries. Keep the illustrations;
+noncompact scenes use a shallower frame without stretching their composition.
+Retain realm-wide city checklists and the separate review/seal/closure stages.
+
+The current SVG map can support painted scenery without a data-contract change.
+This first pass refines its existing parchment, boundaries, house colors and
+selection; it does not add the maquette's river or replace the saved nine-city
+geography. See [the visual audit](visual-redesign.md) for the adaptation decisions
+and remaining map-art work. Palette and fonts are shared across game and entry
+screens. This is Presentation work, with existing bilingual browser journeys and
+affected PostgreSQL contracts; core rules and projections remain unchanged.
+
 ## 2026-10-24 · Material manuscript and restrained illustrations
 
 The owner rejected both the ornate earlier mockup and the pale blog/admin-panel

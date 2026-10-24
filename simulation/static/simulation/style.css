@@ -1,10 +1,9 @@
-:root { --ink: #28251f; --accent: #8b3928; --muted: #655d50; --rule: #d9cbb5; --paper: #f7f1e6; --mineral: #245e70; --ochre: #b58b49; }
-body { background: var(--paper); color: var(--ink); font: 1rem/1.5 system-ui, sans-serif; }
+body { background: var(--paper); color: var(--ink); font: 1.0625rem/1.55 "Alegreya", Georgia, serif; }
 h1, h2, h3 { font-family: Georgia, serif; font-weight: normal; line-height: 1.2; }
 h1 { font-size: clamp(1.65rem, 4vw, 2.25rem); margin: .4rem 0 .6rem; }
 h2 { font-size: 1.4rem; }
 p { margin: 0 0 .75rem; }
-.sidebar { position: fixed; inset: 0 auto 0 0; width: 15rem; background: #eee3ce; color: var(--ink); border-right: 1px solid var(--rule); padding: 1.5rem 1.2rem; display: flex; flex-direction: column; }
+.sidebar { position: fixed; inset: 0 auto 0 0; width: 15rem; background: var(--leaf); color: var(--ink); border-right: 1px solid var(--rule); padding: 1.5rem 1.2rem; display: flex; flex-direction: column; }
 .brand { display: flex; align-items: center; gap: .7rem; text-decoration: none; font-size: 1.5rem; letter-spacing: .15em; }
 .brand-mark { font-size: 2rem; }
 .brand small { display: block; font-size: .6rem; letter-spacing: .1em; }
@@ -15,7 +14,7 @@ p { margin: 0 0 .75rem; }
 .sidebar-bottom small { font-size: .6rem; letter-spacing: .12em; }
 .seal { display: grid; place-items: center; width: 2.8rem; height: 2.8rem; margin-bottom: 1rem; border: 1px solid var(--ochre); border-radius: 50%; font: 1.5rem Georgia, serif; }
 .page-shell { min-width: 0; margin-left: 15rem; overflow-wrap: anywhere; }
-.topbar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; padding: .8rem 1.5rem; border-bottom: 4px solid var(--ochre); border-image: repeating-linear-gradient(90deg, var(--ochre) 0 12px, var(--paper) 12px 15px, var(--accent) 15px 18px, var(--paper) 18px 21px) 4; font-size: .75rem; }
+.topbar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; padding: .8rem 1.5rem; border-bottom: 1px solid var(--rule); font-size: .75rem; }
 .breadcrumb span { margin: 0 .7rem; color: var(--muted); }
 .account { display: flex; align-items: center; flex-wrap: wrap; min-width: 0; max-width: 100%; gap: .5rem 1rem; }
 .account-name { min-width: 0; overflow-wrap: anywhere; }
@@ -27,10 +26,10 @@ p { margin: 0 0 .75rem; }
 .button { display: inline-block; min-height: 44px; padding: .6rem 1rem; border: 1px solid var(--rule); text-decoration: none; font-size: .85rem; }
 .primary { background: var(--accent); color: white; border-color: var(--accent); }
 .primary:hover { color: white; background: #6f2d20; }
-.home-banner { display: flex; align-items: center; justify-content: space-between; padding: 1.5rem; margin-bottom: 1.5rem; background: #eee3ce; }
+.home-banner { display: flex; align-items: center; justify-content: space-between; padding: 1.5rem; margin-bottom: 1.5rem; background: var(--leaf); }
 .banner-emblem { color: var(--ochre); font-size: 6rem; }
 .game-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); gap: 1.2rem; }
-.panel { background: #fbf7ef; border: 1px solid var(--rule); }
+.panel { background: var(--paper); border: 1px solid var(--rule); }
 .game-card { display: block; padding: 1rem; text-decoration: none; }
 .game-card:hover { border-color: var(--accent); }
 .game-card h3 { font-size: 1.25rem; }
@@ -68,12 +67,8 @@ p { margin: 0 0 .75rem; }
 .guest-account { max-width: 42rem; margin-inline: auto; }
 .guest-entry .auth-art { height: 8rem; }
 .guest-entry .button { font-size: 1rem; }
-.guest-entry .illustration { width: min(100%, 24rem); aspect-ratio: 3 / 2; background: url("illustrations/council.jpg") center / contain no-repeat; margin-block: 1rem; }
 .guest-entry .reading-links, .guest-account .reading-links { display: flex; flex-wrap: wrap; gap: .75rem 1.25rem; }
 .guest-entry .reading-links a, .guest-account .reading-links a { min-height: 44px; display: inline-flex; align-items: center; }
-.lobby-status { padding: .75rem 1rem; border-left: 3px solid var(--mineral); background: #eee3ce; }
-.lobby-seats { list-style: none; padding: 0; }
-.lobby-seats li { padding: .65rem 0; border-bottom: 1px solid var(--rule); }
 @media (max-width: 1000px) {
   .sidebar { width: 12rem; padding: 1.5rem 1rem; }
   .page-shell { margin-left: 12rem; }

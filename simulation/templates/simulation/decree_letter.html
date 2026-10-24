@@ -29,7 +29,7 @@
         {% if view.rules == 'V1' %}{% include 'simulation/ledger_help.html' with topic='siege' %}{% endif %}
         {% if order.kind == 'raid' %}<p>{% blocktranslate with amount=order.cost %}Il faudra conserver au moins {{ amount }} Mesures de butin pour rembourser cette expédition.{% endblocktranslate %}</p>{% include 'simulation/ledger_help.html' with topic='raid' %}{% endif %}
         <p class="marginal-note">{% if cancellable %}{% translate "Avant la clôture, vous pourrez retirer le décret et libérer les moyens promis. Après le départ, les frais seront définitivement dépensés." %}{% else %}{% translate "Dans ce règne ancien, le sceau rend cet ordre définitif. Aucune annulation ne sera possible." %}{% endif %}</p>
-        <form method="post" action="{% url 'confirm' game.id %}" data-busy-form>{% csrf_token %}<input type="hidden" name="payload" value="{{ payload }}"><button class="primary-action wax-seal" type="submit">{% translate "Confirmer et sceller l’ordre" %} · {% blocktranslate with v0=order.cost %}Réserver {{ v0 }} Mesures{% endblocktranslate %}</button></form>
+        <form method="post" action="{% url 'confirm' game.id %}" data-busy-form>{% csrf_token %}<input type="hidden" name="payload" value="{{ payload }}"><button class="primary-action" type="submit">{% translate "Confirmer et sceller l’ordre" %} · {% blocktranslate with v0=order.cost %}Réserver {{ v0 }} Mesures{% endblocktranslate %}</button></form>
         <p class="reading-links"><a href="{% url 'game' game.id %}?tab={{ nav_section }}{% if order.kind == 'convoy' %}&amp;action=convoy{% elif target %}&amp;action=expedition{% endif %}">{% translate "Reprendre la plume sans rien engager" %} →</a></p>
     </section>
 {% endblock %}
