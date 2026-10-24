@@ -1,5 +1,33 @@
 # Yaara — Référence de jouabilité
 
+## Révision du 24 octobre 2026 — Frontières, surveillance et intégration
+
+Implémentation préparée depuis `dbcba62` de `codex/yaara-deployment`. Cette section remplace, pour les nouvelles parties `strategy_version=2`, les descriptions historiques de réservation exclusive et de signalement gratuit ci-dessous. Elle n’atteste pas un déploiement Railway. Les sauvegardes sans marqueur stratégique, ou marquées 1, conservent leurs règles ; l’économie, les prix, les revenus et les dates des raids restent inchangés.
+
+**Après une conquête en N**, les Fidèles locaux hérités assurent la défense, sans participer aux départs offensifs ni aux secours durant N+1, N+2 et N+3. Ils deviennent disponibles en N+4. Les contingents amis revenant de voyage et les nouvelles recrues ne sont pas ajoutés à ce contingent hérité. Les pertes locales réduisent proportionnellement les effectifs libres et restreints ; les morts en voyage ne réduisent pas le contingent local restreint. Une nouvelle conquête réinitialise la période pour les Fidèles alors présents. Les comptes propres affichent l’effectif concerné et sa lune de disponibilité. Aucun malus fiscal ou de classement n’est introduit.
+
+**Surveillance payante :** les ordres ennemis seulement scellés restent secrets. Après les départs et les achèvements de travaux, la surveillance effective I signale la cité menacée et la lune d’arrivée ; II ajoute le type de mission et une bande d’effectifs : moins de 50, 50–99, 100–199, au moins 200. Sans surveillance, aucune alerte anticipée, mais la défense automatique subsiste. Un dommage réduit le niveau effectif pour les nouvelles détections ; il n’efface pas une information déjà apprise. Les lettres restent datées, immuables et réservées au destinataire. Une autre maison conquérant la cité n’hérite pas de ces renseignements.
+
+**Secret des engagements :** carte, formulaires et validation ne révèlent plus les réservations militaires ennemies ni les dates privées de répit de leurs villages. Plusieurs ordres peuvent viser une même cité. Un ordre n’est refusé au scellement ou au départ ni pour une réservation cachée ni pour un répit caché. À l’arrivée, les règles existantes continuent de s’appliquer : villages encore protégés ou objectif devenu amical entraînent retour au calendrier prévu, sans remboursement. Les combats de cité concurrents restent résolus dans l’ordre déterminé par le moteur après clôture ; aucun privilège ne découle de l’heure du sceau.
+
+**Départ frontalier automatique :** chaque expédition rejoint une cité amie directement reliée à sa cible par une route. Tous les contributeurs doivent pouvoir l’atteindre par des routes entièrement amies. Parmi les candidats valides, choisir celui qui fournit le plus d’hommes, puis l’identifiant stable de cité à égalité. Ce choix utilise uniquement géographie, propriétaires publics et contributions propres, jamais les ordres ennemis. Il est revalidé au départ puis figé pour l’expédition ; aucun nouveau champ de choix n’est imposé au joueur. Des contributeurs appartenant à des composantes amies disjointes doivent former des expéditions distinctes.
+
+**Bataille rangée :** les expéditions parties durant la même lune sur une même route en sens opposés se rencontrent avant les combats de cité. Regrouper les contingents d’un même côté pour une seule rencontre par route et par lune de départ, y compris raid/raid, capture/capture et raid/capture. Des départs différents, des routes différentes ou des armées de la même maison ne déclenchent pas cette rencontre. Seuls hommes engagés et équipement figé des origines déterminent la force ; murs, garnisons restées sur place, secours automatiques, protection des récoltes et matériel de siège n’interviennent pas.
+
+Soit E le plus petit effectif engagé et R le rapport entre force équipée supérieure et inférieure. Arrondir les décès au plus proche, demi-entier au-dessus :
+
+| Rapport R | Issue | Pertes du côté supérieur / inférieur | Suite |
+| --- | --- | --- | --- |
+| R < 1,25 | Rencontre indécise | 6 % E / 6 % E | Les deux côtés rentrent |
+| 1,25 ≤ R < 2 | Victoire nette | 2 % E / 12 % E | Le vainqueur poursuit |
+| R ≥ 2 | Supériorité écrasante | 0 / 4 % E | Le vainqueur poursuit |
+
+Les pertes sont réparties proportionnellement entre expéditions et contingents. Un petit détachement ne prélève jamais un pourcentage de la grande armée entière. Le vainqueur poursuit son objectif à la lune de combat prévue, N+1, avec ses survivants, même si les pertes l’ont fait passer sous le minimum exigé au départ. Il doit encore affronter les défenses restantes de sa cible. Les perdants rentrent en N+2, sans remboursement, sans renforcer instantanément leur cité pendant la résolution. Les récits donnent les pertes et survivants propres, avec seulement une appréciation qualitative des pertes adverses. Les valeurs numériques de force restent privées.
+
+Exemples : 80 soldats équipés à 145 contre 80 à 100 donnent R=1,45 : 2 morts du côté supérieur, 10 de l’autre ; les 78 premiers poursuivent leur capture et doivent encore franchir les murs. Trois cents soldats ordinaires contre vingt raiders ordinaires donnent zéro perte du côté supérieur et un mort chez les raiders. Deux raids de 40 rencontrant un raid de 80 produisent une seule rencontre indécise avec cinq morts de chaque côté, pas deux prélèvements séparés.
+
+Les seuils et taux sont les premiers paramètres de l’essai humain, pas une démonstration d’équilibrage. La durée des raids reste départ N, combat N+1 et retour N+2. Sources : `simulation/tactics.py`, `engine.py`, `projections.py`, tests `test_frontier_rules.py` et `test_frontier_http.py`.
+
 Révision du 22 octobre 2026 : préparation stratégique, raids, sièges, convois et réserves initiales. Base récupérée : `6bd894e7be47ddf4790c1d56f3f74db821cbc834` de `codex/yaara-deployment`. Décrit l’implémentation de cette révision, sans attester son déploiement Railway. Sources : `simulation/rules.py`, `engine.py`, `projections.py`, `narration.py`, `views.py` et tests `test_strategy_*`.
 
 ## Maintien et compatibilité

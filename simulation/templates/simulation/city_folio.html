@@ -5,6 +5,7 @@
 {% if selected.owned %}
     <section data-local-accounts aria-label="{% translate "Les comptes de la cité" %}">
         <h2>{% translate "Les foyers et les Fidèles" %}</h2>
+        {% if selected.restricted_fideles %}<p>{% blocktranslate with count=selected.restricted_fideles moon=selected.restricted_until %}{{ count }} Fidèles hérités assurent la défense locale. Départs et secours possibles à partir de la lune {{ moon }}.{% endblocktranslate %}</p>{% endif %}
         <p>{% blocktranslate with v0=selected.population v1=selected.present_population v2=selected.available_fideles v3=selected.reserved_fideles v4=selected.absent %}La cité compte <strong>{{ v0 }} habitants</strong>, dont <strong>{{ v1 }}</strong> sont présents.<br><strong>{{ v2 }} Fidèles</strong> sont libres de recevoir un ordre ; <strong>{{ v3 }}</strong> sont promis à une expédition et <strong>{{ v4 }}</strong> sont en route.{% endblocktranslate %}</p>
         <h2 id="city-stocks" tabindex="-1">{% translate "Le grenier et le prélèvement" %}</h2>
         <p>{% blocktranslate with v0=selected.stock v1=selected.capacity v2=selected.available_stock v3=selected.reserved_stock v4=selected.tax v5=selected.yield %}Le grenier conserve <strong>{{ v0 }} Mesures</strong> sur <strong>{{ v1 }}</strong>.<br><strong>{{ v2 }} Mesures</strong> sont libres, et <strong>{{ v3 }}</strong> sont réservées.<br>Le prélèvement en préparation atteint <strong>{{ v4 }} Mesures</strong>. Chaque habitant présent y ajoute <strong>{{ v5 }} Mesures par lune</strong>.{% endblocktranslate %}</p>

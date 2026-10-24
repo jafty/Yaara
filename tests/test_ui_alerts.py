@@ -21,7 +21,7 @@ pytestmark = [pytest.mark.integration, pytest.mark.usefixtures("test_static_stor
     ["quiet", "confirmed", "active", "paused", "cancelled", "resolved", "finished", "outgoing"],
 )
 def test_incoming_threat(user, language, stage):
-    game = services.create_game(user, "Threats", opponents="passive")
+    game = services.create_game(user, "Threats", opponents="passive", strategy_version=1)
     if stage != "quiet":
         actor, target, origin = ("p1", "c4", "c3") if stage == "outgoing" else ("p2", "c3", "c4")
         engine.confirm_order(

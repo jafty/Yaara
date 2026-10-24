@@ -512,7 +512,7 @@ with sync_playwright() as playwright:
             page.get_by_role("heading", name="The people committed" if en else "Les hommes engagés")
         ).to_be_visible()
         page.locator(".wax-seal").click()
-        assert page.locator('[data-map-state="engaged"]').count() == 1
+        assert page.locator('[data-map-state="engaged"]').count() == 0
         page.screenshot(path=str(artifacts / f"decrees-desktop-{language}.png"), full_page=True)
         for moon in range(1, 4):
             page.locator('.bookmarks a[data-section="domain"]').click()

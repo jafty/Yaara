@@ -1,5 +1,19 @@
 # Implementation decisions
 
+## 2026-10-24 · Paid intelligence, integration and reciprocal frontier encounters
+
+The owner approved this package after reviewing a complete 120-Moon archive. New economy-four games save `strategy_version=2`; missing markers and explicit version one preserve old admission, target exclusivity, visibility and military behavior. No snapshot backfill or silent conversion. Keep the current economy, raid tariffs, respite, supplies and N/N+1/N+2 travel unchanged.
+
+Inherited local Faithful defend for the three Moons following capture but cannot join offensives or relief until N+4. Track the inherited local pool separately from returning friendly contingents and new recruits. Local deaths reduce restricted/free pools proportionally; absent deaths do not consume the restricted local pool. No tax/score penalty.
+
+Enemy seals and enemy respite dates no longer leak through maps or validation. Admit duplicate target orders and leave invalid-objective/respite-at-arrival consequences unchanged, including no refund. Effective surveillance I learns target/date only after actual departure; II additionally learns mission kind and a coarse troop band. Persist dated recipient-specific warnings, retaining learned information after damage and not transferring intelligence to a new owner.
+
+Automatically select a directly adjacent friendly frontier departure city reachable by every contributor: largest local contribution, then stable city ID. Revalidate at departure and freeze the selected road. Reject disconnected assembly without reservation or expenditure. No manual route selector or enemy-state-dependent route optimization.
+
+Resolve opposite marching forces from the same departure Moon on each road in one aggregated field encounter, regardless of raid/capture combination. Equipped strength determines whether both return (<1.25), a clear victor continues (1.25–<2), or an overwhelming victor continues (>=2). Loss rates on the smaller engaged count are respectively 6%/6%, 2%/12% and 0/4%, half-up rounded and proportionally allocated. Retain original return dates; a field victor continues city combat using survivors even below the initial launch minimum. No walls, city relief, shelter or siege bonuses in the field, no seal-time initiative. Player reports expose exact own losses and qualitative enemy losses; private audit values stay outside projections.
+
+Documented variations and expectations precede implementation in `docs/frontier-contract.md` and independent native/HTTP cases. The privacy change selects the Full local checkpoint, including real PostgreSQL, 100% native statement/branch coverage, both translation catalogs and the bilingual browser journey. Windows startup fixtures now use native PATH separators, POSIX-compatible event paths and explicit LF stubs; the success/failure assertions remain unchanged. The browser journey exposed a 320px header wrapping just beyond its existing height limit; reduce the owning status component's vertical padding while preserving 16px body text and 44px alert targets.
+
 ## 2026-10-23 · Light literary layout refinement
 
 - The owner approved compact but visible artwork, in-game scope, and Council news followed by upcoming events before city accounts. Preserve the paper, serif manuscript, local fresco assets, three destinations, exact figures and scribe narration. Contextual headings use complete 3:2 illustrations beside the title; report artwork follows its dated title and is restrained to twelve rem. Council excerpts remain thirty-five words, with full-letter and city links after the prose.

@@ -3547,3 +3547,94 @@ msgstr "Les frontières sont indicatives ; seules les routes relient les cités.
 
 msgid "Entrée en vigueur"
 msgstr "Entrée en vigueur"
+
+#. Approved frontier rules.
+msgid "Les contingents doivent rejoindre une même cité de frontière par nos possessions."
+msgstr "Les contingents doivent rejoindre une même cité de frontière par nos possessions."
+
+#. Approved frontier rules.
+msgid "Les contingents ne peuvent plus rejoindre leur cité de frontière."
+msgstr "Les contingents ne peuvent plus rejoindre leur cité de frontière."
+
+#. Approved frontier rules.
+msgid "Moins de 50 Fidèles."
+msgstr "Moins de 50 Fidèles."
+
+#. Approved frontier rules.
+msgid "Entre 50 et 99 Fidèles."
+msgstr "Entre 50 et 99 Fidèles."
+
+#. Approved frontier rules.
+msgid "Entre 100 et 199 Fidèles."
+msgstr "Entre 100 et 199 Fidèles."
+
+#. Approved frontier rules.
+msgid "Au moins 200 Fidèles."
+msgstr "Au moins 200 Fidèles."
+
+#. Approved frontier rules.
+msgid "La surveillance signale une expédition vers {city}. Arrivée prévue : lune {moon}."
+msgstr "La surveillance signale une expédition vers {city}. Arrivée prévue : lune {moon}."
+
+#. Approved frontier rules.
+msgid " Mission observée : {kind}. "
+msgstr " Mission observée : {kind}. "
+
+#. Approved frontier rules.
+msgid "La surveillance de {city}"
+msgstr "La surveillance de {city}"
+
+#. Approved frontier rules.
+msgid "Sur la route de {first} à {second}, nos troupes ont rencontré une armée adverse. Pertes propres : {dead} Fidèles. Survivants : {survivors}. "
+msgstr "Sur la route de {first} à {second}, nos troupes ont rencontré une armée adverse. Pertes propres : {dead} Fidèles. Survivants : {survivors}. "
+
+#. Approved frontier rules.
+msgid "La route est ouverte : les survivants poursuivent leur mission."
+msgstr "La route est ouverte : les survivants poursuivent leur mission."
+
+#. Approved frontier rules.
+msgid "Les survivants renoncent à avancer et rentrent à la date prévue."
+msgstr "Les survivants renoncent à avancer et rentrent à la date prévue."
+
+#. Approved frontier rules.
+msgid "Bataille rangée sur la frontière"
+msgstr "Bataille rangée sur la frontière"
+
+#. Approved frontier rules.
+msgid " La surveillance signale les armées parties et leur lune d’arrivée."
+msgstr " La surveillance signale les armées parties et leur lune d’arrivée."
+
+#. Approved frontier rules.
+msgid " La surveillance signale aussi la mission et une estimation des effectifs."
+msgstr " La surveillance signale aussi la mission et une estimation des effectifs."
+
+#. Approved frontier rules.
+#, python-format
+msgid "Arrivée prévue : lune %(moon)s."
+msgstr "Arrivée prévue : lune %(moon)s."
+
+#. Approved frontier rules.
+#, python-format
+msgid "%(city)s : %(count)s Fidèles hérités assurent la défense locale. Départs et secours possibles à partir de la lune %(moon)s."
+msgstr "%(city)s : %(count)s Fidèles hérités assurent la défense locale. Départs et secours possibles à partir de la lune %(moon)s."
+
+#. Approved frontier rules.
+#, python-format
+msgid "%(count)s Fidèles hérités assurent la défense locale. Départs et secours possibles à partir de la lune %(moon)s."
+msgstr "%(count)s Fidèles hérités assurent la défense locale. Départs et secours possibles à partir de la lune %(moon)s."
+
+#. Approved frontier rules.
+msgid "Les expéditions rejoignent automatiquement une cité de frontière reliée à la cible. Les contingents doivent pouvoir s’y assembler par vos possessions. Plusieurs attaques peuvent viser une même cité."
+msgstr "Les expéditions rejoignent automatiquement une cité de frontière reliée à la cible. Les contingents doivent pouvoir s’y assembler par vos possessions. Plusieurs attaques peuvent viser une même cité."
+
+#. Approved frontier rules.
+msgid "Sans surveillance, aucune alerte anticipée ne révèle une attaque. Le premier niveau signale les armées déjà parties et leur lune d’arrivée ; le second ajoute la mission et une estimation des effectifs. Les ordres seulement scellés restent secrets."
+msgstr "Sans surveillance, aucune alerte anticipée ne révèle une attaque. Le premier niveau signale les armées déjà parties et leur lune d’arrivée ; le second ajoute la mission et une estimation des effectifs. Les ordres seulement scellés restent secrets."
+
+#. Approved frontier rules.
+msgid "Deux armées empruntant la même route en sens opposés durant la même lune livrent une bataille rangée. Une victoire nette permet de poursuivre la mission avec les survivants ; des forces proches renoncent toutes deux à avancer. Les murs et les secours de cité n’interviennent pas sur la route."
+msgstr "Deux armées empruntant la même route en sens opposés durant la même lune livrent une bataille rangée. Une victoire nette permet de poursuivre la mission avec les survivants ; des forces proches renoncent toutes deux à avancer. Les murs et les secours de cité n’interviennent pas sur la route."
+
+#. Approved frontier rules.
+msgid "Après une conquête, les Fidèles locaux hérités défendent la cité durant trois lunes sans pouvoir partir en expédition ni en secours. Les comptes indiquent leur lune de disponibilité."
+msgstr "Après une conquête, les Fidèles locaux hérités défendent la cité durant trois lunes sans pouvoir partir en expédition ni en secours. Les comptes indiquent leur lune de disponibilité."

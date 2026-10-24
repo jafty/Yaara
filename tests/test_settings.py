@@ -74,10 +74,11 @@ def test_render_startup_migration_boundary(tmp_path, migration_status):
     events = tmp_path / "events"
     python = tmp_path / "python"
     python.write_text(
-        f'#!/bin/sh\nprintf "migrate %s\\n" "$*" >> "$STARTUP_EVENTS"\nexit {migration_status}\n'
+        f'#!/bin/sh\nprintf "migrate %s\\n" "$*" >> "$STARTUP_EVENTS"\nexit {migration_status}\n',
+        newline="\n",
     )
     gunicorn = tmp_path / "gunicorn"
-    gunicorn.write_text('#!/bin/sh\nprintf "serve\\n" >> "$STARTUP_EVENTS"\n')
+    gunicorn.write_text('#!/bin/sh\nprintf "serve\\n" >> "$STARTUP_EVENTS"\n', newline="\n")
     python.chmod(0o755)
     gunicorn.chmod(0o755)
     result = subprocess.run(
@@ -85,8 +86,8 @@ def test_render_startup_migration_boundary(tmp_path, migration_status):
         cwd=Path(__file__).parents[1],
         env={
             **os.environ,
-            "PATH": f"{tmp_path}:{os.environ['PATH']}",
-            "STARTUP_EVENTS": str(events),
+            "PATH": f"{tmp_path}{os.pathsep}{os.environ['PATH']}",
+            "STARTUP_EVENTS": events.as_posix(),
         },
         capture_output=True,
         text=True,

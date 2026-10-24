@@ -1,6 +1,6 @@
 """Explicit allowlists of player-visible fields. Never serialize the aggregate."""
 
-from . import engine
+from . import engine, tactics
 from .calendar import closed_moon, closing_moon
 from .messages import Message
 from .narration import WORK_ADVICE, WORK_PURPOSES, work_benefit, work_effect, work_name
@@ -24,6 +24,15 @@ STATUS_LABELS = {
     "cancelled": Message("Annulé"),
     "invalidated": Message("Invalidé"),
 }
+
+
+def surveillance_note(level):
+    return (
+        Message(" La surveillance signale les armées parties et leur lune d’arrivée.")
+        if level == 1
+        else Message(" La surveillance signale aussi la mission et une estimation des effectifs.")
+    )
+
 
 # Public schematic geography; ownership and road topology never move settlements.
 ATLAS_POSITIONS = (
@@ -116,6 +125,16 @@ def player_view(state, actor):
             "y": positions[index][1],
             "territory": territories[index],
         }
+        if tactics.enabled(state):
+            public["engaged"] = False
+            public["own_engagement"] = any(
+                order["actor"] == actor
+                and order.get("target") == city["id"]
+                and order["status"] in ("confirmed", "active")
+                for order in state["orders"]
+            )
+            if not public["owned"]:
+                public["raid_available_moon"] = 0
         if public["owned"]:
             away = engine.absent(state, city["id"])
             public.update(
@@ -124,7 +143,8 @@ def player_view(state, actor):
                     "present_population": city["population"] - away,
                     "fideles": city["fideles"],
                     "absent": away,
-                    "available_fideles": city["fideles"] - people[city["id"]],
+                    "available_fideles": engine.deployable_fideles(state, city["id"])
+                    - people[city["id"]],
                     "reserved_fideles": people[city["id"]],
                     "stock": city["stock"],
                     "capacity": engine.capacity(city, economy),
@@ -156,6 +176,25 @@ def player_view(state, actor):
                     ],
                 }
             )
+            if tactics.enabled(state):
+                public["restricted_fideles"] = engine.restricted_fideles(state, city)
+                public["restricted_until"] = city.get("restricted_until", 0)
+                public["incoming_warnings"] = []
+                for mission in state["expeditions"]:
+                    if mission["status"] != "outbound" or mission["target"] != city["id"]:
+                        continue
+                    learned = [w for w in mission.get("warnings", []) if w["recipient"] == actor]
+                    if not learned:
+                        continue
+                    warning = max(learned, key=lambda w: w["level"])
+                    detail = {"combat_month": warning["combat_month"]}
+                    if warning["level"] >= 2:
+                        detail.update(
+                            kind=ACTION_LABELS[warning["kind"]],
+                            force=engine.warning_force(warning["force_band"]),
+                        )
+                    public["incoming_warnings"].append(detail)
+                public["engaged"] = bool(public["incoming_warnings"])
             public["siege_food"] = (city["population"] - away) * (
                 500 if state["rules"] == "V1" else 0
             )
@@ -217,6 +256,11 @@ def player_view(state, actor):
                             "level": level,
                             "effective_level": effective,
                             "effect": work_effect(family, effective, economy)
+                            + (
+                                surveillance_note(effective)
+                                if tactics.enabled(state) and family == "watch"
+                                else ""
+                            )
                             if effective
                             else Message("État initial de cet ouvrage."),
                             "damaged": city["damaged"]
@@ -358,6 +402,11 @@ def player_view(state, actor):
                     work_name=work_name(kind, task["level"], economy),
                     benefit=work_benefit(
                         kind, current, task["level"], state.get("economy_version", 1)
+                    )
+                    + (
+                        surveillance_note(task["level"])
+                        if tactics.enabled(state) and kind == "watch"
+                        else ""
                     ),
                     available=not option["busy"],
                     status="busy" if option["busy"] else "available",
@@ -410,7 +459,12 @@ def player_view(state, actor):
                         "name": work_name(kind, level, economy),
                         "cost": cost,
                         "duration": duration,
-                        "effect": work_effect(kind, level, state.get("economy_version", 1)),
+                        "effect": work_effect(kind, level, state.get("economy_version", 1))
+                        + (
+                            surveillance_note(level)
+                            if tactics.enabled(state) and kind == "watch"
+                            else ""
+                        ),
                     }
                     for level, cost, duration in prices
                 ],
@@ -456,6 +510,7 @@ def player_view(state, actor):
         "rules": state["rules"],
         "seasonal_raids": economy >= 3,
         "strategic_rules": economy >= 4,
+        "frontier_rules": tactics.enabled(state),
         "free_teams": sum(not city["busy"] for city in owned),
         "next_free_team_moon": min(
             (city["team_free_moon"] for city in owned if city["busy"]), default=None

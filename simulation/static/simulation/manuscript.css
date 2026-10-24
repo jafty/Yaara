@@ -180,7 +180,7 @@ button:hover {
   align-items: center;
   justify-content: center;
   gap: 0.35rem 0.65rem;
-  padding-block: 0.35rem 0.5rem;
+  padding-block: 0.15rem 0.25rem;
 }
 .alerts-trigger {
   display: inline-flex;

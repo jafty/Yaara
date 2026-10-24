@@ -77,6 +77,7 @@ def reign_archive(game, user, actor, scope):
             for key in (
                 "calendar_version",
                 "economy_version",
+                "strategy_version",
                 "forge_version",
                 "map_version",
             )
@@ -135,6 +136,8 @@ CITY_FIELDS = (
     "damaged",
     "raid_available_moon",
     "deaths",
+    "restricted_fideles",
+    "restricted_until",
     "works",
 )
 BUILDING_FIELDS = ("kind", "level", "effective_level", "damaged", "finish_moon")

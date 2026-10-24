@@ -18,7 +18,9 @@ def build_alert_center(view):
         for city in view["owned_cities"]:
             common = {"city_id": city["id"], "city_name": city["name"]}
             if city["engaged"] and not city["own_engagement"]:
-                threats.append({**common, "kind": "threat"})
+                threats.append(
+                    {**common, "kind": "threat", "warnings": city.get("incoming_warnings", [])}
+                )
             buildings = city["buildings"] or [
                 {"kind": "walls", "name": city["wall_label"], "damaged": city["damaged"]}
             ]

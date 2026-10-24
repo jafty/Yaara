@@ -94,6 +94,7 @@ def create_game(
     forge_version=2,
     map_version=3,
     economy_version=4,
+    strategy_version=2,
 ):
     # Serialize account-level creation limits as well as each game's commands.
     get_user_model().objects.select_for_update().get(pk=user.pk)
@@ -112,6 +113,7 @@ def create_game(
         forge_version=forge_version,
         map_version=map_version,
         economy_version=economy_version,
+        strategy_version=strategy_version,
     )
     awaiting_start = mode == "scheduled" and economy_version >= 2
     if awaiting_start:

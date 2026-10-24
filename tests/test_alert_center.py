@@ -74,7 +74,9 @@ def test_alert_destination(user, language, issue, anchor):
 
 
 def open_game(user, language, economy=4):
-    game = services.create_game(user, "Alert centre", opponents="passive", economy_version=economy)
+    game = services.create_game(
+        user, "Alert centre", opponents="passive", economy_version=economy, strategy_version=1
+    )
     client = Client()
     client.force_login(user)
     client.cookies["django_language"] = language

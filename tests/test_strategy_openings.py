@@ -171,7 +171,7 @@ def test_border_counterattack():
     When both armies reach the opposite frontier during Moon two.
     Then the first siege holds but the counterattack captures its border origin and closes its route.
     """
-    state = engine.new_state(opponents="passive")
+    state = engine.new_state(opponents="passive", strategy_version=1)
     engine.confirm_order(
         state,
         "p1",

@@ -29,7 +29,14 @@
 <p>{% translate "Sans surveillance, 20 %, 30 % ou 40 % des Fidèles disponibles défendent les villages. Les postes de veille garantissent 40 %, les tours 60 %. Les fortifications protègent seulement des captures. Le matériel de siège réduit leur bonus, jamais la défense de base." %}</p>
 <p>{% translate "Les bonus militaires remplacent les niveaux précédents. Chaque contingent garde son équipement, son transport et son matériel de siège de départ. Le transport augmente le butin emportable, sans améliorer les chances de victoire." %}</p></section>{% endif %}
 <section id="expeditions"><h2>{% translate "Les expéditions" %}</h2>
+{% if view.frontier_rules %}
+<p>{% translate "Les expéditions rejoignent automatiquement une cité de frontière reliée à la cible. Les contingents doivent pouvoir s’y assembler par vos possessions. Plusieurs attaques peuvent viser une même cité." %}</p>
+<p>{% translate "Sans surveillance, aucune alerte anticipée ne révèle une attaque. Le premier niveau signale les armées déjà parties et leur lune d’arrivée ; le second ajoute la mission et une estimation des effectifs. Les ordres seulement scellés restent secrets." %}</p>
+<p>{% translate "Deux armées empruntant la même route en sens opposés durant la même lune livrent une bataille rangée. Une victoire nette permet de poursuivre la mission avec les survivants ; des forces proches renoncent toutes deux à avancer. Les murs et les secours de cité n’interviennent pas sur la route." %}</p>
+<p>{% translate "Après une conquête, les Fidèles locaux hérités défendent la cité durant trois lunes sans pouvoir partir en expédition ni en secours. Les comptes indiquent leur lune de disponibilité." %}</p>
+{% else %}
 <p>{% translate "Un raid cherche du butin dans les villages ; une capture cherche à prendre la cité. Les bordures de la carte représentent des territoires, pas les routes : les mentions de portée indiquent les cibles accessibles par vos possessions reliées. Une seule attaque peut être engagée vers une cible." %}</p>
+{% endif %}
 <p>{% blocktranslate with raid=view.raid_minimum capture=view.capture_minimum %}Il faut au moins {{ raid }} Fidèles pour un raid, {{ capture }} pour une capture. Le formulaire précise les cités capables de fournir les hommes.{% endblocktranslate %}</p>
 <p>{% translate "La carte montre les propriétaires et les fortifications publiques. Les forces et les stocks rivaux restent secrets ; vos rapports gardent les observations du jour où ils ont été écrits. Le devis annonce départ, combat et retour prévu. Les tentatives de siège suivent actuellement ce même calendrier." %}</p>
 {% if view.strategic_rules %}{% include 'simulation/ledger_help.html' with topic='siege' %}{% include 'simulation/ledger_help.html' with topic='convoy' %}{% endif %}
