@@ -125,9 +125,11 @@ def test_named_quotes(folio):
         if action["repair"] and not action["prices"]:
             continue
         card = re.search(rf'<a id="work-{action["kind"]}".*?</a>', text, re.S).group()
-        quotes = re.findall(r'<span class="work-price">(.*?)</span>', card, re.S)
+        assert f'illustration-{action.get("scene", action["kind"])}"' in card
+        quotes = re.findall(r'<li class="work-price">(.*?)</li>', card, re.S)
         assert len(quotes) == len(action["prices"])
         for quote, price in zip(quotes, action["prices"], strict=True):
+            assert 'data-icon="grain"' in quote and 'data-icon="moon"' in quote
             assert str(price["name"]) in unescape(quote)
             figures = re.sub(r"[^0-9]", "", unescape(re.sub(r"<[^>]+>", "", quote)))
             assert figures == f"{price['cost']}{price['duration']}"

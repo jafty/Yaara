@@ -23,10 +23,13 @@ def no_overflow(page):
     for scene in page.locator(".illustration").all():
         box = scene.bounding_box()
         framed = scene.evaluate("el => getComputedStyle(el, '::before').content !== 'none'")
-        ratio = 2 if framed else 1.5
+        source = scene.evaluate("el => getComputedStyle(el, '::before').backgroundImage")
+        # Standalone originals keep their complete composition; atlas excerpts are wider.
+        catalogue = scene.evaluate("el => Boolean(el.closest('.work-card'))")
+        ratio = 1.5 if not framed or (".jpg" in source and not catalogue) else 2
         assert abs(box["width"] / box["height"] - ratio) < 0.02
         if framed:
-            # Crop the original composition; never stretch a scene or expose adjacent atlas cells.
+            # Never stretch a scene or expose adjacent atlas cells.
             geometry = scene.evaluate("""el => {
               const art = getComputedStyle(el, '::before');
               return {width: parseFloat(art.width), height: parseFloat(art.height),
@@ -35,6 +38,10 @@ def no_overflow(page):
             assert abs(geometry["width"] / geometry["height"] - 1.5) < 0.02
             assert geometry["overflow"] == "hidden"
     if page.locator(".book-title").count():
+        nav = page.locator(".bookmarks").bounding_box()
+        active = page.locator('.bookmarks a[aria-current="page"]').bounding_box()
+        if active:
+            assert abs(active["y"] - nav["y"]) < 0.5, "Active marker must meet the band edge"
         scannable_layout(page)
 
 
@@ -97,6 +104,8 @@ def section_jump_lands(page, selector):
     geometry = page.evaluate(
         """selector => ({
       width: innerWidth,
+      targetId: selector,
+      hash: location.hash,
       font: getComputedStyle(document.documentElement).fontSize,
       padding: getComputedStyle(document.documentElement).scrollPaddingTop,
       target: document.querySelector(selector).getBoundingClientRect().top,
@@ -327,6 +336,10 @@ with sync_playwright() as playwright:
         )
         assert "Level " not in page.locator(".work-choices").inner_text()
         assert "Niveau " not in page.locator(".work-choices").inner_text()
+        expect(page.locator(".work-card > .illustration")).to_have_count(
+            page.locator(".work-card").count()
+        )
+        redesign_reflow(page)
         # A specific work has a native return path to the complete Works list.
         for family, filename in (
             ("irrigation", "yaara-atlas.png"),
@@ -683,7 +696,7 @@ with sync_playwright() as playwright:
                         == "100% 100%"
                     )
                     box = scene.bounding_box()
-                    assert abs(box["width"] / box["height"] - 2) < 0.02
+                    assert abs(box["width"] / box["height"] - 1.5) < 0.02
                     scene.evaluate("el => el.remove()")
         page.screenshot(path=str(artifacts / f"letters-desktop-{language}.png"), full_page=True)
         # Switching the same persisted letters translates their bodies too.

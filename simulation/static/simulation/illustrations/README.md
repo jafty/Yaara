@@ -1,9 +1,14 @@
 # Material and illustration assets
 
 Original narrative images and sprite atlases are unchanged. Landscape frames
-span the reading column below report and selected-work titles. The inner scene
-keeps its 3:2 proportions inside a centered 2:1 crop; atlas cells remain isolated.
-There are no thumbnail illustrations beside headings or in work/city summaries.
+span the reading column below report and selected-work titles. Standalone scenes
+keep their complete 3:2 composition; atlas excerpts use a centered 2:1 frame,
+with isolated cells and undistorted proportions.
+Catalogue tiles use 2:1 crops above their headings as visual scanning cues;
+the owner accepts cropping while reviewing this layout. There are no tiny
+illustrations beside headings or in city summaries.
+The experimental AI-widened granary, forge and fortifications were rejected for
+yellow coloration and a less schematic rendering. They are not application assets.
 
 `deckled-edge.png` is a generated alpha mask for restrained irregular paper edges.
 It does not repaint or blur the scene. It is applied once to the shared frame;

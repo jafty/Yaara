@@ -5,9 +5,22 @@
 The owner's maquettes and subsequent screenshot reviews supersede the earlier
 uniform papyrus page, tiny heading illustrations and repeated parchment panels.
 Use clean reading surfaces, full-column scenes below story and work-family
-titles, and compact text-only catalogues and city summaries. Council and
+titles, and compact city summaries. The latest catalogue review restores
+illustrations above titles in two unboxed columns, with one-column fallback
+for narrow screens and enlarged text. Keep every named upgrade's price and
+duration visible with grain and moon pictograms; move explanatory purpose to
+the existing family page. Council and
 expedition headings have no decorative thumbnail. Keep the original scene files;
 a generated alpha mask supplies subtle worn edges without blurring the drawings.
+The owner rejected the generated panoramic variants as yellowish and less
+schematic. Use the complete original 3:2 standalone compositions; keep the 2:1
+frame for atlas excerpts and catalogue tiles. The owner accepts cropping in
+the catalogue, pending a possible future artwork pass. The active menu marker meets the green band's
+top edge directly.
+The latest review prioritizes game density over editorial scale: smaller page
+and section headings, tighter rows and gaps, while keeping 17px body text and
+44px interactive targets.
+Native fragment scrolling reserves space above the fixed bottom menu.
 
 Trial a pale stone header and a deep mineral-green bottom menu with cream labels
 and light terracotta selection. Mission controls reuse the existing pictograms
