@@ -1,13 +1,14 @@
-{% extends 'simulation/manuscript.html' %}{% load i18n %}
+{% extends archive_base|default:'simulation/manuscript.html' %}{% load i18n %}
 {% block content %}
 <header class="chapter-heading compact-heading"><h1>{% translate "Le livre du règne" %}</h1></header>
 <p>{% translate "Le règne est achevé. Voici les lettres conservées, dans l’ordre des lunes, et les comptes enregistrés à leur clôture." %}</p>
 <nav class="reading-links" aria-label="{% translate 'Les maisons du livre' %}">
-    <a href="?scope=player"{% if archive.scope == 'player' %} aria-current="page"{% endif %}>{% translate "Votre maison" %}</a>
+    {% if has_personal_book %}<a href="?scope=player"{% if archive.scope == 'player' %} aria-current="page"{% endif %}>{% translate "Votre maison" %}</a>{% endif %}
     {% if can_read_all %}<a href="?scope=all"{% if archive.scope == 'all' %} aria-current="page"{% endif %}>{% translate "Toutes les maisons" %}</a>{% endif %}
 </nav>
+<details class="archive-exports" data-archive-exports><summary>{% translate "Exporter les archives" %}</summary>
 <p class="reading-links"><a href="?scope={{ archive.scope }}&amp;format=compact">{% translate "Télécharger le résumé pour discussion (JSON compact)" %}</a></p>
-<p class="reading-links"><a href="?scope={{ archive.scope }}&amp;format=json">{% translate "Télécharger le livre pour analyse (JSON)" %}</a></p>
+<p class="reading-links"><a href="?scope={{ archive.scope }}&amp;format=json">{% translate "Télécharger le livre pour analyse (JSON)" %}</a></p></details>
 <p>{% translate "Les lettres d’un même événement peuvent figurer pour plusieurs destinataires : ce sont leurs témoignages, pas des événements supplémentaires. Les comptes décrivent la fin de chaque lune enregistrée." %}</p>
 {% if archive.coverage.missing_account_moons %}<p class="marginal-note">{% translate "Certains comptes mensuels n’ont pas été conservés. Les lettres disponibles et les comptes finaux restent accessibles ; les mois manquants sont signalés dans le téléchargement, sans reconstitution." %}</p>{% endif %}
 <p class="reading-links"><a href="#archive-accounts">{% translate "Les comptes conservés" %} ↓</a></p>
@@ -29,5 +30,5 @@
 <h2>{% translate "Les comptes finaux" %}</h2>
 {% for actor, account in archive.final_accounts.items %}{% include 'simulation/archive_account.html' %}{% endfor %}
 </section>
-<p class="reading-links"><a href="{% url 'game' game.id %}">← {% translate "Retour au conseil" %}</a></p>
+<p class="reading-links">{% if has_personal_book %}<a href="{% url 'game' game.id %}">← {% translate "Retour au conseil" %}</a>{% else %}<a href="{% url 'shared_operator_room' game.id %}">← {% translate "Gérer cette partie" %}</a>{% endif %}</p>
 {% endblock %}

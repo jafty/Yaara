@@ -7,14 +7,15 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.core import signing
 from django.core.exceptions import PermissionDenied
-from django.db import connection
+from django.db import connection, transaction
+from django.db.models import Q
 from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_GET, require_http_methods, require_POST
 
-from . import engine, services
+from . import engine, multiplayer, services
 from .archives import condense_archive
 from .archives import reign_archive as build_reign_archive
 from .calendar import closing_moon
@@ -23,7 +24,7 @@ from .models import Game, Report
 from .narration import work_effect, work_phrase
 from .presentation import localize, report_view
 from .projections import player_view
-from .rules import ACTION_LABELS, RuleError, allocate
+from .rules import ACTION_LABELS, RuleError, allocate, expedition_prices
 
 
 @require_GET
@@ -50,9 +51,26 @@ def signup(request):
     return render(request, "registration/signup.html", {"form": form})
 
 
-@login_required
 def home(request):
-    games = Game.objects.filter(memberships__user=request.user).order_by("-created_at")
+    if not request.user.is_authenticated:
+        from .guest_views import landing
+
+        return landing(request)
+    from .guest_services import guest_identity
+
+    identity = guest_identity(request.user)
+    if identity is not None:
+        return redirect("game", game_id=identity.game_id)
+    games = (
+        Game.objects.filter(
+            Q(memberships__user=request.user)
+            | Q(memberships__user__shared_identity__account=request.user)
+        )
+        .distinct()
+        .order_by("-created_at")
+    )
+    for game in games:
+        multiplayer.check_seat_session(request, game)
     cards = [
         {
             "id": game.id,
@@ -64,7 +82,12 @@ def home(request):
             "finished": game.state["status"] == "finished",
             "reign_months": game.state["config"]["reign_months"],
             "mode": game.mode,
-            "cities": sum(city["owner"] == "p1" for city in game.state["cities"].values()),
+            "cities": sum(
+                city["owner"] == services.membership(game, request.user)
+                for city in game.state["cities"].values()
+            ),
+            "shared": game.kind == "multiplayer",
+            "waiting": game.kind == "multiplayer" and game.lobby_status == "waiting",
         }
         for game in games
     ]
@@ -73,6 +96,9 @@ def home(request):
 
 @login_required
 def new_game(request):
+    from .guest_services import require_registered
+
+    require_registered(request.user)
     form = GameForm(request.POST or None)
     if request.method == "POST" and form.is_valid():
         try:
@@ -81,16 +107,45 @@ def new_game(request):
             form.add_error(None, localize(error.args[0]))
         else:
             return redirect(reverse("game", args=[game.id]) + "?tab=prologue")
-    return render(request, "simulation/new_game.html", {"form": form})
+    initial = engine.new_state()
+    cities = list(initial["cities"].values())[:3]
+    capture_prices = expedition_prices(initial["economy_version"])["capture"]
+    capture_price = (
+        initial["config"]["capture_minimum"] * capture_prices["per_person"] + capture_prices["base"]
+    )
+    return render(
+        request,
+        "simulation/new_game.html",
+        {
+            "form": form,
+            "initial_population": sum(city["population"] for city in cities),
+            "initial_fideles": sum(city["fideles"] for city in cities),
+            "initial_stock_per_city": cities[0]["stock"],
+            "initial_total_stock": sum(city["stock"] for city in cities),
+            "initial_capture_minimum_cost": capture_price,
+        },
+    )
 
 
 def authorized_game(request, game_id):
-    game = get_object_or_404(Game, id=game_id)
+    queryset = (
+        Game.objects.select_for_update()
+        if request.method == "POST" and connection.in_atomic_block
+        else Game.objects.all()
+    )
+    game = get_object_or_404(queryset, id=game_id)
+    multiplayer.check_seat_session(request, game)
     actor = services.membership(game, request.user)
     return game, actor
 
 
-def metadata(game):
+def metadata(game, actor=None, user=None):
+    shared = game.kind == "multiplayer"
+    can_manage = (
+        multiplayer.is_operator(user)
+        if shared and user is not None
+        else user is not None and game.owner_id == user.pk
+    )
     return {
         "id": str(game.id),
         "title": game.title,
@@ -98,7 +153,10 @@ def metadata(game):
         "paused": game.paused,
         "deadline": game.deadline,
         "interval_minutes": game.interval_minutes,
-        "revision": game.revision,
+        "revision": multiplayer.visible_revision(game, actor) if actor is not None else 0,
+        "shared": shared,
+        "can_manage": can_manage,
+        "can_advance": not shared and can_manage and game.mode == "manual",
         "awaiting_start": game.state.get("awaiting_start", False),
         "clock_aligned": game.state.get("clock_aligned", False),
     }
@@ -108,6 +166,8 @@ def metadata(game):
 @require_GET
 def desk(request, game_id):
     game, actor = authorized_game(request, game_id)
+    if game.kind == "multiplayer" and game.lobby_status in ("waiting", "cancelled"):
+        return redirect("shared_lobby", game_id=game_id)
     view = localize(player_view(game.state, actor))
     for city in view["owned_cities"]:
         city["crew_assignments"] = [
@@ -288,7 +348,7 @@ def desk(request, game_id):
         request,
         "simulation/chronicle.html",
         {
-            "game": metadata(game),
+            "game": metadata(game, actor, request.user),
             "view": view,
             "tab": tab,
             "prologue_page": prologue_page,
@@ -346,8 +406,12 @@ def desk(request, game_id):
 @login_required
 @require_GET
 def reign_archive(request, game_id):
-    game, actor = authorized_game(request, game_id)
     scope = request.GET.get("scope", "player")
+    game = get_object_or_404(Game, id=game_id)
+    if game.kind == "multiplayer" and scope == "all" and multiplayer.is_operator(request.user):
+        actor = None
+    else:
+        game, actor = authorized_game(request, game_id)
     output = request.GET.get("format", "html")
     if scope not in {"player", "all"} or output not in {"html", "json", "compact"}:
         raise Http404
@@ -368,10 +432,16 @@ def reign_archive(request, game_id):
             request,
             "simulation/reign_archive.html",
             {
-                "game": metadata(game),
-                "view": localize(player_view(game.state, actor)),
+                "game": metadata(game, actor, request.user),
+                "view": localize(player_view(game.state, actor)) if actor else {"finished": True},
                 "archive": archive,
-                "can_read_all": game.owner_id == request.user.pk,
+                "has_personal_book": actor is not None,
+                "archive_base": "simulation/base.html"
+                if actor is None
+                else "simulation/manuscript.html",
+                "can_read_all": multiplayer.is_operator(request.user)
+                if game.kind == "multiplayer"
+                else game.owner_id == request.user.pk,
                 "tab": "domain",
             },
         )
@@ -383,7 +453,14 @@ def reign_archive(request, game_id):
 @require_GET
 def state_view(request, game_id):
     game, actor = authorized_game(request, game_id)
-    return JsonResponse({"game": metadata(game), "view": localize(player_view(game.state, actor))})
+    response = JsonResponse(
+        {
+            "game": metadata(game, actor, request.user),
+            "view": localize(player_view(game.state, actor)),
+        }
+    )
+    response["Cache-Control"] = "private, no-store"
+    return response
 
 
 def order_form_url(game, spec):
@@ -414,6 +491,7 @@ def order_form_url(game, spec):
 
 @login_required
 @require_http_methods(["GET", "POST"])
+@transaction.atomic
 def preview_order(request, game_id):
     game, actor = authorized_game(request, game_id)
     spec = {}
@@ -428,7 +506,10 @@ def preview_order(request, game_id):
             ):
                 raise signing.BadSignature
             spec = data["spec"]
-            if data["revision"] != game.revision or data["month"] != game.state["month"]:
+            if (
+                data["revision"] != multiplayer.visible_revision(game, actor)
+                or data["month"] != game.state["month"]
+            ):
                 raise signing.BadSignature
             services.check_window(game, data["month"])
             order = engine.prepare_order(game.state, actor, spec, data["request_id"])
@@ -477,7 +558,7 @@ def preview_order(request, game_id):
                 "user_id": request.user.pk,
                 "request_id": str(request_id),
                 "month": game.state["month"],
-                "revision": game.revision,
+                "revision": multiplayer.visible_revision(game, actor),
                 "spec": spec,
             },
             salt="yaara-order",
@@ -533,7 +614,7 @@ def preview_order(request, game_id):
         request,
         "simulation/decree_letter.html",
         {
-            "game": metadata(game),
+            "game": metadata(game, actor, request.user),
             "label": localize(ACTION_LABELS[kind]),
             "view": localize(player_view(game.state, actor)),
             "tab": "decrees",
@@ -555,6 +636,7 @@ def preview_order(request, game_id):
 
 @login_required
 @require_POST
+@transaction.atomic
 def confirm_order(request, game_id):
     game, actor = authorized_game(request, game_id)
     destination = order_form_url(game, {})
@@ -594,6 +676,7 @@ def confirm_order(request, game_id):
 
 @login_required
 @require_POST
+@transaction.atomic
 def cancel_order(request, game_id, order_id):
     authorized_game(request, game_id)
     destination = request.POST.get("return_tab", "decrees")
@@ -614,6 +697,7 @@ def cancel_order(request, game_id, order_id):
 
 @login_required
 @require_POST
+@transaction.atomic
 def advance(request, game_id):
     authorized_game(request, game_id)
     try:
@@ -643,6 +727,7 @@ def advance(request, game_id):
 
 @login_required
 @require_POST
+@transaction.atomic
 def pause(request, game_id):
     authorized_game(request, game_id)
     try:
@@ -654,6 +739,7 @@ def pause(request, game_id):
 
 @login_required
 @require_POST
+@transaction.atomic
 def start(request, game_id):
     authorized_game(request, game_id)
     services.start_calendar(request.user, game_id)

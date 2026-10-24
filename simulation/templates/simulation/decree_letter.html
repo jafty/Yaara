@@ -10,7 +10,7 @@
                 <div><dt>{% translate "Coût" %}</dt><dd>{{ order.cost }} {% translate "Mesures" %}</dd></div>
                 <div><dt>{% translate "Entrée en vigueur" %}</dt><dd>{% blocktranslate with v0=order.execute_month %}Lune {{ v0 }}{% endblocktranslate %}</dd></div>
             </dl>
-            <p class="decree-steps">{% translate "Valider l’action" %} · {% translate "Confirmer et sceller l’ordre" %}</p>
+            <p class="decree-steps">{% translate "Vérifier l’ordre" %} · {% translate "Confirmer et sceller l’ordre" %}</p>
         </div>
         <p class="salutation">{% translate "Monseigneur, voici les termes que j’ai couchés pour vous." %}</p>
         <p>{% blocktranslate with v0=order.cost v1=order.execute_month %}Que l’on consacre <strong>{{ v0 }} Mesures</strong> à cet ordre. Le sceau les réservera ; elles seront dépensées à son entrée en vigueur, lors de la clôture de la <strong>lune {{ v1 }}</strong>.{% endblocktranslate %}</p>
@@ -18,7 +18,7 @@
             {% include 'simulation/ledger_help.html' with topic='convoy' %}
         {% elif target %}<p>{% blocktranslate with v0=target v1=label|lower v2=order.execute_month v3=combat_month v4=return_month %}Que nos hommes se portent vers <strong>{{ v0 }}</strong> pour <em>{{ v1 }}</em>.<br>Départ à la lune <strong>{{ v2 }}</strong>, combat à la lune <strong>{{ v3 }}</strong>, retour à la lune <strong>{{ v4 }}</strong>.{% endblocktranslate %}</p>
             <h2>{% translate "Les hommes engagés" %}</h2>{% for item in contributions %}<p class="decree-clause">{% blocktranslate with v0=item.name v1=item.count %}Que <strong>{{ v0 }}</strong> fournisse <strong>{{ v1 }} Fidèles</strong>.{% endblocktranslate %}</p>{% endfor %}
-            <p>{% translate "Les hommes défendent encore leurs foyers jusqu’au départ. Une fois partis, ils n’y produisent plus d’impôt. Le premier sceau accepté engage la cible jusqu’au combat." %}</p>
+            <p>{% if view.frontier_rules %}{% translate "Les hommes défendent encore leurs foyers jusqu’au départ. Une fois partis, ils n’y produisent plus d’impôt. Plusieurs expéditions peuvent viser la même cité." %}{% else %}{% translate "Les hommes défendent encore leurs foyers jusqu’au départ. Une fois partis, ils n’y produisent plus d’impôt. Le premier sceau accepté engage la cible jusqu’au combat." %}{% endif %}</p>
         {% elif tasks %}<h2>{% translate "Les ouvrages confiés à nos cités" %}</h2>{% for item in tasks %}<p class="decree-clause">{% blocktranslate with v0=item.name v1=item.description|lower v2=item.finish_month %}À <strong>{{ v0 }}</strong> : <em>{{ v1 }}</em>. Achèvement à la <strong>lune {{ v2 }}</strong>.{% endblocktranslate %} {{ item.effect }}</p>{% endfor %}
         {% else %}<p>{% blocktranslate with v0=finish_month %}Que la forge équipe toutes nos possessions. Le projet s’achèvera à la <strong>lune {{ v0 }}</strong>.{% endblocktranslate %}</p>{% endif %}
         <h2>{% translate "La part demandée aux greniers" %}</h2><p>{% if view.local_funding %}{% translate "Chaque cité finance son ouvrage ou sa contribution. Aucun autre grenier ne comble son manque." %}{% else %}{% translate "Le prix est partagé selon les fonds libres de chaque cité. Ce partage sera conservé avec le décret." %}{% endif %}</p>

@@ -1,0 +1,16 @@
+{% extends 'simulation/base.html' %}{% load i18n %}
+{% block content %}
+<section class="panel padded guest-entry" data-guest-entry>
+    <span class="eyebrow">YAARA</span>
+    <h1>{% translate "Trois cités. Votre règne commence." %}</h1>
+    <p>{% translate "Gouvernez trois cités du désert. Construisez, défendez vos récoltes et conquérez les cités de deux maisons rivales." %}</p>
+    <p>{% translate "Vous donnez les ordres ; votre scribe en raconte les conséquences." %}</p>
+    {% if guest_enabled %}<form method="post" action="{% url 'guest_start' %}">
+        {% csrf_token %}<input type="hidden" name="start_key" value="{{ start_key }}">
+        <button class="button primary" type="submit">{% translate "Jouer sans inscription" %} →</button>
+    </form>{% else %}<p>{% translate "Les nouveaux règnes invités sont momentanément fermés." %}</p>{% endif %}
+    <p class="marginal-note">{% translate "Gratuit · Solo contre deux maisons contrôlées par l’ordinateur · Vous avancez les tours à votre rythme." %}</p>
+    <p>{% blocktranslate with days=retention_days %}Votre essai reste accessible dans ce navigateur pendant {{ days }} jours sans activité. Créez un compte à tout moment pour le retrouver sur un autre appareil.{% endblocktranslate %}</p>
+    <p class="reading-links"><a href="{% url 'login' %}">{% translate "Reprendre mon règne" %} →</a><a href="{% url 'signup' %}">{% translate "Créer mon compte" %}</a></p>
+</section>
+{% endblock %}

@@ -232,7 +232,7 @@ def test_order_labels(user, language, kind):
         else {"tab": "constructions", "action": kind}
     )
     html = client.get(reverse("game", args=[game.id]), query).content.decode()
-    assert ("Validate action" if language == "en" else "Valider l’action") in html
+    assert ("Review the order" if language == "en" else "Vérifier l’ordre") in html
     assert "Faire relire" not in html
     spec = {"kind": kind}
     if kind == "storage":

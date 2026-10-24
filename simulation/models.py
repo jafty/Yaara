@@ -18,17 +18,51 @@ class Game(models.Model):
     remaining_seconds = models.PositiveIntegerField(default=600)
     ranked = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
+    kind = models.CharField(max_length=16, default="solo")
+    lobby_status = models.CharField(max_length=16, blank=True, default="")
+    play_window = models.CharField(max_length=240, blank=True, default="")
+
+    class Meta:
+        permissions = [("manage_multiplayer_games", "Manage official multiplayer reigns")]
 
 
 class Participant(models.Model):
     game = models.ForeignKey(Game, on_delete=models.CASCADE, related_name="memberships")
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     actor = models.CharField(max_length=10)
+    view_revision = models.PositiveIntegerField(default=0)
 
     class Meta:
         constraints = [
             models.UniqueConstraint(fields=["game", "user"], name="one_user_per_game"),
             models.UniqueConstraint(fields=["game", "actor"], name="one_user_per_actor"),
+        ]
+
+
+class SeatIdentity(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="shared_identity"
+    )
+    account = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="linked_shared_seats",
+    )
+
+
+class SharedInvitation(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    game = models.ForeignKey(Game, on_delete=models.CASCADE, related_name="invitations")
+    actor = models.CharField(max_length=10)
+    version = models.PositiveIntegerField(default=1)
+    revoked = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["game", "actor"], name="one_shared_invite_per_seat")
         ]
 
 
@@ -85,3 +119,6 @@ class Report(models.Model):
     class Meta:
         ordering = ["-month", "-id"]
         indexes = [models.Index(fields=["game", "recipient", "-month"])]
+
+
+from .guest_models import GuestCreationBucket, GuestIdentity  # noqa: E402,F401

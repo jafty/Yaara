@@ -29,9 +29,22 @@ if os.getenv("RENDER_EXTERNAL_HOSTNAME"):
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
-    "handlers": {"console": {"class": "logging.StreamHandler"}},
+    "filters": {"private_invitations": {"()": "yaara.logging.PrivateInvitationFilter"}},
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "filters": ["private_invitations"],
+        }
+    },
     "loggers": {
         "django": {"handlers": ["console"], "level": "INFO", "propagate": False},
+        "django.server": {"handlers": ["console"], "level": "INFO", "propagate": False},
+        "gunicorn.error": {"handlers": ["console"], "level": "INFO", "propagate": False},
+        "simulation.guest_services": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": False,
+        },
     },
 }
 INSTALLED_APPS = [
@@ -51,6 +64,7 @@ MIDDLEWARE = [
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
+    "simulation.guest_views.GuestActivityMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 ROOT_URLCONF = "yaara.urls"
@@ -64,6 +78,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "simulation.guest_views.guest_access",
             ]
         },
     }
@@ -115,3 +130,7 @@ SESSION_COOKIE_SAMESITE = "Lax"
 X_FRAME_OPTIONS = "DENY"
 DATA_UPLOAD_MAX_MEMORY_SIZE = 64 * 1024
 SIGNUP_ENABLED = os.getenv("SIGNUP_ENABLED", "1") == "1"
+GUEST_PLAY_ENABLED = os.getenv("GUEST_PLAY_ENABLED", "1") == "1"
+GUEST_RETENTION_DAYS = max(1, int(os.getenv("GUEST_RETENTION_DAYS", "30")))
+GUEST_STARTS_PER_HOUR = max(1, int(os.getenv("GUEST_STARTS_PER_HOUR", "60")))
+GUEST_GLOBAL_STARTS_PER_HOUR = max(1, int(os.getenv("GUEST_GLOBAL_STARTS_PER_HOUR", "500")))

@@ -144,7 +144,9 @@ uv run python scripts/browser_smoke.py
 
 Check the full catalog in its separate full-collection command: passing a test file together with `--check-case-catalog` correctly reports all uncollected files as missing. Use `--fail-on-skip` for selected executions. Do not treat unexecuted tests as passes. Review case-catalog changes whenever variations change.
 
-The browser smoke currently runs one complete bilingual journey. Keep it for shared layout/navigation/forms/JavaScript changes; a future focused browser split must preserve the full CI journey. Do not introduce a second browser framework or claim a focused run exists until it is implemented.
+The existing browser smoke runs the complete bilingual game journey. The recruitment smoke uses the same Playwright framework and adds guest persistence, operator management, three independent seat contexts, returning invitations and guest/seat handoff. Both run in CI; keep the existing game journey when changing shared layout, navigation, forms or JavaScript.
+
+For browser verification, start the local server with `python manage.py runserver 127.0.0.1:8000 --noreload --nothreading`. Django's default development request threads otherwise accumulate persistent PostgreSQL connections during multi-context polling. Production uses the bounded Gunicorn worker/thread pool in `scripts/start.sh`.
 
 For the behavior level, add the independent core coverage gate from the preceding section, then explicitly select affected application and journey tests. No automatic file-to-test inference is used: inspect shared callers, rejection paths and boundaries to choose cases, escalating when coverage of the impact is uncertain.
 
@@ -162,11 +164,12 @@ uv run python manage.py makemigrations --check --dry-run
 uv run pytest -q --require-postgresql --fail-on-skip --check-case-catalog --case-report=artifacts/test-cases.json
 # With the application running against the development database:
 uv run python scripts/browser_smoke.py
+uv run python scripts/recruitment_browser_smoke.py
 ```
 
 CI runs all layers on pushes and PRs against PostgreSQL 17 and 18, and uploads the case report even on failure. Required runs reject SQLite, skipped cases and expected failures. Never report a skipped PostgreSQL check as passed. Record the database versions actually verified locally; CI results are separate evidence.
 
-The full checkpoint is mandatory locally for the Full level and in CI on every push and PR. Presentation and Behavior changes may push after their applicable local checks; report CI results separately from local evidence. The existing CI workflow remains unchanged and still executes every layer on PostgreSQL 17 and 18.
+The full checkpoint is mandatory locally for the Full level and in CI on every push and PR. Presentation and Behavior changes may push after their applicable local checks; report CI results separately from local evidence. CI executes every layer and both browser journeys on PostgreSQL 17 and 18.
 
 ## Evidence from this compliance pass
 
@@ -260,3 +263,11 @@ JSON formats and compares their letters. The existing polling fixture now suppli
 empty authorized alert collections expected by the current manuscript. The creation
 assertion excludes the random hidden CSRF input when checking for forbidden visible
 V0/V1 labels, avoiding token-dependent false failures.
+
+## Guest recruitment, shared reigns and quiet oasis presentation — October 24
+
+This release uses the Full checkpoint. Ninety-eight new collected variations cover guest creation, retention, account attachment and cleanup; private invitation entry, revocation and concurrency; three-house scheduling and per-player revisions; bilingual first-order guidance; and private-link redaction in deployment logs. Existing case IDs are retained. The anonymous JavaScript-catalog regression also protects the middleware's database-free anonymous path.
+
+The original browser journey retains the complete game flow and now checks the approved paper palette, readable contrast and optional book exports. The additional recruitment journey uses independent browser contexts for all three players, verifies live admin readiness and automatic lobby-to-Council navigation, preserves the playing operator's account, and restores an original guest solo after shared-seat entry. It also exercises saved guest progress, returning links, actual clipboard contents, French/English, native forms without JavaScript, narrow screens and enlarged text. Neither automated journey establishes human enjoyment or multiplayer balance.
+
+Local release evidence: 1,552 tests passed without skips on disposable PostgreSQL 17, including 678 database-free logic cases and 100% native-core statement/branch coverage. Both bilingual browser journeys passed, with the final recruitment run using the CI server configuration above. Catalog compilation, lint/format, migration consistency, static collection and the frozen production dependency export comparison passed. These results do not attest a Railway deployment or a production scheduler configuration.

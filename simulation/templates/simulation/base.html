@@ -4,7 +4,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="theme-color" content="#25382f">
+        <meta name="theme-color" content="#f7f1e6">
         <title>
             {% block title %}{% translate "Yaara · Les cités du désert" %}{% endblock %}
         </title>
@@ -18,7 +18,7 @@
         <aside class="sidebar">
             <a class="brand" href="{% url 'home' %}" aria-label="{% translate "Yaara, accueil" %}"><span class="brand-mark" aria-hidden="true">✺</span><span>YAARA<small>{% translate "LES CITÉS DU DÉSERT" %}</small></span></a>
             <p class="sidebar-verse">{% translate "Dans les terres de Yaara," %}<br>{% translate "le pouvoir se cultive" %}<br>{% translate "avant de se conquérir." %}</p>
-            {% if user.is_authenticated %}<nav aria-label="{% translate "Navigation principale" %}"><a class="nav-item active" href="{% url 'home' %}">{% translate "Mes règnes" %}</a><a class="nav-item" href="{% url 'new_game' %}">{% translate "Nouveau règne" %}</a></nav>{% endif %}
+            {% if user.is_authenticated and not guest_access.is_guest %}<nav aria-label="{% translate "Navigation principale" %}"><a class="nav-item active" href="{% url 'home' %}">{% translate "Mes règnes" %}</a>{% if not user.shared_identity %}<a class="nav-item" href="{% url 'new_game' %}">{% translate "Nouveau règne" %}</a>{% endif %}{% if perms.simulation.manage_multiplayer_games %}<a class="nav-item" href="{% url 'multiplayer_manage' %}">{% translate "Administrer les parties" %}</a>{% endif %}</nav>{% endif %}
             <div class="sidebar-bottom">
                 <div class="seal" aria-hidden="true">Y</div>
                 <p>{% translate "Neuf cités." %}<br>{% translate "Un seul trône." %}</p>
@@ -33,8 +33,8 @@
                     {% else %}{% translate "Le livre des règnes" %}{% endif %}
                 </span>
                 <div class="account">
-                    {% if user.is_authenticated %}
-                        <span class="account-name">{{ user.username }}</span>
+                    {% if user.is_authenticated and not guest_access.is_guest %}
+                        {% if not user.shared_identity %}<span class="account-name">{{ user.username }}</span>{% endif %}
                         <form method="post" action="{% url 'logout' %}">
                             {% csrf_token %}
                             <button class="text-button" type="submit">{% translate "Quitter" %}</button>
@@ -50,6 +50,7 @@
                         {% for message in messages %}<div class="notice {{ message.tags }}">{{ message }}</div>{% endfor %}
                     </div>
                 {% endif %}
+                {% if guest_access.can_restore %}{% include 'simulation/guest_banner.html' %}{% endif %}
                 {% block content %}{% endblock %}
             </main>
             <footer class="footer">{% include 'simulation/language_switch.html' %}

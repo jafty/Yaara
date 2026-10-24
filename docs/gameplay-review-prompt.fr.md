@@ -1,5 +1,39 @@
 # Yaara — Référence de jouabilité
 
+## Révision du 24 octobre 2026 — Accès invité et règnes partagés
+
+Implémentation préparée depuis `1754956` de `codex/yaara-deployment`, sans attester
+son déploiement Railway. Les règles économiques et militaires restent inchangées.
+L’entrée publique ouvre un règne solo privé en calendrier manuel, sans inscription.
+Le visiteur peut ensuite conserver ce même règne dans un compte. La présentation
+conserve trois destinations, des ressources légendées, un papier chaud et calme,
+de petites fresques et des séparateurs discrets. Après le scellement, un lien précis
+mène à la clôture ; les téléchargements JSON du livre sont secondaires.
+
+Un organisateur autorisé prépare les règnes partagés à trois maisons humaines,
+sur la carte existante de neuf cités. Chaque lien privé ouvre une identité distincte
+et permet de revenir à cette maison, sans inscription ni étape de disponibilité
+supplémentaire. L’organisateur donne le départ après l’arrivée des trois joueurs,
+avec trois invitations actives ; les pages d’attente ouvrent alors le conseil.
+Le lien secret n’authentifie jamais le compte inscrit auquel une maison est liée.
+Un organisateur qui joue garde sa session de gestion en rejoignant sa maison.
+
+Les règnes partagés emploient le calendrier serveur, une première fenêtre complète
+et des pauses communes gérées par l’organisateur. À dix minutes par lune, 120 lunes
+représentent vingt heures de calendrier actif ; les plages de séance sont annoncées
+avant l’entrée. Une absence n’ajoute aucun ordre ni remplacement automatique.
+Les sauvegardes solo conservent leur calendrier et leurs règles enregistrées.
+Un essai solo demeure attaché à son identité d’origine lors d’une visite en partie
+partagée ; le même navigateur peut le reprendre sans transfert de propriété.
+
+Les décrets secrets d’une autre maison ne modifient ni la version visible de votre
+page ni la validité de votre devis. Une modification propre ou une clôture impose
+la relecture nécessaire. Les lettres et le livre personnel restent privés ; le livre
+toutes maisons d’un règne partagé exige le droit d’organisation et la fin du règne.
+La rotation ou suspension d’un lien invalide son ancien accès et ses sessions de
+maison ; une connexion indépendante au compte inscrit lié conserve son accès.
+Ces capacités ne démontrent pas l’équilibre des parties humaines.
+
 ## Révision du 24 octobre 2026 — Frontières, surveillance et intégration
 
 Implémentation préparée depuis `dbcba62` de `codex/yaara-deployment`. Cette section remplace, pour les nouvelles parties `strategy_version=2`, les descriptions historiques de réservation exclusive et de signalement gratuit ci-dessous. Elle n’atteste pas un déploiement Railway. Les sauvegardes sans marqueur stratégique, ou marquées 1, conservent leurs règles ; l’économie, les prix, les revenus et les dates des raids restent inchangés.

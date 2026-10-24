@@ -4,6 +4,7 @@ from django.core.exceptions import PermissionDenied
 from django.utils.translation import get_language
 
 from .calendar import closed_moon
+from .engine import standings
 from .presentation import localize, report_view
 from .projections import player_view
 
@@ -36,7 +37,10 @@ def chronicle_accounts(state):
 
 
 def reign_archive(game, user, actor, scope):
-    if game.state["status"] != "finished" or (scope == "all" and game.owner_id != user.pk):
+    from .multiplayer import is_operator
+
+    can_read_all = is_operator(user) if game.kind == "multiplayer" else game.owner_id == user.pk
+    if game.state["status"] != "finished" or (scope == "all" and not can_read_all):
         raise PermissionDenied
     actors = set(game.state["players"]) if scope == "all" else {actor}
     reports = []
@@ -97,7 +101,12 @@ def reign_archive(game, user, actor, scope):
             for key, value in chronicle_accounts(game.state).items()
             if key in actors
         },
-        "ranking": localize(player_view(game.state, actor)["ranking"]),
+        "ranking": localize(
+            [
+                {key: row[key] for key in ("actor", "name", "cities", "rank")}
+                for row in standings(game.state)
+            ]
+        ),
     }
 
 

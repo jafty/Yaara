@@ -58,6 +58,6 @@
                 <p class="cost-hint" data-budget-note aria-live="polite"></p>
             </div>
         {% endif %}
-        <button class="primary-action" type="submit" {% if action.kind == 'equipment' %}{% if not view.equipment_available or view.equipment_shortfall %}disabled{% endif %}{% elif action.kind != 'expedition' and not action.selectable %}disabled{% endif %}>{% translate "Valider l’action" %}</button>
+        <button class="primary-action" type="submit" {% if action.kind == 'equipment' %}{% if not view.equipment_available or view.equipment_shortfall %}disabled{% endif %}{% elif action.kind != 'expedition' and not action.selectable %}disabled{% endif %}>{% translate "Vérifier l’ordre" %}</button>
         <p class="aside-text">{% translate "Vous pourrez vérifier le récapitulatif avant de confirmer. Aucun moyen n’est réservé." %}</p>
     </form></section>

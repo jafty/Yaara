@@ -13,13 +13,17 @@
             <p>{% blocktranslate with v0=view.epilogue_missions %}Expéditions encore en route : <strong>{{ v0 }}</strong>. Leur retour ne changera plus le résultat du règne.{% endblocktranslate %}</p>
         </section>
     {% elif view.eliminated %}<p class="marginal-note">{% translate "Aucune cité ne reconnaît plus votre autorité. Je continuerai pourtant de tenir ce livre jusqu’à la fin du règne." %}</p>
-    {% elif game.paused %}<p class="marginal-note">{% translate "Le calendrier est suspendu. Reprenez-le avant de dicter de nouveaux ordres." %}</p>{% endif %}
+    {% elif game.paused %}<p class="marginal-note">{% translate "Le calendrier est suspendu. Les nouveaux ordres attendent sa reprise." %}</p>{% endif %}
     {% if tab == 'domain' %}
+        {% if not view.closed_moon and not view.finished and not game.paused %}<section class="first-decisions" data-first-decisions aria-label="{% translate 'Vos premiers ordres' %}">
+            <p>{% translate "Vous gouvernez trois cités. Construisez, protégez vos réserves et prenez les cités rivales." %}</p>
+            <nav class="first-decision-links" aria-label="{% translate 'Choisir un premier ordre' %}"><a href="?tab=constructions">{% translate "Choisir un chantier" %} →</a><a href="?tab=wars">{% translate "Préparer une expédition" %} →</a></nav>
+            <p class="aside-text">{% translate "Préparez un ordre, vérifiez ses termes, puis scellez-le. Il prendra effet à la clôture de la lune." %}</p>
+        </section>{% endif %}
         <nav class="council-jumps reading-links" aria-label="{% translate 'Dans ce conseil' %}">{% if not view.finished %}<a href="#upcoming-heading">{% translate "Les prochaines échéances" %} ↓</a>{% endif %}<a href="#city-ledgers">{% translate "Les comptes de vos cités" %} ↓</a></nav>
         <div class="council-layout"><div class="council-dispatches">
         <section class="briefing-news" aria-labelledby="recent-letters">
             <h2 id="recent-letters">{% blocktranslate with v0=news_moon %}Les nouvelles de la lune {{ v0 }}{% endblocktranslate %}</h2>
-            {% if not view.closed_moon %}<p>{% translate "Votre règne commence. Le conseil rassemble vos nouvelles et vos engagements. Confiez vos premiers ouvrages aux cités ou préparez une expédition." %}</p>{% endif %}
             {% include 'simulation/letter_entries.html' with compact=True %}
             <p class="reading-links"><a href="?tab=letters">{% translate "Tous les rapports" %} →</a></p>
         </section>

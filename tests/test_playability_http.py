@@ -32,7 +32,7 @@ def test_current_pages(user, language):
     text = family.content.decode()
     assert text.count('name="cities"') == 3
     assert ("Channels and small dikes" if language == "en" else "Rigoles et petites digues") in text
-    assert ("Validate action" if language == "en" else "Valider l’action") in text
+    assert ("Review the order" if language == "en" else "Vérifier l’ordre") in text
     assert 'class="illustration illustration-irrigation"' in text
     assert "illustration-irrigation illustration-small" not in text
     preview = client.post(

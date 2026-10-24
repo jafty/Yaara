@@ -1,5 +1,47 @@
 # Implementation decisions
 
+## 2026-10-24 · Recruitment entrance and invitation-based shared reigns
+
+The owner approved implementation after the three parallel plans, with a fluid
+operator → waiting room → game flow. Shared players open their own secret seat
+link, join through a CSRF-protected POST and wait for the operator's start; there
+is no mandatory signup or readiness acknowledgement. Each invitation authenticates
+only a separate low-privilege seat identity. A registered account can be linked for
+normal login, and an operator accepting their own seat retains their management
+session. A secret link never authenticates its linked registered account.
+
+Use the existing nine-city current-rule world, three human houses, no replacement
+bots, and existing server ticks. The operator permission is distinct from ownership
+or player membership. Provide a dedicated management page and `grant_operator`
+bootstrap command; do not depend on the absent Django admin application. Start
+requires all three occupied seats and active invitations. Waiting pages poll only
+public seat/calendar facts and enter Council after start. Shared first Moons get a
+full advertised interval; existing solo alignment and saved rules remain intact.
+Common session windows and whole-game pauses acknowledge the twenty-hour active
+calendar span of a standard ten-minute/120-Moon reign.
+
+Keep Game.revision internal in shared games. Participant-visible revisions change
+for their own orders and shared clock/tick events, never for hidden rival seals or
+cancellations. Signed previews and state polling use this same own-view version.
+Game locks cover seat/session-grant validation before command mutation. Revoked or
+rotated bearer links invalidate old seat sessions; independently authenticated linked
+accounts retain their membership. Player books remain personal, with technical
+exports in secondary controls; shared all-house exports require operator permission
+and completion, without seeds, raw audit or numerical combativity.
+
+Guest solo starts immediately with a private manual preset. Account saving preserves
+the existing reign. Entering a shared seat retains only a server-side entitlement
+to resume the original guest solo; it does not move ownership onto a seat identity
+or upgrade a secret seat into a full registered account. Temporary cleanup is
+restricted to explicit unclaimed private solo identities.
+
+The approved visual compromise keeps quiet warm paper, small contextual frescoes,
+restrained dividers, visible resource captions, precise post-seal closure links and
+the existing three destinations. Correct setup facts from current rules rather than
+repeating historical starting stock or capture restrictions. These schema, privacy,
+authorization and calendar changes require the Full local checkpoint and the new
+real-browser recruitment journey, in addition to existing CI layers.
+
 ## 2026-10-24 · Paid intelligence, integration and reciprocal frontier encounters
 
 The owner approved this package after reviewing a complete 120-Moon archive. New economy-four games save `strategy_version=2`; missing markers and explicit version one preserve old admission, target exclusivity, visibility and military behavior. No snapshot backfill or silent conversion. Keep the current economy, raid tariffs, respite, supplies and N/N+1/N+2 travel unchanged.

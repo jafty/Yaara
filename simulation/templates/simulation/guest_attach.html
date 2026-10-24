@@ -1,0 +1,9 @@
+{% extends 'simulation/base.html' %}{% load i18n %}
+{% block content %}
+<section class="panel padded guest-account" data-guest-attach>
+    <h1>{% translate "Rattacher ce règne à votre compte" %}</h1>
+    <p>{% translate "Connectez-vous pour conserver cette même partie dans votre compte existant." %}</p>
+    <form method="post" class="stack-form">{% csrf_token %}{{ form.as_p }}<input type="hidden" name="next" value="{{ next }}"><button class="button primary" type="submit">{% translate "Conserver ce règne dans mon compte" %}</button></form>
+    <p class="reading-links"><a href="{% url 'guest_claim' %}?next={{ next|urlencode }}">{% translate "Créer un compte pour ce règne" %}</a><a href="{% url 'game' guest_game_id %}">{% translate "Continuer à jouer" %} →</a></p>
+</section>
+{% endblock %}

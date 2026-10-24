@@ -4,7 +4,7 @@ from django.contrib.auth import views as auth_views
 from django.urls import include, path
 from django.views.i18n import JavaScriptCatalog
 
-from simulation import views
+from simulation import guest_views, multiplayer_views, views
 
 urlpatterns = [
     path("i18n/js/", JavaScriptCatalog.as_view(), name="javascript-catalog"),
@@ -14,6 +14,24 @@ urlpatterns = [
     path("accounts/logout/", auth_views.LogoutView.as_view(), name="logout"),
     path("accounts/signup/", views.signup, name="signup"),
     path("", views.home, name="home"),
+    path("play/", guest_views.guest_start, name="guest_start"),
+    path("play/resume/", guest_views.guest_restore, name="guest_restore"),
+    path("save/", guest_views.guest_claim, name="guest_claim"),
+    path("save/existing/", guest_views.guest_attach, name="guest_attach"),
+    path("manage/", multiplayer_views.manage, name="multiplayer_manage"),
+    path("manage/<uuid:game_id>/", multiplayer_views.operator_room, name="shared_operator_room"),
+    path(
+        "manage/<uuid:game_id>/state/",
+        multiplayer_views.operator_state,
+        name="shared_operator_state",
+    ),
+    path("join/<str:token>/", multiplayer_views.invitation, name="shared_invite"),
+    path("games/<uuid:game_id>/lobby/", multiplayer_views.lobby, name="shared_lobby"),
+    path(
+        "games/<uuid:game_id>/lobby/state/",
+        multiplayer_views.lobby_state,
+        name="shared_lobby_state",
+    ),
     path("games/new/", views.new_game, name="new_game"),
     path("games/<uuid:game_id>/", views.desk, name="game"),
     path("games/<uuid:game_id>/state/", views.state_view, name="state"),

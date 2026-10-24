@@ -7,7 +7,7 @@
             <h1>{% translate "Chaque règne, une histoire." %}</h1>
             <p>{% translate "Retrouvez vos possessions ou inscrivez une nouvelle maison dans les chroniques." %}</p>
         </div>
-        <a href="{% url 'new_game' %}" class="button primary">{% translate "Nouveau règne" %}<span aria-hidden="true">＋</span></a>
+        {% if not user.shared_identity %}<a href="{% url 'new_game' %}" class="button primary">{% translate "Nouveau règne" %}<span aria-hidden="true">＋</span></a>{% endif %}
     </div>
     <div class="home-banner">
         <div>
@@ -26,10 +26,11 @@
             <a class="panel game-card" href="{% url 'game' item.id %}">
                 <div class="card-top">
                     <span class="status-dot {% if item.finished %}finished{% endif %}">
-                        {% if item.finished %}{% translate "Règne achevé" %}{% else %}{% translate "En cours" %}{% endif %}
+                        {% if item.waiting %}{% translate "En attente du départ" %}{% elif item.finished %}{% translate "Règne achevé" %}{% else %}{% translate "En cours" %}{% endif %}
                     </span>
                 </div>
                 <h3>{{ item.title }}</h3>
+                {% if item.shared %}<p class="muted">{% translate "Partie entre joueurs" %}</p>{% endif %}
                 <p>{% blocktranslate with v0=item.cities %}Cités sous votre autorité : {{ v0 }}{% endblocktranslate %}</p>
                 <div class="card-bottom">
                     <span>{% blocktranslate with v0=item.month v1=item.reign_months %}Lune {{ v0 }} / {{ v1 }}{% endblocktranslate %}</span><span aria-hidden="true">↗</span>
@@ -39,7 +40,7 @@
                 <span class="large-symbol" aria-hidden="true">◇</span>
                 <h3>{% translate "La première page est encore blanche." %}</h3>
                 <p>{% translate "Créez votre règne. Le mode manuel vous laisse tout le temps de découvrir Yaara." %}</p>
-                <a href="{% url 'new_game' %}" class="button primary">{% translate "Fonder ma maison" %}</a>
+                {% if not user.shared_identity %}<a href="{% url 'new_game' %}" class="button primary">{% translate "Fonder ma maison" %}</a>{% endif %}
             </div>
         {% endfor %}
     </div>

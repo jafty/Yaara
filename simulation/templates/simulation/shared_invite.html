@@ -1,0 +1,6 @@
+{% extends 'simulation/base.html' %}{% load static i18n %}
+{% block content %}
+<meta name="referrer" content="same-origin">
+<header class="page-heading"><div><span class="eyebrow">{% translate "VOTRE MAISON VOUS ATTEND" %}</span><h1>{{ room.title }}</h1><p>{{ house }}</p></div></header>
+<section class="panel padded"><p>{{ room.play_window }}</p>{% if error %}<p role="alert">{{ error }}</p>{% else %}<p>{% translate "Votre lien privé ouvre votre maison. Vous rejoindrez le conseil dès que l’organisateur donnera le départ." %}</p><form method="post" data-seat-entry>{% csrf_token %}<button class="button primary" type="submit">{% translate "Rejoindre ma maison" %}</button></form><script defer src="{% static 'simulation/shared.js' %}"></script>{% endif %}</section>
+{% endblock %}

@@ -19,21 +19,21 @@
             </form>
         </section>
         <aside class="setup-aside">
-            <section class="panel padded">
+            <section class="panel padded" data-starting-means>
                 <span class="eyebrow">{% translate "VOTRE POINT DE DÉPART" %}</span>
                 <h2>{% translate "Trois cités, un avenir." %}</h2>
                 <ul class="plain-list">
                     <li>
-                        <strong>{% translate "3 000 habitants" %}</strong><span>{% translate "dont 300 Fidèles mobilisables" %}</span>
+                        <strong>{% blocktranslate with count=initial_population %}{{ count }} habitants{% endblocktranslate %}</strong><span>{% blocktranslate with count=initial_fideles %}dont {{ count }} Fidèles mobilisables{% endblocktranslate %}</span>
                     </li>
                     <li>
-                        <strong>{% translate "1 800 000 Mesures" %}</strong><span>{% translate "600 000 dans chaque cité" %}</span>
+                        <strong>{% blocktranslate with count=initial_total_stock %}{{ count }} Mesures{% endblocktranslate %}</strong><span>{% blocktranslate with count=initial_stock_per_city %}{{ count }} dans chaque cité{% endblocktranslate %}</span>
                     </li>
                     <li>
                         <strong>{% translate "Une récolte annuelle" %}</strong><span>{% translate "Premier versement à la lune 12" %}</span>
                     </li>
                 </ul>
-                <p class="muted">{% translate "La capture est volontairement hors de portée des réserves initiales. Préparez votre économie avant de lancer de grandes campagnes." %}</p>
+                <p class="muted">{% blocktranslate with cost=initial_capture_minimum_cost %}Une capture coûte au moins {{ cost }} Mesures. Elle est abordable dès le début, mais sa réussite dépend des forces et des réserves adverses.{% endblocktranslate %}</p>
             </section>
             <div class="scribe-note">
                 <span class="eyebrow">{% translate "LE CONSEIL DU SCRIBE" %}</span>

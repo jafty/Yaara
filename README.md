@@ -25,7 +25,7 @@ Django does not load `.env` automatically. It is ignored by Git. In the current 
 
 ## Playable features
 
-- Nine-city map and private games against two active or passive opponents.
+- Nine-city map, immediate guest solo against computer opponents, and invitation-based three-human shared reigns.
 - Current rules with local funding, seasonal crop raids, annual harvest, growth and Fidèle renewal; older saves retain their rules.
 - Eight building families, batched local construction, origin-specific equipment/transport/siege gear, raids, captures, relief and returns.
 - Decree previews, atomic confirmation, target reservation and pre-departure cancellation.
@@ -58,4 +58,42 @@ Set `DATABASE_URL` to a disposable PostgreSQL database for real concurrency test
 
 Production dependencies are locked in `uv.lock` and exported with hashes to `requirements.txt`. After dependency changes, run `uv lock` and `uv export --frozen --no-dev --format requirements-txt --no-header --output-file requirements.txt`.
 
-No external game assets or paid APIs are required. Human multiplayer and competitive rankings remain future work.
+No external game assets or paid APIs are required. Competitive rankings remain future work.
+
+## Recruitment and shared reigns
+
+The public entrance offers a private manual solo game without registration. Guests can keep
+their existing reign by creating an account or attaching it to an authenticated account.
+The warm manuscript presentation uses compact contextual frescoes, restrained dividers,
+clear resource labels and an explicit link from a sealed order to Moon closure. Technical
+JSON exports stay in secondary completed-book controls.
+
+Official shared games use the same current nine-city rules with three human houses.
+Bootstrap an existing registered operator account after migrations:
+
+```sh
+uv run python manage.py grant_operator USERNAME
+```
+
+Open `/manage/`, choose the duration, cadence and agreed play windows, then send each
+player their own private seat link. Opening the link joins a persistent, separate seat
+identity without signup; its waiting page enters the Council when the operator starts.
+Keep each link private: it also restores that player's seat. A registered operator can
+join a house while retaining their management session. A returning anonymous link
+authenticates only the low-privilege seat, never that linked registered account.
+
+The operator starts when all three houses have joined and all three invitations remain
+active. There is no extra readiness step. Ten-minute shared Moons receive a full first
+interval and use the server scheduler. A standard 120-Moon reign spans twenty hours of
+advancing calendar time, so advertise common play windows and pause between sessions.
+An absent player gives no new orders; there is no automatic replacement bot.
+
+Rotating or suspending a seat link invalidates its previous bearer link and seat sessions;
+an independently authenticated linked registered account retains its membership access.
+Guest solo progress remains owned by its original identity when visiting a shared seat;
+the same browser offers a server-authorized way to resume that solo before saving it.
+Players retain their own completed book; shared all-house analysis is operator-only after
+completion. Existing solo saves retain their rules, clock alignment and archive policy.
+
+See [the shared-reign behavior contract](docs/multiplayer-contract.md) and
+[Railway deployment and scheduler instructions](docs/railway.md).

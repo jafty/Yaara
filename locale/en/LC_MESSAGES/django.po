@@ -3246,7 +3246,7 @@ msgid "Aucune expédition en route."
 msgstr "No expeditions on the road."
 
 msgid "Préparer une expédition"
-msgstr "Plan an expedition"
+msgstr "Prepare an expedition"
 
 msgid "Votre règne commence. Préparez vos premiers décrets, puis clôturez la lune pour les mettre en mouvement."
 msgstr "Your reign begins. Prepare your first decrees, then close the Moon to set them in motion."
@@ -4922,3 +4922,495 @@ msgstr "Armies marching along the same road in opposite directions during the sa
 #. Approved frontier rules.
 msgid "Après une conquête, les Fidèles locaux hérités défendent la cité durant trois lunes sans pouvoir partir en expédition ni en secours. Les comptes indiquent leur lune de disponibilité."
 msgstr "After a conquest, inherited local Faithful defend the city for three Months without joining expeditions or relief. The accounts show when they become available."
+
+#: simulation/templates/simulation/base.html
+msgid "Administrer les parties"
+msgstr "Manage games"
+
+#: simulation/templates/simulation/chronicle.html
+msgid "Vos premiers ordres"
+msgstr "Your first orders"
+
+#: simulation/templates/simulation/chronicle.html
+msgid "Vous gouvernez trois cités. Construisez, protégez vos réserves et prenez les cités rivales."
+msgstr "You govern three cities. Build, protect your reserves and take your rivals’ cities."
+
+#: simulation/templates/simulation/chronicle.html
+msgid "Choisir un premier ordre"
+msgstr "Choose a first order"
+
+#: simulation/templates/simulation/chronicle.html
+msgid "Choisir un chantier"
+msgstr "Choose a work"
+
+#: simulation/templates/simulation/chronicle.html
+msgid "Préparez un ordre, vérifiez ses termes, puis scellez-le. Il prendra effet à la clôture de la lune."
+msgstr "Prepare an order, review its terms, then seal it. It will take effect when the Moon closes."
+
+#: simulation/templates/simulation/manuscript.html
+msgid "Vos ordres sont scellés. Ils attendent la clôture de la lune pour entrer en vigueur."
+msgstr "Your orders are sealed. They will take effect when the Moon closes."
+
+#: simulation/templates/simulation/manuscript.html
+msgid "Passer à la clôture de la lune"
+msgstr "Review Moon closure"
+
+#: simulation/templates/simulation/new_game.html
+msgid "%(count)s habitants"
+msgstr "%(count)s inhabitants"
+
+#: simulation/templates/simulation/new_game.html
+msgid "dont %(count)s Fidèles mobilisables"
+msgstr "including %(count)s Faithful available for service"
+
+#: simulation/templates/simulation/new_game.html
+msgid "%(count)s Mesures"
+msgstr "%(count)s Measures"
+
+#: simulation/templates/simulation/new_game.html
+msgid "%(count)s dans chaque cité"
+msgstr "%(count)s in each city"
+
+#: simulation/templates/simulation/new_game.html
+msgid "Une capture coûte au moins %(cost)s Mesures. Elle est abordable dès le début, mais sa réussite dépend des forces et des réserves adverses."
+msgstr "A capture costs at least %(cost)s Measures. It is affordable from the start, but success depends on the opposing forces and reserves."
+
+#: simulation/templates/simulation/reign_archive.html
+msgid "Exporter les archives"
+msgstr "Export archives"
+
+#: simulation/templates/simulation/wars.html
+msgid "Aucune"
+msgstr "None"
+
+#: simulation/guest_services.py
+msgid "Conservez votre règne dans un compte pour continuer."
+msgstr "Save your reign to an account to continue."
+
+#: simulation/guest_services.py
+msgid "Les nouveaux règnes invités sont momentanément fermés."
+msgstr "New guest reigns are temporarily unavailable."
+
+#: simulation/guest_services.py
+msgid "Votre accès invité a expiré."
+msgstr "Your guest access has expired."
+
+#: simulation/guest_services.py
+msgid "Ce règne ne dépend pas de votre accès invité."
+msgstr "This reign does not belong to your guest access."
+
+#: simulation/guest_services.py
+msgid "Cet accès invité a déjà été conservé."
+msgstr "This guest access has already been saved to an account."
+
+#: simulation/guest_services.py
+msgid "Ce règne ne peut pas être rattaché à cet accès invité."
+msgstr "This reign cannot be linked to this guest access."
+
+#: simulation/guest_services.py
+msgid "Ce règne ne peut pas être rattaché à ce compte."
+msgstr "This reign cannot be linked to this account."
+
+#: simulation/guest_services.py
+msgid "Ce compte possède déjà trente règnes. Votre règne invité est conservé."
+msgstr "This account already has thirty reigns. Your guest reign has been preserved."
+
+#: simulation/guest_services.py
+msgid "Trop de nouveaux règnes invités. Réessayez dans une heure."
+msgstr "Too many new guest reigns. Please try again in an hour."
+
+#: simulation/guest_services.py
+msgid "Ce nom de compte est déjà utilisé."
+msgstr "This account name is already in use."
+
+#: simulation/multiplayer.py
+msgid "Cette invitation ne peut pas être créée."
+msgstr "This invitation cannot be created."
+
+#: simulation/multiplayer.py
+msgid "Ce règne a déjà commencé ; aucune place ne peut être ajoutée."
+msgstr "This reign has already started; no more seats can be added."
+
+#: simulation/multiplayer.py
+msgid "Vous disposez déjà d’une maison dans ce règne."
+msgstr "You already have a house in this reign."
+
+#: simulation/multiplayer.py
+msgid "Les trois maisons doivent rejoindre le règne avant son départ."
+msgstr "All three houses must join before the reign starts."
+
+#: simulation/multiplayer.py
+msgid "Le règne commence"
+msgstr "The reign begins"
+
+#: simulation/multiplayer.py
+msgid "Les trois maisons sont réunies. La première lune dispose d’un intervalle complet ; le calendrier affiché fixe les prochaines clôtures."
+msgstr "All three houses have gathered. The first Moon has a full decision interval; the displayed calendar sets the following deadlines."
+
+#: simulation/multiplayer.py
+msgid "Le règne est arrêté"
+msgstr "The reign has been stopped"
+
+#: simulation/multiplayer.py
+msgid "L’organisateur a arrêté ce règne. Les lettres conservées restent dans les archives de chaque maison."
+msgstr "The organiser has stopped this reign. Preserved letters remain in each house’s archives."
+
+#: simulation/templates/simulation/chronicle.html
+msgid "Le calendrier est suspendu. Les nouveaux ordres attendent sa reprise."
+msgstr "The calendar is paused. New orders await its resumption."
+
+#: simulation/templates/simulation/chronicle_decrees.html simulation/templates/simulation/convoy_form.html simulation/templates/simulation/decree_form.html simulation/templates/simulation/decree_letter.html
+msgid "Vérifier l’ordre"
+msgstr "Review the order"
+
+#: simulation/templates/simulation/decree_letter.html
+msgid "Les hommes défendent encore leurs foyers jusqu’au départ. Une fois partis, ils n’y produisent plus d’impôt. Plusieurs expéditions peuvent viser la même cité."
+msgstr "The men defend their homes until departure. Once away, they no longer produce tax there. Several expeditions may target the same city."
+
+#: simulation/templates/simulation/prologue.html
+msgid "« Vérifier l’ordre » vous mène à la relecture, sans rien réserver. Vérifiez les termes ; « Confirmer et sceller l’ordre » engage ensuite les fonds et les équipes ou les hommes annoncés. Les bénéfices d’un ouvrage viennent à son achèvement."
+msgstr "“Review the order” takes you to a review without reserving anything. Check the terms; “Confirm and seal the order” then commits the stated funds and crews or men. A work’s benefits begin when it is completed."
+
+#: simulation/templates/simulation/prologue.html
+msgid "Le règne avance aux échéances affichées en haut du livre. L’organisateur fixe les périodes de jeu et les pauses."
+msgstr "The reign advances at the deadlines displayed at the top of the book. The organiser sets the playing periods and pauses."
+
+#: simulation/templates/simulation/help.html
+msgid "Choisissez vos cités ou vos hommes, puis « Vérifier l’ordre ». La page suivante récapitule le prix, les dates et les conséquences : rien n’est encore réservé. « Confirmer et sceller l’ordre » engage les moyens annoncés. La clôture de la lune fait entrer le décret en vigueur."
+msgstr "Choose your cities or men, then “Review the order”. The next page summarises the cost, dates and consequences: nothing is reserved yet. “Confirm and seal the order” commits the stated resources. The decree takes effect when the Moon closes."
+
+#: simulation/templates/simulation/turn_closing.html
+msgid "Le règne attend le départ donné par l’organisateur."
+msgstr "The reign is waiting for the organiser to start it."
+
+#: simulation/services.py
+msgid "Ce règne attend son départ ou a été arrêté."
+msgstr "This reign is waiting to start or has been stopped."
+
+#: simulation/services.py
+msgid "Le calendrier change"
+msgstr "The calendar changes"
+
+#: simulation/services.py
+msgid "Ce règne ne peut pas être suspendu ainsi."
+msgstr "This reign cannot be paused this way."
+
+#: simulation/services.py
+msgid "Le règne est suspendu pour toutes les maisons."
+msgstr "The reign is paused for all houses."
+
+#: simulation/services.py
+msgid "Le règne reprend pour toutes les maisons, à l’échéance affichée."
+msgstr "The reign resumes for all houses, with the displayed deadline."
+
+#: simulation/guest_forms.py
+msgid "Nom de compte"
+msgstr "Account name"
+
+#: simulation/guest_forms.py
+msgid "Mot de passe"
+msgstr "Password"
+
+#: simulation/guest_forms.py
+msgid "Confirmer le mot de passe"
+msgstr "Confirm password"
+
+#: simulation/guest_forms.py
+msgid "Les deux mots de passe doivent être identiques."
+msgstr "The two passwords must match."
+
+#: simulation/guest_views.py
+msgid "Revenez à l’accueil pour commencer votre règne."
+msgstr "Return to the home page to start your reign."
+
+#: simulation/guest_views.py
+msgid "Cet essai solo n’est pas accessible depuis cette session."
+msgstr "This solo trial is not accessible from this session."
+
+#: simulation/guest_views.py
+msgid "Votre accès invité a expiré. Vous pouvez commencer un nouveau règne."
+msgstr "Your guest access has expired. You can start a new reign."
+
+#: simulation/templates/simulation/guest_attach.html
+msgid "Rattacher ce règne à votre compte"
+msgstr "Link this reign to your account"
+
+#: simulation/templates/simulation/guest_attach.html
+msgid "Connectez-vous pour conserver cette même partie dans votre compte existant."
+msgstr "Sign in to keep this same game in your existing account."
+
+#: simulation/templates/simulation/guest_attach.html
+msgid "Conserver ce règne dans mon compte"
+msgstr "Keep this reign in my account"
+
+#: simulation/templates/simulation/guest_attach.html
+msgid "Créer un compte pour ce règne"
+msgstr "Create an account for this reign"
+
+#: simulation/templates/simulation/guest_attach.html simulation/templates/simulation/guest_claim.html
+msgid "Continuer à jouer"
+msgstr "Continue playing"
+
+#: simulation/templates/simulation/guest_entry.html
+msgid "Trois cités. Votre règne commence."
+msgstr "Three cities. Your reign begins."
+
+#: simulation/templates/simulation/guest_entry.html
+msgid "Gouvernez trois cités du désert. Construisez, défendez vos récoltes et conquérez les cités de deux maisons rivales."
+msgstr "Govern three desert cities. Build, defend your harvests and conquer the cities of two rival houses."
+
+#: simulation/templates/simulation/guest_entry.html
+msgid "Vous donnez les ordres ; votre scribe en raconte les conséquences."
+msgstr "You issue the orders; your scribe tells their consequences."
+
+#: simulation/templates/simulation/guest_entry.html
+msgid "Jouer sans inscription"
+msgstr "Try without signing up"
+
+#: simulation/templates/simulation/guest_entry.html
+msgid "Gratuit · Solo contre deux maisons contrôlées par l’ordinateur · Vous avancez les tours à votre rythme."
+msgstr "Free · Solo against two computer-controlled houses · Advance turns at your own pace."
+
+#: simulation/templates/simulation/guest_entry.html
+msgid "Votre essai reste accessible dans ce navigateur pendant %(days)s jours sans activité. Créez un compte à tout moment pour le retrouver sur un autre appareil."
+msgstr "Your trial remains accessible in this browser for %(days)s days of inactivity. Create an account at any time to access it on another device."
+
+#: simulation/templates/simulation/guest_claim.html
+msgid "Conservez l’accès à votre règne"
+msgstr "Keep access to your reign"
+
+#: simulation/templates/simulation/guest_claim.html
+msgid "Votre partie est déjà conservée dans ce navigateur. Un compte vous permet de la retrouver ailleurs, sans recommencer."
+msgstr "Your game is already saved in this browser. An account lets you access it elsewhere without starting again."
+
+#: simulation/templates/simulation/guest_banner.html simulation/templates/simulation/guest_claim.html
+msgid "Sauvegarder mon règne"
+msgstr "Save my reign"
+
+#: simulation/templates/simulation/guest_claim.html
+msgid "J’ai déjà un compte"
+msgstr "I already have an account"
+
+#: simulation/templates/simulation/guest_banner.html
+msgid "Vous jouez sans inscription. Votre essai est conservé dans ce navigateur."
+msgstr "You are playing without signing up. Your trial is saved in this browser."
+
+#: simulation/templates/simulation/guest_banner.html
+msgid "Choisissez un chantier ou une expédition, vérifiez puis scellez votre ordre. Clore la lune fait avancer les travaux et les voyages."
+msgstr "Choose a work or an expedition, review your order, then seal it. Closing the Moon advances works and journeys."
+
+#: simulation/templates/simulation/guest_banner.html
+msgid "Reprendre mon essai solo"
+msgstr "Resume my solo trial"
+
+#: simulation/multiplayer_views.py
+msgid "Nom du règne"
+msgstr "Reign name"
+
+#: simulation/multiplayer_views.py
+msgid "Plages de jeu convenues"
+msgstr "Agreed playing times"
+
+#: simulation/multiplayer_views.py
+msgid "Indiquez les jours, heures et fuseau horaire prévus pour jouer ensemble."
+msgstr "Specify the days, times and time zone when you plan to play together."
+
+#: simulation/multiplayer_views.py
+msgid "Cadence"
+msgstr "Pace"
+
+#: simulation/multiplayer_views.py
+msgid "Une lune toutes les dix minutes"
+msgstr "One Moon every ten minutes"
+
+#: simulation/multiplayer_views.py
+msgid "Une lune toutes les cinq minutes"
+msgstr "One Moon every five minutes"
+
+#: simulation/templates/simulation/shared_invite.html
+msgid "VOTRE MAISON VOUS ATTEND"
+msgstr "YOUR HOUSE AWAITS YOU"
+
+#: simulation/templates/simulation/shared_invite.html
+msgid "Votre lien privé ouvre votre maison. Vous rejoindrez le conseil dès que l’organisateur donnera le départ."
+msgstr "Your private link opens your house. You will enter the Council as soon as the organiser starts the reign."
+
+#: simulation/templates/simulation/shared_invite.html
+msgid "Rejoindre ma maison"
+msgstr "Join my house"
+
+#: simulation/templates/simulation/shared_operator.html
+msgid "L’ORGANISATION DU RÈGNE"
+msgstr "ORGANISING THE REIGN"
+
+#: simulation/templates/simulation/shared_lobby.html simulation/templates/simulation/shared_operator.html
+msgid "minutes par lune"
+msgstr "minutes per Moon"
+
+#: simulation/templates/simulation/shared_operator.html
+msgid "Les trois invitations"
+msgstr "The three invitations"
+
+#: simulation/templates/simulation/shared_operator.html
+msgid "Chaque lien donne accès à une seule maison. Transmettez-le uniquement à son joueur ; il lui permettra aussi de revenir."
+msgstr "Each link grants access to one house. Share it only with that player; they can also use it to return."
+
+#: simulation/templates/simulation/shared_lobby.html simulation/templates/simulation/shared_operator.html
+msgid "Maison présente"
+msgstr "House has joined"
+
+#: simulation/templates/simulation/shared_lobby.html simulation/templates/simulation/shared_operator.html
+msgid "En attente du joueur"
+msgstr "Waiting for the player"
+
+#: simulation/templates/simulation/shared_operator.html
+msgid "Lien suspendu"
+msgstr "Link suspended"
+
+#: simulation/templates/simulation/shared_operator.html
+msgid "Le lien privé de cette maison"
+msgstr "This house’s private link"
+
+#: simulation/templates/simulation/shared_operator.html
+msgid "Lien privé à transmettre"
+msgstr "Private link to share"
+
+#: simulation/templates/simulation/shared_operator.html
+msgid "Remplacer le lien privé"
+msgstr "Replace the private link"
+
+#: simulation/templates/simulation/shared_operator.html
+msgid "Suspendre ce lien"
+msgstr "Suspend this link"
+
+#: simulation/templates/simulation/shared_operator.html
+msgid "Le calendrier commun"
+msgstr "The shared calendar"
+
+#: simulation/templates/simulation/shared_operator.html
+msgid "Les joueurs qui ont suivi leur lien attendent ici le départ. Leurs pages ouvriront le conseil automatiquement."
+msgstr "Players who followed their links are waiting here for the start. Their pages will open the Council automatically."
+
+#: simulation/templates/simulation/shared_operator.html
+msgid "Ce règne a été arrêté."
+msgstr "This reign has been stopped."
+
+#: simulation/templates/simulation/shared_operator.html
+msgid "Le règne est achevé."
+msgstr "The reign has ended."
+
+#: simulation/templates/simulation/shared_operator.html
+msgid "Lire le livre de toutes les maisons"
+msgstr "Read the book of all houses"
+
+#: simulation/templates/simulation/shared_operator.html
+msgid "Prochaine clôture à %(deadline)s UTC."
+msgstr "Next Moon closure at %(deadline)s UTC."
+
+#: simulation/templates/simulation/shared_operator.html
+msgid "Reprendre le règne"
+msgstr "Resume the reign"
+
+#: simulation/templates/simulation/shared_operator.html
+msgid "Suspendre le règne"
+msgstr "Pause the reign"
+
+#: simulation/templates/simulation/shared_operator.html
+msgid "Rejoindre votre maison"
+msgstr "Join your house"
+
+#: simulation/templates/simulation/shared_operator.html
+msgid "Arrêter ce règne"
+msgstr "Stop this reign"
+
+#: simulation/templates/simulation/shared_operator.html
+msgid "Cet arrêt ferme les invitations et le calendrier sans désigner de vainqueur."
+msgstr "Stopping closes the invitations and calendar without declaring a winner."
+
+#: simulation/templates/simulation/shared_operator.html
+msgid "Confirmer l’arrêt du règne"
+msgstr "Confirm stopping the reign"
+
+#: simulation/templates/simulation/shared_operator.html
+msgid "Tous les règnes partagés"
+msgstr "All shared reigns"
+
+#: simulation/templates/simulation/shared_manage.html
+msgid "LES RÈGNES PARTAGÉS"
+msgstr "SHARED REIGNS"
+
+#: simulation/templates/simulation/shared_manage.html
+msgid "Réunir trois maisons"
+msgstr "Gather three houses"
+
+#: simulation/templates/simulation/shared_manage.html
+msgid "Préparez un règne, transmettez un lien privé à chaque joueur, puis donnez le départ quand les trois maisons sont présentes."
+msgstr "Prepare a reign, send each player a private link, then start when all three houses have joined."
+
+#: simulation/templates/simulation/shared_manage.html
+msgid "Ouvrir un règne partagé"
+msgstr "Open a shared reign"
+
+#: simulation/templates/simulation/shared_manage.html
+msgid "À dix minutes par lune, un règne de 120 lunes représente vingt heures de calendrier actif. Prévoyez des plages communes et suspendez le règne entre les séances."
+msgstr "At ten minutes per Moon, a reign of 120 Moons takes twenty hours of active play time. Agree on playing times and pause the reign between sessions."
+
+#: simulation/templates/simulation/shared_manage.html
+msgid "Préparer les invitations"
+msgstr "Prepare the invitations"
+
+#: simulation/templates/simulation/shared_manage.html
+msgid "Les règnes préparés"
+msgstr "Prepared reigns"
+
+#: simulation/templates/simulation/shared_manage.html
+msgid "En attente du départ"
+msgstr "Waiting to start"
+
+#: simulation/templates/simulation/shared_manage.html
+msgid "Arrêté"
+msgstr "Stopped"
+
+#: simulation/templates/simulation/shared_manage.html
+msgid "Suspendu"
+msgstr "Paused"
+
+#: simulation/templates/simulation/shared_manage.html
+msgid "Aucun règne partagé n’a encore été préparé."
+msgstr "No shared reign has been prepared yet."
+
+#: simulation/templates/simulation/shared_lobby.html
+msgid "LES MAISONS SE RÉUNISSENT"
+msgstr "THE HOUSES ARE GATHERING"
+
+#: simulation/templates/simulation/shared_lobby.html
+msgid "Ce règne a été arrêté"
+msgstr "This reign has been stopped"
+
+#: simulation/templates/simulation/shared_lobby.html
+msgid "Le calendrier ne commencera pas. L’organisateur pourra vous transmettre une nouvelle invitation."
+msgstr "The calendar will not start. The organiser can send you a new invitation."
+
+#: simulation/templates/simulation/shared_lobby.html
+msgid "Votre place est prête"
+msgstr "Your seat is ready"
+
+#: simulation/templates/simulation/shared_lobby.html
+msgid "Gardez votre lien privé pour revenir à cette maison. Cette page ouvrira le conseil dès le départ du règne."
+msgstr "Keep your private link to return to this house. This page will open the Council as soon as the reign starts."
+
+#: simulation/templates/simulation/shared_lobby.html
+msgid "Vérifier le départ"
+msgstr "Check whether the reign has started"
+
+#: simulation/templates/simulation/home.html
+msgid "Partie entre joueurs"
+msgstr "Multiplayer game"
+
+#: simulation/templates/simulation/manuscript.html
+msgid "Gérer cette partie"
+msgstr "Manage this game"
+
+#: simulation/guest_views.py
+msgid "Autorisez les cookies de ce site, puis revenez à l’accueil pour commencer."
+msgstr "Allow cookies for this site, then return to the home page to begin."

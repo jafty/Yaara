@@ -7,4 +7,5 @@ exec gunicorn yaara.wsgi:application \
     --threads 2 \
     --timeout 60 \
     --access-logfile - \
+    --access-logformat '%(t)s method=%(m)s status=%(s)s duration_us=%(D)s bytes=%(B)s' \
     --error-logfile -

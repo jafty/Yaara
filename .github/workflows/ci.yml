@@ -55,7 +55,7 @@ jobs:
           diff -u requirements.txt /tmp/requirements.txt
       - name: Browser smoke
         run: |
-          .venv/bin/python manage.py runserver 127.0.0.1:8000 --noreload > /tmp/yaara-server.log 2>&1 &
+          .venv/bin/python manage.py runserver 127.0.0.1:8000 --noreload --nothreading > /tmp/yaara-server.log 2>&1 &
           server_pid=$!
           trap 'kill "$server_pid"; wait "$server_pid" || true' EXIT
           for attempt in $(seq 1 30); do
@@ -64,3 +64,4 @@ jobs:
           done
           curl --fail --silent http://127.0.0.1:8000/health/
           uv run python scripts/browser_smoke.py
+          uv run python scripts/recruitment_browser_smoke.py

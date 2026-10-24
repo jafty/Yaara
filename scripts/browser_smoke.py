@@ -126,8 +126,19 @@ def scannable_layout(page):
             assert abs(a["x"] - b["x"]) < 1
             assert b["y"] >= a["y"] + a["height"]
     for note in page.locator(".notice, .marginal-note, .unsealed-leaf").all():
-        assert note.evaluate("el => getComputedStyle(el).borderLeftWidth") == "0px"
-        assert note.evaluate("el => getComputedStyle(el).boxShadow") != "none"
+        contrast = note.evaluate("""el => {
+          const style = getComputedStyle(el);
+          function luminance(colour) {
+            const channels = colour.match(/[\\d.]+/g).slice(0, 3).map(Number).map(value => {
+              const channel = value / 255;
+              return channel <= .04045 ? channel / 12.92 : ((channel + .055) / 1.055) ** 2.4;
+            });
+            return channels[0] * .2126 + channels[1] * .7152 + channels[2] * .0722;
+          }
+          const text = luminance(style.color), surface = luminance(style.backgroundColor);
+          return (Math.max(text, surface) + .05) / (Math.min(text, surface) + .05);
+        }""")
+        assert contrast >= 4.5, contrast
 
 
 def redesign_reflow(page):
@@ -327,7 +338,7 @@ with sync_playwright() as playwright:
         page.set_viewport_size({"width": 1440, "height": 1100})
         page.goto(game_url)
         assert page.locator(".city-entry details").count() == 0
-        expect(page.locator("body")).to_have_css("background-color", "rgb(253, 251, 247)")
+        expect(page.locator("body")).to_have_css("background-color", "rgb(247, 241, 230)")
         expect(page.locator(".dateline")).to_have_count(0)
         expect(page.locator(".resource-ribbon")).to_contain_text("1")
         page.screenshot(path=str(artifacts / f"domain-desktop-{language}.png"), full_page=True)
@@ -970,6 +981,7 @@ with sync_playwright() as playwright:
         )
         page.locator('a[href="?scope=all"]').click()
         assert page.locator(".letter-entry").count() >= 3
+        page.locator("[data-archive-exports] summary").click()
         with page.expect_download() as download_info:
             page.locator('a[href="?scope=all&format=json"]').click()
         assert download_info.value.suggested_filename.endswith("-all.json")

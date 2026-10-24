@@ -16,6 +16,10 @@ This repository contains the Railway build and deployment configuration. A Git p
 | `ALLOWED_HOSTS` | Custom public hostname without scheme, if applicable |
 | `CSRF_TRUSTED_ORIGINS` | `https://your-custom-domain`, if applicable |
 | `SIGNUP_ENABLED` | `1` initially; optionally `0` after creating your account |
+| `GUEST_PLAY_ENABLED` | `1` (default) enables immediate solo play without signup |
+| `GUEST_RETENTION_DAYS` | `30` idle days by default; a registered save is retained |
+| `GUEST_STARTS_PER_HOUR` | `60` per network address by default |
+| `GUEST_GLOBAL_STARTS_PER_HOUR` | `500` across the deployment by default |
 | `WEB_CONCURRENCY` | `2` initially |
 
 Railway's `RAILWAY_PUBLIC_DOMAIN` is automatically allowed and trusted. The start script honors `PORT`. Generate a secret locally with `python -c 'import secrets; print(secrets.token_urlsafe(64))'` and enter it in Railway variables, not a committed file.
@@ -23,9 +27,27 @@ Railway's `RAILWAY_PUBLIC_DOMAIN` is automatically allowed and trusted. The star
 4. Generate the public domain. The build installs pinned, checksum-verified dependencies and compiles French and English catalogs and collects static assets. Pre-deploy runs `python manage.py migrate --noinput`; Gunicorn runs as a non-root user. `/health/` checks database connectivity.
 The compiled translation catalogs are included in Git and the Docker image. The report-content schema migration runs through the existing pre-deploy command; no manual translation compilation is needed on Railway.
 
-5. Open the domain, register, and create a **manual** game. This mode requires no scheduler. Accounts, sessions, games and reports persist in PostgreSQL; the web container requires no volume.
+5. Open the domain and choose **Play without signing up** to start a manual solo game immediately. Saving it into a new or existing account retains its progress. Registered users can also configure their own solo games. Manual games require no scheduler. Accounts, sessions, games and reports persist in PostgreSQL; the web container requires no volume.
 
 Railway terminates HTTPS. Django trusts its forwarded HTTPS header and uses HTTPS redirects and secure cookies. Direct public container hosting requires a trusted TLS reverse proxy.
+
+## Multiplayer operator setup
+
+After migrations, grant the existing organizer account permission in a Railway shell:
+
+```sh
+python manage.py grant_operator USERNAME
+```
+
+Open `/manage/`, create a shared reign, and send each player their own private house link. The organizer may also follow one link to play while retaining management access. The other players need no account: following their link enters the waiting room automatically with JavaScript, or offers a native Join button without JavaScript. Retain those links for return visits; they are private credentials for their house only.
+
+The management page updates as players enter. Start when all three houses have joined and their invitations are active. Waiting players enter their Council automatically. The organizer can pause/resume the common calendar or replace/suspend a private link from the same room. Rotation invalidates previous bearer links and seat sessions; an already linked registered account retains its account access. See `docs/multiplayer-contract.md` for the authorization boundary.
+
+Shared games require the cron service or continuous worker below. Their first Moon receives one full interval from the organizer's start, unlike the aligned first deadline of an individually configured automatic solo game. No browser advances the shared calendar. Verify the scheduler on the production database before recruiting a live group.
+
+Application access logs retain method, status, timing and response size without paths, queries or referrers. Django request and worker-error logs redact private invitation paths. Hosting/CDN logs are outside this application configuration: disable full-URL logging there or restrict its access and retention, since a private invitation URL grants access to its house.
+
+Run `python manage.py cleanup_guests` periodically alongside session cleanup to remove expired, unclaimed private solo trials. The command excludes retained accounts and shared-seat identities; see `docs/guest-access.md`. The address budget uses the connection address supplied to Django, not untrusted forwarded headers; check proxy topology before tuning it.
 
 ## Automatic calendar with Railway cron
 
@@ -82,4 +104,4 @@ Email password reset is not configured. An authorized operator can run `python m
 
 ## Scope
 
-Private, unranked solo games; active/passive opponents; compatible saved rules; manual/scheduled months; fixed final results. French/English responsive UI and local assets. No external fonts, LLM APIs, Redis, or frontend build system. Human multiplayer, email, competitive rankings and game-master edits remain future work. Computer opponents are basic; rule tests do not establish game balance.
+Private, unranked guest/account solo games and operator-managed three-house multiplayer; active/passive solo opponents; compatible saved rules; manual/scheduled months; fixed final results. French/English responsive UI and local assets. No external fonts, LLM APIs, Redis, or frontend build system. Email, competitive rankings and game-master state edits remain future work. Computer opponents are basic; rule tests do not establish game balance.

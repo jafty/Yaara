@@ -20,13 +20,17 @@ from .rules import ACTION_LABELS, RuleError
 
 
 def membership(game, user):
-    participant = Participant.objects.filter(game=game, user=user).first()
+    from .multiplayer import member_query
+
+    participant = Participant.objects.filter(member_query(user), game=game).first()
     if participant is None:
         raise PermissionDenied(message("Vous ne participez pas à cette partie."))
     return participant.actor
 
 
 def check_window(game, expected_month=None):
+    if game.kind == "multiplayer" and game.lobby_status != "running":
+        raise RuleError(message("Ce règne attend son départ ou a été arrêté."))
     if game.paused:
         raise RuleError(
             message("La partie est en pause. Reprenez le calendrier pour donner un ordre.")
@@ -96,6 +100,9 @@ def create_game(
     economy_version=4,
     strategy_version=2,
 ):
+    from .guest_services import require_registered
+
+    require_registered(user)
     # Serialize account-level creation limits as well as each game's commands.
     get_user_model().objects.select_for_update().get(pk=user.pk)
     if Game.objects.filter(owner=user).count() >= 30:
@@ -155,13 +162,15 @@ def create_game(
 
 @transaction.atomic
 def confirm(user, game_id, spec, request_id, expected_month, expected_revision=None):
+    from .multiplayer import bump_visible, visible_revision
+
     game = Game.objects.select_for_update().get(pk=game_id)
     actor = membership(game, user)
     receipt = CommandReceipt.objects.filter(game=game, actor=actor, request_id=request_id).first()
     if receipt:
         return next(order for order in game.state["orders"] if order["id"] == receipt.order_id)
     check_window(game, expected_month)
-    if expected_revision is not None and game.revision != expected_revision:
+    if expected_revision is not None and visible_revision(game, actor) != expected_revision:
         raise RuleError(
             message("La situation a changé depuis ce devis. Vérifiez à nouveau vos moyens.")
         )
@@ -185,11 +194,14 @@ def confirm(user, game_id, spec, request_id, expected_month, expected_revision=N
             }
         ],
     )
+    bump_visible(game, actor)
     return order
 
 
 @transaction.atomic
 def cancel(user, game_id, order_id):
+    from .multiplayer import bump_visible
+
     game = Game.objects.select_for_update().get(pk=game_id)
     actor = membership(game, user)
     check_window(game)
@@ -213,14 +225,17 @@ def cancel(user, game_id, order_id):
             }
         ],
     )
+    bump_visible(game, actor)
 
 
 @transaction.atomic
 def tick(game_id, expected_month, user=None):
+    from .multiplayer import bump_visible
+
     game = Game.objects.select_for_update().get(pk=game_id)
     if user is not None:
         membership(game, user)
-        if game.owner_id != user.pk or game.mode != "manual":
+        if game.kind == "multiplayer" or game.owner_id != user.pk or game.mode != "manual":
             raise PermissionDenied(
                 message("Le calendrier de cette partie ne peut pas être avancé manuellement.")
             )
@@ -228,7 +243,11 @@ def tick(game_id, expected_month, user=None):
     existing = TickExecution.objects.filter(game=game, month=expected_month).first()
     if existing:
         return existing, False
-    if game.paused or game.state["status"] != "active":
+    if (
+        game.paused
+        or game.state["status"] != "active"
+        or (game.kind == "multiplayer" and game.lobby_status != "running")
+    ):
         raise RuleError(message("Le calendrier de cette partie est arrêté."))
     if expected_month != closing_moon(game.state):
         raise RuleError(message("Ce mois ne peut pas être résolu. Actualisez la page."))
@@ -254,6 +273,7 @@ def tick(game_id, expected_month, user=None):
                     for member in game.memberships.all()
                 ],
             )
+            bump_visible(game)
             return None, False
     bot_commands = engine.bot_orders(game.state, game.seed)
     events, audit = engine.advance_month(game.state, game.seed)
@@ -271,14 +291,26 @@ def tick(game_id, expected_month, user=None):
     if game.state["status"] == "finished":
         game.deadline = None
     persist(game, events)
+    bump_visible(game)
     return execution, True
 
 
 @transaction.atomic
 def toggle_pause(user, game_id):
+    from .multiplayer import bump_visible, calendar_events, require_operator
+
     game = Game.objects.select_for_update().get(pk=game_id)
-    membership(game, user)
-    if game.owner_id != user.pk or game.mode != "scheduled" or game.state["status"] != "active":
+    if game.kind == "multiplayer":
+        require_operator(user)
+        if game.lobby_status != "running":
+            raise RuleError(message("Ce règne ne peut pas être suspendu ainsi."))
+    else:
+        membership(game, user)
+    if (
+        (game.kind != "multiplayer" and game.owner_id != user.pk)
+        or game.mode != "scheduled"
+        or game.state["status"] != "active"
+    ):
         raise PermissionDenied(message("Cette partie ne peut pas être suspendue."))
     if game.state.get("awaiting_start"):
         raise RuleError(message("Commencez le règne pour ouvrir la première lune."))
@@ -297,11 +329,28 @@ def toggle_pause(user, game_id):
         game.remaining_seconds = max(1, int((game.deadline - timezone.now()).total_seconds()))
         game.deadline = None
         game.paused = True
-    persist(game)
+    events = (
+        calendar_events(
+            game,
+            message("Le calendrier change"),
+            message("Le règne est suspendu pour toutes les maisons.")
+            if game.paused
+            else message("Le règne reprend pour toutes les maisons, à l’échéance affichée."),
+        )
+        if game.kind == "multiplayer"
+        else []
+    )
+    persist(game, events)
+    bump_visible(game)
 
 
 @transaction.atomic
 def start_calendar(user, game_id):
+    from .multiplayer import start_shared
+
+    preliminary = Game.objects.get(pk=game_id)
+    if preliminary.kind == "multiplayer":
+        return start_shared(user, game_id)
     game = Game.objects.select_for_update().get(pk=game_id)
     membership(game, user)
     if game.owner_id != user.pk or game.mode != "scheduled":

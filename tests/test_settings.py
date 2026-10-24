@@ -54,14 +54,19 @@ def test_rejected_host_error_reaches_console(monkeypatch, capsys):
     monkeypatch.setenv("DATABASE_URL", "postgresql://test:test@localhost/test")
     settings = runpy.run_path(str(Path(__file__).parents[1] / "yaara/settings.py"))
     logger = logging.getLogger("django.security.DisallowedHost")
-    parent = logging.getLogger("django")
-    previous = parent.handlers[:], parent.level, parent.propagate
+    previous = {
+        name: (configured.handlers[:], configured.level, configured.propagate)
+        for name in settings["LOGGING"]["loggers"]
+        for configured in [logging.getLogger(name)]
+    }
     try:
         logging.config.dictConfig(settings["LOGGING"])
         logger.error("Invalid HTTP_HOST header: 'untrusted.example'")
         assert "Invalid HTTP_HOST header" in capsys.readouterr().err
     finally:
-        parent.handlers, parent.level, parent.propagate = previous
+        for name, state in previous.items():
+            configured = logging.getLogger(name)
+            configured.handlers, configured.level, configured.propagate = state
 
 
 @case("render-startup-migrations", "Render deployment: migrations must succeed before HTTP startup")
@@ -96,3 +101,79 @@ def test_render_startup_migration_boundary(tmp_path, migration_status):
     assert events.read_text().splitlines() == ["migrate manage.py migrate --noinput"] + (
         ["serve"] if migration_status == 0 else []
     )
+
+
+@case("deployment-access-log-private", "Shared invitations: HTTP access logs omit bearer URLs")
+def test_access_log_omits_private_request_fields(tmp_path):
+    """Given a request carrying a private invitation in its path and referrer.
+    When the deployment access log format renders the request.
+    Then method status and timing remain available without request URLs or secrets.
+    """
+    arguments = tmp_path / "arguments"
+    gunicorn = tmp_path / "gunicorn"
+    gunicorn.write_text('#!/bin/sh\nprintf "%s\\n" "$@" > "$STARTUP_ARGUMENTS"\n')
+    gunicorn.chmod(0o755)
+    subprocess.run(
+        ["sh", "scripts/start.sh"],
+        cwd=Path(__file__).parents[1],
+        env={
+            **os.environ,
+            "PATH": f"{tmp_path}{os.pathsep}{os.environ['PATH']}",
+            "STARTUP_ARGUMENTS": arguments.as_posix(),
+        },
+        check=True,
+    )
+    supplied = arguments.read_text().splitlines()
+    access_format = supplied[supplied.index("--access-logformat") + 1]
+    rendered = access_format % {
+        "t": "[24/Oct/2026:12:00:00 +0000]",
+        "m": "GET",
+        "s": "403",
+        "D": "1250",
+        "B": "42",
+        "r": "GET /join/private-seat-secret/?credential=private-query HTTP/1.1",
+        "U": "/join/private-seat-secret/",
+        "q": "credential=private-query",
+        "f": "https://example.test/join/private-referrer/",
+    }
+    assert "GET" in rendered and "403" in rendered and "1250" in rendered
+    assert "private-" not in rendered and "/join/" not in rendered
+
+
+@case(
+    "deployment-request-log-private",
+    "Shared invitations: request and error logs redact seat tokens",
+)
+@pytest.mark.parametrize(
+    "logger_name",
+    ["django.request", "django.security.csrf", "django.server", "gunicorn.error"],
+    ids=["request", "csrf", "development-server", "worker-error"],
+)
+def test_request_logs_redact_private_links(logger_name, capsys):
+    """Given a request error containing an invitation token in arguments and traceback.
+    When {logger_name} writes the error through the deployment logging configuration.
+    Then useful error diagnostics remain while every private token is redacted.
+    """
+    settings = runpy.run_path(str(Path(__file__).parents[1] / "yaara/settings.py"))
+    names = set(settings["LOGGING"]["loggers"]) | {logger_name}
+    previous = {
+        name: (logger.handlers[:], logger.level, logger.propagate)
+        for name in names
+        for logger in [logging.getLogger(name)]
+    }
+    try:
+        logging.config.dictConfig(settings["LOGGING"])
+        logger = logging.getLogger(logger_name)
+        try:
+            raise ValueError("Rejected private route /join/traceback-seat-secret/")
+        except ValueError:
+            logger.error("Forbidden: %s", "/join/request-seat-secret/", exc_info=True)
+        output = capsys.readouterr().err
+        assert "Forbidden" in output and "ValueError" in output
+        assert "request-seat-secret" not in output
+        assert "traceback-seat-secret" not in output
+        assert "/join/[redacted]/" in output
+    finally:
+        for name, state in previous.items():
+            logger = logging.getLogger(name)
+            logger.handlers, logger.level, logger.propagate = state

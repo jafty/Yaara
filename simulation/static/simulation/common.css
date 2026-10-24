@@ -2,7 +2,7 @@
 body { margin: 0; }
 a { color: inherit; text-underline-offset: .22em; text-decoration-thickness: 1px; }
 a:hover { color: var(--accent); }
-:where(a, button, summary, input, select):focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+:where(a, button, summary, input, select):focus-visible { outline: 2px solid var(--mineral, #245e70); outline-offset: 4px; }
 button, input, select { font: inherit; color: inherit; }
 button { cursor: pointer; }
 button:disabled, input:disabled { cursor: not-allowed; opacity: .5; }
@@ -14,14 +14,17 @@ legend { margin-bottom: .4rem; }
 .skip-link { position: fixed; top: .5rem; left: .5rem; padding: .5rem; background: white; color: #222; transform: translateY(-150%); z-index: 20; }
 .skip-link:focus { transform: translateY(0); }
 .notice, .marginal-note, .unsealed-leaf {
-  background: #f7edcf;
+  background: #eee3ce;
   border: 0;
-  box-shadow: 0 2px 5px #51401d14;
+  border-left: 3px solid var(--accent);
   padding: .8rem 1rem;
 }
 .notice > :last-child, .marginal-note > :last-child, .unsealed-leaf > :last-child { margin-bottom: 0; }
 .notice.error, .errorlist { color: #852419; }
 .notices { margin-top: 1.5rem; }
+.guest-banner { margin-block: .75rem; padding: .6rem .8rem; background: #eee3ce; border-left: 3px solid var(--mineral, #245e70); font-size: .875rem; }
+.guest-banner p { margin: 0 0 .3rem; }
+.guest-banner a { display: inline-flex; align-items: center; min-height: 44px; }
 
 .visually-hidden {
   position: absolute;
