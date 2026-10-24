@@ -25,8 +25,9 @@ Native fragment scrolling reserves space above the fixed bottom menu.
 Trial a pale stone header and a deep mineral-green bottom menu with cream labels
 and light terracotta selection. Mission controls reuse the existing pictograms
 and light papyrus texture. Preserve realm-wide city checklists, report content,
-and the separate review/seal/closure stages. This remains a local design candidate
-for the owner's visual review; no deployment is claimed.
+and the separate review/seal/closure stages. The owner approved the reviewed design
+and requested its push to the deployment branch on October 24. Deployment
+verification is reported separately from the push.
 
 The current SVG map can support painted scenery without a data-contract change.
 This first pass refines its existing parchment, boundaries, house colors and
