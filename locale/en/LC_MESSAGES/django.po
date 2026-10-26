@@ -5574,3 +5574,108 @@ msgstr "You will no longer receive email for this house."
 
 msgid "places prises"
 msgstr "spots taken"
+
+msgid "Courrier"
+msgstr "Mail"
+
+msgid "Carte"
+msgstr "Map"
+
+msgid "Règne"
+msgstr "Reign"
+
+msgid "total"
+msgstr "total"
+
+msgid "Revenir à la carte"
+msgstr "Return to the map"
+
+msgid "Choisir une activité"
+msgstr "Choose an activity"
+
+msgid "Aperçu"
+msgstr "Overview"
+
+msgid "Construire"
+msgstr "Build"
+
+msgid "Comptes"
+msgstr "Accounts"
+
+msgid "Envoyer un convoi"
+msgstr "Send a convoy"
+
+msgid "Suivre nos expéditions"
+msgstr "Track our expeditions"
+
+msgid "À traiter"
+msgstr "Needs attention"
+
+msgid "Échéances"
+msgstr "Schedule"
+
+msgid "Chronique"
+msgstr "Chronicle"
+
+msgid "Objectif du règne"
+msgstr "Reign objective"
+
+msgid "Chantiers dans plusieurs cités"
+msgstr "Works in several cities"
+
+msgid "Courrier du Scribe"
+msgstr "The Scribe’s Mail"
+
+msgid "Arrivée prévue"
+msgstr "Expected arrival"
+
+msgid "Ordre scellé"
+msgstr "Sealed order"
+
+msgid "Armée signalée"
+msgstr "Army sighted"
+
+msgid "Récolte menacée de débordement"
+msgstr "Harvest at risk of overflowing"
+
+msgid "Marquer comme lu"
+msgstr "Mark as read"
+
+msgid "Choisissez une cité sur la carte pour examiner ses ressources, confier un chantier ou préparer une expédition."
+msgstr "Choose a city on the map to examine its resources, commission works or prepare an expedition."
+
+msgid "Chaque cité finance ses propres décisions. Les totaux de la maison ne constituent pas un grenier commun."
+msgstr "Each city funds its own decisions. House totals are not a shared granary."
+
+msgid "Prochaine récolte : lune %(moon)s."
+msgstr "Next harvest: Month %(moon)s."
+
+msgid "Monseigneur, ces affaires attendent votre attention."
+msgstr "My lord, these matters await your attention."
+
+msgid "Aucune échéance en cours."
+msgstr "No current commitments."
+
+msgid "Chacune de ces lettres conserve les faits connus à sa date."
+msgstr "Each letter preserves the facts known on its date."
+
+msgid "Nos guetteurs ont transmis cette nouvelle. Les renseignements restent limités à ce qu’ils ont pu observer."
+msgstr "Our lookouts sent this news. Their intelligence remains limited to what they could observe."
+
+msgid "L’ouvrage demeure endommagé, Monseigneur. Une réparation rétablirait son service."
+msgstr "The structure remains damaged, my lord. Repairs would restore its service."
+
+msgid "À situation constante, %(amount)s Mesures de la récolte de lune %(moon)s ne trouveraient pas place dans les greniers."
+msgstr "If conditions remain unchanged, %(amount)s Measures from the Month %(moon)s harvest would not fit in the granaries."
+
+msgid "Nos réserves demandent votre vigilance avant de nouveaux engagements."
+msgstr "Our reserves require your attention before further commitments."
+
+msgid "Aucune affaire ne demande votre intervention immédiate."
+msgstr "No matter requires your immediate intervention."
+
+msgid "Choisissez une cité. Les routes déterminent les déplacements ; le terrain est décoratif."
+msgstr "Choose a city. Roads determine movement; terrain is decorative."
+
+msgid "Pointillés : ordre scellé · Trait plein : en route · Bleu : retour"
+msgstr "Dashed: sealed order · Solid: travelling · Blue: returning"

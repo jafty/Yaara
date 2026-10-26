@@ -34,3 +34,14 @@ Follow the standing [pseudo-TDD policy](testing.md): identify use-case variation
 `AGENTS.md` contains stable commands and constraints. An ordinary focused coding conversation is enough; additional agent orchestration is unnecessary. Keep each change playable and report assumptions, deviations and evidence.
 
 The aggregate suits nine-city, 120-month prototypes. Measure snapshot size and write contention before splitting it into more tables. Human multiplayer uses the existing lobby, separate seat principals, whole-game pauses and recipient-specific letters; no distributed framework is needed.
+
+## Map presentation boundary
+
+`simulation/cartography.py` consumes only the already authorized player projection.
+It builds local work choices, own route markers and dated courrier links; it never
+reads aggregate opponent state or executes a command. `work_details.html` shares
+quote facts between single-city and optional batch preparation. Map, courrier and
+review use the same `realm_map.html`; native URLs/forms are the baseline, with
+JavaScript adds contextual navigation while retaining the map canvas, indicative
+routes, existing cost estimates and local read preferences. The server rechecks
+the actual command through existing services.

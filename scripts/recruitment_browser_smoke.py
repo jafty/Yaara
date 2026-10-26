@@ -57,7 +57,7 @@ def work_order(page, game_url, city, seal=True):
     page.locator("form[data-work-form] button[type=submit]").click()
     expect(page.locator(".unsealed-leaf")).to_be_visible()
     if seal:
-        page.locator(".decree-reading form button[type=submit]").click()
+        page.locator(".decree-reading > form button[type=submit]").click()
 
 
 def guest_journey(browser, language, javascript=True):
@@ -85,7 +85,7 @@ def guest_journey(browser, language, javascript=True):
     assert state_for(page, game_url)["view"]["sealed_count"] == 1
     expect(page.locator('a[href*="#turn-page"]').first).to_be_visible()
     for _ in range(4):
-        page.goto(game_url + "#turn-page")
+        page.goto(game_url + "?tab=domain#turn-page")
         page.locator('form[action$="/advance/"] button').click()
     result = state_for(page, game_url)["view"]
     assert next(city for city in result["owned_cities"] if city["id"] == "c1")["irrigation"] == 1
@@ -105,6 +105,7 @@ def guest_journey(browser, language, javascript=True):
     page.wait_for_url(re.compile(re.escape(game_url)))
     assert state_for(page, game_url)["view"]["open_moon"] == result["open_moon"]
     expect(page.locator("[data-guest-access]")).to_have_count(0)
+    page.goto(game_url + "?tab=domain")
     page.locator('form[action="/accounts/logout/"] button').click()
     page.goto(BASE_URL + "/accounts/login/")
     page.locator("input[name=username]").fill(username)
@@ -218,6 +219,7 @@ def multiplayer_journey(browser, language, operator):
         expect(page.locator(".bookmarks a")).to_have_count(3)
         assert page.locator('form[action$="/advance/"]').count() == 0
         assert page.locator('form[action$="/pause/"]').count() == 0
+        page.locator('.bookmarks a[data-section="domain"]').click()
         page.locator('a[href$="/email/"]').click()
         expect(page.locator("[data-email-preferences]")).to_be_visible()
         expect(page.locator('[name="raid"]')).not_to_be_checked()
@@ -235,7 +237,7 @@ def multiplayer_journey(browser, language, operator):
     second_before = state_for(second, game_url)["game"]["revision"]
     work_order(first, game_url, "c1")
     assert state_for(second, game_url)["game"]["revision"] == second_before
-    second.locator(".decree-reading form button[type=submit]").click()
+    second.locator(".decree-reading > form button[type=submit]").click()
     assert state_for(second, game_url)["view"]["sealed_count"] == 1
     assert state_for(first, game_url)["view"]["sealed_count"] == 1
     for seat, invitation in enumerate(invitations, 1):

@@ -271,3 +271,28 @@ This release uses the Full checkpoint. Ninety-eight new collected variations cov
 The original browser journey retains the complete game flow and now checks the approved paper palette, readable contrast and optional book exports. The additional recruitment journey uses independent browser contexts for all three players, verifies live admin readiness and automatic lobby-to-Council navigation, preserves the playing operator's account, and restores an original guest solo after shared-seat entry. It also exercises saved guest progress, returning links, actual clipboard contents, French/English, native forms without JavaScript, narrow screens and enlarged text. Neither automated journey establishes human enjoyment or multiplayer balance.
 
 Local release evidence: 1,552 tests passed without skips on disposable PostgreSQL 17, including 678 database-free logic cases and 100% native-core statement/branch coverage. Both bilingual browser journeys passed, with the final recruitment run using the CI server configuration above. Catalog compilation, lint/format, migration consistency, static collection and the frozen production dependency export comparison passed. These results do not attest a Railway deployment or a production scheduler configuration.
+
+## October 26 map workspace
+
+`docs/map-workspace.md` records the variations before implementation. New independent
+HTTP contracts cover local quotes, review context, precise schedule links, overflow,
+commissioned repairs, rejected mailbox sections, read-only phases, conquered cities
+and private enemy origins. A native
+logic contract covers own route metadata without widening opponent disclosures.
+The default entry is tested in both languages. Existing Council/report tests now
+request the retained Reign view explicitly; navigation and road emphasis expectations
+follow the newly approved contract. No old financial, command or privacy assertion
+is removed. `scripts/map_browser_smoke.py` supplements the existing full browser
+journey and runs from it, covering bilingual desktop/mobile, 200% text, native forms,
+local seal/cancel, a multi-origin raid, schedule links and browser-local read state.
+
+Local evidence: 1,663 cases passed without skips on disposable PostgreSQL 17,
+including 24 added variations. The 679 database-free logic cases retain 100%
+native-core statement and branch coverage. Final focused map/projection/polling
+checks passed 27 cases after the last presentation adjustments. Catalog compilation,
+lint/format, migration consistency, static collection and the frozen production
+dependency comparison pass. These checks do not establish a Railway deployment.
+Both complete browser journeys pass in French and English, including recruitment,
+legacy batch actions, native forms and the new map journey. The map checks also
+verify a retained canvas, Escape/Back navigation, calendar refresh, and mail panels
+bounded by the available board at 200% text size.

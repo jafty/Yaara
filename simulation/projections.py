@@ -289,6 +289,9 @@ def player_view(state, actor):
             {
                 "id": order["id"],
                 "label": ACTION_LABELS[order["kind"]],
+                "target_id": order.get("target"),
+                "launch_city": order.get("launch_city"),
+                "origins": list(order.get("contributions", {})),
                 "kind": order["kind"],
                 "status": order["status"],
                 "status_label": STATUS_LABELS[order["status"]],
@@ -316,6 +319,10 @@ def player_view(state, actor):
     missions = [
         {
             "kind": ACTION_LABELS[mission["kind"]],
+            "id": mission["id"],
+            "target_id": mission["target"],
+            "launch_city": mission.get("launch_city"),
+            "origins": list(mission["cohorts"]),
             "target": by_id[mission["target"]]["name"],
             "men": sum(mission["cohorts"].values()),
             "combat_month": mission["combat_month"],

@@ -1,5 +1,16 @@
 # Yaara — Référence de jouabilité
 
+## Présentation du 26 octobre 2026 — Carte et courrier
+
+Préparée depuis `a62af6e`, sans attester un déploiement Railway. L’entrée ouvre
+la carte et ses routes enregistrées. Les travaux locaux conservent les devis,
+réservations et clôtures existants ; le traitement multi-cités reste secondaire.
+Le courrier distingue affaires à traiter, échéances et chronique. Les trajets
+propres sont dessinés ; les alertes adverses restent limitées à la surveillance
+acquise. Un prévisionnel de débordement ne représente pas des fonds disponibles.
+Aucune règle économique, militaire ou de calendrier n’est modifiée.
+
+
 ## Révision du 26 octobre 2026 — Heure de Paris et fin du règne
 
 Correction préparée depuis `98fe393` de `codex/yaara-deployment`, sans attester

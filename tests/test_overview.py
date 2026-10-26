@@ -24,7 +24,7 @@ def test_overview_first_reign(user, language):
     client = Client()
     client.force_login(user)
     client.cookies["django_language"] = language
-    page = client.get(reverse("game", args=[game.id]))
+    page = client.get(reverse("game", args=[game.id]), {"tab": "domain"})
     content = page.content.decode()
     assert page.status_code == 200
     assert 'id="recent-letters"' in content
@@ -48,11 +48,11 @@ def test_overview_work_deadlines(user):
     client = Client()
     client.force_login(user)
     url = reverse("game", args=[game.id])
-    sealed = client.get(url)
+    sealed = client.get(url, {"tab": "domain"})
     assert sealed.context["milestones"][0]["moon"] == 1
     assert sealed.context["milestones"][0]["tab"] == "decrees"
     services.tick(game.id, 1, user)
-    active = client.get(url)
+    active = client.get(url, {"tab": "domain"})
     assert active.context["milestones"][0]["moon"] == 5
     assert active.context["milestones"][0]["tab"] == "constructions"
     works = client.get(url, {"tab": "constructions"})
@@ -80,7 +80,7 @@ def test_overview_military_deadlines(user):
     client = Client()
     client.force_login(user)
     url = reverse("game", args=[game.id])
-    page = client.get(url)
+    page = client.get(url, {"tab": "domain"})
     military = [row for row in page.context["milestones"] if row["tab"] == "wars"]
     assert [row["moon"] for row in military] == [2, 3]
     wars = client.get(url, {"tab": "wars"})
@@ -101,7 +101,7 @@ def test_overview_finished_reign(user):
         services.tick(game.id, moon, user)
     client = Client()
     client.force_login(user)
-    page = client.get(reverse("game", args=[game.id]))
+    page = client.get(reverse("game", args=[game.id]), {"tab": "domain"})
     assert page.context["view"]["finished"]
     assert page.context["milestones"] == []
     assert b'id="upcoming-heading"' not in page.content

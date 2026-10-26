@@ -7,6 +7,7 @@ import shutil
 from datetime import datetime
 from pathlib import Path
 
+from map_browser_smoke import run_map_journeys
 from playwright.sync_api import expect, sync_playwright
 
 base_url = os.getenv("BASE_URL", "http://127.0.0.1:8000").rstrip("/")
@@ -124,19 +125,14 @@ def scannable_layout(page):
     assert title.evaluate("el => getComputedStyle(el).whiteSpace") == "normal"
     expect(page.locator('.resource-ribbon [data-icon="moon"]')).to_have_count(1)
     expect(page.locator(".resource-ribbon .resource-value")).to_have_count(3)
-    assert page.locator('.reign-header a[href*="tab="]').count() == 0
-    if page.locator(".decree-reading").count():
-        return_url = page.locator(".decree-reading > .reading-links a").get_attribute("href")
-        expected = "wars" if "tab=wars" in return_url else "constructions"
-    else:
-        expected = page.evaluate("""() => {
-          const query = new URL(location.href).searchParams;
-          const tab = query.get('tab') || 'domain';
-          const action = query.get('action');
-          if (tab === 'wars' || action === 'expedition' || action === 'convoy') return 'wars';
-          if (tab === 'constructions' || action) return 'constructions';
-          return 'domain';
-        }""")
+    expect(page.locator('.reign-header a[href$="?tab=mail"]')).to_have_count(1)
+    expected = page.evaluate("""() => {
+      const tab = new URL(location.href).searchParams.get('tab') || 'map';
+      if (document.querySelector('.decree-reading')) return 'map';
+      if (location.pathname.endsWith('/archive/')) return 'domain';
+      if (tab === 'mail' || tab === 'letters') return 'mail';
+      return tab === 'map' ? 'map' : 'domain';
+    }""")
     active = page.locator('.bookmarks a[aria-current="page"]')
     expect(active).to_have_count(1)
     expect(active).to_have_attribute("data-section", expected)
@@ -299,6 +295,7 @@ with sync_playwright() as playwright:
                 page.screenshot(path=str(artifacts / f"prologue-{language}.png"), full_page=True)
                 page.locator("[data-prologue-enter]").click()
         page.set_viewport_size({"width": 1440, "height": 1100})
+        page.goto(game_url + "?tab=domain")
         expect(
             page.get_by_role(
                 "heading", name="Your house council" if en else "Le conseil de votre maison"
@@ -308,7 +305,7 @@ with sync_playwright() as playwright:
         expect(page.locator("#upcoming-heading")).to_be_visible()
         redesign_reflow(page)
         expect(page.locator(".alerts-trigger")).to_have_attribute("data-alert-count", "0")
-        page.locator(".alerts-trigger").focus()
+        page.locator("#realm-alerts > summary").focus()
         page.keyboard.press("Enter")
         expect(page.locator("#realm-alerts")).to_have_attribute("open", "")
         expect(page.locator("#alert-list")).to_contain_text(
@@ -323,7 +320,7 @@ with sync_playwright() as playwright:
         expect(page.locator(".ledger-summary dt")).to_have_count(3)
         assert page.locator(".house-accounts").count() == 0
         assert page.locator(".bookmarks a").count() == 3
-        page.locator('.bookmarks a[href$="?tab=constructions"]').click()
+        page.goto(game_url + "?tab=constructions")
         expect(
             page.get_by_role("heading", name="Works" if en else "Chantiers", exact=True)
         ).to_be_visible()
@@ -363,7 +360,7 @@ with sync_playwright() as playwright:
         readable_hierarchy(page)
         page.evaluate("document.documentElement.style.removeProperty('font-size')")
         page.screenshot(path=str(artifacts / f"works-named-{language}.png"), full_page=True)
-        page.goto(game_url)
+        page.goto(game_url + "?tab=domain")
         expect(page.locator(".chapter-heading .illustration")).to_have_count(0)
         assert page.locator("body").evaluate("el => getComputedStyle(el).backgroundImage") == "none"
         assert (
@@ -395,7 +392,7 @@ with sync_playwright() as playwright:
                 no_overflow(page)
                 page.evaluate("document.documentElement.style.removeProperty('font-size')")
         page.set_viewport_size({"width": 1440, "height": 1100})
-        page.goto(game_url)
+        page.goto(game_url + "?tab=domain")
         assert page.locator(".city-entry details").count() == 0
         expect(page.locator("body")).to_have_css("background-color", "rgb(253, 252, 249)")
         expect(page.locator(".dateline")).to_have_count(0)
@@ -424,7 +421,7 @@ with sync_playwright() as playwright:
                 page.evaluate("document.documentElement.style.removeProperty('font-size')")
             page.set_viewport_size({"width": 1440, "height": 1100})
         assert len(cityscapes) == 9
-        page.locator('.bookmarks a[href$="?tab=constructions"]').click()
+        page.goto(game_url + "?tab=constructions")
         # Local forges keep the same atomic multi-city draft/seal/cancel workflow.
         page.goto(game_url + "?tab=constructions&action=forge")
         forge = page.locator("#work-forge")
@@ -436,9 +433,9 @@ with sync_playwright() as playwright:
             "Small arsenal equipment" if en else "Équipement du petit arsenal"
         )
         expect(page.locator('.bookmarks a[aria-current="page"]')).to_have_attribute(
-            "data-section", "constructions"
+            "data-section", "map"
         )
-        page.locator(".decree-reading form button[type=submit]").click()
+        page.locator(".decree-reading > form button[type=submit]").click()
         expect(page.locator(".resource-ribbon")).to_contain_text(
             "2,400,000" if en else "2\u00a0400\u00a0000"
         )
@@ -471,8 +468,9 @@ with sync_playwright() as playwright:
         expect(page.locator(".unsealed-leaf")).to_contain_text(
             "Unsealed draft" if en else "Brouillon sans sceau"
         )
-        # The footer language action reopens the same signed, read-only draft.
+        # The panel language action reopens the same signed, read-only draft.
         for selected_language in ("fr" if en else "en", language):
+            page.locator(".review-language summary").click()
             page.locator("#language").select_option(selected_language)
             page.locator(".language-switch button").click()
             expect(page.locator(".unsealed-leaf")).to_contain_text(
@@ -484,14 +482,14 @@ with sync_playwright() as playwright:
         page.screenshot(
             path=str(artifacts / f"decree-letter-desktop-{language}.png"), full_page=True
         )
-        page.locator(".decree-reading form button[type=submit]").click()
+        page.locator(".decree-reading > form button[type=submit]").click()
         expect(page.locator(".orders-register")).to_contain_text("Confirmed" if en else "Confirmé")
         expect(page.locator(".resource-ribbon")).to_contain_text(
             "2,300,000" if en else "2\u00a0300\u00a0000"
         )
         page.locator(".orders-register button").click()
         expect(page.locator(".orders-register")).to_have_count(0)
-        page.locator('.bookmarks a[data-section="wars"]').click()
+        page.goto(game_url + "?tab=wars")
         assert page.locator(".map-city").count() == 9
         illustration_asset(page.locator(".map-frame"), "map-terrain.png")
         assert page.locator(".map-territory").count() == 9
@@ -550,7 +548,7 @@ with sync_playwright() as playwright:
         expect(page.locator('input[name="kind"][value="capture"]')).to_be_checked()
         expect(page.locator("#mission-target")).to_have_value("c4")
         expect(page.locator('input[name="men_c1"]')).to_have_value("20")
-        assert "tab=wars" in page.url and "action=expedition" in page.url
+        assert "tab=map" in page.url and "action=expedition" in page.url
         help_note = page.locator(".ledger-help").first
         help_note.locator("summary").focus()
         page.keyboard.press("Enter")
@@ -582,19 +580,20 @@ with sync_playwright() as playwright:
         expect(
             page.get_by_role("heading", name="The people committed" if en else "Les hommes engagés")
         ).to_be_visible()
-        page.locator(".decree-reading form button[type=submit]").click()
+        page.locator(".decree-reading > form button[type=submit]").click()
         assert page.locator('[data-map-state="engaged"]').count() == 0
         page.screenshot(path=str(artifacts / f"decrees-desktop-{language}.png"), full_page=True)
         for moon in range(1, 4):
             page.locator('.bookmarks a[data-section="domain"]').click()
             page.locator("#turn-page button.primary-action").click()
+            page.goto(page.url.split("?")[0] + "?tab=domain")
             expect(page.locator(".resource-ribbon")).to_contain_text(str(moon + 1))
             if moon == 1:
                 illustration_asset(
                     page.locator(".illustration-start-army"),
                     "action-starts.png",
                 )
-        page.locator('.bookmarks a[href$="?tab=wars"]').click()
+        page.goto(game_url + "?tab=wars")
         expect(
             page.get_by_role("heading", name="Expeditions" if en else "Expéditions", exact=True)
         ).to_be_visible()
@@ -707,7 +706,7 @@ with sync_playwright() as playwright:
         )
         page.locator("#language").select_option(language)
         page.locator(".language-switch button").click()
-        page.goto(game_url)
+        page.goto(game_url + "?tab=domain")
         state = page.request.get(game_url + "state/").json()
         assert "seed" not in state["game"]
         assert all("stock" not in city for city in state["view"]["cities"] if not city["owned"])
@@ -726,10 +725,11 @@ with sync_playwright() as playwright:
         storage = page.locator("#work-storage")
         storage.locator('input[value="c1"]').check()
         storage.locator('button[type="submit"]').click()
-        page.locator(".decree-reading form button[type=submit]").click()
+        page.locator(".decree-reading > form button[type=submit]").click()
         for _ in range(5):
             page.locator('.bookmarks a[data-section="domain"]').click()
             page.locator("#turn-page button.primary-action").click()
+            page.goto(page.url.split("?")[0] + "?tab=domain")
         page.goto(game_url + "?tab=letters")
         completion = page.locator(".letter-entry").filter(
             has=page.get_by_role(
@@ -742,8 +742,8 @@ with sync_playwright() as playwright:
         forge = page.locator("#work-forge")
         forge.locator('input[value="c2"]').check()
         forge.locator('button[type="submit"]').click()
-        page.locator(".decree-reading form button[type=submit]").click()
-        page.goto(game_url)
+        page.locator(".decree-reading > form button[type=submit]").click()
+        page.goto(game_url + "?tab=domain")
         commitment = page.locator('#city-c2 [data-crew-phase="reserved"]')
         expect(commitment).to_contain_text("Small arsenal" if en else "Petit arsenal")
         expect(commitment).to_contain_text("Expected finish: Moon" if en else "Fin prévue : lune")
@@ -790,7 +790,13 @@ with sync_playwright() as playwright:
                 page.evaluate("document.documentElement.style.fontSize = '125%'")
                 no_overflow(page)
                 page.evaluate("document.documentElement.style.removeProperty('font-size')")
-                assert page.locator(".reign-header").bounding_box()["height"] < 130
+                header = page.locator(".reign-header").bounding_box()
+                assert header["height"] < 130, {
+                    "width": width,
+                    "url": page.url,
+                    "header": header,
+                    "text": page.locator(".reign-header").inner_text(),
+                }
                 assert (
                     page.locator("body").evaluate("el => parseFloat(getComputedStyle(el).fontSize)")
                     == 17
@@ -831,7 +837,7 @@ with sync_playwright() as playwright:
         )
         plain_page = plain.new_page()
         plain_page.goto(game_url + "?tab=help")
-        plain_page.locator(".alerts-trigger").focus()
+        plain_page.locator("#realm-alerts > summary").focus()
         plain_page.keyboard.press("Enter")
         expect(plain_page.locator("#realm-alerts")).to_have_attribute("open", "")
         no_overflow(plain_page)
@@ -879,7 +885,7 @@ with sync_playwright() as playwright:
         )
         no_overflow(plain_page)
         plain_page.screenshot(path=str(artifacts / f"convoy-native-{language}.png"), full_page=True)
-        plain_page.locator(".decree-reading form button[type=submit]").click()
+        plain_page.locator(".decree-reading > form button[type=submit]").click()
         expect(
             plain_page.locator(".order-entry").filter(
                 has_text="Send resources" if en else "Acheminer des ressources"
@@ -937,16 +943,17 @@ with sync_playwright() as playwright:
             forge = page.locator("#work-forge")
             forge.locator("[data-select-cities]").click()
             forge.locator('button[type="submit"]').click()
-            page.locator(".decree-reading form button[type=submit]").click()
+            page.locator(".decree-reading > form button[type=submit]").click()
             for _ in range(4 if tier == 0 else 6):
-                page.goto(empty_url)
+                page.goto(empty_url + "?tab=domain")
                 page.locator("#turn-page button.primary-action").click()
+            page.goto(page.url.split("?")[0] + "?tab=domain")
         page.goto(empty_url + "?tab=constructions&action=irrigation")
         irrigation = page.locator("#work-irrigation")
         irrigation.locator("[data-select-cities]").click()
         irrigation.locator('button[type="submit"]').click()
-        page.locator(".decree-reading form button[type=submit]").click()
-        page.goto(empty_url)
+        page.locator(".decree-reading > form button[type=submit]").click()
+        page.goto(empty_url + "?tab=domain")
         page.locator("#turn-page button.primary-action").click()
         page.goto(empty_url + "?tab=wars&action=expedition&city=c4")
         for origin in ("c1", "c2", "c3"):
@@ -1033,9 +1040,10 @@ with sync_playwright() as playwright:
         page.locator("#id_reign_months").select_option("24")
         page.locator(".game-setup button").click()
         archive_game_url = page.url.split("?")[0]
-        page.goto(archive_game_url)
+        page.goto(archive_game_url + "?tab=domain")
         for _ in range(24):
             page.locator("#turn-page button.primary-action").click()
+            page.goto(page.url.split("?")[0] + "?tab=domain")
         page.locator('.epilogue a[href$="/archive/"]').click()
         expect(page.locator("h1")).to_have_text(
             "The book of the reign" if en else "Le livre du règne"
@@ -1087,3 +1095,7 @@ with sync_playwright() as playwright:
 print(
     "Browser smoke passed in French and English: prologue and explicit automatic start, rules reference, city accounts, two-target frontiers, local funding and shortfalls, batch works, no-JavaScript previews, draft/seal/cancel, raid/return, translated letters, privacy, compact mobile header, enlarged text, touch targets, logout/login."
 )
+
+# The map journey supplements the retained realm/batch/report compatibility journey.
+
+run_map_journeys()

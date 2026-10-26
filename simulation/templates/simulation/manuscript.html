@@ -10,7 +10,7 @@
         <script defer src="{% url 'javascript-catalog' %}"></script>
         <script defer src="{% static 'simulation/app.js' %}"></script>
     </head>
-    <body data-revision="{{ game.revision }}" class="manuscript" data-state-url="{% url 'state' game.id %}">
+    <body data-revision="{{ game.revision }}" class="manuscript{% if workspace %} workspace-page{% if city_requested and tab == 'map' %} has-city-panel{% endif %}{% endif %}" data-state-url="{% url 'state' game.id %}">
         <a class="skip-link" href="#main">{% translate "Aller au récit" %}</a>
         <header class="reign-header">
             <div class="book book-heading">
@@ -23,7 +23,7 @@
                         <span class="resource-value" title="{% translate 'Mesures libres' %}">{% include 'simulation/nav_icon.html' with icon='grain' %}<strong>{{ view.available_stock }}</strong><span class="resource-caption">{% translate 'Mesures' %}</span></span>
                         <span class="resource-value" title="{% translate 'Fidèles disponibles' %}">{% include 'simulation/nav_icon.html' with icon='warrior' %}<strong>{{ view.available_fideles }}</strong><span class="resource-caption">{% translate 'Fidèles' %}</span></span>
                         <span class="resource-value" title="{% translate 'Lune' %}">{% include 'simulation/nav_icon.html' with icon='moon' %}<span class="resource-caption">{% translate 'Lune' %}</span><strong>{% if view.finished %}{{ view.closed_moon }}{% else %}{{ view.open_moon }}{% endif %}</strong></span>
-                    </div><a class="alerts-trigger{% if alert_center.count %} has-alerts{% endif %}" href="#alert-list" aria-controls="realm-alerts" data-alert-count="{{ alert_center.count }}">{% include 'simulation/nav_icon.html' with icon='bell' %}<span>{% translate "Alertes" %} <strong>{{ alert_center.count }}</strong></span></a></div>
+                    </div><a class="alerts-trigger{% if attention.count %} has-alerts{% endif %}" href="{% url 'game' game.id %}?tab=mail" data-alert-count="{% if attention %}{{ attention.count }}{% else %}{{ alert_center.count }}{% endif %}">{% include 'simulation/nav_icon.html' with icon='bell' %}<span>{% translate "Courrier" %} <strong>{% if attention %}{{ attention.count }}{% else %}{{ alert_center.count }}{% endif %}</strong></span></a></div>
 
                 {% endif %}
             </div>
@@ -37,16 +37,10 @@
                 </div>
             </aside>
         {% endif %}
-        <nav class="bookmarks" aria-label="{% translate "Les feuillets de votre règne" %}">
-            <a href="{% url 'game' game.id %}" data-section="domain" {% if nav_section == 'domain' or not nav_section and tab == 'domain' %}aria-current="page"{% endif %}>
-                {% include 'simulation/nav_icon.html' with icon='council' %}<span>{% translate "Conseil" %}</span>
-            </a>
-            <a href="{% url 'game' game.id %}?tab=wars" data-section="wars" {% if nav_section == 'wars' or not nav_section and tab == 'wars' %}aria-current="page"{% endif %}>
-                {% include 'simulation/nav_icon.html' with icon='blades' %}<span>{% translate "Expéditions" %}</span>
-            </a>
-            <a href="{% url 'game' game.id %}?tab=constructions" data-section="constructions" {% if nav_section == 'constructions' or not nav_section and tab == 'constructions' %}aria-current="page"{% endif %}>
-                {% include 'simulation/nav_icon.html' with icon='works' %}<span>{% translate "Chantiers" %}</span>
-            </a>
+        <nav class="bookmarks" aria-label="{% translate 'Les feuillets de votre règne' %}">
+            <a href="{% url 'game' game.id %}" data-section="map" {% if tab == 'map' or workspace and tab == 'decrees' %}aria-current="page"{% endif %}>{% include 'simulation/nav_icon.html' with icon='council' %}<span>{% translate "Carte" %}</span></a>
+            <a href="{% url 'game' game.id %}?tab=mail" data-section="mail" {% if tab == 'mail' or tab == 'letters' %}aria-current="page"{% endif %}>{% include 'simulation/nav_icon.html' with icon='bell' %}<span>{% translate "Courrier" %}</span></a>
+            <a href="{% url 'game' game.id %}?tab=domain" data-section="domain" {% if not workspace and tab != 'letters' %}aria-current="page"{% endif %}>{% include 'simulation/nav_icon.html' with icon='book' %}<span>{% translate "Règne" %}</span></a>
         </nav>
         <div class="book">
             <main id="main">
@@ -56,10 +50,10 @@
                     <p>{% translate "Vos ordres sont scellés. Ils attendent la clôture de la lune pour entrer en vigueur." %}</p>
                     <a href="{% url 'game' game.id %}?tab=domain#turn-page">{% translate "Passer à la clôture de la lune" %} →</a>
                 </aside>{% endif %}
-                {% include 'simulation/alert_center.html' %}
+                {% if not workspace %}{% include 'simulation/alert_center.html' %}{% endif %}
                 {% block content %}{% endblock %}
             </main>
-            <nav class="folio-tools" aria-label="{% translate 'Les repères du livre' %}">
+            {% if not workspace %}<nav class="folio-tools" aria-label="{% translate 'Les repères du livre' %}">
                 <a href="{% url 'email_settings' game.id %}">{% translate "Notifications par e-mail" %}</a>
                 <a href="{% url 'game' game.id %}?tab=help">{% include 'simulation/nav_icon.html' with icon='book' %}{% translate "Comment jouer" %}</a>
                 {% if game.shared and game.can_manage %}<a href="{% url 'shared_operator_room' game.id %}">{% translate "Gérer cette partie" %} →</a>{% endif %}
@@ -69,7 +63,7 @@
                 <p><a href="{% url 'home' %}">{% translate "Refermer ce livre" %}</a></p>
                 {% include 'simulation/language_switch.html' %}
                 {% if not guest_access.is_guest %}<form method="post" action="{% url 'logout' %}">{% csrf_token %}<button type="submit">{% translate "Quitter" %}</button></form>{% endif %}
-            </footer>
+            </footer>{% endif %}
         </div>
     </body>
 </html>

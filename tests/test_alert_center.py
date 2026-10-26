@@ -58,7 +58,7 @@ def test_alert_destination(user, language, issue, anchor):
                 engine.advance_month(game.state, "departure")
     game.save()
     original = deepcopy(game.state)
-    html = client.get(url).content.decode()
+    html = client.get(url, {"tab": "domain"}).content.decode()
     alert = re.search(r"<li[^>]*data-alert-kind=.*?</li>", html, re.S)[0]
     link = unescape(re.search(r'href="([^"]+)"', alert)[1])
     destination = urlsplit(link)
@@ -96,7 +96,7 @@ def test_damaged_building(user, language, family, repair):
         game.state["cities"]["c1"].update(**{family: 1}, damaged_works=[family])
     game.save()
     before = deepcopy(game.state)
-    for query in ({}, {"tab": "wars"}, {"tab": "city", "city": "c1"}):
+    for query in ({"tab": "domain"}, {"tab": "wars"}, {"tab": "city", "city": "c1"}):
         text = client.get(url, query).content.decode()
         assert 'data-alert-count="1"' in text
         assert text.count('data-alert-kind="damage"') == 1
@@ -105,7 +105,7 @@ def test_damaged_building(user, language, family, repair):
         assert f"action={repair}&amp;city=c1" in alert
         assert ("Damaged structure" if language == "en" else "Ouvrage endommagé") in alert
         assert ("Inspect repair" if language == "en" else "Examiner la réparation") in alert
-        if not query:
+        if query.get("tab") == "domain":
             assert 'class="damage-state"' in text
         if query.get("tab") == "city":
             assert f'data-damaged-building="{family}"' in text
@@ -130,8 +130,8 @@ def test_repair_lifecycle(user, language, stage):
         for _ in range(3 if stage == "completed" else int(stage == "active")):
             engine.advance_month(game.state, "repair")
     game.save()
-    text = client.get(url).content.decode()
-    assert f'data-alert-count="{0 if stage == "completed" else 1}"' in text
+    text = client.get(url, {"tab": "domain"}).content.decode()
+    assert f'data-alert-count="{0 if stage in ("completed", "sealed", "active") else 1}"' in text
     if stage == "completed":
         assert 'data-alert-kind="damage"' not in text
     elif stage in ("sealed", "active"):
@@ -186,7 +186,7 @@ def test_centralized_state(user, language, scenario):
         )
         assert kinds == expected
         assert f'data-alert-count="{len(expected)}"' in text
-        assert 'href="#alert-list"' in text
+        assert '?tab=mail"' in text
         assert "1234567" not in text
     game.refresh_from_db()
     assert game.state == original

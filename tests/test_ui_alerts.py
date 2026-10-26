@@ -87,7 +87,7 @@ def test_crew_status(user, language, stage):
     url = reverse("game", args=[game.id])
     busy = stage in ("sealed", "active")
     expected = "occupied" if busy else "available"
-    roster = client.get(url).content.decode()
+    roster = client.get(url, {"tab": "domain"}).content.decode()
     identity = re.search(r'id="city-c2".*?<div class="city-identity">(.*?)</div>', roster, re.S)[1]
     assert "Tamesh" in identity and f'data-team-state="{expected}"' in identity
     label = (
@@ -130,7 +130,11 @@ def test_crew_assignment(user, language, phase, kind, french, english, finish):
     client.cookies["django_language"] = language
     name = english if language == "en" else french
     expected_phase = "reserved" if phase == "sealed" else "active"
-    for query in ({}, {"tab": "city", "city": "c2"}, {"tab": "constructions", "action": "storage"}):
+    for query in (
+        {"tab": "domain"},
+        {"tab": "city", "city": "c2"},
+        {"tab": "constructions", "action": "storage"},
+    ):
         html = client.get(reverse("game", args=[game.id]), query).content.decode()
         assignments = re.findall(r'<span class="crew-assignment".*?</span>', html, re.S)
         assert len(assignments) == 1

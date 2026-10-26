@@ -1,0 +1,29 @@
+{% load i18n %}
+<div class="map-workspace">
+    {% include 'simulation/realm_map.html' %}
+    <section id="map-context" class="map-context mail-panel" aria-labelledby="context-title" data-mail-key="{{ game.id }}:{{ view.actor }}">
+        <a class="panel-close" href="?tab=map">{% translate "Revenir à la carte" %}</a>
+        <h1 id="context-title">{% translate "Courrier du Scribe" %}</h1>
+        <nav class="city-activities" aria-label="{% translate 'Courrier' %}">
+            <a href="?tab=mail" {% if mail_section == 'attention' %}aria-current="page"{% endif %}>{% translate "À traiter" %} · {{ attention.count }}</a>
+            <a href="?tab=mail&amp;mail=schedule" {% if mail_section == 'schedule' %}aria-current="page"{% endif %}>{% translate "Échéances" %}</a>
+            <a href="?tab=mail&amp;mail=chronicle" {% if mail_section == 'chronicle' %}aria-current="page"{% endif %}>{% translate "Chronique" %}</a>
+        </nav>
+        {% if mail_section == 'attention' %}
+            <p class="salutation">{% translate "Monseigneur, ces affaires attendent votre attention." %}</p>
+            {% include 'simulation/attention_items.html' %}
+        {% elif mail_section == 'schedule' %}
+            <ol class="milestones">{% for event in schedule %}<li><span class="milestone-date">{% blocktranslate with v0=event.moon %}Lune {{ v0 }}{% endblocktranslate %}</span> <a href="#{{ event.anchor }}">{{ event.label }}</a> · {{ event.detail }}</li>{% empty %}<li>{% translate "Aucune échéance en cours." %}</li>{% endfor %}</ol>
+            {% include 'simulation/orders_register.html' %}
+            {% include 'simulation/active_works.html' %}
+            {% include 'simulation/missions.html' %}
+            <section id="harvest-accounts" tabindex="-1"><h2>{% translate "Versement de la récolte" %}</h2>
+                {% for city in view.owned_cities %}<p><a href="?tab=map&amp;action=accounts&amp;city={{ city.id }}#city-stocks">{{ city.name }}</a> · {{ city.harvest_forecast }} {% translate "Mesures" %}</p>{% endfor %}
+                {% include 'simulation/ledger_help.html' with topic='forecast' %}
+            </section>
+        {% else %}
+            <p>{% translate "Chacune de ces lettres conserve les faits connus à sa date." %}</p>
+            {% include 'simulation/letter_entries.html' %}
+        {% endif %}
+    </section>
+</div>

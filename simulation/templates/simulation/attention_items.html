@@ -1,0 +1,23 @@
+{% load i18n %}
+<ul class="attention-list">
+{% for alert in attention.items %}<li data-alert-kind="{{ alert.kind }}" data-alert-city="{{ alert.city_id }}">
+    <h2>{{ alert.city_name }} · {% if alert.kind == 'threat' %}{% translate "Armée signalée" %}{% elif alert.kind == 'damage' %}{{ alert.building }}{% elif alert.kind == 'overflow' %}{% translate "Récolte menacée de débordement" %}{% else %}{% translate "Réserves de siège insuffisantes" %}{% endif %}</h2>
+    {% include 'simulation/illustration.html' with scene=alert.scene %}
+    {% if alert.kind == 'threat' %}<div data-threat-city="{{ alert.city_id }}">
+        <p>{% translate "Nos guetteurs ont transmis cette nouvelle. Les renseignements restent limités à ce qu’ils ont pu observer." %}</p>
+        {% for warning in alert.warnings %}<p>{% blocktranslate with moon=warning.combat_month %}Arrivée prévue : lune {{ moon }}.{% endblocktranslate %}{% if warning.kind %} {{ warning.kind }} · {{ warning.force }}{% endif %}</p>{% endfor %}
+        <a href="?tab=map&amp;action=accounts&amp;city={{ alert.city_id }}#city-defenses">{% translate "Examiner les défenses" %} →</a></div>
+    {% elif alert.kind == 'damage' %}
+        <p>{% translate "L’ouvrage demeure endommagé, Monseigneur. Une réparation rétablirait son service." %}</p>
+        <a href="?{{ alert.query }}">{% translate "Examiner la réparation" %} →</a>
+    {% elif alert.kind == 'overflow' %}
+        <p>{% blocktranslate with amount=alert.missing moon=alert.moon %}À situation constante, {{ amount }} Mesures de la récolte de lune {{ moon }} ne trouveraient pas place dans les greniers.{% endblocktranslate %}</p>
+        <a href="?tab=map&amp;action=accounts&amp;city={{ alert.city_id }}#city-stocks">{% translate "Les comptes de la cité" %} →</a>
+    {% else %}
+        <p>{% translate "Nos réserves demandent votre vigilance avant de nouveaux engagements." %}</p>
+        <p>{% blocktranslate with missing=alert.missing %}Il manque {{ missing }} Mesures pour tenir un mois de siège après les réservations.{% endblocktranslate %}</p>
+        <a href="?tab=map&amp;action=accounts&amp;city={{ alert.city_id }}#city-stocks">{% translate "Les comptes de la cité" %} →</a>
+    {% endif %}
+</li>{% empty %}<li><p>{% translate "Aucune affaire ne demande votre intervention immédiate." %}</p>{% include 'simulation/illustration.html' with scene='letter' %}</li>{% endfor %}
+</ul>
+<p class="aside-text">{% translate "Les alertes restent visibles jusqu’à résolution. Les rapports conservent l’historique." %}</p>

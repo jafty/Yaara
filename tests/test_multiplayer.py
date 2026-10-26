@@ -272,7 +272,7 @@ def test_paris_deadline_display(operator, room, seats, language, instant, displa
     for html in (operator_html, player_html):
         assert f">{display} ({label})</time>" in html
         assert f'{display}:00{offset}"' in html
-    assert player_html.count(f">{display} ({label})</time>") == 2
+    assert player_html.count(f">{display} ({label})</time>") == 1
     assert datetime.fromisoformat(state["game"]["deadline"]) == room.deadline
     room.refresh_from_db()
     assert room.deadline == instant.replace(tzinfo=datetime_timezone.utc)

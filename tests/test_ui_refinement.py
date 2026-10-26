@@ -57,7 +57,7 @@ def test_loot_capacity(desk, language):
 
 
 @case(
-    "ui-selected-routes",
+    "ui-all-roads-selected-emphasis",
     "Owner: selected-city routes explain illustrative borders using saved roads",
 )
 @pytest.mark.parametrize("map_version", [1, 2, 3])
@@ -67,12 +67,14 @@ def test_selected_routes(desk, map_version):
     game.save()
     text = client.get(url, {"tab": "wars", "city": "c3"}).content.decode()
     expected = {1: {"c2", "c4"}, 2: {"c2", "c4"}, 3: {"c1", "c2", "c4"}}[map_version]
-    routes = re.findall(r'class="map-connection" data-first="(c\d)" data-second="(c\d)"', text)
+    routes = re.findall(
+        r'class="map-connection selected-road" data-first="(c\d)" data-second="(c\d)"', text
+    )
     assert {other for edge in routes for other in edge if other != "c3"} == expected
     assert all("c3" in edge for edge in routes)
     assert "c6" not in {city for edge in routes for city in edge}
     assert 'class="map-neighbors"' in text
-    assert 'class="map-connection"' not in client.get(url, {"tab": "wars"}).content.decode()
+    assert 'class="map-connection"' in client.get(url, {"tab": "wars"}).content.decode()
 
 
 @case("ui-works-first", "Owner: active works identify cities before the works catalogue")

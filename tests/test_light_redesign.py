@@ -30,7 +30,7 @@ def folio(user, request):
 def test_council_priority(folio):
     game, client, url = folio
     original = deepcopy(game.state)
-    text = client.get(url).content.decode()
+    text = client.get(url, {"tab": "domain"}).content.decode()
     assert text.index('id="recent-letters"') < text.index('id="upcoming-heading"')
     assert text.index('id="upcoming-heading"') < text.index('id="city-ledgers"')
     assert 'href="#upcoming-heading"' in text and 'href="#city-ledgers"' in text
@@ -44,7 +44,7 @@ def test_council_priority(folio):
 @pytest.mark.parametrize("folio", ["fr", "en"], indirect=True)
 def test_resource_labels(folio):
     _, client, url = folio
-    text = client.get(url).content.decode()
+    text = client.get(url, {"tab": "domain"}).content.decode()
     ribbon = re.search(r'<div class="resource-ribbon".*?</div>', text, re.S).group()
     assert all(f'data-icon="{icon}"' in ribbon for icon in ("grain", "warrior", "moon"))
     captions = re.findall(r'<span class="resource-caption">(.*?)</span>', ribbon)

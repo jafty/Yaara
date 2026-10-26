@@ -11,6 +11,13 @@
 
 ## Project rules
 
+- The owner's October 26 map-workspace approval supersedes Council-first entry,
+  compulsory batch works and the old primary navigation. Use Map, Mail and Reign,
+  compact local city actions, existing quote/seal services and optional batch
+  management. Keep short RP prose and existing illustrations in actionable mail.
+  New artwork is deferred. Follow `docs/map-workspace.md`; never expose an enemy
+  route merely because the aggregate knows it.
+
 - Keep the in-game interface compact: the owner rejected blog-like oversized headings and generous section gaps. Preserve readable body text, touch targets and all decision information while tightening hierarchy and spacing.
 
 - The owner's latest October 24 visual feedback calls for full-width illustrations below report/work-family titles, with subtle irregular edges, rather than tiny heading thumbnails. Restore wide illustrations above Works catalogue titles in two unboxed columns where space permits, with cost/grain and duration/moon values visible; cropping is accepted pending a future artwork pass. Council/expedition headings and city summaries are text-only. Reject the yellowish, less schematic AI-widened variants. Trial a pale stone header and mineral-green bottom menu, with the active marker flush to its top edge; retain a near-white reading area and avoid parchment behind prose. Preserve existing flows, multi-city selection and frontend information contracts. See `docs/visual-redesign.md`. The owner approved this design and requested its deployment-branch push on October 24.

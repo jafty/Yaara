@@ -1,6 +1,6 @@
 {% if section_orders %}{% load i18n %}
 <section class="chapter-section orders-register" aria-labelledby="orders-heading"><h2 id="orders-heading">{% translate "Ordres en attente" %}</h2>
-    {% for order in section_orders %}<article class="order-entry"><h3>{{ order.label }} · {{ order.destination }}</h3><p class="order-status">{{ order.status_label }}</p>
+    {% for order in section_orders %}<article id="order-{{ order.id }}" tabindex="-1" class="order-entry"><h3>{{ order.label }} · {{ order.destination }}</h3><p class="order-status">{{ order.status_label }}</p>
         <p><strong>{{ order.cost }} {% translate "Mesures" %}</strong>.</p>
         {% if order.status == 'confirmed' %}<p>{% blocktranslate with moon=order.execute_month %}Entrée en vigueur à la clôture de la lune {{ moon }}.{% endblocktranslate %}</p>
         {% elif order.status == 'cancelled' %}<p>{% translate "Décret annulé avant son entrée en vigueur. Les réservations sont libérées." %}{% if order.cancelled_month %} {% blocktranslate with moon=order.cancelled_month %}Annulé à la lune {{ moon }}.{% endblocktranslate %}{% endif %}</p>

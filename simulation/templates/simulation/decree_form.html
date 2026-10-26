@@ -1,6 +1,6 @@
 {% load i18n l10n %}
 <section class="{% if not inline %}chapter-section {% endif %}decree-form">{% if not inline %}<h2>{{ action.label }}</h2>{% endif %}
-    <form method="post" action="{% url 'preview' game.id %}" {% if action.kind == 'expedition' %}class="expedition-form" data-local-funding="{{ view.local_funding|yesno:'true,false' }}" data-free-stock="{{ view.available_stock|unlocalize }}"{% elif action.kind != 'equipment' %}data-work-form data-local-funding="{{ view.local_funding|yesno:'true,false' }}" data-free-stock="{{ view.available_stock|unlocalize }}"{% endif %}>
+    <form method="post" action="{% url 'preview' game.id %}" {% if action.kind == 'expedition' %}class="expedition-form" data-local-funding="{{ view.local_funding|yesno:'true,false' }}" data-free-stock="{{ view.available_stock|unlocalize }}"{% elif local_work %}data-local-work="{{ selected.id }}"{% elif action.kind != 'equipment' %}data-work-form data-local-funding="{{ view.local_funding|yesno:'true,false' }}" data-free-stock="{{ view.available_stock|unlocalize }}"{% endif %}>
         {% csrf_token %}
         {% if action.kind == 'expedition' %}
             <fieldset class="mission-options"><legend class="visually-hidden">{% translate "Action" %}</legend>
@@ -47,8 +47,10 @@
             {% if not inline %}<p>{% blocktranslate with v0=view.equipment_quote.cost v1=view.equipment_quote.duration %}<strong>{{ v0 }} Mesures</strong> ; <strong>{{ v1 }} lunes</strong>.{% endblocktranslate %}</p>{% endif %}
             {% if view.equipment_shortfall %}<p class="cost-hint">{% blocktranslate with amount=view.equipment_shortfall %}Il manque {{ amount }} Mesures pour cet ouvrage.{% endblocktranslate %}</p>{% endif %}
         {% else %}<input type="hidden" name="kind" value="{{ action.kind }}">
-            {% include 'simulation/ledger_help.html' with topic='crew' %}
-            <fieldset><legend>{% translate "Choisir les cités" %}</legend>
+            {% if local_work %}{% include 'simulation/team_status.html' with city=selected %}{% if selected.busy %}{% include 'simulation/ledger_help.html' with topic='crew' %}{% endif %}{% else %}{% include 'simulation/ledger_help.html' with topic='crew' %}{% endif %}
+            {% if local_work %}<input type="hidden" name="cities" value="{{ selected.id }}">
+                {% include 'simulation/work_details.html' with city=local_work %}
+            {% else %}<fieldset><legend>{% translate "Choisir les cités" %}</legend>
                 {% include 'simulation/work_cities.html' with interactive=True %}
             </fieldset>
             <div class="batch-controls" hidden>
@@ -57,7 +59,8 @@
                 <p class="cost-hint" aria-live="polite">{% translate "Cités retenues :" %} <strong data-city-count>0</strong> · {% translate "Prix total :" %} <strong data-work-cost>0</strong> {% translate "Mesures" %}.</p>
                 <p class="cost-hint" data-budget-note aria-live="polite"></p>
             </div>
+            {% endif %}
         {% endif %}
-        <button class="primary-action" type="submit" {% if action.kind == 'equipment' %}{% if not view.equipment_available or view.equipment_shortfall %}disabled{% endif %}{% elif action.kind != 'expedition' and not action.selectable %}disabled{% endif %}>{% translate "Vérifier l’ordre" %}</button>
+        <button class="primary-action" type="submit" {% if action.kind == 'equipment' %}{% if not view.equipment_available or view.equipment_shortfall %}disabled{% endif %}{% elif local_work and not local_work.available %}disabled{% elif action.kind != 'expedition' and not action.selectable %}disabled{% endif %}>{% translate "Vérifier l’ordre" %}</button>
         <p class="aside-text">{% translate "Vous pourrez vérifier le récapitulatif avant de confirmer. Aucun moyen n’est réservé." %}</p>
     </form></section>

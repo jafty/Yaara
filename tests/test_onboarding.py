@@ -72,7 +72,7 @@ def test_intro_pages(user, language, page):
     assert "?tab=help" in html
     game.refresh_from_db()
     assert game.state == before and game.revision == 0
-    council = client.get(reverse("game", args=[game.id]))
+    council = client.get(reverse("game", args=[game.id]), {"tab": "domain"})
     assert "data-prologue-page" not in council.content.decode()
 
 
@@ -191,7 +191,7 @@ def test_city_ledger(user, language):
     client = Client()
     client.force_login(user)
     client.cookies["django_language"] = language
-    response = client.get(reverse("game", args=[game.id]))
+    response = client.get(reverse("game", args=[game.id]), {"tab": "domain"})
     html = response.content.decode()
     assert html.index('id="recent-letters"') < html.index('id="city-ledgers"')
     assert 'id="frontier-notes"' not in html and 'id="standings-heading"' in html

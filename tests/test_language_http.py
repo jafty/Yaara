@@ -49,7 +49,7 @@ def test_raid_financial_letter_http(user, language):
         assert "Final Measures balance: deficit of 50,000 Measures" in html
         assert "Tamesh: 31,667 Measures paid" in html
     council = client.get(
-        reverse("game", args=[game.pk]), HTTP_ACCEPT_LANGUAGE=language
+        reverse("game", args=[game.pk]), {"tab": "domain"}, HTTP_ACCEPT_LANGUAGE=language
     ).content.decode()
     assert (
         "Solde final des Mesures : déficit de 50 000 Mesures"
@@ -69,8 +69,8 @@ def test_raid_financial_letter_http(user, language):
 @pytest.mark.parametrize(
     "language,heading",
     [
-        pytest.param("fr", "Le conseil de votre maison", id="french"),
-        pytest.param("en", "Your house council", id="english"),
+        pytest.param("fr", "Carte", id="french"),
+        pytest.param("en", "Map", id="english"),
     ],
 )
 def test_language_selection(user, game, language, heading):

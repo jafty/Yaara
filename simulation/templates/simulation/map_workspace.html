@@ -1,0 +1,63 @@
+{% load i18n %}
+<div data-map-workspace class="map-workspace">
+    {% include 'simulation/realm_map.html' %}
+    {% if city_requested %}<section id="map-context" class="map-context" aria-labelledby="context-title">
+    <header class="map-heading">
+        <h1 id="context-title" tabindex="-1">{{ selected.name }}</h1>
+        <p>{{ selected.owner_name }} · {{ selected.wall_label }}{% if selected.damaged %} · {% translate "Ouvrage endommagé" %}{% endif %}</p>
+        <a href="?tab=map{% if activity %}&amp;action={{ activity }}{% endif %}" class="panel-close">{% translate "Revenir à la carte" %}</a>
+    </header>
+        <nav class="city-activities" aria-label="{% translate 'Choisir une activité' %}">
+        {% if selected.owned %}
+            <a href="?tab=map&amp;city={{ selected.id }}#map-context" {% if not activity %}aria-current="page"{% endif %}>{% translate "Aperçu" %}</a>
+            <a href="?tab=map&amp;city={{ selected.id }}&amp;action=works#map-context" {% if activity == 'works' or local_work %}aria-current="page"{% endif %}>{% translate "Construire" %}</a>
+            <a href="?tab=map&amp;city={{ selected.id }}&amp;action=accounts#map-context" {% if activity == 'accounts' %}aria-current="page"{% endif %}>{% translate "Comptes" %}</a>
+        {% elif selected_target and not selected.engaged %}
+            <a href="?tab=map&amp;city={{ selected.id }}&amp;action=expedition#map-context" {% if activity == 'expedition' %}aria-current="page"{% endif %}>{% translate "Préparer une expédition" %}</a>
+        {% endif %}
+        </nav>
+        {% if activity == 'accounts' %}
+            {% include 'simulation/city_folio.html' %}
+        {% elif activity == 'works' and selected.owned %}
+            <div class="local-work-list">
+            {% for work in local_actions %}<article class="local-work-choice">
+                <h2>{{ work.label }}</h2>
+                <p>{{ work.option.current_name }}{% if work.option.work_name %} → {{ work.option.work_name }}{% endif %}</p>
+                {% if work.option.work_name %}<p>{{ work.option.benefit }}</p><p><strong>{{ work.option.cost }}</strong> {% translate "Mesures" %} · {{ work.option.duration }} {% translate "lunes" %}</p>{% endif %}
+                {% if work.option.reason %}<p class="work-reason">{{ work.option.reason }}</p>{% endif %}
+                <a href="?tab=map&amp;city={{ selected.id }}&amp;action={{ work.kind }}#map-context">{% translate "Examiner les travaux possibles" %} →</a>
+            </article>{% endfor %}
+            </div>
+        {% elif local_work %}
+            <h2 id="work-selection" tabindex="-1">{{ action.label }}</h2>
+            {% if not view.finished and not view.eliminated and not game.paused %}{% include 'simulation/decree_form.html' with inline=True %}{% else %}{% include 'simulation/work_details.html' with city=local_work %}{% endif %}
+            {% include 'simulation/illustration.html' with scene=action.scene|default:action.kind %}
+        {% elif activity == 'convoy' and selected.owned and not view.finished and not view.eliminated and not game.paused %}
+            {% include 'simulation/convoy_form.html' %}
+        {% elif activity == 'expedition' and selected_target and not selected.engaged %}
+            {% if not view.finished and not view.eliminated and not game.paused %}
+            <details class="target-knowledge"><summary>{% translate "Ce que nous savons de cette cible" %}</summary>
+                {% for letter in target_observations %}<p>{{ letter.observation }} <a href="?tab=mail&amp;mail=chronicle#report-{{ letter.id }}">{% translate "Lire le rapport complet" %} →</a></p>{% empty %}<p>{% translate "Aucun témoignage de combat conservé pour cette cible. Ses effectifs, ses réserves et ses ouvrages non observés restent inconnus." %}</p>{% endfor %}
+            </details>
+            <div id="expedition-order">{% include 'simulation/decree_form.html' with inline=True %}</div>
+            {% endif %}
+        {% else %}
+            {% if selected.owned %}
+            <dl class="city-summary">
+                <div><dt>{% translate "Mesures libres" %}</dt><dd>{{ selected.available_stock }}</dd></div>
+                <div><dt>{% translate "Mesures réservées" %}</dt><dd>{{ selected.reserved_stock }}</dd></div>
+                <div><dt>{% translate "Fidèles disponibles" %}</dt><dd>{{ selected.available_fideles }}</dd></div>
+            </dl>
+            {% include 'simulation/team_status.html' with city=selected detailed=True %}
+            {% if selected.restricted_fideles %}<p>{% blocktranslate with count=selected.restricted_fideles moon=selected.restricted_until %}{{ count }} Fidèles hérités assurent la défense locale. Départs et secours possibles à partir de la lune {{ moon }}.{% endblocktranslate %}</p>{% endif %}
+            {% if selected.siege_shortfall %}<p class="reserve-warning">{% translate "Réserves de siège insuffisantes" %} · {{ selected.siege_shortfall }} {% translate "Mesures" %}</p>{% endif %}
+            {% if view.strategic_rules and not view.finished and not game.paused %}<a href="?tab=map&amp;city={{ selected.id }}&amp;action=convoy&amp;origin={{ selected.id }}#map-context">{% translate "Envoyer un convoi" %} →</a>{% endif %}
+            {% else %}
+                {% if not selected_target %}<p>{% translate "Cette oasis est hors de nos frontières. Nos hommes doivent pouvoir la rejoindre par nos terres." %}</p>{% endif %}
+                {% if selected.own_engagement %}<a href="?tab=mail&amp;mail=schedule">{% translate "Suivre nos expéditions" %} →</a>{% endif %}
+            {% endif %}
+            <p class="map-neighbors">{% translate "Routes directes" %} : {% for neighbor in neighbors %}<a href="?tab=map&amp;city={{ neighbor.id }}#map-context">{{ neighbor.name }}</a>{% if not forloop.last %} · {% endif %}{% endfor %}</p>
+        {% endif %}
+    </section>{% endif %}
+</div>
+{{ map_graph|json_script:'map-graph' }}

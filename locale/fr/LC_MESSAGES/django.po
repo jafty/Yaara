@@ -4290,3 +4290,108 @@ msgstr "Vous ne recevrez plus d’e-mails pour cette maison."
 
 msgid "places prises"
 msgstr "places prises"
+
+msgid "Courrier"
+msgstr "Courrier"
+
+msgid "Carte"
+msgstr "Carte"
+
+msgid "Règne"
+msgstr "Règne"
+
+msgid "total"
+msgstr "total"
+
+msgid "Revenir à la carte"
+msgstr "Revenir à la carte"
+
+msgid "Choisir une activité"
+msgstr "Choisir une activité"
+
+msgid "Aperçu"
+msgstr "Aperçu"
+
+msgid "Construire"
+msgstr "Construire"
+
+msgid "Comptes"
+msgstr "Comptes"
+
+msgid "Envoyer un convoi"
+msgstr "Envoyer un convoi"
+
+msgid "Suivre nos expéditions"
+msgstr "Suivre nos expéditions"
+
+msgid "À traiter"
+msgstr "À traiter"
+
+msgid "Échéances"
+msgstr "Échéances"
+
+msgid "Chronique"
+msgstr "Chronique"
+
+msgid "Objectif du règne"
+msgstr "Objectif du règne"
+
+msgid "Chantiers dans plusieurs cités"
+msgstr "Chantiers dans plusieurs cités"
+
+msgid "Courrier du Scribe"
+msgstr "Courrier du Scribe"
+
+msgid "Arrivée prévue"
+msgstr "Arrivée prévue"
+
+msgid "Ordre scellé"
+msgstr "Ordre scellé"
+
+msgid "Armée signalée"
+msgstr "Armée signalée"
+
+msgid "Récolte menacée de débordement"
+msgstr "Récolte menacée de débordement"
+
+msgid "Marquer comme lu"
+msgstr "Marquer comme lu"
+
+msgid "Choisissez une cité sur la carte pour examiner ses ressources, confier un chantier ou préparer une expédition."
+msgstr "Choisissez une cité sur la carte pour examiner ses ressources, confier un chantier ou préparer une expédition."
+
+msgid "Chaque cité finance ses propres décisions. Les totaux de la maison ne constituent pas un grenier commun."
+msgstr "Chaque cité finance ses propres décisions. Les totaux de la maison ne constituent pas un grenier commun."
+
+msgid "Prochaine récolte : lune %(moon)s."
+msgstr "Prochaine récolte : lune %(moon)s."
+
+msgid "Monseigneur, ces affaires attendent votre attention."
+msgstr "Monseigneur, ces affaires attendent votre attention."
+
+msgid "Aucune échéance en cours."
+msgstr "Aucune échéance en cours."
+
+msgid "Chacune de ces lettres conserve les faits connus à sa date."
+msgstr "Chacune de ces lettres conserve les faits connus à sa date."
+
+msgid "Nos guetteurs ont transmis cette nouvelle. Les renseignements restent limités à ce qu’ils ont pu observer."
+msgstr "Nos guetteurs ont transmis cette nouvelle. Les renseignements restent limités à ce qu’ils ont pu observer."
+
+msgid "L’ouvrage demeure endommagé, Monseigneur. Une réparation rétablirait son service."
+msgstr "L’ouvrage demeure endommagé, Monseigneur. Une réparation rétablirait son service."
+
+msgid "À situation constante, %(amount)s Mesures de la récolte de lune %(moon)s ne trouveraient pas place dans les greniers."
+msgstr "À situation constante, %(amount)s Mesures de la récolte de lune %(moon)s ne trouveraient pas place dans les greniers."
+
+msgid "Nos réserves demandent votre vigilance avant de nouveaux engagements."
+msgstr "Nos réserves demandent votre vigilance avant de nouveaux engagements."
+
+msgid "Aucune affaire ne demande votre intervention immédiate."
+msgstr "Aucune affaire ne demande votre intervention immédiate."
+
+msgid "Choisissez une cité. Les routes déterminent les déplacements ; le terrain est décoratif."
+msgstr "Choisissez une cité. Les routes déterminent les déplacements ; le terrain est décoratif."
+
+msgid "Pointillés : ordre scellé · Trait plein : en route · Bleu : retour"
+msgstr "Pointillés : ordre scellé · Trait plein : en route · Bleu : retour"

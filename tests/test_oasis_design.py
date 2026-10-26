@@ -55,7 +55,7 @@ def test_first_decisions(council, language):
     game, client, url = council
     before = deepcopy(game.state)
     client.cookies["django_language"] = language
-    html = client.get(url).content.decode()
+    html = client.get(url, {"tab": "domain"}).content.decode()
     opening = re.search(r"<section[^>]*data-first-decisions.*?</section>", html, re.S).group()
     assert "?tab=constructions" in opening and "?tab=wars" in opening
     assert ("Choose a work" if language == "en" else "Choisir un chantier") in opening

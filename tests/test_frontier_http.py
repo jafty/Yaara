@@ -35,7 +35,7 @@ def test_warning_http(user, language, watch, departed):
     client.force_login(user)
     client.cookies["django_language"] = language
     url = reverse("game", args=[game.id])
-    html = client.get(url).content.decode()
+    html = client.get(url, {"tab": "mail"}).content.decode()
     visible = departed and watch > 0
     assert ('data-threat-city="c3"' in html) == visible
     assert game.reports.filter(recipient="p1", kind="warning").count() == int(visible)
@@ -74,5 +74,5 @@ def test_restriction_http(user, language):
     client.cookies["django_language"] = language
     url = reverse("game", args=[game.id])
     phrase = "inherited Faithful" if language == "en" else "Fidèles hérités"
-    assert phrase in client.get(url).content.decode()
+    assert phrase in client.get(url, {"tab": "map", "city": "c4"}).content.decode()
     assert phrase in client.get(url, {"tab": "city", "city": "c4"}).content.decode()

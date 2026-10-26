@@ -1,10 +1,10 @@
 {% extends 'simulation/manuscript.html' %}{% load i18n %}
 {% block title %}{{ view.realm }} · Yaara{% endblock %}
 {% block content %}
-    <header class="chapter-heading compact-heading">
+    {% if not workspace %}<header class="chapter-heading compact-heading">
         <h1>{% if tab == 'domain' %}{% translate "Le conseil de votre maison" %}{% elif tab == 'city' %}{% blocktranslate with v0=selected.name %}Le feuillet de {{ v0 }}{% endblocktranslate %}{% elif tab == 'decrees' %}{% translate "Ce que vous dicterez" %}{% elif tab == 'constructions' %}{% translate "Chantiers" %}{% elif tab == 'wars' %}{% translate "Expéditions" %}{% elif tab == 'help' %}{% translate "Comment jouer" %}{% elif tab == 'prologue' %}{% translate "Premiers pas" %}{% else %}{% translate "Rapports" %}{% endif %}</h1>
         <p class="visually-hidden">{% blocktranslate with v0=view.realm %}Au service de {{ v0 }}.{% endblocktranslate %}</p>
-    </header>
+    </header>{% endif %}
     {% if tab == 'city' %}{% include 'simulation/illustration.html' with scene='city' variant=selected.id %}{% endif %}
     {% if view.finished %}
         <section class="epilogue"><h2>{% translate "La dernière page du règne" %}</h2>
@@ -14,7 +14,9 @@
         </section>
     {% elif view.eliminated %}<p class="marginal-note">{% translate "Aucune cité ne reconnaît plus votre autorité. Je continuerai pourtant de tenir ce livre jusqu’à la fin du règne." %}</p>
     {% elif game.paused %}<p class="marginal-note">{% translate "Le calendrier est suspendu. Les nouveaux ordres attendent sa reprise." %}</p>{% endif %}
-    {% if tab == 'domain' %}
+    {% if tab == 'map' %}{% include 'simulation/map_workspace.html' %}
+    {% elif tab == 'mail' %}{% include 'simulation/mail.html' %}
+    {% elif tab == 'domain' %}
         {% if not view.closed_moon and not view.finished and not game.paused %}<section class="first-decisions" data-first-decisions aria-label="{% translate 'Vos premiers ordres' %}">
             <p>{% translate "Vous gouvernez trois cités. Construisez, protégez vos réserves et prenez les cités rivales." %}</p>
             <nav class="first-decision-links" aria-label="{% translate 'Choisir un premier ordre' %}"><a href="?tab=constructions">{% translate "Choisir un chantier" %} →</a><a href="?tab=wars">{% translate "Préparer une expédition" %} →</a></nav>

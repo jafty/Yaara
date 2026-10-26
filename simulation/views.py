@@ -19,6 +19,7 @@ from . import engine, multiplayer, services
 from .archives import condense_archive
 from .archives import reign_archive as build_reign_archive
 from .calendar import closing_moon
+from .cartography import schedule, workspace_context
 from .forms import GameForm, SignupForm
 from .models import Game, Report
 from .narration import work_effect, work_phrase
@@ -219,8 +220,10 @@ def desk(request, game_id):
         city["expedition_siege_shortfall"] = max(
             0, city["expedition_food"] - city["expedition_remaining"]
         )
-    tab = request.GET.get("tab", "domain")
+    tab = request.GET.get("tab", "map")
     if tab not in (
+        "map",
+        "mail",
         "domain",
         "decrees",
         "constructions",
@@ -230,6 +233,9 @@ def desk(request, game_id):
         "help",
         "prologue",
     ):
+        raise Http404
+    mail_section = request.GET.get("mail", "attention")
+    if mail_section not in ("attention", "schedule", "chronicle"):
         raise Http404
     prologue_page = 1
     if tab == "prologue":
@@ -246,7 +252,7 @@ def desk(request, game_id):
     if selected is None:
         selected = next(iter(view["owned_cities"]), view["cities"][0])
     target_observations = []
-    if tab == "wars" and city_id:
+    if tab in ("wars", "map") and city_id:
         known = Report.objects.filter(
             game=game, recipient=actor, content__city_id=city_id
         ).order_by("-month", "-id")
@@ -258,13 +264,13 @@ def desk(request, game_id):
     # Reports are immutable per-recipient records; never infer access from current ownership.
     reports = Report.objects.filter(game=game, recipient=actor)
     news_month = view["closed_moon"] or game.state["month"]
-    if tab != "letters":
+    if tab != "letters" and not (tab == "mail" and mail_section == "chronicle"):
         # The order register already shows reservations; keep receipts in the archive.
         reports = reports.filter(month=news_month).exclude(kind="order", title="Décret scellé")
     constructions = [
-        {**work, "city": city["name"], "city_id": city["id"]}
+        {**work, "city": city["name"], "city_id": city["id"], "city_index": index}
         for city in view["owned_cities"]
-        for work in city["works"]
+        for index, work in enumerate(city["works"])
     ]
     milestones = []
     if not view["finished"]:
@@ -342,8 +348,15 @@ def desk(request, game_id):
         action = {"kind": "convoy", "label": _("Acheminer des ressources")}
     elif action_kind == "equipment" and view["equipment_available"]:
         action = {"kind": action_kind, "label": _("Organiser l’armement")}
-    elif action_kind and action is None:
+    elif (
+        action_kind
+        and action is None
+        and not (tab == "map" and action_kind in ("works", "accounts"))
+    ):
         raise Http404
+    local_work = None
+    if tab == "map" and action and action.get("cities") and selected["owned"]:
+        local_work = next((c for c in action["cities"] if c["id"] == selected["id"]), None)
     return render(
         request,
         "simulation/chronicle.html",
@@ -352,6 +365,12 @@ def desk(request, game_id):
             "view": view,
             "tab": tab,
             "prologue_page": prologue_page,
+            "workspace": tab in ("map", "mail"),
+            "activity": action_kind,
+            "local_work": local_work,
+            "mail_section": mail_section,
+            "schedule": schedule(view),
+            **workspace_context(view, selected, action_kind),
             "prologue_previous": prologue_page - 1,
             "prologue_next": prologue_page + 1,
             "nav_section": "wars"
@@ -468,7 +487,7 @@ def order_form_url(game, spec):
     kind = spec.get("kind")
     query = {"tab": "decrees"}
     if kind in ("raid", "capture"):
-        query = {"tab": "wars", "action": "expedition", "mission": kind}
+        query = {"tab": "map", "action": "expedition", "mission": kind}
         if spec.get("target") in game.state["cities"]:
             query["city"] = spec["target"]
         query.update(
@@ -478,7 +497,7 @@ def order_form_url(game, spec):
         )
     elif kind == "convoy":
         query = {
-            "tab": "wars",
+            "tab": "map",
             "action": "convoy",
             "origin": spec.get("origin", ""),
             "target": spec.get("target", ""),
@@ -486,6 +505,8 @@ def order_form_url(game, spec):
         }
     elif kind in ACTION_LABELS:
         query = {"tab": "constructions", "action": kind, "cities": spec.get("cities", [])}
+        if len(spec.get("cities", [])) == 1:
+            query = {"tab": "map", "action": kind, "city": spec["cities"][0]}
     return reverse("game", args=[game.id]) + "?" + urlencode(query, doseq=True)
 
 
@@ -610,12 +631,22 @@ def preview_order(request, game_id):
         }
         for task in order["tasks"]
     ]
+    preview_view = localize(own_view)
+    selected_id = (
+        spec.get("target") or spec.get("origin") or next(iter(spec.get("cities", [])), None)
+    )
+    selected = next((c for c in preview_view["cities"] if c["id"] == selected_id), None)
     return render(
         request,
         "simulation/decree_letter.html",
         {
             "game": metadata(game, actor, request.user),
             "label": localize(ACTION_LABELS[kind]),
+            "workspace": True,
+            "selected": selected,
+            "city_requested": selected is not None,
+            "edit_url": order_form_url(game, spec),
+            **workspace_context(preview_view, selected),
             "view": localize(player_view(game.state, actor)),
             "tab": "decrees",
             "nav_section": "wars" if kind in ("raid", "capture", "convoy") else "constructions",
@@ -654,9 +685,7 @@ def confirm_order(request, game_id):
             data["revision"],
         )
         destination = (
-            reverse("game", args=[game_id])
-            + "?tab="
-            + ("wars" if order["kind"] in ("raid", "capture", "convoy") else "constructions")
+            reverse("game", args=[game_id]) + "?tab=mail&mail=schedule#order-" + order["id"]
         )
         messages.success(
             request,
@@ -680,7 +709,7 @@ def confirm_order(request, game_id):
 def cancel_order(request, game_id, order_id):
     authorized_game(request, game_id)
     destination = request.POST.get("return_tab", "decrees")
-    if destination not in ("domain", "decrees", "constructions", "wars"):
+    if destination not in ("domain", "decrees", "constructions", "wars", "mail", "map"):
         destination = "decrees"
     try:
         services.cancel(request.user, game_id, str(order_id))
@@ -692,7 +721,9 @@ def cancel_order(request, game_id, order_id):
         )
     except RuleError as error:
         messages.error(request, localize(error.args[0]))
-    return redirect(f"/games/{game_id}/?tab={destination}")
+    return redirect(
+        f"/games/{game_id}/?tab={destination}" + ("&mail=schedule" if destination == "mail" else "")
+    )
 
 
 @login_required

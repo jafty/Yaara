@@ -58,7 +58,7 @@ def test_convoy(user):
     sealed = client.post(
         reverse("confirm", args=[game.id]), {"payload": response.context["payload"]}
     )
-    assert "tab=wars" in sealed.url
+    assert "tab=mail&mail=schedule#order-" in sealed.url
     register = client.get(sealed.url)
     assert [order["kind"] for order in register.context["section_orders"]] == ["convoy"]
     game.refresh_from_db()

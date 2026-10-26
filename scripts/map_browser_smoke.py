@@ -1,0 +1,121 @@
+"""Bilingual map journeys, including native forms and narrow/large-text layouts."""
+
+import os
+from pathlib import Path
+
+from playwright.sync_api import expect, sync_playwright
+
+
+def run_map_journeys():
+    base = os.getenv("BASE_URL", "http://127.0.0.1:8000").rstrip("/")
+    artifacts = Path("artifacts")
+    artifacts.mkdir(exist_ok=True)
+    with sync_playwright() as p:
+        browser = p.chromium.launch(
+            executable_path=os.getenv("CHROMIUM_PATH", "/usr/bin/chromium"), args=["--no-sandbox"]
+        )
+        for language in ("fr", "en"):
+            for javascript in (True, False):
+                context = browser.new_context(
+                    locale=language,
+                    java_script_enabled=javascript,
+                    viewport={"width": 1440, "height": 1000},
+                )
+                page = context.new_page()
+                errors = []
+                page.on("pageerror", lambda error: errors.append(str(error)))
+                page.goto(base)
+                page.locator('form[action="/play/"] button').click()
+                page.wait_for_url("**/games/**")
+                url = page.url.split("?")[0]
+                expect(page.locator(".map-city")).to_have_count(9)
+                expect(page.locator(".map-connection")).to_have_count(12)
+                canvas = page.locator(".map-workspace > .realm-map").bounding_box()
+                assert canvas["width"] == 1440
+                assert abs(canvas["y"] - page.locator(".reign-header").bounding_box()["height"]) < 2
+                page.evaluate(
+                    "window.originalMap = document.querySelector('.map-workspace > .realm-map')"
+                )
+                if javascript:
+                    # A pause/closure can remove a calendar between context requests.
+                    page.evaluate("""() => {
+                        const stale = document.createElement('aside');
+                        stale.className = 'moon-banner';
+                        document.querySelector('.reign-header').after(stale);
+                    }""")
+                page.locator('.map-city[href*="city=c1"]').focus()
+                page.keyboard.press("Enter")
+                expect(page.locator("#context-title")).to_have_text("Qasr")
+                if javascript:
+                    assert page.evaluate(
+                        "window.originalMap === document.querySelector('.map-workspace > .realm-map')"
+                    )
+                    expect(page.locator(".moon-banner")).to_have_count(0)
+                    page.keyboard.press("Escape")
+                    expect(page.locator("#map-context")).to_have_count(0)
+                    page.go_back()
+                    expect(page.locator("#context-title")).to_have_text("Qasr")
+                page.locator('.city-activities a[href*="action=works"]').click()
+                page.locator('.local-work-choice a[href*="action=irrigation"]').click()
+                expect(page.locator('[data-local-work="c1"]')).to_be_visible()
+                expect(page.locator('input[type="checkbox"]')).to_have_count(0)
+                for width in (1440, 390, 320):
+                    page.set_viewport_size(
+                        {"width": width, "height": 1000 if width == 1440 else 844}
+                    )
+                    for scale in ("100%", "200%"):
+                        page.evaluate(
+                            "scale => document.documentElement.style.fontSize = scale", scale
+                        )
+                        assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
+                        expect(
+                            page.locator('[data-local-work] button[type="submit"]')
+                        ).to_be_enabled()
+                    page.evaluate("document.documentElement.style.fontSize = '100%'")
+                page.locator('[data-local-work] button[type="submit"]').click()
+                expect(page.locator(".map-workspace")).to_be_visible()
+                expect(page.locator(".unsealed-leaf")).to_be_visible()
+                page.locator(".decree-reading > form button").click()
+                expect(page.locator(".orders-register")).to_contain_text("300")
+                page.evaluate("document.documentElement.style.fontSize = '200%'")
+                board = page.locator(".map-workspace").bounding_box()
+                panel = page.locator(".mail-panel").bounding_box()
+                assert panel["y"] >= board["y"]
+                page.evaluate("document.documentElement.style.fontSize = '100%'")
+                page.locator(".orders-register button").click()
+                page.goto(url + "?tab=map&city=c4&action=expedition#map-context")
+                page.locator("#men-c1").fill("10")
+                page.locator("#men-c3").fill("20")
+                if javascript:
+                    expect(page.locator("#draft-route path")).to_have_count(1)
+                    assert page.locator("#draft-route path").get_attribute("d").startswith("M ")
+                page.locator('.expedition-form button[type="submit"]').click()
+                page.locator(".decree-reading > form button").click()
+                expect(page.locator('[data-march-state="sealed"]')).to_have_count(1)
+                page.goto(url + "?tab=domain#turn-page")
+                page.locator('#turn-page form[action$="/advance/"] button').click()
+                page.goto(url + "?tab=mail&mail=schedule")
+                expect(page.locator('[data-march-state="outbound"]')).to_have_count(1)
+                page.locator('.milestones a[href^="#mission-"]').first.click()
+                expect(page.locator('.mail-panel p[id^="mission-"]')).to_be_in_viewport()
+                expect(page.locator(".expedition-form")).to_have_count(0)
+                page.goto(url + "?tab=mail&mail=chronicle")
+                if javascript:
+                    button = page.locator("[data-read-report]").first
+                    article_id = button.get_attribute("data-read-report")
+                    button.click()
+                    page.reload()
+                    expect(page.locator("#" + article_id)).not_to_have_class("unread-report")
+                page.set_viewport_size({"width": 390, "height": 844})
+                page.goto(url)
+                page.screenshot(
+                    path=str(artifacts / f"map-{language}-{javascript}.png"), full_page=True
+                )
+                assert not errors, errors
+                context.close()
+        browser.close()
+    print("Map journeys passed in French and English, with and without JavaScript.")
+
+
+if __name__ == "__main__":
+    run_map_journeys()

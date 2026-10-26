@@ -14,20 +14,20 @@ pytestmark = [pytest.mark.integration, pytest.mark.usefixtures("test_static_stor
 
 
 @case(
-    "folio-navigation-three",
-    "Owner UX: Council, crossed-blade Expeditions, Works are the only main destinations",
+    "folio-navigation-map-mail-reign",
+    "Owner October 27: Map, Mail and Reign are the three main destinations",
 )
 @pytest.mark.parametrize(
     "tab,active",
     [
         ("domain", "domain"),
         ("city", "domain"),
-        ("letters", "domain"),
+        ("letters", "mail"),
         ("decrees", "domain"),
         ("help", "domain"),
         ("prologue", "domain"),
-        ("constructions", "constructions"),
-        ("wars", "wars"),
+        ("constructions", "domain"),
+        ("wars", "domain"),
     ],
 )
 @pytest.mark.parametrize("language", ["fr", "en"])
@@ -45,8 +45,8 @@ def test_navigation(user, tab, active, language):
     assert len(re.findall('aria-current="page"', nav)) == (1 if active else 0)
     if active:
         assert f'data-section="{active}" aria-current="page"' in nav
-    assert 'data-icon="blades"' in nav
-    assert ("Council" if language == "en" else "Conseil") in nav
+    assert 'data-icon="bell"' in nav
+    assert ("Map" if language == "en" else "Carte") in nav
     ribbon = re.search(r'<div class="resource-ribbon".*?</div>', html, re.S).group()
     assert "turn-page" not in ribbon
 

@@ -471,3 +471,23 @@ The all-house historical/RP narrative is deferred with the owner's agreement. A 
 - Compact schema one identifies itself as `yaara-condensed`. Keep all recipient letters, ranking, rule versions and explicit missing-account Moons. Economy rows have a column header and retain every recorded Moon. Per-city field changes retain balances, population, casualties, works, levels and damage while omitting map geometry, repeated prose, forecasts and UI affordances. An ownership-loss record removes the previous city observation. Order observations are emitted only when changed, including final-only records; a repeated order is never another expenditure.
 - Include compact final accounts and surviving final missions. Historical mission snapshots are omitted, not claimed to be reconstructed. Explain observation gaps, quote-versus-spend semantics, accrued levy, duplicated battle perspectives and unavailable alert/roll/counterfactual evidence in the download. This is an analysis aid, not an automatic claim about raid profitability or luck. The complete original export remains available.
 - Use the Full local checkpoint to verify disclosure boundaries and the new download flow. The current gameplay reference remains accurate: no rule, balance, calendar or player consequence changes.
+
+## October 26, 2026 — Map workspace and courrier
+
+The owner approved the map-first assessment and requested its implementation,
+retaining short roleplay narration and existing illustrations for actionable
+courrier. This supersedes Council-first entry, compulsory multi-city work
+selection and the three Council/Expeditions/Works primary destinations. New
+artwork is deferred. See `map-workspace.md` for the interaction and case contract.
+
+Primary navigation is Map, Mail and Reign. Reign retains aggregate accounts,
+standings, historical reports and calendar controls. Existing family/batch URLs
+remain a secondary convenience. Local work selection uses the same quote and
+confirmation services with one explicit city, and quotes remain read-only.
+
+Own mission identities, targets, departure cities and origins are added to the
+existing recipient projection for map/schedule links. Enemy intelligence is not
+expanded. Map routes use saved links; browser draft routes are indicative and
+server review remains authoritative. No calendar, economics, combat, persistence
+schema or saved-rule migration changes. Reading receipts are optional local
+browser preferences, scoped by game and actor, and never rewrite reports.

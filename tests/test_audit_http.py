@@ -73,7 +73,7 @@ def test_full_report_link(user, language):
     client = Client()
     client.force_login(user)
     client.cookies["django_language"] = language
-    html = client.get(reverse("game", args=[game.id])).content.decode()
+    html = client.get(reverse("game", args=[game.id]), {"tab": "domain"}).content.decode()
     assert f"?tab=letters#report-{report.pk}" in html and 'href="#city-ledgers"' in html
     assert html.index('id="recent-letters"') < html.index('id="city-ledgers"')
     full = client.get(reverse("game", args=[game.id]), {"tab": "letters"}).content.decode()
@@ -124,9 +124,11 @@ def test_order_dates(user, status):
     client = Client()
     client.force_login(user)
     client.cookies["django_language"] = "fr"
-    html = client.get(reverse("game", args=[game.id])).content.decode()
+    html = client.get(reverse("game", args=[game.id]), {"tab": "domain"}).content.decode()
     if status == "confirmed":
-        entry = re.search(r'<article class="order-entry">(.*?)</article>', html, re.S).group(1)
+        entry = re.search(
+            r'<article[^>]*class="order-entry"[^>]*>(.*?)</article>', html, re.S
+        ).group(1)
         assert "Entrée en vigueur à la clôture de la lune 1." in entry
     else:
         assert '<article class="order-entry">' not in html

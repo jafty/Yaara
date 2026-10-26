@@ -45,7 +45,7 @@ def test_sealing_receipts(user, language, status, original_archive):
     client = Client()
     client.force_login(user)
     client.cookies["django_language"] = language
-    page = client.get(reverse("game", args=[game.id]))
+    page = client.get(reverse("game", args=[game.id]), {"tab": "domain"})
     news = page.context["reports"]
     assert receipt.pk not in [report["id"] for report in news]
     expected = {
@@ -81,7 +81,7 @@ def test_receipt_kind_guard(user):
     )
     client = Client()
     client.force_login(user)
-    page = client.get(reverse("game", args=[game.id]))
+    page = client.get(reverse("game", args=[game.id]), {"tab": "domain"})
     assert event.pk in [report["id"] for report in page.context["reports"]]
 
 
@@ -111,7 +111,7 @@ def test_complete_moon_news(user, closed, count, calendar_version):
         )
     client = Client()
     client.force_login(user)
-    page = client.get(reverse("game", args=[game.id]))
+    page = client.get(reverse("game", args=[game.id]), {"tab": "domain"})
     assert [row["id"] for row in page.context["reports"]] == expected[::-1]
     assert b"PRIVATE" not in page.content and b">OLD<" not in page.content
     archive = client.get(reverse("game", args=[game.id]), {"tab": "letters"})
@@ -125,7 +125,7 @@ def test_quiet_moon(user):
     game.save()
     client = Client()
     client.force_login(user)
-    assert client.get(reverse("game", args=[game.id])).context["reports"] == []
+    assert client.get(reverse("game", args=[game.id]), {"tab": "domain"}).context["reports"] == []
 
 
 @case("header-moon-number", "Owner: the resource header shows the current Moon with its icon")
@@ -142,7 +142,7 @@ def test_header_moon(user, language, finished, calendar_version):
     client = Client()
     client.force_login(user)
     client.cookies["django_language"] = language
-    html = client.get(reverse("game", args=[game.id])).content.decode()
+    html = client.get(reverse("game", args=[game.id]), {"tab": "domain"}).content.decode()
     ribbon = re.search(r'<div class="resource-ribbon".*?</div>', html, re.S).group()
     assert 'data-icon="moon"' in ribbon
     assert f"<strong>{24 if finished else 13}</strong>" in ribbon
@@ -160,7 +160,7 @@ def test_local_preparation(user, language):
     client = Client()
     client.force_login(user)
     client.cookies["django_language"] = language
-    html = client.get(reverse("game", args=[game.id])).content.decode()
+    html = client.get(reverse("game", args=[game.id]), {"tab": "domain"}).content.decode()
     for city, tax in zip(("c1", "c2", "c3"), (12345, 45678, 78901)):
         entry = re.search(rf'id="city-{city}".*?</li>', html, re.S).group()
         assert f"<dd>{tax}</dd>" in entry.replace("\xa0", "").replace(",", "")
@@ -190,7 +190,7 @@ def test_event_icons(user, kind, icon):
     )
     client = Client()
     client.force_login(user)
-    html = client.get(reverse("game", args=[game.id])).content.decode()
+    html = client.get(reverse("game", args=[game.id]), {"tab": "domain"}).content.decode()
     entry = re.search(rf'id="report-{report.pk}".*?</article>', html, re.S).group()
     assert f'data-icon="{icon}"' in entry and 'aria-hidden="true"' in entry
     assert "Visible title" in entry

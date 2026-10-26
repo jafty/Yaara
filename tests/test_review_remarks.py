@@ -87,7 +87,7 @@ def test_failed_preview(user, language, kind):
     )
     response = client.post(reverse("preview", args=[game.id]), spec)
     query = parse_qs(urlsplit(response.url).query)
-    assert query["tab"] == ["wars" if military else "constructions"]
+    assert query["tab"] == ["map" if military else "constructions"]
     assert query["action"] == ["expedition" if military else kind]
     form = client.get(response.url)
     assert form.status_code == 200
@@ -210,7 +210,7 @@ def test_invalid_men(user):
         {"kind": "capture", "target": "c4", "men_c1": "1.5"},
         follow=True,
     )
-    assert response.context["tab"] == "wars" and response.context["mission_kind"] == "capture"
+    assert response.context["tab"] == "map" and response.context["mission_kind"] == "capture"
     game.refresh_from_db()
     assert game.revision == 0 and not game.state["orders"]
 
