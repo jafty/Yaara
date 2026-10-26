@@ -1,5 +1,22 @@
 # Yaara — Référence de jouabilité
 
+## Révision du 26 octobre 2026 — Heure de Paris et fin du règne
+
+Correction préparée depuis `98fe393` de `codex/yaara-deployment`, sans attester
+un déploiement Railway. Les échéances visibles des joueurs et de l’organisateur
+sont affichées à l’heure de Paris : UTC+1 en hiver, UTC+2 en été, avec changement
+automatique. Les instants enregistrés et le calendrier serveur restent en UTC.
+Le compte à rebours garde la même échéance réelle, même sans conversion côté
+navigateur. Un traitement par cron toutes les cinq minutes peut publier les
+nouvelles après l’heure de clôture des ordres.
+
+La règle de fin reste inchangée : un règne de 120 lunes s’achève à la clôture
+de la lune 120, y compris à égalité. Le classement compare les cités puis la
+population rattachée ; une égalité persistante partage le premier rang.
+Les tests PostgreSQL couvrent les deux dernières clôtures à cadence de cinq
+minutes, à l’heure ou avec deux minutes de retard, pour les deux calendriers
+enregistrés. Ils ne prouvent pas l’état du processus de production.
+
 ## Révision du 24 octobre 2026 — Choix des places et notifications
 
 Préparée depuis `b9832f8` de `codex/yaara-deployment`, sans attester un déploiement

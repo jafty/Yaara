@@ -53,6 +53,15 @@ Run `python manage.py cleanup_guests` periodically alongside session cleanup to 
 
 The web service serves pages; a separate cron service closes due Moons using server time and the UTC deadlines stored in PostgreSQL. No browser must remain open. Reloading reads the persisted result; the countdown is informational and does not execute a turn. The existing browser refresh notice also preserves unfinished forms.
 
+Player and operator pages display those same instants in `Europe/Paris`, labelled
+“heure de Paris” / “Paris time”, with automatic winter/summer changes. UTC remains
+the storage and cron timezone: 08:22 UTC is 09:22 in French winter time and 10:22
+in summer. A pending-resolution banner means the order deadline has passed; it
+does not establish that the scheduler has processed the Moon. For a five-minute
+cron, a deadline at 08:22 UTC will normally be picked up around 08:25 UTC. If it
+remains pending beyond the next cron run, inspect that service's logs and the
+operator's shared calendar state. A tied score does not block closure 120.
+
 1. Keep the existing web service and PostgreSQL database. Deploy the web migrations first.
 2. Add a second Railway service from **the same `jafty/Yaara` repository**, watching **`codex/yaara-deployment`**. Set its config file path to **`/railway.cron.toml`**. This file selects the Dockerfile, runs **`python manage.py tick_due`**, schedules **`*/5 * * * *`** (every five minutes, UTC), and disables automatic restart after the one-shot command exits.
 3. Give the cron service `DATABASE_URL` referencing **the same PostgreSQL service** as the web app, the same stable `SECRET_KEY`, and `DEBUG=0`. It needs no domain, volume, web start command, or HTTP health check. Remove any inherited web health-check setting and any manually overridden start command. Verify the resulting cron schedule and start command in Railway's service settings after deployment.

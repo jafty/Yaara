@@ -1000,12 +1000,14 @@ with sync_playwright() as playwright:
         assert deadline.minute % 10 == 0 and deadline.second == deadline.microsecond == 0
         expect(page.locator(".moon-banner [data-deadline]")).to_be_visible()
         expect(page.locator('.moon-banner [data-icon="moon"]')).to_be_visible()
-        expect(page.locator(".moon-banner time")).to_contain_text("UTC")
+        clock_label = "Paris time" if en else "heure de Paris"
+        expect(page.locator(".moon-banner time")).to_contain_text(clock_label)
         for width in (320, 390):
             page.set_viewport_size({"width": width, "height": 844})
             no_overflow(page)
-            page.evaluate("document.documentElement.style.fontSize = '125%'")
-            no_overflow(page)
+            for scale in ("125%", "200%"):
+                page.evaluate("value => document.documentElement.style.fontSize = value", scale)
+                no_overflow(page)
             page.evaluate("document.documentElement.style.removeProperty('font-size')")
         page.screenshot(path=str(artifacts / f"moon-banner-{language}.png"), full_page=True)
         native_clock = browser.new_context(
@@ -1015,7 +1017,7 @@ with sync_playwright() as playwright:
         )
         native_clock_page = native_clock.new_page()
         native_clock_page.goto(automatic_url)
-        expect(native_clock_page.locator(".moon-banner time")).to_contain_text("UTC")
+        expect(native_clock_page.locator(".moon-banner time")).to_contain_text(clock_label)
         no_overflow(native_clock_page)
         native_clock.close()
         assert page.locator(".reign-header [data-deadline]").count() == 0

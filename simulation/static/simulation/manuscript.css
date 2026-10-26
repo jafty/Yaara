@@ -1200,6 +1200,14 @@ input[type="number"] {
   }
 }
 @media (max-width: 600px) {
+  .moon-status {
+    grid-template-columns: 1.1rem minmax(0, 1fr);
+    gap: 0.2rem 0.5rem;
+  }
+  .moon-status time {
+    grid-column: 2;
+    white-space: normal;
+  }
   .city-ledger .city-entry {
     grid-template-columns: minmax(0, 1fr);
     gap: 0.5rem 0.75rem;

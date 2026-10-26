@@ -33,7 +33,7 @@
                 <div class="book moon-status">
                     {% include 'simulation/nav_icon.html' with icon='moon' %}
                     <span data-deadline="{{ game.deadline|date:'c' }}">{% translate "La prochaine lune sera close à" %}</span>
-                    <time datetime="{{ game.deadline|date:'c' }}">{{ game.deadline|date:'H:i' }} UTC</time>
+                    {% include 'simulation/deadline_time.html' with deadline=game.deadline only %}
                 </div>
             </aside>
         {% endif %}

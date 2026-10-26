@@ -15,10 +15,11 @@ from django.core.management import call_command
 from django.db import close_old_connections, connection, connections, transaction
 from django.test import Client
 from django.urls import reverse
+from django.utils import timezone
 
 from simulation import multiplayer, services
 from simulation.archives import reign_archive
-from simulation.models import Game, SeatIdentity, SharedInvitation
+from simulation.models import Game, SeatIdentity, SharedInvitation, TickExecution
 from simulation.rules import RuleError
 from tests.cases import case
 from tests.stubs import FixedClock
@@ -182,6 +183,99 @@ def test_start_replay(operator, room, seats):
     room.refresh_from_db()
     assert room.deadline == deadline
     assert room.reports.filter(kind="calendar").count() == 3
+
+
+@case(
+    "mp-five-minute-final-moons",
+    "Owner October 26: five-minute shared reigns close Moons 119 and 120, including tied results",
+)
+@pytest.mark.parametrize("calendar_version", [1, 2], ids=["legacy", "open-moon"])
+@pytest.mark.parametrize("outcome", ["tie", "population", "cities"])
+@pytest.mark.parametrize("delay", [0, 120], ids=["on-time", "cron-delay"])
+def test_five_minute_final_moons(
+    operator, room, seats, monkeypatch, calendar_version, outcome, delay
+):
+    instant = datetime(2026, 10, 26, 12, 0, tzinfo=datetime_timezone.utc)
+    clock = FixedClock(instant + timedelta(seconds=delay))
+    monkeypatch.setattr(services.timezone, "now", clock)
+    multiplayer.start_shared(operator, room.pk)
+    room.refresh_from_db()
+    room.interval_minutes = 5
+    room.state["calendar_version"] = calendar_version
+    room.state["month"] = 119 if calendar_version == 2 else 118
+    if outcome == "population":
+        room.state["cities"]["c1"]["population"] += 100
+    elif outcome == "cities":
+        room.state["cities"]["c4"]["owner"] = "p1"
+    room.deadline = instant
+    room.save()
+
+    call_command("tick_due")
+    room.refresh_from_db()
+    assert room.state["month"] == (120 if calendar_version == 2 else 119)
+    assert room.state["status"] == "active" and room.state["result"] is None
+    assert not room.paused and room.deadline == instant + timedelta(minutes=5)
+    assert list(room.ticks.values_list("month", flat=True)) == [119]
+
+    monkeypatch.setattr(
+        services.timezone, "now", FixedClock(instant + timedelta(minutes=5, seconds=delay))
+    )
+    call_command("tick_due")
+    call_command("tick_due")
+    room.refresh_from_db()
+    assert room.state["status"] == "finished" and room.state["month"] == 120
+    assert room.deadline is None and not room.paused
+    assert room.state["result"]["month"] == 120
+    ranks = [row["rank"] for row in room.state["result"]["standings"]]
+    assert ranks == {"tie": [1, 1, 1], "population": [1, 2, 2], "cities": [1, 2, 3]}[outcome]
+    assert set(
+        room.reports.filter(title="Le règne est achevé").values_list("recipient", flat=True)
+    ) == {"p1", "p2", "p3"}
+    execution, executed = services.tick(room.pk, 120)
+    assert not executed and execution.month == 120
+    assert TickExecution.objects.filter(game=room).count() == 2
+
+
+@case(
+    "mp-paris-deadline-display",
+    "Owner October 26: player and operator deadlines show Paris time with automatic winter/summer changes",
+)
+@pytest.mark.parametrize("language", ["fr", "en"])
+@pytest.mark.parametrize(
+    "instant,display,offset",
+    [
+        pytest.param(datetime(2026, 10, 26, 12, 5), "13:05", "+01:00", id="winter"),
+        pytest.param(datetime(2026, 7, 26, 12, 5), "14:05", "+02:00", id="summer"),
+        pytest.param(datetime(2026, 10, 25, 0, 55), "02:55", "+02:00", id="before-winter"),
+        pytest.param(datetime(2026, 10, 25, 1, 0), "02:00", "+01:00", id="after-winter"),
+        pytest.param(datetime(2026, 3, 29, 0, 55), "01:55", "+01:00", id="before-summer"),
+        pytest.param(datetime(2026, 3, 29, 1, 0), "03:00", "+02:00", id="after-summer"),
+    ],
+)
+def test_paris_deadline_display(operator, room, seats, language, instant, display, offset):
+    multiplayer.start_shared(operator, room.pk)
+    room.refresh_from_db()
+    room.deadline = instant.replace(tzinfo=datetime_timezone.utc)
+    room.save()
+    client = Client()
+    client.cookies["django_language"] = language
+    label = "heure de Paris" if language == "fr" else "Paris time"
+    with timezone.override("UTC"):
+        client.force_login(operator)
+        operator_html = client.get(reverse("shared_operator_room", args=[room.pk])).content.decode()
+        client.logout()
+        invitation = room.invitations.get(actor="p1")
+        client.post(reverse("shared_invite", args=[multiplayer.invitation_token(invitation)]))
+        client.cookies["django_language"] = language
+        player_html = client.get(reverse("game", args=[room.pk])).content.decode()
+        state = client.get(reverse("state", args=[room.pk])).json()
+    for html in (operator_html, player_html):
+        assert f">{display} ({label})</time>" in html
+        assert f'{display}:00{offset}"' in html
+    assert player_html.count(f">{display} ({label})</time>") == 2
+    assert datetime.fromisoformat(state["game"]["deadline"]) == room.deadline
+    room.refresh_from_db()
+    assert room.deadline == instant.replace(tzinfo=datetime_timezone.utc)
 
 
 @case("mp-member-clock-denied", "Shared contract: ordinary seat cannot manage shared calendar")

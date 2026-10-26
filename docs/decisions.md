@@ -1,5 +1,22 @@
 # Implementation decisions
 
+## 2026-10-26 · Paris deadlines and final-Moon verification
+
+The owner reported a five-minute multiplayer reign waiting at Moon 119 and a
+UTC clock while France uses winter time. Display all player and operator closure
+times in `Europe/Paris`, labelled in both interface languages. The IANA zone
+handles winter/summer transitions; stored UTC instants, countdowns and scheduler
+authorization keep their existing meaning. Reuse one native `time` template so
+the clock also works without JavaScript.
+
+Independent PostgreSQL cases exercise Moons 119 and 120 for both saved calendar
+versions, on-time and two-minute-late cron processing, with tied, population and
+territorial standings. A tie still ends the reign at closure 120, exactly once.
+These cases verify existing rules; no end-condition or scheduler change is
+justified by the supplied screenshot. At 09:24 Paris in winter, an 08:22 UTC
+deadline is two minutes overdue, within a five-minute cron's polling interval.
+The running game's scheduler state requires live operational evidence.
+
 ## 2026-10-24 · Self-selected houses, automatic recruitment and optional email
 
 The owner's follow-up replaces assigned seats for new rooms with a common

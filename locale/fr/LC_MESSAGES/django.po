@@ -4020,8 +4020,12 @@ msgid "Lire le livre de toutes les maisons"
 msgstr "Lire le livre de toutes les maisons"
 
 #: simulation/templates/simulation/shared_operator.html
-msgid "Prochaine clôture à %(deadline)s UTC."
-msgstr "Prochaine clôture à %(deadline)s UTC."
+msgid "Prochaine clôture à"
+msgstr "Prochaine clôture à"
+
+#: simulation/templates/simulation/deadline_time.html
+msgid "heure de Paris"
+msgstr "heure de Paris"
 
 #: simulation/templates/simulation/shared_operator.html
 msgid "Reprendre le règne"

@@ -1,0 +1,1 @@
+{% load i18n tz %}{% timezone "Europe/Paris" %}<time datetime="{{ deadline|date:'c' }}">{{ deadline|date:'H:i' }} ({% translate "heure de Paris" %})</time>{% endtimezone %}

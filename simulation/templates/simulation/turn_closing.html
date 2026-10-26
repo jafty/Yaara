@@ -8,7 +8,7 @@
             <p>{% translate "La clôture fait entrer les décrets scellés en vigueur et avance les ouvrages et les expéditions. Un brouillon sans sceau n’engage rien." %}</p>
             {% if game.can_advance %}<form method="post" action="{% url 'advance' game.id %}" data-busy-form>{% csrf_token %}<input type="hidden" name="month" value="{{ view.open_moon }}"><button type="submit" class="primary-action" {% if game.paused %}disabled{% endif %}>{% blocktranslate with v0=view.open_moon %}Clore la lune {{ v0 }}{% endblocktranslate %}</button></form>{% endif %}
         {% else %}
-            <p>{% if game.paused %}{% translate "Le cours des chroniques est suspendu." %}{% else %}{% blocktranslate with v0=game.deadline|date:'H:i' %}La prochaine lune sera close à {{ v0 }} UTC.{% endblocktranslate %} <span class="deadline" data-deadline="{{ game.deadline|date:'c' }}"></span>{% endif %}</p>
+            <p>{% if game.paused %}{% translate "Le cours des chroniques est suspendu." %}{% else %}{% translate "La prochaine lune sera close à" %} {% include 'simulation/deadline_time.html' with deadline=game.deadline only %}. <span class="deadline" data-deadline="{{ game.deadline|date:'c' }}"></span>{% endif %}</p>
             {% if game.can_manage %}<form method="post" action="{% url 'pause' game.id %}">{% csrf_token %}<button type="submit">{% if game.paused %}{% translate "Reprendre le cours des chroniques" %}{% else %}{% translate "Suspendre le cours des chroniques" %}{% endif %}</button></form>{% endif %}
         {% endif %}
     {% else %}<p>{% translate "Ce livre est achevé. Vous pouvez le relire ou commencer un autre règne." %}</p>{% endif %}

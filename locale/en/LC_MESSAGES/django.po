@@ -5304,8 +5304,12 @@ msgid "Lire le livre de toutes les maisons"
 msgstr "Read the book of all houses"
 
 #: simulation/templates/simulation/shared_operator.html
-msgid "Prochaine clôture à %(deadline)s UTC."
-msgstr "Next Moon closure at %(deadline)s UTC."
+msgid "Prochaine clôture à"
+msgstr "Next Moon closure at"
+
+#: simulation/templates/simulation/deadline_time.html
+msgid "heure de Paris"
+msgstr "Paris time"
 
 #: simulation/templates/simulation/shared_operator.html
 msgid "Reprendre le règne"
