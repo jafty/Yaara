@@ -5,7 +5,7 @@
         <header class="map-heading">
         {% if city_requested %}
         <h2 id="context-title">{{ selected.name }}</h2>
-        <p class="map-status">{% include 'simulation/map_status.html' with city=selected %} · {{ selected.wall_label }}{% if selected.damaged %}, {% translate "endommagée" %}{% endif %}</p>
+        <p class="map-status">{% include 'simulation/map_status.html' with city=selected %}{% if selected.damaged %} · {% translate "Ouvrage endommagé" %}{% endif %}</p>
         {% else %}<h2 id="context-title">{% translate "Préparer une expédition" %}</h2>{% endif %}
         </header>
         {% if city_requested %}

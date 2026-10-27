@@ -5839,3 +5839,6 @@ msgstr "Repair"
 msgctxt "city actions"
 msgid "Constructions"
 msgstr "Works"
+
+msgid "Convois"
+msgstr "Convoys"

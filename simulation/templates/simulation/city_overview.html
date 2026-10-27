@@ -4,7 +4,7 @@
 {% if selected.restricted_fideles %}<p>{% blocktranslate with count=selected.restricted_fideles moon=selected.restricted_until %}{{ count }} Fidèles hérités assurent la défense locale. Départs et secours possibles à partir de la lune {{ moon }}.{% endblocktranslate %}</p>{% endif %}
 
 <section class="city-briefing" aria-label="{% translate 'Situation de la cité' %}">
-    <p id="city-briefing-stats" class="city-briefing-stats">{% blocktranslate with population=selected.present_population %}{{ population }} habitants présents{% endblocktranslate %} · {{ selected.wall_label }}</p>
+    <p id="city-briefing-stats" class="city-briefing-stats">{% blocktranslate with population=selected.present_population %}{{ population }} habitants présents{% endblocktranslate %}</p>
     <div class="city-crew">
         <div class="city-crew-line"><span class="team-status" data-team-state="{% if selected.busy %}occupied{% else %}available{% endif %}">{% include 'simulation/nav_icon.html' with icon='works' %}{% if selected.busy %}{% translate "Équipe occupée" %} :{% else %}{% translate "Équipe libre" %}{% endif %}</span>{% for assignment in selected.crew_assignments %}<span class="city-assignment" data-crew-phase="{{ assignment.phase }}"><a href="?tab=mail&amp;mail=schedule#{{ assignment.anchor }}">{{ assignment.display_name }}</a></span>{% endfor %}</div>
         {% for assignment in selected.crew_assignments %}<small class="city-finish">{% blocktranslate with moon=assignment.finish_moon %}Fin prévue : lune {{ moon }}{% endblocktranslate %}</small>{% endfor %}

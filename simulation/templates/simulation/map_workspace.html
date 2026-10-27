@@ -14,7 +14,7 @@
 
         {% endif %}
         <div class="sheet-body">
-        {% if not selected.owned or selected.damaged %}<p class="aside-text">{{ selected.wall_label }}{% if selected.damaged %} · {% translate "Ouvrage endommagé" %}{% endif %}</p>{% endif %}
+        {% if selected.damaged %}<p class="aside-text">{% translate "Ouvrage endommagé" %}</p>{% endif %}
         {% if selected.owned %}
             {% if activity == 'accounts' %}{% include 'simulation/city_folio.html' %}
             {% elif activity == 'convoy' %}{% if not view.finished and not view.eliminated and not game.paused %}{% include 'simulation/convoy_form.html' %}{% endif %}
@@ -23,7 +23,7 @@
                     {% include 'simulation/city_overview.html' %}
                     <nav class="city-actions" aria-label="{% translate 'Choisir une activité' %}">
                         <a class="city-action city-action-primary" href="?tab=map&amp;city={{ selected.id }}&amp;action=works">{% include 'simulation/nav_icon.html' with icon='works' %}<span class="city-action-copy"><strong>{% translate "Constructions" context "city actions" %}</strong><small>{% translate "Améliorer les ouvrages de cette cité." %}</small></span></a>
-                        {% if view.strategic_rules and not view.finished and not view.eliminated and not game.paused %}<a class="city-action city-action-secondary" href="?tab=map&amp;city={{ selected.id }}&amp;action=convoy&amp;origin={{ selected.id }}">{% include 'simulation/nav_icon.html' with icon='transport' %}<span class="city-action-copy"><strong>{% translate "Envoyer un convoi" %}</strong><small>{% translate "Déplacer des Mesures entre vos cités." %}</small></span></a>{% endif %}
+                        {% if view.strategic_rules and not view.finished and not view.eliminated and not game.paused %}<a class="city-action city-action-secondary" href="?tab=map&amp;city={{ selected.id }}&amp;action=convoy&amp;origin={{ selected.id }}">{% include 'simulation/nav_icon.html' with icon='transport' %}<span class="city-action-copy"><strong>{% translate "Convois" %}</strong><small>{% translate "Déplacer des Mesures entre vos cités." %}</small></span></a>{% endif %}
                     </nav>
                 {% else %}<section id="city-works" class="city-works" aria-labelledby="works-title">
                     <div class="city-section-heading"><h2 id="works-title">{% translate "Chantier de la cité" %}</h2>{% include 'simulation/team_status.html' with city=selected detailed=True %}</div>

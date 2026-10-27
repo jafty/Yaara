@@ -424,3 +424,11 @@ reviewed in the case catalog. French and English browser journeys cover narrow
 screens, enlarged text, keyboard and native navigation. A 320px reserved-stock
 inspection verified the resource row and aligned team name. No game rules or
 archived reports changed.
+
+## City description copy — October 27
+
+The convoy label and removal of visible fortification labels passed 201 affected
+PostgreSQL 17 cases and the bilingual browser and map journeys. A focused
+sixteen-case rerun checks the convoy label within the city action menu and the
+briefing text. The reviewed case catalog remains unchanged. Accessible map
+labels and damage warnings remain available; game rules are unchanged.
