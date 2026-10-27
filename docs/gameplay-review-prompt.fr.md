@@ -1,5 +1,14 @@
 # Yaara — Référence de jouabilité
 
+## Présentation du 27 octobre 2026 — Feuillets inspirés de la maquette
+
+Préparée depuis `9714b9d`. Le feuillet d’une cité propre réunit stocks, capacités,
+équipe et devis locaux ; une cible accessible ouvre directement la préparation.
+Les curseurs facultatifs modifient les mêmes effectifs que les champs numériques.
+Le courrier dispose d’une fenêtre distincte, avec ses trois classements conservés.
+Les couleurs, illustrations et règles actuelles sont conservées : la maquette ne
+remplace ni les prix réels, ni le devis, ni le sceau, ni les limites de renseignement.
+
 ## Présentation du 26 octobre 2026 — Carte et courrier
 
 Préparée depuis `a62af6e`, sans attester un déploiement Railway. L’entrée ouvre

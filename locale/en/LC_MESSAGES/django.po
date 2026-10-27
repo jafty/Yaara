@@ -5679,3 +5679,51 @@ msgstr "Choose a city. Roads determine movement; terrain is decorative."
 
 msgid "Pointillés : ordre scellé · Trait plein : en route · Bleu : retour"
 msgstr "Dashed: sealed order · Solid: travelling · Blue: returning"
+
+## Mockup-led workspace
+msgid "Occupation du grenier"
+msgstr "Granary occupancy"
+
+## Mockup-led workspace
+msgid "Réservés"
+msgstr "Reserved"
+
+## Mockup-led workspace
+msgid "En route"
+msgstr "Travelling"
+
+## Mockup-led workspace
+msgid "Surveillance"
+msgstr "Watch"
+
+## Mockup-led workspace
+msgid "Chantier de la cité"
+msgstr "City works"
+
+## Mockup-led workspace
+msgid "Détails du devis"
+msgstr "Quote details"
+
+## Mockup-led workspace
+msgid "Retirer un Fidèle"
+msgstr "Remove one Faithful"
+
+## Mockup-led workspace
+msgid "Ajouter un Fidèle"
+msgstr "Add one Faithful"
+
+## Mockup-led workspace
+msgid "Max."
+msgstr "Max."
+
+## Mockup-led workspace
+msgid "Récolte : lune %(moon)s"
+msgstr "Harvest: Moon %(moon)s"
+
+## Mockup-led workspace
+msgid "Récolte estimée : %(amount)s · lune %(moon)s."
+msgstr "Estimated harvest: %(amount)s · Moon %(moon)s."
+
+## Mockup-led workspace
+msgid "Débordement possible : %(amount)s Mesures à la récolte de lune %(moon)s."
+msgstr "Possible overflow: %(amount)s Measures at the Moon %(moon)s harvest."

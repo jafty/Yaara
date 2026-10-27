@@ -108,6 +108,7 @@ function initializePage() {
         ),
       );
       form.querySelector("[data-loot-preview]").hidden = kind !== "raid";
+      form.querySelector(".loot-preview").hidden = kind !== "raid";
       document.querySelector("#army-total").textContent = format.format(total);
       document.querySelector("#army-cost").textContent = format.format(cost);
       // Match the server's whole-Measure Hamilton allocation and city-ID tie order.
@@ -129,6 +130,9 @@ function initializePage() {
       }
       let shortfall = 0;
       rows.forEach((row, index) => {
+        const controls = row.querySelector("[data-contingent-controls]");
+        if (controls)
+          controls.querySelector('input[type="range"]').value = counts[index];
         const chargeForOrigin = fees[index] + counts[index] * price.per_person;
         const remainingStock = Number(row.dataset.freeStock) - chargeForOrigin;
         const need =
@@ -212,6 +216,13 @@ function initializePage() {
       rows.forEach((row) => {
         const input = row.querySelector("input");
         input.disabled = !eligible.includes(row.dataset.origin);
+        row
+          .querySelectorAll(
+            "[data-contingent-controls] input, [data-contingent-controls] button",
+          )
+          .forEach((control) => {
+            control.disabled = input.disabled || Number(input.max) === 0;
+          });
         row.classList.toggle("disabled", input.disabled);
         if (input.disabled) input.value = "0";
         row.querySelector(".origin-note").textContent =
@@ -228,6 +239,29 @@ function initializePage() {
     rows.forEach((row) =>
       row.querySelector("input").addEventListener("input", updateTotals),
     );
+    rows.forEach((row) => {
+      const controls = row.querySelector("[data-contingent-controls]");
+      if (!controls) return;
+      const number = row.querySelector('input[type="number"]');
+      const setCount = (value) => {
+        number.value = Math.max(0, Math.min(Number(number.max), value));
+        updateTotals();
+      };
+      controls.hidden = false;
+      controls
+        .querySelector('input[type="range"]')
+        .addEventListener("input", (event) =>
+          setCount(Number(event.target.value)),
+        );
+      controls.querySelectorAll("[data-adjust]").forEach((button) => {
+        button.addEventListener("click", () =>
+          setCount(Number(number.value || 0) + Number(button.dataset.adjust)),
+        );
+      });
+      controls
+        .querySelector("[data-maximum]")
+        .addEventListener("click", () => setCount(Number(number.max)));
+    });
     updateOrigins();
   }
 
@@ -278,7 +312,10 @@ function initializePage() {
               "De nouvelles lettres nous sont parvenues. Reprendre le livre à ce jour.",
             );
             notice.append(link);
-            document.querySelector("#main").prepend(notice);
+            (
+              document.querySelector(".workspace-notices") ||
+              document.querySelector("#main")
+            ).prepend(notice);
           }
         } catch {
           /* A transient failure leaves the current page usable. */

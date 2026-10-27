@@ -179,9 +179,13 @@ def desk(request, game_id):
                 "phase": "active",
                 "start_moon": work["start_month"],
                 "finish_moon": work["finish_month"],
+                "anchor": f"work-{city['id']}-{index}",
             }
-            for work in game.state["works"]
-            if work.get("city") == city["id"] and work["status"] == "active"
+            for index, work in enumerate(
+                w
+                for w in game.state["works"]
+                if w.get("city") == city["id"] and w["status"] == "active"
+            )
         ]
         city["crew_assignments"].extend(
             {
@@ -191,6 +195,7 @@ def desk(request, game_id):
                 "phase": "reserved",
                 "start_moon": order["execute_month"],
                 "finish_moon": order["execute_month"] + task["duration"],
+                "anchor": "order-" + order["id"],
             }
             for order in game.state["orders"]
             if order["actor"] == actor and order["status"] == "confirmed"
@@ -339,7 +344,12 @@ def desk(request, game_id):
     for city in view["owned_cities"]:
         city["recent_report"] = recent_by_city.get(city["id"])
     action_kind = request.GET.get("action")
-    if tab == "wars" and city_id and selected["reachable"] and not selected["engaged"]:
+    if (
+        (tab == "wars" or (tab == "map" and not selected["owned"]))
+        and city_id
+        and selected["reachable"]
+        and not selected["engaged"]
+    ):
         action_kind = "expedition"
     action = next((item for item in view["work_actions"] if item["kind"] == action_kind), None)
     if action_kind == "expedition":

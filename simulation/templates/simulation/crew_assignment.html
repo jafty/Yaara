@@ -1,7 +1,7 @@
 {% load i18n %}
 {% for assignment in city.crew_assignments %}
 <span class="crew-assignment" data-crew-phase="{{ assignment.phase }}">
-    <a href="{% url 'game' game.id %}?tab=constructions{% if assignment.phase == 'reserved' %}#orders-heading{% else %}#active-works{% endif %}">{{ assignment.name }}</a>
+    <a href="{% url 'game' game.id %}?tab={% if workspace %}mail&amp;mail=schedule#{{ assignment.anchor }}{% else %}constructions{% if assignment.phase == 'reserved' %}#orders-heading{% else %}#active-works{% endif %}{% endif %}">{{ assignment.name }}</a>
     <small>{% if assignment.phase == 'reserved' %}{% translate "Décret scellé · en attente de démarrage" %}{% else %}{% translate "En cours" %}{% endif %} · {% blocktranslate with moon=assignment.finish_moon %}Fin prévue : lune {{ moon }}{% endblocktranslate %}</small>
     {% if detailed %}<small>{% blocktranslate with moon=assignment.start_moon %}Début : lune {{ moon }}{% endblocktranslate %}</small>{% endif %}
 </span>

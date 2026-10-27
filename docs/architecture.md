@@ -45,3 +45,10 @@ review use the same `realm_map.html`; native URLs/forms are the baseline, with
 JavaScript adds contextual navigation while retaining the map canvas, indicative
 routes, existing cost estimates and local read preferences. The server rechecks
 the actual command through existing services.
+
+The mockup-led refinement separates workspace layout into `workspace.css` rather
+than leaving obsolete overlay rules in the manuscript stylesheet. Shared
+`context_header.html` defines city/mail/review headings; `local_work_choice.html`
+submits the same authorized preview with one city, reusing `work_details.html`.
+The decree form retains batch/expedition/equipment responsibilities without dead
+local-work branches. Range controls are optional adapters for native troop inputs.

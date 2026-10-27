@@ -296,3 +296,28 @@ Both complete browser journeys pass in French and English, including recruitment
 legacy batch actions, native forms and the new map journey. The map checks also
 verify a retained canvas, Escape/Back navigation, calendar refresh, and mail panels
 bounded by the available board at 200% text size.
+
+## October 27 mockup-led working sheets
+
+The furnished mockup is the UX baseline while the prior recommendations and
+current palette/mechanics remain binding. Thirteen independent presentation
+variations cover house/harvest identity, direct local work access, poor/busy/paused
+availability, direct reachable-enemy preparation, unreachable privacy, and all
+three mailbox sections. Existing local-quote cases also assert the selected city
+and work family, protecting contextual-navigation continuity.
+
+The map browser journey verifies optional slider/number/step/maximum synchronization,
+native forms without JavaScript, retained map identity, fixed close controls,
+independent sheet scrolling and 200% text. Shared browser selectors distinguish
+submit buttons from the new optional contingent controls. Complete game and
+recruitment journeys are retained. The previous workspace CSS and obsolete local
+branches in the batch/expedition form are removed, not left behind as overrides.
+
+Full verification is selected for the shared-template refactor. Local evidence:
+1,676 cases on disposable PostgreSQL 17; 679 database-free logic cases with 100%
+native-core statement and branch coverage; bilingual game, map and recruitment
+browser journeys. Translation compilation, lint/format, migration consistency,
+static collection and the frozen dependency comparison pass. The new workspace
+stylesheet's class selectors all have template or JavaScript references. A direct
+browser reproduction also checks city-row preview/seal and non-overlapping status
+messages after returning to the map. This is local evidence, not Railway health.

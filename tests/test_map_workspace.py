@@ -40,6 +40,8 @@ def test_local_work(user, language):
     game, client, url = open_board(user, language)
     response = client.get(url, {"tab": "map", "city": "c1", "action": "irrigation"})
     assert response.status_code == 200
+    assert response.context["local_work"]["id"] == "c1"
+    assert response.context["activity"] == "irrigation"
     html = response.content.decode()
     assert '<input type="hidden" name="cities" value="c1">' in html
     assert 'type="checkbox"' not in html

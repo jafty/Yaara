@@ -11,6 +11,12 @@
 
 ## Project rules
 
+- The owner's October 27 follow-up requires the furnished HTML mockup to guide
+  UX structure, while retaining current colors, features and the earlier map
+  recommendations. City sheets combine resources, capabilities and local works;
+  reachable enemy cities open preparation directly. Keep the shared sheet frame
+  and dedicated workspace stylesheet clean. See `docs/map-workspace.md`.
+
 - The owner's October 26 map-workspace approval supersedes Council-first entry,
   compulsory batch works and the old primary navigation. Use Map, Mail and Reign,
   compact local city actions, existing quote/seal services and optional batch

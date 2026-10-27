@@ -544,7 +544,7 @@ with sync_playwright() as playwright:
         expect(page.locator("#mission-target")).to_have_value("c4")
         for origin in ("c1", "c2", "c3"):
             page.locator(f'input[name="men_{origin}"]').fill("20")
-        page.locator(".expedition-form button").click()
+        page.locator('.expedition-form button[type="submit"]').click()
         expect(page.locator('input[name="kind"][value="capture"]')).to_be_checked()
         expect(page.locator("#mission-target")).to_have_value("c4")
         expect(page.locator('input[name="men_c1"]')).to_have_value("20")
@@ -576,7 +576,7 @@ with sync_playwright() as playwright:
         page.locator('input[name="men_c2"]').fill("0")
         page.locator('input[name="men_c3"]').fill("60")
         expect(page.locator("#army-cost")).to_contain_text("65,000" if en else "65\u202f000")
-        page.locator(".expedition-form button").click()
+        page.locator('.expedition-form button[type="submit"]').click()
         expect(
             page.get_by_role("heading", name="The people committed" if en else "Les hommes engagés")
         ).to_be_visible()
@@ -962,7 +962,7 @@ with sync_playwright() as playwright:
         expect(page.locator("[data-expedition-budget]")).to_contain_text(
             "35,000" if en else "35\u202f000"
         )
-        page.locator(".expedition-form button").click()
+        page.locator('.expedition-form button[type="submit"]').click()
         expect(page.locator(".notices")).to_contain_text("Qasr")
         expect(page.locator('input[name="men_c1"]')).to_have_value("10")
         assert "action=expedition" in page.url
@@ -978,7 +978,7 @@ with sync_playwright() as playwright:
         expect(native_page.locator("#army-total")).to_have_text("30")
         expect(native_page.locator("#army-cost")).to_have_text("35,000" if en else "35\u00a0000")
         assert native_page.locator(".origin-funding").count() == 3
-        native_page.locator(".expedition-form button").click()
+        native_page.locator('.expedition-form button[type="submit"]').click()
         expect(native_page.locator('input[name="men_c3"]')).to_have_value("10")
         no_overflow(native_page)
         native_page.screenshot(

@@ -1,5 +1,5 @@
 {% load i18n %}
-<p class="reading-links"><a href="{% url 'game' game.id %}#city-ledgers">← {% translate "Revenir au domaine" %}</a></p>
+{% if not workspace %}<p class="reading-links"><a href="{% url 'game' game.id %}?tab=domain#city-ledgers">← {% translate "Revenir au domaine" %}</a></p>{% endif %}
 <p class="salutation">{% translate "Monseigneur," %}</p>
 <p id="city-defenses" tabindex="-1">{% blocktranslate with v0=selected.name v1=selected.owner_name %}{{ v0 }} relève de <strong>{{ v1 }}</strong>.{% endblocktranslate %} {{ selected.wall_label }}{% if selected.damaged %}, {% translate "endommagée" %}{% endif %}.</p>
 {% if selected.owned %}
@@ -23,13 +23,13 @@
             <div><h3>{{ building.name }}</h3>{% if building.damaged %}{% include 'simulation/damage_state.html' %}{% endif %}<p>{% blocktranslate with built=building.level effective=building.effective_level %}Niveau bâti : {{ built }} · Niveau en service : {{ effective }}.{% endblocktranslate %}</p>
             <p>{{ building.effect }}</p>
             {% if building.finish_moon %}<p>{% blocktranslate with moon=building.finish_moon %}Travaux en cours ou réservés jusqu’à la lune {{ moon }}.{% endblocktranslate %}</p>{% endif %}
-            {% if building.damaged %}<a href="?tab=constructions&amp;action={% if building.kind == 'walls' %}repair{% else %}repair_{{ building.kind }}{% endif %}&amp;city={{ selected.id }}">{% translate "Examiner la réparation" %} →</a>{% else %}<a href="?tab=constructions&amp;action={{ building.kind }}&amp;city={{ selected.id }}">{% translate "Examiner les travaux possibles" %} →</a>{% endif %}</div>
+            {% if building.damaged %}<a href="?tab={% if workspace %}map{% else %}constructions{% endif %}&amp;action={% if building.kind == 'walls' %}repair{% else %}repair_{{ building.kind }}{% endif %}&amp;city={{ selected.id }}">{% translate "Examiner la réparation" %} →</a>{% else %}<a href="?tab={% if workspace %}map{% else %}constructions{% endif %}&amp;action={{ building.kind }}&amp;city={{ selected.id }}">{% translate "Examiner les travaux possibles" %} →</a>{% endif %}</div>
         </li>{% endfor %}</ul>{% endif %}
         {% if selected.deaths %}<p>{% blocktranslate with v0=selected.deaths %}Depuis le début du règne, <strong>{{ v0 }} habitants</strong> ont perdu la vie.{% endblocktranslate %}</p>{% endif %}
-        {% if not view.finished and not view.eliminated and not game.paused %}<p class="reading-links"><a href="?tab=decrees&city={{ selected.id }}">{% blocktranslate with v0=selected.name %}Dicter un décret pour {{ v0 }}{% endblocktranslate %} →</a></p>{% endif %}
+        {% if not workspace and not view.finished and not view.eliminated and not game.paused %}<p class="reading-links"><a href="?tab=decrees&city={{ selected.id }}">{% blocktranslate with v0=selected.name %}Dicter un décret pour {{ v0 }}{% endblocktranslate %} →</a></p>{% endif %}
     </section>
 {% endif %}
 <section class="chapter-section"><h2>{% translate "Les routes de cette oasis" %}</h2>
-    <ul class="route-list">{% for city in neighbors %}<li><a href="?tab=city&city={{ city.id }}">{{ city.name }} →</a></li>{% endfor %}</ul>
+    <ul class="route-list">{% for city in neighbors %}<li><a href="?tab={% if workspace %}map{% else %}city{% endif %}&city={{ city.id }}">{{ city.name }} →</a></li>{% endfor %}</ul>
     {% if selected.engaged %}<p>{% if selected.own_engagement %}{% translate "Vous avez déjà engagé une expédition vers cette cité." %}{% else %}{% translate "Une expédition d’une autre maison réserve déjà cette cité." %}{% endif %}</p>{% endif %}
 </section>

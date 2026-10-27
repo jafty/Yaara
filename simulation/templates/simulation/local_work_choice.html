@@ -1,0 +1,9 @@
+{% load i18n %}
+<article class="local-work-choice{% if brief %} work-row{% endif %}" id="local-work-{{ work.kind }}">
+    <h3>{% if brief %}<a href="?tab=map&amp;city={{ selected.id }}&amp;action={{ work.kind }}#local-work-{{ work.kind }}" title="{% translate 'Détails du devis' %}">{{ work.label }} →</a>{% else %}{{ work.label }}{% endif %}</h3>
+    {% include 'simulation/work_details.html' with city=work.option brief=brief %}
+    {% if not view.finished and not view.eliminated and not game.paused %}<form method="post" action="{% url 'preview' game.id %}" data-local-work="{{ selected.id }}">
+        {% csrf_token %}<input type="hidden" name="kind" value="{{ work.kind }}"><input type="hidden" name="cities" value="{{ selected.id }}">
+        <button class="local-work-submit" type="submit" {% if not work.option.available or view.local_funding and work.option.shortfall %}disabled{% endif %}>{% translate "Vérifier l’ordre" %} →</button>
+    </form>{% endif %}
+</article>

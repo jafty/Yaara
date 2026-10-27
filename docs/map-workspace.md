@@ -6,8 +6,9 @@ presentation decisions. No saved rules or reports change. New artwork is deferre
 ## Interaction contract
 
 - Entry opens all nine cities and every saved road. No map zoom; browser zoom stays enabled.
-- Selecting a city opens a compact summary. Works, expedition preparation, convoys
-  and detailed accounts are deliberate activities in the same workspace. The map
+- Selecting an owned city opens stocks, troops, capabilities and local work quotes
+  together. A reachable enemy opens preparation directly. Convoys and detailed
+  accounts remain deliberate activities in the same workspace. The map
   fills the available play area. Context panels overlay the board on the
   right on desktop and rise from the bottom on mobile; no reserved side column.
   Progressive context navigation retains the map canvas and supports browser Back.
@@ -48,3 +49,34 @@ keyboard/native forms; narrow and enlarged text; persistent warning after readin
 calendar refresh on contextual navigation; legacy batch and recruitment journeys.
 
 Full local checkpoint selected because shared flows and disclosure are affected.
+
+## October 27 — Furnished mockup as the UX baseline
+
+The owner rejected the first implementation's distance from the supplied HTML.
+Use its house/resource header, top house legend, city working sheets, direct
+raid/capture preparation and separate Courrier window. Retain the existing stone,
+mineral-green, terracotta and house colors. `workspace.css` owns this layout; the
+previous workspace rules are removed from `manuscript.css`, which retains shared
+map drawing, forms and secondary folios. One sheet heading/body structure serves
+cities, mail and review.
+
+Each local work row can request the existing server preview directly. Its family
+link retains the full quote and illustration. Stock occupancy, reservations and
+forecast harvest stay distinct. Crew assignments link to their existing orders or
+works; active work is never falsely offered a cancellation the engine cannot make.
+Native troop numbers remain usable without JavaScript; optional sliders and step
+buttons synchronize those inputs and the existing funding calculation.
+
+Earlier recommendations still apply: no unnecessary map zoom, no idle-team alert,
+no enemy route disclosure or numerical combativity, precise mail links, separate
+action-required/schedule/archive, and review before sealing. The mockup's invented
+prices, territories, instant commands and hidden intelligence are not imported.
+Native forms, browser zoom, selection and keyboard navigation remain available.
+
+Independent variations: `mockup-house-hud` (both languages),
+`mockup-city-direct-work` (both languages), `mockup-city-work-availability`
+(poor/busy/paused), `mockup-enemy-direct-preparation` (both languages),
+`mockup-enemy-unreachable`, and `mockup-mail-frame` (all three sections).
+The browser journey additionally checks the range/number/step/max controls, native
+forms, scrolling sheet bodies with an accessible close control, and 200% text.
+Full verification applies to this broad shared-template refactor.

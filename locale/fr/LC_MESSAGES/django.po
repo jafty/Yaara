@@ -4395,3 +4395,51 @@ msgstr "Choisissez une cité. Les routes déterminent les déplacements ; le ter
 
 msgid "Pointillés : ordre scellé · Trait plein : en route · Bleu : retour"
 msgstr "Pointillés : ordre scellé · Trait plein : en route · Bleu : retour"
+
+## Mockup-led workspace
+msgid "Occupation du grenier"
+msgstr "Occupation du grenier"
+
+## Mockup-led workspace
+msgid "Réservés"
+msgstr "Réservés"
+
+## Mockup-led workspace
+msgid "En route"
+msgstr "En route"
+
+## Mockup-led workspace
+msgid "Surveillance"
+msgstr "Surveillance"
+
+## Mockup-led workspace
+msgid "Chantier de la cité"
+msgstr "Chantier de la cité"
+
+## Mockup-led workspace
+msgid "Détails du devis"
+msgstr "Détails du devis"
+
+## Mockup-led workspace
+msgid "Retirer un Fidèle"
+msgstr "Retirer un Fidèle"
+
+## Mockup-led workspace
+msgid "Ajouter un Fidèle"
+msgstr "Ajouter un Fidèle"
+
+## Mockup-led workspace
+msgid "Max."
+msgstr "Max."
+
+## Mockup-led workspace
+msgid "Récolte : lune %(moon)s"
+msgstr "Récolte : lune %(moon)s"
+
+## Mockup-led workspace
+msgid "Récolte estimée : %(amount)s · lune %(moon)s."
+msgstr "Récolte estimée : %(amount)s · lune %(moon)s."
+
+## Mockup-led workspace
+msgid "Débordement possible : %(amount)s Mesures à la récolte de lune %(moon)s."
+msgstr "Débordement possible : %(amount)s Mesures à la récolte de lune %(moon)s."

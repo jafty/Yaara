@@ -46,6 +46,8 @@ def run_map_journeys():
                 page.locator('.map-city[href*="city=c1"]').focus()
                 page.keyboard.press("Enter")
                 expect(page.locator("#context-title")).to_have_text("Qasr")
+                expect(page.locator("#city-granary meter")).to_be_visible()
+                assert page.locator('[data-local-work="c1"]').count() > 1
                 if javascript:
                     assert page.evaluate(
                         "window.originalMap === document.querySelector('.map-workspace > .realm-map')"
@@ -57,6 +59,7 @@ def run_map_journeys():
                     expect(page.locator("#context-title")).to_have_text("Qasr")
                 page.locator('.city-activities a[href*="action=works"]').click()
                 page.locator('.local-work-choice a[href*="action=irrigation"]').click()
+                page.wait_for_url("**action=irrigation**")
                 expect(page.locator('[data-local-work="c1"]')).to_be_visible()
                 expect(page.locator('input[type="checkbox"]')).to_have_count(0)
                 for width in (1440, 390, 320):
@@ -68,6 +71,10 @@ def run_map_journeys():
                             "scale => document.documentElement.style.fontSize = scale", scale
                         )
                         assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
+                        assert page.locator(".sheet-body").evaluate(
+                            "el => el.scrollWidth <= el.clientWidth"
+                        )
+                        expect(page.locator(".sheet-heading .panel-close")).to_be_in_viewport()
                         expect(
                             page.locator('[data-local-work] button[type="submit"]')
                         ).to_be_enabled()
@@ -83,7 +90,20 @@ def run_map_journeys():
                 assert panel["y"] >= board["y"]
                 page.evaluate("document.documentElement.style.fontSize = '100%'")
                 page.locator(".orders-register button").click()
-                page.goto(url + "?tab=map&city=c4&action=expedition#map-context")
+                page.goto(url + "?tab=map&city=c4#map-context")
+                expect(page.locator(".expedition-form")).to_be_visible()
+                controls = page.locator('[data-origin="c1"] [data-contingent-controls]')
+                if javascript:
+                    controls.locator('[data-adjust="1"]').click()
+                    expect(page.locator("#men-c1")).to_have_value("1")
+                    controls.locator('input[type="range"]').fill("5")
+                    expect(page.locator("#men-c1")).to_have_value("5")
+                    controls.locator("[data-maximum]").click()
+                    expect(page.locator("#men-c1")).to_have_value("100")
+                    controls.locator('[data-adjust="-1"]').click()
+                    expect(page.locator("#men-c1")).to_have_value("99")
+                else:
+                    expect(controls).to_be_hidden()
                 page.locator("#men-c1").fill("10")
                 page.locator("#men-c3").fill("20")
                 if javascript:

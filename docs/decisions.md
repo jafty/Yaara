@@ -491,3 +491,20 @@ expanded. Map routes use saved links; browser draft routes are indicative and
 server review remains authoritative. No calendar, economics, combat, persistence
 schema or saved-rule migration changes. Reading receipts are optional local
 browser preferences, scoped by game and actor, and never rewrite reports.
+
+## October 27, 2026 — Mockup-led working sheets
+
+The furnished HTML becomes the UX baseline, retaining the deployed palette and
+features. Move house identity and harvest access into the compact map header,
+place the house legend above the board, make local work previews immediately
+available in owned-city sheets, open reachable enemies directly into expedition
+preparation, and give Courrier its own framed window. Sheet headings and close
+actions remain visible while content scrolls. Exact troop inputs gain optional
+sliders/step controls and the review action stays beside its live totals.
+
+This revises presentation, not rules or intelligence. Earlier recommendations
+remain authoritative where the mockup differs: browser zoom stays enabled, no
+map zoom is needed for nine cities, free crews are not alerts, own route identity
+is preserved, actionable RP mail stays separate from dated commitments, and
+preview/seal remain distinct. Existing artwork, batch workflows, historical
+snapshots, convoys, private recruitment and account settings are retained.

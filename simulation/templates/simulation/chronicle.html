@@ -6,14 +6,7 @@
         <p class="visually-hidden">{% blocktranslate with v0=view.realm %}Au service de {{ v0 }}.{% endblocktranslate %}</p>
     </header>{% endif %}
     {% if tab == 'city' %}{% include 'simulation/illustration.html' with scene='city' variant=selected.id %}{% endif %}
-    {% if view.finished %}
-        <section class="epilogue"><h2>{% translate "La dernière page du règne" %}</h2>
-            <p class="reading-links"><a href="{% url 'reign_archive' game.id %}">{% translate "Le livre du règne" %} →</a></p>
-            {% for rank in view.ranking %}{% if rank.rank == 1 %}<p>{% blocktranslate with v0=rank.name %}<strong>{{ v0 }}</strong> figure au premier rang.{% endblocktranslate %}</p>{% endif %}{% endfor %}
-            <p>{% blocktranslate with v0=view.epilogue_missions %}Expéditions encore en route : <strong>{{ v0 }}</strong>. Leur retour ne changera plus le résultat du règne.{% endblocktranslate %}</p>
-        </section>
-    {% elif view.eliminated %}<p class="marginal-note">{% translate "Aucune cité ne reconnaît plus votre autorité. Je continuerai pourtant de tenir ce livre jusqu’à la fin du règne." %}</p>
-    {% elif game.paused %}<p class="marginal-note">{% translate "Le calendrier est suspendu. Les nouveaux ordres attendent sa reprise." %}</p>{% endif %}
+    {% if not workspace %}{% include 'simulation/game_status.html' %}{% endif %}
     {% if tab == 'map' %}{% include 'simulation/map_workspace.html' %}
     {% elif tab == 'mail' %}{% include 'simulation/mail.html' %}
     {% elif tab == 'domain' %}

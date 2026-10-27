@@ -3,8 +3,11 @@
 {% block content %}
     <div class="map-workspace">
     {% include 'simulation/realm_map.html' %}
-    <section id="map-context" class="map-context review-panel" aria-labelledby="context-title">
-    <header class="map-heading"><h1 id="context-title">{% translate "Vérifier votre ordre" %}</h1><p>{{ label }}{% if selected %} · {{ selected.name }}{% endif %}</p><a class="panel-close" href="{{ edit_url }}#map-context">{% translate "Reprendre la plume sans rien engager" %} →</a></header>
+    <section id="map-context" class="context-sheet review-panel" aria-labelledby="context-title">
+    {% translate "Vérifier votre ordre" as review_title %}
+    {% translate "Reprendre la plume sans rien engager" as review_close %}
+    {% with return_url=edit_url|add:'#map-context' %}{% include 'simulation/context_header.html' with panel_title=review_title panel_subtitle=label panel_return=return_url panel_close_label=review_close %}{% endwith %}
+    <div class="sheet-body">
     <section class="decree-reading">
         <p class="unsealed-leaf" role="status">{% translate "Brouillon sans sceau" %}</p>
         <p class="salutation">{% translate "Monseigneur, voici les termes que j’ai couchés pour vous." %}</p>
@@ -26,6 +29,6 @@
         <p class="marginal-note">{% if cancellable %}{% translate "Avant la clôture, vous pourrez retirer le décret et libérer les moyens promis. Après le départ, les frais seront définitivement dépensés." %}{% else %}{% translate "Dans ce règne ancien, le sceau rend cet ordre définitif. Aucune annulation ne sera possible." %}{% endif %}</p>
         <form method="post" action="{% url 'confirm' game.id %}" data-busy-form>{% csrf_token %}<input type="hidden" name="payload" value="{{ payload }}"><button class="primary-action" type="submit">{% translate "Confirmer et sceller l’ordre" %} · {% blocktranslate with v0=order.cost %}Réserver {{ v0 }} Mesures{% endblocktranslate %}</button></form>
         <details class="review-language"><summary>{% translate "Langue" %}</summary>{% include 'simulation/language_switch.html' %}</details>
-    </section>
+    </section></div>
     </section></div>
 {% endblock %}
