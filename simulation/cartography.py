@@ -3,23 +3,89 @@
 This module formats existing decisions; it never quotes, validates or executes an order.
 """
 
-from math import hypot
+from math import ceil, hypot, pi, sin
 from urllib.parse import urlencode
 
 from django.utils.translation import gettext as _
 
 from .alerts import build_alert_center
 
+MAP_POSITIONS = (
+    (135, 220),
+    (90, 75),
+    (275, 120),
+    (440, 70),
+    (590, 185),
+    (515, 300),
+    (445, 390),
+    (260, 435),
+    (125, 360),
+)
+MAP_TERRITORIES = (
+    "0.00,280.71 0.00,182.41 175.06,128.08 282.29,278.20 247.56,298.40",
+    "0.00,0.00 206.22,0.00 175.06,128.08 0.00,182.41",
+    "206.22,0.00 328.71,0.00 393.11,212.52 362.37,253.51 320.27,280.01 282.29,278.20 175.06,128.08",
+    "328.71,0.00 612.75,0.00 468.72,187.86 393.11,212.52",
+    "612.75,0.00 680.00,0.00 680.00,325.65 468.72,187.86",
+    "680.00,325.65 680.00,500.00 679.29,500.00 362.37,253.51 393.11,212.52 468.72,187.86",
+    "679.29,500.00 373.78,500.00 320.27,280.01 362.37,253.51",
+    "373.78,500.00 135.56,500.00 247.56,298.40 282.29,278.20 320.27,280.01",
+    "135.56,500.00 0.00,500.00 0.00,280.71 247.56,298.40",
+)
+
+
+def territory_path(polygon):
+    """Shared edges use the same irregular ink contour, traversed in either direction."""
+    points = [tuple(map(float, pair.split(","))) for pair in polygon.split()]
+    path = [f"M {points[0][0]:.2f} {points[0][1]:.2f}"]
+    for start, end in zip(points, points[1:] + points[:1]):
+        first, last = sorted((start, end))
+        dx, dy = last[0] - first[0], last[1] - first[1]
+        length = hypot(dx, dy)
+        frame = (dx == 0 and first[0] in (0, 680)) or (dy == 0 and first[1] in (0, 500))
+        count = max(2, ceil(length / 42))
+        amplitude = 0 if frame else min(15, length * 0.09)
+        phase = (first[0] + last[1]) * 0.04
+        knots = []
+        for index in range(count + 1):
+            t = index / count
+            bend = amplitude * sin(pi * t) * sin(2.5 * pi * t + phase)
+            knots.append(
+                (
+                    first[0] + dx * t - dy / max(length, 1) * bend,
+                    first[1] + dy * t + dx / max(length, 1) * bend,
+                )
+            )
+        if start != first:
+            knots.reverse()
+        for index in range(count):
+            before, here = knots[max(0, index - 1)], knots[index]
+            after, beyond = knots[index + 1], knots[min(count, index + 2)]
+            controls = [
+                tuple(here[axis] + (after[axis] - before[axis]) / 6 for axis in (0, 1)),
+                tuple(after[axis] - (beyond[axis] - here[axis]) / 6 for axis in (0, 1)),
+            ]
+            path.append("C " + " ".join(f"{x:.2f} {y:.2f}" for x, y in [*controls, after]))
+    return " ".join(path) + " Z"
+
 
 def workspace_context(view, selected=None, activity=None):
     cities = {city["id"]: city for city in view["cities"]}
     owned = {city["id"] for city in view["owned_cities"]}
     work_kinds = {action["kind"] for action in view["work_actions"]}
-    for city in view["cities"]:
+    for index, city in enumerate(view["cities"]):
+        city["x"], city["y"] = MAP_POSITIONS[index]
+        city["territory"] = MAP_TERRITORIES[index]
+        tile = city["walls"] if view["seasonal_raids"] else (0, 4, 5)[city["walls"]]
+        city["settlement_viewbox"] = f"{tile % 3 * 512} {tile // 3 * 512} 512 512"
+        city["territory_path"] = territory_path(city["territory"])
         query = {"tab": "map", "city": city["id"]}
         if city["owned"] and activity in work_kinds | {"works", "accounts"}:
             query["action"] = activity
         city["map_query"] = urlencode(query)
+    for link in view["links"]:
+        link["first"] = cities[link["first"]["id"]]
+        link["second"] = cities[link["second"]["id"]]
     marches = []
     for item in view["orders"]:
         if item["status"] != "confirmed" or item["kind"] not in ("raid", "capture"):

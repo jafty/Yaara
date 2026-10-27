@@ -321,3 +321,31 @@ static collection and the frozen dependency comparison pass. The new workspace
 stylesheet's class selectors all have template or JavaScript references. A direct
 browser reproduction also checks city-row preview/seal and non-overlapping status
 messages after returning to the map. This is local evidence, not Railway health.
+
+## October 27 — Organic map, illustrated cities and continuous sheets
+
+The owner's follow-ups replace the bottom menu, geometric city sprites and circle
+bases. Independent presentation cases cover header destinations, fixed activity
+tabs, seven current/legacy fortification drawings, reversible shared boundaries,
+three saved networks and selected-city roads. The new geometry remains a
+presentation concern; PostgreSQL snapshots, movement rules and the core projection
+contract are unchanged. Test selectors follow the shared header and new map key,
+while preserving resource, Moon, ownership and engagement assertions.
+
+Browser regressions check retained sheet/art nodes, Construire at scroll zero,
+reduced motion, hidden default roads, and native order/recruitment flows. At 200%
+text on narrow screens, city/mail sheets can cover the header and must retain a
+usable scroll body and visible tabs/close controls. Fragment navigation waits for
+font reflow and measures the actual header. Geometry assertions wait for entry
+animations to settle instead of inspecting an intermediate frame.
+
+Local database evidence: 1,699 cases passed against disposable PostgreSQL 17.
+The unchanged native core also passed all 679 logic cases with 100% statement and
+branch coverage. Map journeys passed in French and English, with and without
+JavaScript; recruitment journeys passed in both languages. Translation compilation,
+lint/format, reviewed case collection, migration consistency and static collection
+passed. These local checks do not establish Railway deployment health.
+The complete bilingual game browser journey also passed, including the retained
+batch/expedition flows and the updated map journey. Thirty-six repeated native
+fragment/reflow checks additionally verified same-document navigation after
+header and text-size changes.

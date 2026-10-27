@@ -4443,3 +4443,9 @@ msgstr "Récolte estimée : %(amount)s · lune %(moon)s."
 ## Mockup-led workspace
 msgid "Débordement possible : %(amount)s Mesures à la récolte de lune %(moon)s."
 msgstr "Débordement possible : %(amount)s Mesures à la récolte de lune %(moon)s."
+
+msgid "Les emblèmes identifient les maisons. Bannière verte : votre domaine ; nom souligné : cité à portée ; nom grisé : hors de portée ; bannière pointillée : expédition engagée."
+msgstr "Les emblèmes identifient les maisons. Bannière verte : votre domaine ; nom souligné : cité à portée ; nom grisé : hors de portée ; bannière pointillée : expédition engagée."
+
+msgid "Choisissez une cité : ses routes apparaissent. Le terrain est décoratif."
+msgstr "Choisissez une cité : ses routes apparaissent. Le terrain est décoratif."

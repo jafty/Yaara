@@ -1,5 +1,17 @@
 # Implementation decisions
 
+## 2026-10-27 · Schematic map and continuous contextual sheets
+
+The owner authorized map/city artwork and removed the need for the three-item
+bottom menu. The shared header now carries map, named house/Reign and Courrier.
+Keep fixed city tabs, retained sheet shells and decoded map art between contextual
+views; only transform/opacity animate, respecting reduced motion. Plain schematic
+fortifications have no arrow slits; muted green palms and faint dunes are decorative.
+Public wall levels select current or legacy artwork. Existing house emblems appear
+on green owned/red enemy flags. Organic presentation positions and curved boundaries retain every saved road
+connection and leave game rules unchanged. See `docs/map-workspace.md` for contracts and verification.
+Native core rules and the gameplay reference remain accurate without changes.
+
 ## 2026-10-26 · Paris deadlines and final-Moon verification
 
 The owner reported a five-minute multiplayer reign waiting at Moon 119 and a

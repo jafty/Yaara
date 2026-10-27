@@ -1,11 +1,11 @@
 {% load i18n %}
 <div class="workspace-heading">
     <div class="realm-identity">
-        <a class="book-world" href="{% url 'home' %}">Yaara</a>
-        <p class="house-identity">{{ view.realm }}</p>
-        <a class="alerts-trigger{% if attention.count %} has-alerts{% endif %}" href="{% url 'game' game.id %}?tab=mail" data-alert-count="{{ attention.count|default:0 }}">{% include 'simulation/nav_icon.html' with icon='bell' %}<span>{% translate "Courrier" %}</span><strong>{{ attention.count|default:0 }}</strong></a>
+        <a class="book-world" href="{% url 'game' game.id %}" data-section="map" {% if tab == 'map' or workspace and tab == 'decrees' %}aria-current="page"{% endif %} aria-label="{% translate 'Carte' %}">Yaara</a>
+        <a class="house-identity" href="{% url 'game' game.id %}?tab=domain" data-section="domain" {% if not workspace and tab != 'letters' %}aria-current="page"{% endif %}><span>{{ view.realm }}</span><small>{% translate "Règne" %} →</small></a>
+        <a class="alerts-trigger{% if attention.count or not attention and alert_center.count %} has-alerts{% endif %}" href="{% url 'game' game.id %}?tab=mail" data-section="mail" {% if tab == 'mail' or tab == 'letters' %}aria-current="page"{% endif %} data-alert-count="{% if attention %}{{ attention.count }}{% else %}{{ alert_center.count }}{% endif %}">{% include 'simulation/nav_icon.html' with icon='bell' %}<span>{% translate "Courrier" %}</span><strong>{% if attention %}{{ attention.count }}{% else %}{{ alert_center.count }}{% endif %}</strong></a>
     </div>
-    <div class="resource-ribbon realm-resources" aria-label="{% translate 'Les moyens libres de votre maison' %}">
+    <div class="resource-ribbon" aria-label="{% translate 'Les moyens libres de votre maison' %}">
         <span class="resource-value" title="{% translate 'Mesures libres' %}">{% include 'simulation/nav_icon.html' with icon='grain' %}<strong>{{ view.available_stock }}</strong><span class="resource-caption">{% translate 'Mesures libres' %}</span></span>
         <span class="resource-value" title="{% translate 'Fidèles disponibles' %}">{% include 'simulation/nav_icon.html' with icon='warrior' %}<strong>{{ view.available_fideles }}</strong><span class="resource-caption">{% translate 'Fidèles libres' %}</span></span>
         <span class="resource-value">{% include 'simulation/nav_icon.html' with icon='moon' %}<strong>{% if view.finished %}{{ view.closed_moon }}{% else %}{{ view.open_moon }}{% endif %}</strong><span class="resource-caption">{% translate 'Lune' %}</span></span>

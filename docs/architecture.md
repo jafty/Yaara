@@ -52,3 +52,14 @@ than leaving obsolete overlay rules in the manuscript stylesheet. Shared
 submits the same authorized preview with one city, reusing `work_details.html`.
 The decree form retains batch/expedition/equipment responsibilities without dead
 local-work branches. Range controls are optional adapters for native troop inputs.
+
+## Map drawing and context lifecycle
+
+`cartography.py` chooses schematic artwork and reversible boundary curves from the
+already-authorized public city projection. The shared header is included by the
+base manuscript; `manuscript.css` owns its styling and the map drawing.
+`workspace.css` owns overlaid sheets and their fixed heading/tab/scroll-body layout.
+Context navigation keeps the map drawing for the same game revision, updates city
+links/selection and roads, and refreshes the drawing after a changed revision.
+Same-type sheet shells survive tab changes; only the inner content is replaced.
+Native URLs remain authoritative and form submissions retain the existing services.

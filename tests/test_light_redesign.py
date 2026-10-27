@@ -45,13 +45,13 @@ def test_council_priority(folio):
 def test_resource_labels(folio):
     _, client, url = folio
     text = client.get(url, {"tab": "domain"}).content.decode()
-    ribbon = re.search(r'<div class="resource-ribbon".*?</div>', text, re.S).group()
+    ribbon = re.search(r'<div class="resource-ribbon[^\"]*".*?</div>', text, re.S).group()
     assert all(f'data-icon="{icon}"' in ribbon for icon in ("grain", "warrior", "moon"))
     captions = re.findall(r'<span class="resource-caption">(.*?)</span>', ribbon)
     assert captions == (
-        ["Measures", "Faithful", "Moon"]
+        ["Available measures", "Available warriors", "Moon"]
         if client.cookies["django_language"].value == "en"
-        else ["Mesures", "Fidèles", "Lune"]
+        else ["Mesures libres", "Fidèles libres", "Lune"]
     )
     assert ribbon.count("<strong>") == 3
 

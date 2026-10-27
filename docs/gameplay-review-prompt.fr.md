@@ -1,5 +1,15 @@
 # Yaara — Référence de jouabilité
 
+## Présentation du 27 octobre 2026 — Carte illustrée et navigation fluide
+
+Préparée depuis `d9671c8`. Les cités reprennent le style des illustrations de
+chantiers, sans meurtrières ni socles circulaires. Leur disposition graphique est
+plus organique et les frontières plus irrégulières ; seules les routes de la cité
+sélectionnée apparaissent, tandis que les flèches des expéditions restent visibles.
+Le réseau enregistré, la portée et les règles de déplacement ne changent pas.
+L’en-tête partagé remplace le menu inférieur ; les onglets des panneaux restent
+accessibles au-dessus de leur contenu défilant. Le terrain reste décoratif.
+
 ## Présentation du 27 octobre 2026 — Feuillets inspirés de la maquette
 
 Préparée depuis `9714b9d`. Le feuillet d’une cité propre réunit stocks, capacités,

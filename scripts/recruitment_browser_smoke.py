@@ -216,10 +216,10 @@ def multiplayer_journey(browser, language, operator):
     admin.screenshot(path=str(ARTIFACTS / f"operator-ready-{language}.png"), full_page=True)
     for _, page in players:
         page.wait_for_url(re.compile(re.escape(game_url) + r"(?:\?.*)?$"), timeout=20000)
-        expect(page.locator(".bookmarks a")).to_have_count(3)
+        expect(page.locator(".reign-header a[data-section]")).to_have_count(3)
         assert page.locator('form[action$="/advance/"]').count() == 0
         assert page.locator('form[action$="/pause/"]').count() == 0
-        page.locator('.bookmarks a[data-section="domain"]').click()
+        page.locator('.reign-header a[data-section="domain"]').click()
         page.locator('a[href$="/email/"]').click()
         expect(page.locator("[data-email-preferences]")).to_be_visible()
         expect(page.locator('[name="raid"]')).not_to_be_checked()

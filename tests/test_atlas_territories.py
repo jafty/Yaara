@@ -115,6 +115,7 @@ def test_marker_states(user, language, target, attacker, origin, owned, reachabl
     assert html.count('data-map-state="reachable"') == reachable
     assert html.count('data-map-state="engaged"') == 1
     assert html.count('data-map-state="unreachable"') == 1
-    assert 'class="map-reach"' in html
+    assert 'class="reachable-key"' in html
+    assert 'class="map-key engaged-key"' in html
     assert "Out of reach" in html if language == "en" else "Hors de portée" in html
     assert 'class="map-road"' not in html

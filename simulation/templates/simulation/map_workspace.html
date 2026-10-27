@@ -3,14 +3,16 @@
     {% include 'simulation/realm_map.html' %}
     {% if city_requested %}<section id="map-context" class="context-sheet city-sheet" aria-labelledby="context-title">
         {% include 'simulation/context_header.html' with panel_city=selected %}
-        <div class="sheet-body">
         {% if selected.owned %}
             <nav class="city-activities" aria-label="{% translate 'Choisir une activité' %}">
-                <a href="?tab=map&amp;city={{ selected.id }}#map-context" {% if not activity %}aria-current="page"{% endif %}>{% translate "Aperçu" %}</a>
-                <a href="?tab=map&amp;city={{ selected.id }}&amp;action=works#city-works" {% if activity == 'works' or local_work %}aria-current="page"{% endif %}>{% translate "Construire" %}</a>
-                <a href="?tab=map&amp;city={{ selected.id }}&amp;action=accounts#city-stocks" {% if activity == 'accounts' %}aria-current="page"{% endif %}>{% translate "Comptes" %}</a>
-                {% if view.strategic_rules and not view.finished and not view.eliminated and not game.paused %}<a href="?tab=map&amp;city={{ selected.id }}&amp;action=convoy&amp;origin={{ selected.id }}#map-context" {% if activity == 'convoy' %}aria-current="page"{% endif %}>{% translate "Envoyer un convoi" %}</a>{% endif %}
+                <a href="?tab=map&amp;city={{ selected.id }}" {% if not activity %}aria-current="page"{% endif %}>{% translate "Aperçu" %}</a>
+                <a href="?tab=map&amp;city={{ selected.id }}&amp;action=works" {% if activity == 'works' or local_work %}aria-current="page"{% endif %}>{% translate "Construire" %}</a>
+                <a href="?tab=map&amp;city={{ selected.id }}&amp;action=accounts" {% if activity == 'accounts' %}aria-current="page"{% endif %}>{% translate "Comptes" %}</a>
+                {% if view.strategic_rules and not view.finished and not view.eliminated and not game.paused %}<a href="?tab=map&amp;city={{ selected.id }}&amp;action=convoy&amp;origin={{ selected.id }}" {% if activity == 'convoy' %}aria-current="page"{% endif %}>{% translate "Envoyer un convoi" %}</a>{% endif %}
             </nav>
+        {% endif %}
+        <div class="sheet-body">
+        {% if selected.owned %}
             {% if activity == 'accounts' %}{% include 'simulation/city_folio.html' %}
             {% elif activity == 'convoy' %}{% if not view.finished and not view.eliminated and not game.paused %}{% include 'simulation/convoy_form.html' %}{% endif %}
             {% else %}

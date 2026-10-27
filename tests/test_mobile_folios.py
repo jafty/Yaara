@@ -40,14 +40,14 @@ def test_navigation(user, tab, active, language):
     client.cookies["django_language"] = language
     page = client.get(reverse("game", args=[game.id]), {"tab": tab, "city": "c1"})
     html = page.content.decode()
-    nav = re.search(r'<nav class="bookmarks".*?</nav>', html, re.S).group()
+    nav = re.search(r'<div class="realm-identity".*?</div>', html, re.S).group()
     assert len(re.findall(r"<a\b", nav)) == 3
     assert len(re.findall('aria-current="page"', nav)) == (1 if active else 0)
     if active:
         assert f'data-section="{active}" aria-current="page"' in nav
     assert 'data-icon="bell"' in nav
     assert ("Map" if language == "en" else "Carte") in nav
-    ribbon = re.search(r'<div class="resource-ribbon".*?</div>', html, re.S).group()
+    ribbon = re.search(r'<div class="resource-ribbon[^"]*".*?</div>', html, re.S).group()
     assert "turn-page" not in ribbon
 
 

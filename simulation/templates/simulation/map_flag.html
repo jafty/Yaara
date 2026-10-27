@@ -1,0 +1,5 @@
+<g class="city-flag {% if owned %}owned-flag{% else %}enemy-flag{% endif %}">
+    <path class="flag-pole" d="M-18,-16 V28"/>
+    <path class="flag-cloth" d="M-17,-17 Q0,-21 17,-16 L17,12 Q0,7 -17,12 Z"/>
+    {% if owner %}{% include 'simulation/house_mark.html' with owner=owner %}{% endif %}
+</g>

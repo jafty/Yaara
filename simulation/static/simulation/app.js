@@ -1,9 +1,42 @@
 "use strict";
 
 let pageTimers = [];
+let headerObserver = null;
+function measureHeader() {
+  const header = document.querySelector(".reign-header");
+  if (!header) return;
+  const height =
+    getComputedStyle(header).position === "sticky"
+      ? header.getBoundingClientRect().height
+      : 0;
+  document.documentElement.style.setProperty("--header-height", `${height}px`);
+}
+function folioFragment() {
+  if (!location.hash || document.querySelector(".map-workspace")) return null;
+  return document.getElementById(decodeURIComponent(location.hash.slice(1)));
+}
+function alignFolioFragment() {
+  measureHeader();
+  const target = folioFragment();
+  if (target) target.scrollIntoView({ block: "start", behavior: "instant" });
+}
 function initializePage() {
   pageTimers.forEach(window.clearInterval);
   pageTimers = [];
+  if (headerObserver) headerObserver.disconnect();
+  const header = document.querySelector(".reign-header");
+  if (header) {
+    measureHeader();
+    headerObserver = new ResizeObserver(() => {
+      measureHeader();
+      const target = folioFragment();
+      if (!target) return;
+      const top = target.getBoundingClientRect().top;
+      if (top >= 0 && top < header.getBoundingClientRect().bottom)
+        alignFolioFragment();
+    });
+    headerObserver.observe(header);
+  }
 
   document.querySelectorAll("[data-busy-form]").forEach((form) => {
     form.addEventListener("submit", () => {
@@ -427,6 +460,10 @@ function initializePage() {
 }
 initializePage();
 
+// Same-document hashes and font reflow can follow a change in header height.
+document.fonts.ready.then(alignFolioFragment);
+window.addEventListener("hashchange", alignFolioFragment);
+
 // Context links keep the cartographic surface mounted as the application's home.
 // Native URLs remain fully usable with JavaScript disabled or a failed request.
 let contextRequest = null;
@@ -446,23 +483,76 @@ async function openContext(url, push = true) {
       await response.text(),
       "text/html",
     );
+    if (controller.signal.aborted) return;
     if (!next.querySelector(".map-workspace")) {
       window.location.assign(url);
       return;
     }
+    const currentSheet = document.querySelector(".context-sheet");
+    const nextSheet = next.querySelector(".context-sheet");
+    const reducedMotion = matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    if (
+      currentSheet &&
+      nextSheet &&
+      ["city-sheet", "mail-panel"].some(
+        (kind) =>
+          currentSheet.classList.contains(kind) &&
+          nextSheet.classList.contains(kind),
+      )
+    ) {
+      currentSheet.replaceChildren(...nextSheet.childNodes);
+      currentSheet.className = nextSheet.className + " sheet-retained";
+      nextSheet.replaceWith(currentSheet);
+      if (!reducedMotion)
+        currentSheet
+          .querySelector(".sheet-body")
+          .animate([{ opacity: 0.65 }, { opacity: 1 }], {
+            duration: 150,
+            easing: "ease-out",
+          });
+    } else if (currentSheet && !reducedMotion) {
+      await currentSheet.animate(
+        [
+          { opacity: 1, transform: "translateY(0)" },
+          { opacity: 0, transform: "translateY(8px)" },
+        ],
+        { duration: 120, easing: "ease-in" },
+      ).finished;
+      if (controller.signal.aborted) return;
+    }
     const currentMap = document.querySelector(".map-workspace > .realm-map");
     const map = next.querySelector(".map-workspace > .realm-map");
     if (currentMap && map) {
-      // Reuse the canvas element; replace its authorized drawing and context only.
-      currentMap.replaceChildren(...map.childNodes);
+      // Keep decoded artwork mounted between views of the same authorized snapshot.
+      if (currentMap.dataset.mapRevision === map.dataset.mapRevision) {
+        const cities = currentMap.querySelectorAll(".map-city");
+        map.querySelectorAll(".map-city").forEach((city, index) => {
+          for (const attribute of ["href", "aria-current"]) {
+            if (city.hasAttribute(attribute))
+              cities[index].setAttribute(
+                attribute,
+                city.getAttribute(attribute),
+              );
+            else cities[index].removeAttribute(attribute);
+          }
+        });
+        const roads = currentMap.querySelectorAll(".map-connection");
+        map.querySelectorAll(".map-connection").forEach((road, index) => {
+          roads[index].setAttribute("class", road.getAttribute("class"));
+        });
+        currentMap.querySelector("#draft-route").replaceChildren();
+      } else {
+        currentMap.replaceChildren(...map.childNodes);
+        currentMap.dataset.mapRevision = map.dataset.mapRevision;
+      }
       map.replaceWith(currentMap);
     }
     document.querySelector("#main").replaceWith(next.querySelector("#main"));
-    for (const selector of [".reign-header", ".bookmarks"]) {
-      document
-        .querySelector(selector)
-        .replaceWith(next.querySelector(selector));
-    }
+    document
+      .querySelector(".reign-header")
+      .replaceWith(next.querySelector(".reign-header"));
     const currentCalendar = document.querySelector(".moon-banner");
     const nextCalendar = next.querySelector(".moon-banner");
     if (currentCalendar) currentCalendar.remove();
@@ -483,7 +573,12 @@ async function openContext(url, push = true) {
     if (focus && focus.getClientRects().length) {
       focus.setAttribute("tabindex", "-1");
       focus.focus({ preventScroll: true });
-      focus.scrollIntoView({ block: "nearest", behavior: "instant" });
+      const body = focus.closest(".sheet-body");
+      if (body)
+        body.scrollTop =
+          focus.getBoundingClientRect().top -
+          body.getBoundingClientRect().top -
+          12;
     } else {
       const cities = [...document.querySelectorAll(".map-city")];
       const city =

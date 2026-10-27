@@ -143,7 +143,7 @@ def test_header_moon(user, language, finished, calendar_version):
     client.force_login(user)
     client.cookies["django_language"] = language
     html = client.get(reverse("game", args=[game.id]), {"tab": "domain"}).content.decode()
-    ribbon = re.search(r'<div class="resource-ribbon".*?</div>', html, re.S).group()
+    ribbon = re.search(r'<div class="resource-ribbon[^\"]*".*?</div>', html, re.S).group()
     assert 'data-icon="moon"' in ribbon
     assert f"<strong>{24 if finished else 13}</strong>" in ribbon
     assert ("Lune" if language == "fr" else "Moon") in ribbon

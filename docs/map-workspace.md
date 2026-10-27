@@ -1,11 +1,11 @@
 # Map workspace — October 26, 2026
 
 The owner's approval supersedes earlier Council-first and compulsory batch-work
-presentation decisions. No saved rules or reports change. New artwork is deferred.
+presentation decisions. No saved rules or reports change. The October 27 follow-up below authorizes map artwork.
 
 ## Interaction contract
 
-- Entry opens all nine cities and every saved road. No map zoom; browser zoom stays enabled.
+- Entry opens all nine cities; selecting one reveals its saved roads. No map zoom; browser zoom stays enabled.
 - Selecting an owned city opens stocks, troops, capabilities and local work quotes
   together. A reachable enemy opens preparation directly. Convoys and detailed
   accounts remain deliberate activities in the same workspace. The map
@@ -80,3 +80,52 @@ Independent variations: `mockup-house-hud` (both languages),
 The browser journey additionally checks the range/number/step/max controls, native
 forms, scrolling sheet bodies with an accessible close control, and 200% text.
 Full verification applies to this broad shared-template refactor.
+
+## October 27 — Map art and fluid context navigation
+
+The owner clarified that “clipping” meant choppy panel animation. Retain the
+sheet shell between views of the same type, with a brief content fade; opening
+and closing use short transform/opacity transitions. Honor reduced motion.
+Keep decoded city artwork and the canvas mounted while the game revision is
+unchanged; refresh the authorized drawing when the revision changes. Abort stale
+requests before they can replace a newer view. City tabs sit outside the scrolling
+body; their URLs open at the top. Precise incoming mail fragments still scroll the
+body to their target. Escape, history and native URLs remain supported.
+
+The shared header replaces the bottom menu throughout the game. The Yaara mark
+returns to the map, the named house opens Reign, and Courrier keeps its warning
+count. Secondary folios retain settings, language and home controls in their footer.
+Old header/menu markup, owning styles and bottom padding are removed together.
+
+Generated art uses a transparent six-cell atlas: open settlement, timber palisade,
+reinforced palace, stone walls, legacy earth wall and legacy great enclosure.
+Walls are plain, with no arrow slits. Existing public wall levels choose the cell;
+no new opponent information is projected. Green/red banners express relation to
+the viewer; the existing emblems and territory colors distinguish all three houses.
+Keep reachability and engagement through underlined/muted names and dashed banners; remove the white circle bases and update the legend. Terrain is decorative worn parchment
+with very light dunes and sparse muted-green palms, including near the center.
+No zoom/pan or terrain mechanics are added. Shared borders use reversible irregular curves. A fixed presentation layout spreads
+the cities organically; saved road connections and game rules remain unchanged.
+
+Independent variations, written before implementation: `map-header-navigation`
+(map/mail/Reign), `map-fixed-activity-tabs` (works/accounts/convoy),
+`map-public-fortification-art` (four current and three legacy levels), and
+`map-curved-public-geography` (three saved geographies). The browser journey checks
+retained sheet/art nodes, Construire starting at scroll zero, no repeated entry
+animation, reduced motion and existing native/local-order flows. The full local
+checkpoint is selected for the broad shared header/navigation change.
+
+The owner's subsequent art direction uses the existing fortifications, granary,
+forge and works atlas as direct references: frontal compositions, thin irregular
+ink contours, weathered plaster and painted mineral/terracotta bands. City artwork
+is smaller, without a pedestal. Palms and terrain remain decorative. Seven further
+variations cover `map-organic-layout` across three saved networks and
+`map-selected-roads` for the unselected board and three city degrees. Browser
+checks additionally verify roads start transparent and circle bases are absent.
+The preview uses the same prepared view as every other map, preventing a return
+to the old drawing when reviewing an order.
+
+At enlarged text sizes, mobile sheets may cover the resource header so their fixed
+tabs and scrollable decision content remain usable. The close control stays in the
+viewport. Secondary native folio fragments use the measured header height and
+settle after font reflow and same-document fragment changes; no game data is involved in either behavior.

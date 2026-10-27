@@ -30,6 +30,10 @@ def run_map_journeys():
                 url = page.url.split("?")[0]
                 expect(page.locator(".map-city")).to_have_count(9)
                 expect(page.locator(".map-connection")).to_have_count(12)
+                assert page.locator(".map-connection").evaluate_all(
+                    "lines => lines.every(el => getComputedStyle(el).opacity === '0')"
+                )
+                expect(page.locator(".map-marker, .map-inner")).to_have_count(0)
                 canvas = page.locator(".map-workspace > .realm-map").bounding_box()
                 assert canvas["width"] == 1440
                 assert abs(canvas["y"] - page.locator(".reign-header").bounding_box()["height"]) < 2
@@ -46,6 +50,7 @@ def run_map_journeys():
                 page.locator('.map-city[href*="city=c1"]').focus()
                 page.keyboard.press("Enter")
                 expect(page.locator("#context-title")).to_have_text("Qasr")
+                expect(page.locator(".map-connection.selected-road")).to_have_count(3)
                 expect(page.locator("#city-granary meter")).to_be_visible()
                 assert page.locator('[data-local-work="c1"]').count() > 1
                 if javascript:
@@ -57,7 +62,31 @@ def run_map_journeys():
                     expect(page.locator("#map-context")).to_have_count(0)
                     page.go_back()
                     expect(page.locator("#context-title")).to_have_text("Qasr")
+                if javascript:
+                    page.evaluate("""() => {
+                        window.originalSheet = document.querySelector('.city-sheet');
+                        window.originalArt = document.querySelector('.city-art');
+                        document.querySelector('.sheet-body').scrollTop = 200;
+                    }""")
                 page.locator('.city-activities a[href*="action=works"]').click()
+                page.wait_for_url("**action=works")
+                expect(page.locator("#city-works")).to_be_in_viewport()
+                if javascript:
+                    assert page.evaluate("""() =>
+                        originalSheet === document.querySelector('.city-sheet') &&
+                        originalArt === document.querySelector('.city-art') &&
+                        document.querySelector('.sheet-body').scrollTop === 0 &&
+                        getComputedStyle(originalSheet).animationName === 'none'
+                    """)
+                    page.emulate_media(reduced_motion="reduce")
+                    page.locator('.city-activities a[href*="action=accounts"]').click()
+                    page.wait_for_url("**action=accounts")
+                    assert page.locator(".city-sheet").evaluate(
+                        "el => el.getAnimations().length === 0"
+                    )
+                    page.locator('.city-activities a[href*="action=works"]').click()
+                    page.wait_for_url("**action=works")
+                    page.emulate_media(reduced_motion="no-preference")
                 page.locator('.local-work-choice a[href*="action=irrigation"]').click()
                 page.wait_for_url("**action=irrigation**")
                 expect(page.locator('[data-local-work="c1"]')).to_be_visible()
@@ -76,6 +105,10 @@ def run_map_journeys():
                         )
                         expect(page.locator(".sheet-heading .panel-close")).to_be_in_viewport()
                         expect(
+                            page.locator('.city-activities a[href*="action=works"]')
+                        ).to_be_in_viewport()
+                        assert page.locator(".sheet-body").evaluate("el => el.clientHeight > 80")
+                        expect(
                             page.locator('[data-local-work] button[type="submit"]')
                         ).to_be_enabled()
                     page.evaluate("document.documentElement.style.fontSize = '100%'")
@@ -85,9 +118,17 @@ def run_map_journeys():
                 page.locator(".decree-reading > form button").click()
                 expect(page.locator(".orders-register")).to_contain_text("300")
                 page.evaluate("document.documentElement.style.fontSize = '200%'")
-                board = page.locator(".map-workspace").bounding_box()
-                panel = page.locator(".mail-panel").bounding_box()
-                assert panel["y"] >= board["y"]
+                for _ in range(50):
+                    panel = page.locator(".mail-panel").bounding_box()
+                    bounded = (
+                        panel["y"] >= 0
+                        and panel["y"] + panel["height"] <= page.viewport_size["height"] + 0.5
+                    )
+                    if bounded:
+                        break
+                    page.wait_for_timeout(50)
+                assert bounded, panel
+                assert page.locator(".sheet-body").evaluate("el => el.clientHeight > 80")
                 page.evaluate("document.documentElement.style.fontSize = '100%'")
                 page.locator(".orders-register button").click()
                 page.goto(url + "?tab=map&city=c4#map-context")

@@ -657,7 +657,7 @@ def preview_order(request, game_id):
             "city_requested": selected is not None,
             "edit_url": order_form_url(game, spec),
             **workspace_context(preview_view, selected),
-            "view": localize(player_view(game.state, actor)),
+            "view": preview_view,
             "tab": "decrees",
             "nav_section": "wars" if kind in ("raid", "capture", "convoy") else "constructions",
             "order": order,

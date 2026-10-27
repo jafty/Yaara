@@ -38,11 +38,7 @@ def no_overflow(page):
             }""")
             assert abs(geometry["width"] / geometry["height"] - 1.5) < 0.02
             assert geometry["overflow"] == "hidden"
-    if page.locator(".book-title").count():
-        nav = page.locator(".bookmarks").bounding_box()
-        active = page.locator('.bookmarks a[aria-current="page"]').bounding_box()
-        if active:
-            assert abs(active["y"] - nav["y"]) < 0.5, "Active marker must meet the band edge"
+    if page.locator(".house-identity").count() and not page.locator(".workspace-page").count():
         scannable_layout(page)
 
 
@@ -92,9 +88,7 @@ def section_jump_lands(page, selector):
         if page.locator(selector).evaluate("""el => {
           const top = el.getBoundingClientRect().top;
           const header = document.querySelector('.reign-header').getBoundingClientRect();
-          const nav = document.querySelector('.bookmarks');
-          const bottom = getComputedStyle(nav).position === 'fixed'
-            ? nav.getBoundingClientRect().top : innerHeight;
+          const bottom = innerHeight;
           const line = parseFloat(getComputedStyle(el).lineHeight);
           // Native navigation may keep an already visible target in place.
           return location.hash === '#' + el.id
@@ -120,7 +114,7 @@ def section_jump_lands(page, selector):
 
 def scannable_layout(page):
     """The title remains readable and secondary actions stay below the folio."""
-    title = page.locator(".book-title")
+    title = page.locator(".house-identity")
     assert title.evaluate("el => el.scrollWidth <= el.clientWidth")
     assert title.evaluate("el => getComputedStyle(el).whiteSpace") == "normal"
     expect(page.locator('.resource-ribbon [data-icon="moon"]')).to_have_count(1)
@@ -133,20 +127,14 @@ def scannable_layout(page):
       if (tab === 'mail' || tab === 'letters') return 'mail';
       return tab === 'map' ? 'map' : 'domain';
     }""")
-    active = page.locator('.bookmarks a[aria-current="page"]')
+    active = page.locator('.reign-header a[data-section][aria-current="page"]')
     expect(active).to_have_count(1)
     expect(active).to_have_attribute("data-section", expected)
-    labels = page.locator(".bookmarks a span").evaluate_all(
-        "elements => elements.map(el => el.getBoundingClientRect().toJSON())"
-    )
-    for first, second in zip(labels, labels[1:]):
-        assert first["right"] <= second["x"]
     for selector in (
         ".notice",
         ".marginal-note",
         ".unsealed-leaf",
         ".next-closure",
-        ".bookmarks a",
     ):
         for element in page.locator(selector).all():
             assert element.evaluate("el => parseFloat(getComputedStyle(el).borderLeftWidth)") == 0
@@ -202,10 +190,7 @@ def redesign_reflow(page):
                 page.evaluate("scrollTo({top: 0, behavior: 'instant'})")
                 # The wide story image follows a visible headline; long prose can scroll.
                 heading = page.locator(".letter-entry h3").first.bounding_box()
-                assert (
-                    heading["y"] + heading["height"]
-                    <= page.locator(".bookmarks").bounding_box()["y"]
-                )
+                assert heading["y"] + heading["height"] <= page.viewport_size["height"]
             for caption in page.locator(".resource-caption").all():
                 expect(caption).to_be_visible()
     page.evaluate("document.documentElement.style.removeProperty('font-size')")
@@ -319,7 +304,7 @@ with sync_playwright() as playwright:
             assert b["x"] >= a["x"] + a["width"] + 10 or b["y"] >= a["y"] + a["height"]
         expect(page.locator(".ledger-summary dt")).to_have_count(3)
         assert page.locator(".house-accounts").count() == 0
-        assert page.locator(".bookmarks a").count() == 3
+        assert page.locator(".reign-header a[data-section]").count() == 3
         page.goto(game_url + "?tab=constructions")
         expect(
             page.get_by_role("heading", name="Works" if en else "Chantiers", exact=True)
@@ -432,9 +417,9 @@ with sync_playwright() as playwright:
         expect(page.locator(".decree-reading")).to_contain_text(
             "Small arsenal equipment" if en else "Équipement du petit arsenal"
         )
-        expect(page.locator('.bookmarks a[aria-current="page"]')).to_have_attribute(
-            "data-section", "map"
-        )
+        expect(
+            page.locator('.reign-header a[data-section][aria-current="page"]')
+        ).to_have_attribute("data-section", "map")
         page.locator(".decree-reading > form button[type=submit]").click()
         expect(page.locator(".resource-ribbon")).to_contain_text(
             "2,400,000" if en else "2\u00a0400\u00a0000"
@@ -491,7 +476,7 @@ with sync_playwright() as playwright:
         expect(page.locator(".orders-register")).to_have_count(0)
         page.goto(game_url + "?tab=wars")
         assert page.locator(".map-city").count() == 9
-        illustration_asset(page.locator(".map-frame"), "map-terrain.png")
+        illustration_asset(page.locator(".map-frame"), "map/parchment.webp")
         assert page.locator(".map-territory").count() == 9
         assert page.locator('[data-map-state="owned"]').count() == 3
         assert page.locator('[data-map-state="reachable"]').count() == 2
@@ -521,6 +506,7 @@ with sync_playwright() as playwright:
         expect(page.locator("#map-context .illustration")).to_have_count(0)
         redesign_reflow(page)
         page.goto(page.url)
+        city_heading_starts_panel(page)
         atlas = page.locator(".realm-map").bounding_box()
         panel = page.locator("#map-context").bounding_box()
         assert panel["x"] >= atlas["x"] + atlas["width"]
@@ -584,7 +570,7 @@ with sync_playwright() as playwright:
         assert page.locator('[data-map-state="engaged"]').count() == 0
         page.screenshot(path=str(artifacts / f"decrees-desktop-{language}.png"), full_page=True)
         for moon in range(1, 4):
-            page.locator('.bookmarks a[data-section="domain"]').click()
+            page.locator('.reign-header a[data-section="domain"]').click()
             page.locator("#turn-page button.primary-action").click()
             page.goto(page.url.split("?")[0] + "?tab=domain")
             expect(page.locator(".resource-ribbon")).to_contain_text(str(moon + 1))
@@ -597,7 +583,7 @@ with sync_playwright() as playwright:
         expect(
             page.get_by_role("heading", name="Expeditions" if en else "Expéditions", exact=True)
         ).to_be_visible()
-        page.locator('.bookmarks a[data-section="domain"]').click()
+        page.locator('.reign-header a[data-section="domain"]').click()
         page.locator('a[href="?tab=letters"]').click()
         assert (
             page.locator('.letter-entry a[href="?tab=domain"]').count()
@@ -727,7 +713,7 @@ with sync_playwright() as playwright:
         storage.locator('button[type="submit"]').click()
         page.locator(".decree-reading > form button[type=submit]").click()
         for _ in range(5):
-            page.locator('.bookmarks a[data-section="domain"]').click()
+            page.locator('.reign-header a[data-section="domain"]').click()
             page.locator("#turn-page button.primary-action").click()
             page.goto(page.url.split("?")[0] + "?tab=domain")
         page.goto(game_url + "?tab=letters")
@@ -811,7 +797,7 @@ with sync_playwright() as playwright:
                         assert (
                             choice.evaluate("el => parseFloat(getComputedStyle(el).fontSize)") <= 16
                         )
-                for link in page.locator(".bookmarks a").all():
+                for link in page.locator(".reign-header a[data-section]").all():
                     box = link.bounding_box()
                     assert box["height"] >= 44 and box["width"] >= 44
                 if suffix in ("", "?tab=constructions", "?tab=wars"):

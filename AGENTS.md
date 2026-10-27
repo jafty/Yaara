@@ -11,6 +11,15 @@
 
 ## Project rules
 
+- The owner's latest October 27 polish supersedes deferred map artwork and the
+  three-item bottom menu. Use a shared compact header, fixed city tabs and smooth
+  contextual transitions. Map cities follow the existing works illustrations, with plain wall faces (no
+  arrow slits), restrained dunes and sparse muted-green palms, plus live green
+  owned/red enemy emblem flags. Use smaller city art without circle bases, organic
+  presentation positions and irregular boundaries; show roads only for a selected
+  city. Keep decorative terrain separate from saved connections and movement rules.
+  See `docs/map-workspace.md` and the illustration asset README.
+
 - The owner's October 27 follow-up requires the furnished HTML mockup to guide
   UX structure, while retaining current colors, features and the earlier map
   recommendations. City sheets combine resources, capabilities and local works;
