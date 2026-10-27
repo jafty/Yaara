@@ -385,3 +385,13 @@ and map journeys passed with and without JavaScript. The map journey covers
 phone widths, enlarged text and reduced motion. Catalog compilation, lint and
 format checks, and migration consistency also passed. These results do not
 establish Railway deployment health.
+
+## City panel refinement — October 27
+
+The presentation checkpoint covers the stacked city actions, return-only city
+navigation, compact resource row, direct alert links to accounts, opaque sheet
+content and reload on a changed asset set. The affected PostgreSQL 17 checks
+passed 161 cases; all 1,750 catalog entries collected. The bilingual browser
+journey and map journey passed, including no-JavaScript, reduced motion,
+large text and narrow screens. Translations, lint, format and diff checks
+passed. Railway status remains separate from local verification.

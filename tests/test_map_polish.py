@@ -58,15 +58,17 @@ def test_header_navigation(user, tab):
     assert f'data-section="{tab}" aria-current="page"' in header
 
 
-@case("map-fixed-activity-tabs", REQ)
+@case(
+    "map-fixed-activity-tabs",
+    "Owner: city action sheets retain resources and return to the city without tabs",
+)
 @pytest.mark.parametrize("action", ["works", "accounts", "convoy"])
 def test_fixed_tabs(user, action):
     _, client, url = open_board(user)
     html = client.get(url, {"city": "c1", "action": action}).content.decode()
-    tabs = re.search(r'<nav class="city-activities".*?</nav>', html, re.S).group()
-    assert html.index(tabs) < html.index('class="sheet-body"')
+    assert 'class="city-activities"' not in html
     assert 'class="city-resources"' in html and "data-focus-action" in html
-    assert "#" not in tabs
+    assert 'class="panel-close" href="?tab=map&amp;city=c1"' in html
 
 
 @case("map-public-fortification-art", REQ)

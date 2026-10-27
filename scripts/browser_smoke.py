@@ -319,17 +319,39 @@ with sync_playwright() as playwright:
             assert b["x"] >= a["x"] + a["width"] + 10 or b["y"] >= a["y"] + a["height"]
         assert page.locator(".house-accounts").count() == 0
         assert page.locator(".reign-header a[data-section]").count() == 3
+        news = page.locator(".reign-header .alerts-trigger")
+        expect(news).to_have_css("border-top-width", "0px")
+        expect(news.locator("strong")).to_have_css("border-top-width", "0px")
+        expect(news.locator(".visually-hidden")).to_have_text("News" if en else "Nouvelles")
         # City actions open a full sheet and retain local resources at every size.
         for width in (1440, 390, 320):
             page.set_viewport_size({"width": width, "height": 844})
-            for action in ("works", "accounts", "convoy"):
+            for action in ("works", "convoy"):
                 page.goto(game_url + "?tab=map&city=c1")
                 expect(page.locator(".city-actions")).to_be_visible()
+                expect(page.locator('.city-actions a[href*="action=accounts"]')).to_have_count(0)
+                expect(page.locator(".map-neighbors, .city-activities")).to_have_count(0)
                 expect(page.locator("#city-works")).to_have_count(0)
+                assert page.locator(".city-action").first.evaluate(
+                    "el => getComputedStyle(el).display === 'flex' && el.getBoundingClientRect().height >= 60"
+                )
+                first, second = [
+                    action.bounding_box() for action in page.locator(".city-action").all()
+                ]
+                assert (
+                    abs(first["x"] - second["x"]) < 1
+                    and second["y"] >= first["y"] + first["height"]
+                )
+                assert page.locator(".city-action small").count() == 2
+                assert page.locator(".city-resources").evaluate(
+                    "el => el.scrollWidth <= el.clientWidth && [...el.querySelectorAll('dd')].every(item => item.scrollWidth <= item.clientWidth)"
+                )
                 page.locator(f'.city-actions a[href*="action={action}"]').click()
                 expect(page.locator(".city-sheet[data-focus-action]")).to_be_visible()
                 expect(page.locator(".city-resources")).to_be_visible()
                 expect(page.locator(".reign-header")).to_be_hidden()
+                expect(page.locator(".city-activities")).to_have_count(0)
+                expect(page.locator(".sheet-body")).to_have_css("opacity", "1")
                 no_overflow(page)
                 page.locator(".panel-close").click()
                 expect(page.locator(".city-actions")).to_be_visible()
@@ -856,7 +878,7 @@ with sync_playwright() as playwright:
         plain_page = plain.new_page()
         plain_page.goto(game_url + "?tab=map&city=c1")
         expect(plain_page.locator(".city-actions")).to_be_visible()
-        plain_page.locator('.city-actions a[href*="action=accounts"]').click()
+        plain_page.locator('.city-actions a[href*="action=works"]').click()
         expect(plain_page.locator(".city-sheet[data-focus-action]")).to_be_visible()
         expect(plain_page.locator(".city-resources")).to_be_visible()
         plain_page.locator(".panel-close").click()

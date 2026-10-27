@@ -28,6 +28,10 @@ def test_focused_sheet(user, language, action):
     if action != "expedition":
         close = re.search(r'<a class="panel-close".*?</a>', html, re.S).group()
         assert "city=c1" in close
+        if action == "irrigation":
+            assert "action=works" in close
+        else:
+            assert "action=works" not in close
     game.refresh_from_db()
     assert game.state == before
 

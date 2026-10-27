@@ -5813,3 +5813,9 @@ msgstr "Plunder: %(raid_base)s Measures + %(raid_person)s per Fidèle. Conquest:
 
 msgid "%(origin)s vers %(target)s : %(cargo)s Mesures. Arrivée prévue à la lune %(moon)s."
 msgstr "%(origin)s to %(target)s: %(cargo)s Measures. Arrival expected in Moon %(moon)s."
+
+msgid "Améliorer les ouvrages de cette cité."
+msgstr "Improve this city’s buildings."
+
+msgid "Déplacer des Mesures entre vos cités."
+msgstr "Move Measures between your cities."

@@ -70,6 +70,7 @@ def test_envelope_news(user, language):
     assert 'data-icon="bell"' not in header
     assert 'data-alert-count="0"' in header
     assert ("Nouvelles" if language == "fr" else "News") in header
+    assert 'class="visually-hidden"' in header
 
 
 @case("planning-compact-city-identity", "Owner: city and owner share the compact sheet heading")

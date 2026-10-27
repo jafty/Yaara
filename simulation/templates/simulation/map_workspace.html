@@ -2,18 +2,16 @@
 <div class="map-workspace">
     {% include 'simulation/realm_map.html' %}
     {% if city_requested and tab != 'domain' %}<section id="map-context" class="context-sheet city-sheet" aria-labelledby="context-title"{% if activity %} data-focus-action{% endif %}>
-        {% if selected.owned and activity %}
+        {% if selected.owned and local_work %}
+            {% translate "Tous les chantiers" as works_return_label %}
+            {% with city_return='?tab=map&city='|add:selected.id|add:'&action=works' %}{% include 'simulation/context_header.html' with panel_city=selected panel_return=city_return panel_close_label=works_return_label %}{% endwith %}
+        {% elif selected.owned and activity %}
             {% translate "Revenir à la cité" as city_return_label %}
             {% with city_return='?tab=map&city='|add:selected.id %}{% include 'simulation/context_header.html' with panel_city=selected panel_return=city_return panel_close_label=city_return_label %}{% endwith %}
         {% else %}{% include 'simulation/context_header.html' with panel_city=selected %}{% endif %}
         {% if selected.owned %}
             {% include "simulation/city_resources.html" %}
-            {% if activity %}<nav class="city-activities" aria-label="{% translate 'Choisir une activité' %}">
-                <a href="?tab=map&amp;city={{ selected.id }}" {% if not activity %}aria-current="page"{% endif %}>{% translate "Aperçu" %}</a>
-                <a href="?tab=map&amp;city={{ selected.id }}&amp;action=works" {% if activity == 'works' or local_work %}aria-current="page"{% endif %}>{% translate "Construire" %}</a>
-                <a href="?tab=map&amp;city={{ selected.id }}&amp;action=accounts" {% if activity == 'accounts' %}aria-current="page"{% endif %}>{% translate "Comptes" %}</a>
-                {% if view.strategic_rules and not view.finished and not view.eliminated and not game.paused %}<a href="?tab=map&amp;city={{ selected.id }}&amp;action=convoy&amp;origin={{ selected.id }}" {% if activity == 'convoy' %}aria-current="page"{% endif %}>{% translate "Envoyer un convoi" %}</a>{% endif %}
-            </nav>{% endif %}
+
         {% endif %}
         <div class="sheet-body">
         {% if not selected.owned or selected.damaged %}<p class="aside-text">{{ selected.wall_label }}{% if selected.damaged %} · {% translate "Ouvrage endommagé" %}{% endif %}</p>{% endif %}
@@ -24,9 +22,8 @@
                 {% if not activity %}
                     {% include 'simulation/city_overview.html' %}
                     <nav class="city-actions" aria-label="{% translate 'Choisir une activité' %}">
-                        <a href="?tab=map&amp;city={{ selected.id }}&amp;action=works">{% translate "Construire" %}</a>
-                        <a href="?tab=map&amp;city={{ selected.id }}&amp;action=accounts">{% translate "Comptes" %}</a>
-                        {% if view.strategic_rules and not view.finished and not view.eliminated and not game.paused %}<a href="?tab=map&amp;city={{ selected.id }}&amp;action=convoy&amp;origin={{ selected.id }}">{% translate "Envoyer un convoi" %}</a>{% endif %}
+                        <a class="city-action city-action-primary" href="?tab=map&amp;city={{ selected.id }}&amp;action=works">{% include 'simulation/nav_icon.html' with icon='works' %}<span class="city-action-copy"><strong>{% translate "Construire" %}</strong><small>{% translate "Améliorer les ouvrages de cette cité." %}</small></span></a>
+                        {% if view.strategic_rules and not view.finished and not view.eliminated and not game.paused %}<a class="city-action" href="?tab=map&amp;city={{ selected.id }}&amp;action=convoy&amp;origin={{ selected.id }}">{% include 'simulation/nav_icon.html' with icon='transport' %}<span class="city-action-copy"><strong>{% translate "Envoyer un convoi" %}</strong><small>{% translate "Déplacer des Mesures entre vos cités." %}</small></span></a>{% endif %}
                     </nav>
                 {% else %}<section id="city-works" class="city-works" aria-labelledby="works-title">
                     <div class="city-section-heading"><h2 id="works-title">{% translate "Chantier de la cité" %}</h2>{% include 'simulation/team_status.html' with city=selected detailed=True %}</div>
@@ -46,7 +43,7 @@
             {% if not selected_target %}<p>{% translate "Cette oasis est hors de nos frontières. Nos hommes doivent pouvoir la rejoindre par nos terres." %}</p>{% endif %}
             {% if selected.own_engagement %}<a href="?tab=mail&amp;mail=schedule">{% translate "Suivre nos expéditions" %} </a>{% endif %}
         {% endif %}
-        <details class="map-neighbors"><summary>{% translate "Routes directes" %}</summary><p>{% for neighbor in neighbors %}<a href="?tab=map&amp;city={{ neighbor.id }}#map-context">{{ neighbor.name }}</a>{% if not forloop.last %} · {% endif %}{% endfor %}</p></details>
+
         </div>
         {% if not selected.owned and activity == 'expedition' and selected_target and not selected.engaged and not view.finished and not view.eliminated and not game.paused %}{% include 'simulation/expedition_actions.html' with detached=True %}{% endif %}
     </section>{% else %}

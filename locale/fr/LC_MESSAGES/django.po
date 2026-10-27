@@ -4532,3 +4532,9 @@ msgstr "Pillage : %(raid_base)s Mesures + %(raid_person)s par Fidèle. Conquête
 
 msgid "%(origin)s vers %(target)s : %(cargo)s Mesures. Arrivée prévue à la lune %(moon)s."
 msgstr "%(origin)s vers %(target)s : %(cargo)s Mesures. Arrivée prévue à la lune %(moon)s."
+
+msgid "Améliorer les ouvrages de cette cité."
+msgstr "Améliorer les ouvrages de cette cité."
+
+msgid "Déplacer des Mesures entre vos cités."
+msgstr "Déplacer des Mesures entre vos cités."

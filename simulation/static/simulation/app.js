@@ -48,7 +48,8 @@ function initializePage() {
   if (headerObserver) headerObserver.disconnect();
   const expand = document.querySelector("[data-sheet-expand]");
   if (expand) {
-    if (!document.querySelector(".panel-close")) sheetExpanded = false;
+    if (!document.querySelector(".panel-close") || document.querySelector(".city-sheet"))
+      sheetExpanded = false;
     expand.hidden = false;
     sizeSheet(sheetExpanded);
     expand.addEventListener("click", () => sizeSheet(!sheetExpanded));
@@ -522,6 +523,13 @@ async function openContext(url, push = true) {
       window.location.assign(url);
       return;
     }
+    // A tab kept open across a deployment must not mix new markup with old assets.
+    const assets = (doc) => [...doc.querySelectorAll('link[rel="stylesheet"], script[src]')]
+      .map((element) => element.getAttribute("href") || element.getAttribute("src"));
+    if (JSON.stringify(assets(document)) !== JSON.stringify(assets(next))) {
+      window.location.assign(url);
+      return;
+    }
     const currentSheet = document.querySelector(".context-sheet");
     const nextSheet = next.querySelector(".context-sheet");
     const enteringAction = nextSheet?.hasAttribute("data-focus-action") &&
@@ -545,13 +553,6 @@ async function openContext(url, push = true) {
         nextSheet.hasAttribute("data-focus-action"),
       );
       nextSheet.replaceWith(currentSheet);
-      if (!reducedMotion)
-        currentSheet
-          .querySelector(".sheet-body")
-          .animate([{ opacity: 0.65 }, { opacity: 1 }], {
-            duration: 150,
-            easing: "ease-out",
-          });
     } else if (currentSheet && !reducedMotion) {
       await currentSheet.animate(
         [
@@ -608,7 +609,7 @@ async function openContext(url, push = true) {
     initializePage();
     if (enteringAction && !reducedMotion) {
       document.querySelector(".context-sheet")?.animate(
-        [{ opacity: 0.7, clipPath: "inset(18% 0 0 0)" }, { opacity: 1, clipPath: "inset(0)" }],
+        [{ clipPath: "inset(18% 0 0 0)" }, { clipPath: "inset(0)" }],
         { duration: 180, easing: "ease-out" },
       );
     }

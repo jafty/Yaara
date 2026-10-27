@@ -38,6 +38,20 @@ def run_map_journeys():
                 assert abs(canvas["y"] - page.locator(".reign-header").bounding_box()["height"]) < 2
                 expect(page.locator(".map-guide-key")).to_be_visible()
                 expect(page.locator(".map-reference")).to_have_count(0)
+                if javascript:
+                    # An already-open tab must reload when the server serves newer assets.
+                    page.evaluate("""() => {
+                        window.yaaraOldAssets = true;
+                        const css = document.querySelector('link[href*="workspace."]');
+                        css.href += '?old-release';
+                    }""")
+                    page.locator('.map-city[href*="city=c1"]').focus()
+                    page.keyboard.press("Enter")
+                    page.wait_for_url("**city=c1**")
+                    expect(page.locator(".city-actions")).to_be_visible()
+                    assert page.evaluate("window.yaaraOldAssets === undefined")
+                    page.goto(url)
+
                 for width, height in ((1440, 1000), (390, 740), (320, 640)):
                     page.set_viewport_size({"width": width, "height": height})
                     page.evaluate("document.fonts.ready")
@@ -79,19 +93,18 @@ def run_map_journeys():
                         assert board["y"] + board["height"] <= sheet["y"] + 1
                         assert sheet["height"] > board["height"]
                     assert board["width"] > 0 and board["height"] > 0
-                    expand = page.locator("[data-sheet-expand]")
-                    if javascript:
-                        expand.focus()
-                        page.keyboard.press("Enter")
-                        expect(expand).to_have_attribute("aria-expanded", "true")
-                        expect(page.locator(".realm-map")).to_be_hidden()
-                        assert page.locator(".sheet-body").evaluate("el => el.clientHeight > 150")
-                        page.keyboard.press("Escape")
-                        expect(expand).to_have_attribute("aria-expanded", "false")
-                        expect(expand).to_be_focused()
-                        expect(page.locator("#context-title")).to_have_text("Qasr")
-                    else:
-                        expect(expand).to_be_hidden()
+                    expect(page.locator("[data-sheet-expand]")).to_be_hidden()
+                    expect(page.locator(".city-actions")).to_be_visible()
+                    for scale in ("100%", "200%"):
+                        page.evaluate("s => document.documentElement.style.fontSize = s", scale)
+                        page.locator("#city-granary strong").evaluate(
+                            "el => el.textContent = '9 999 999 999 999'"
+                        )
+                        assert page.locator(".city-resources").evaluate("""el =>
+                            el.scrollWidth <= el.clientWidth &&
+                            [...el.querySelectorAll('dd')].every(item => item.scrollWidth <= item.clientWidth)
+                        """)
+                    page.evaluate("document.documentElement.style.fontSize = '100%'")
                 page.set_viewport_size({"width": 1440, "height": 1000})
                 expect(page.locator(".map-connection.selected-road")).to_have_count(3)
                 expect(page.locator("#city-granary")).to_be_visible()
@@ -126,19 +139,25 @@ def run_map_journeys():
                         document.querySelector('.sheet-body').scrollTop === 0 &&
                         getComputedStyle(originalSheet).animationName === 'none'
                     """)
+                    expect(page.locator(".sheet-body")).to_have_css("opacity", "1")
                     page.emulate_media(reduced_motion="reduce")
-                    page.locator('.city-activities a[href*="action=accounts"]').click()
-                    page.wait_for_url("**action=accounts")
+                    page.locator(".panel-close").click()
+                    expect(page.locator(".city-actions")).to_be_visible()
+                    page.locator('.city-actions a[href*="action=works"]').click()
+                    page.wait_for_url("**action=works")
                     assert page.locator(".city-sheet").evaluate(
                         "el => el.getAnimations().length === 0"
                     )
-                    page.locator('.city-activities a[href*="action=works"]').click()
-                    page.wait_for_url("**action=works")
                     page.emulate_media(reduced_motion="no-preference")
                 page.locator('.local-work-choice a[href*="action=irrigation"]').click()
                 page.wait_for_url("**action=irrigation**")
                 expect(page.locator('[data-local-work="c1"]')).to_be_visible()
                 expect(page.locator('input[type="checkbox"]')).to_have_count(0)
+                page.locator(".panel-close").click()
+                page.wait_for_url("**action=works")
+                expect(page.locator("#city-works")).to_be_visible()
+                page.locator('.local-work-choice a[href*="action=irrigation"]').click()
+                page.wait_for_url("**action=irrigation**")
                 for width in (1440, 390, 320):
                     page.set_viewport_size(
                         {"width": width, "height": 1000 if width == 1440 else 844}
@@ -154,9 +173,10 @@ def run_map_journeys():
                         expect(page.locator(".sheet-heading .panel-close")).to_be_in_viewport()
                         if width < 900:
                             expect(page.locator(".reign-header")).to_be_hidden()
-                        expect(
-                            page.locator('.city-activities a[href*="action=works"]')
-                        ).to_be_in_viewport()
+                        expect(page.locator(".panel-close")).to_be_in_viewport()
+                        assert page.locator(".city-resources").evaluate(
+                            "el => el.scrollWidth <= el.clientWidth && [...el.querySelectorAll('dd')].every(item => item.scrollWidth <= item.clientWidth)"
+                        )
                         assert page.locator(".sheet-body").evaluate("el => el.clientHeight > 80")
                         expect(
                             page.locator('[data-local-work] button[type="submit"]')

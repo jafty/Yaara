@@ -35,6 +35,18 @@ def test_entry(user, language):
     overview = client.get(url, {"city": "c1"}).content.decode()
     assert 'class="city-actions"' in overview and 'id="city-works"' not in overview
     assert 'class="city-resources"' in overview
+    assert "action=works" in overview and "action=convoy" in overview
+    assert "action=accounts" not in overview and 'class="map-neighbors"' not in overview
+    assert (
+        "Améliorer les ouvrages de cette cité."
+        if language == "fr"
+        else "Improve this city’s buildings."
+    ) in overview
+    assert (
+        "Déplacer des Mesures entre vos cités."
+        if language == "fr"
+        else "Move Measures between your cities."
+    ) in overview
     news = client.get(url, {"tab": "mail"}).content.decode()
     tabs = news.split('<nav class="sheet-tabs"', 1)[1].split("</nav>", 1)[0]
     assert tabs.index("mail=attention") < tabs.index("mail=schedule") < tabs.index("mail=chronicle")
