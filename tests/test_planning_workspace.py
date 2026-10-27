@@ -87,7 +87,7 @@ def test_compact_city_identity(user, language):
 
 @case(
     "planning-city-free-means",
-    "Owner: one ledger row shows spendable means, accounts retain detail",
+    "Owner: granary shows stock, capacity and spendable means when reserved",
 )
 @pytest.mark.parametrize("language", ["fr", "en"])
 def test_city_free_means(user, language):
@@ -96,7 +96,16 @@ def test_city_free_means(user, language):
     game.save()
     html = client.get(url, {"city": "c1"}).content.decode()
     means = re.search(r'<dl class="city-resources".*?</dl>', html, re.S).group()
-    assert re.search(r"<strong>600\D000</strong>", means)
+    assert re.search(r"<strong>900\D000</strong>", means)
+    assert re.search(r"2\D400\D000", means)
+    assert re.search(r"600\D000", means)
+    assert ("Mesures libres" if language == "fr" else "Available measures") in means
+    assert 'data-icon="grain"' in means and 'data-icon="warrior"' in means
+    assert (
+        'class="visually-hidden">Grenier' in means
+        if language == "fr"
+        else 'class="visually-hidden">Granary' in means
+    )
     assert "<strong>100</strong>" in means
     assert "<meter" not in html and 'class="city-capabilities"' not in html
     accounts = client.get(url, {"city": "c1", "action": "accounts"}).content.decode()

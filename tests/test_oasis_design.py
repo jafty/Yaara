@@ -85,7 +85,7 @@ def test_review_not_sealing(council, language):
 
 @case(
     "oasis-sealed-next-closure",
-    "Recruitment: sealed manual orders link to explicit Moon closure while still awaiting departure",
+    "Owner: sealed orders omit the closure notice while retaining the Moon closure link",
 )
 @pytest.mark.parametrize("language", ["fr", "en"])
 def test_sealed_next_closure(council, user, language):
@@ -95,9 +95,8 @@ def test_sealed_next_closure(council, user, language):
     before = deepcopy(game.state)
     client.cookies["django_language"] = language
     html = client.get(url, {"tab": "constructions"}).content.decode()
-    notice = re.search(r"<aside[^>]*data-next-closure.*?</aside>", html, re.S).group()
-    assert f"{url}?tab=domain#turn-page" in notice
-    assert ("Review Moon closure" if language == "en" else "Passer à la clôture") in notice
+    assert "data-next-closure" not in html
+    assert f"{url}?tab=domain#turn-page" in html
     game.refresh_from_db()
     assert game.state == before
     assert game.state["orders"][0]["status"] == "confirmed"

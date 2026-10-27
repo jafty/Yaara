@@ -44,6 +44,12 @@ def test_local_commitments(user, language, stage):
         assert "#work-c1-0" in html
     assert ("data-crew-phase=" in html) == busy
     if busy:
+        assert (
+            "Rigoles et petites digues" if language == "fr" else "Channels and small dikes"
+        ) in briefing
+        assert ("Construire Rigoles" if language == "fr" else "Build Channels") not in briefing
+        assert "<li>" not in briefing
+    if busy:
         assert response.context["city_schedule"][0]["moon"] < 12
     else:
         assert len(response.context["city_schedule"]) == 1

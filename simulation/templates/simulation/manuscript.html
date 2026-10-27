@@ -30,10 +30,6 @@
                 {% if not workspace %}{% include 'simulation/guest_banner.html' %}{% endif %}
                 {% if workspace %}<div class="workspace-notices">{% endif %}
                 {% if messages %}<div class="notices" aria-live="polite">{% for message in messages %}<p class="notice {{ message.tags }}">{{ message }}</p>{% endfor %}</div>{% endif %}
-                {% if view.sealed_count and game.can_advance and not game.paused and not view.finished %}<aside class="next-closure" data-next-closure>
-                    <p>{% translate "Vos ordres sont scellés. Ils attendent la clôture de la lune pour entrer en vigueur." %}</p>
-                    <a href="{% url 'game' game.id %}?tab=domain#turn-page">{% translate "Passer à la clôture de la lune" %} </a>
-                </aside>{% endif %}
                 {% if workspace %}{% include 'simulation/game_status.html' %}</div>{% else %}{% include 'simulation/alert_center.html' %}{% endif %}
                 {% block content %}{% endblock %}
             </main>

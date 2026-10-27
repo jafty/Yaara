@@ -145,7 +145,6 @@ def scannable_layout(page):
         ".notice",
         ".marginal-note",
         ".unsealed-leaf",
-        ".next-closure",
     ):
         for element in page.locator(selector).all():
             assert element.evaluate("el => parseFloat(getComputedStyle(el).borderLeftWidth)") == 0
@@ -344,7 +343,7 @@ with sync_playwright() as playwright:
                 )
                 assert page.locator(".city-action small").count() == 2
                 assert page.locator(".city-resources").evaluate(
-                    "el => el.scrollWidth <= el.clientWidth && [...el.querySelectorAll('dd')].every(item => item.scrollWidth <= item.clientWidth)"
+                    "el => getComputedStyle(el).whiteSpace === 'nowrap' && el.getBoundingClientRect().width <= innerWidth"
                 )
                 page.locator(f'.city-actions a[href*="action={action}"]').click()
                 expect(page.locator(".city-sheet[data-focus-action]")).to_be_visible()

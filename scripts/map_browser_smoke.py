@@ -101,13 +101,13 @@ def run_map_journeys():
                             "el => el.textContent = '9 999 999 999 999'"
                         )
                         assert page.locator(".city-resources").evaluate("""el =>
-                            el.scrollWidth <= el.clientWidth &&
-                            [...el.querySelectorAll('dd')].every(item => item.scrollWidth <= item.clientWidth)
+                            getComputedStyle(el).whiteSpace === 'nowrap' && el.getBoundingClientRect().width <= innerWidth
                         """)
                     page.evaluate("document.documentElement.style.fontSize = '100%'")
                 page.set_viewport_size({"width": 1440, "height": 1000})
                 expect(page.locator(".map-connection.selected-road")).to_have_count(3)
                 expect(page.locator("#city-granary")).to_be_visible()
+                expect(page.locator("#city-granary")).to_contain_text("/")
                 expect(page.locator(".city-resources meter, .city-capabilities")).to_have_count(0)
                 expect(page.locator(".city-actions")).to_be_visible()
                 expect(page.locator('[data-local-work="c1"]')).to_have_count(0)
@@ -175,7 +175,7 @@ def run_map_journeys():
                             expect(page.locator(".reign-header")).to_be_hidden()
                         expect(page.locator(".panel-close")).to_be_in_viewport()
                         assert page.locator(".city-resources").evaluate(
-                            "el => el.scrollWidth <= el.clientWidth && [...el.querySelectorAll('dd')].every(item => item.scrollWidth <= item.clientWidth)"
+                            "el => getComputedStyle(el).whiteSpace === 'nowrap' && el.getBoundingClientRect().width <= innerWidth"
                         )
                         assert page.locator(".sheet-body").evaluate("el => el.clientHeight > 80")
                         expect(
@@ -201,10 +201,23 @@ def run_map_journeys():
                 assert page.locator(".sheet-body").evaluate("el => el.clientHeight > 80")
                 page.evaluate("document.documentElement.style.fontSize = '100%'")
                 page.goto(url + "?tab=map&city=c1")
-                notice = page.locator(".workspace-notices").bounding_box()
-                board = page.locator(".realm-map").bounding_box()
-                assert notice["y"] + notice["height"] <= board["y"] + 1
+                expect(page.locator("[data-next-closure]")).to_have_count(0)
                 expect(page.locator("#city-briefing-stats")).to_be_visible()
+                expect(page.locator(".city-granary-free")).to_be_visible()
+                resource_boxes = [
+                    item.bounding_box() for item in page.locator(".city-resources > div").all()
+                ]
+                assert (
+                    abs(
+                        (resource_boxes[0]["y"] + resource_boxes[0]["height"] / 2)
+                        - (resource_boxes[1]["y"] + resource_boxes[1]["height"] / 2)
+                    )
+                    < 2
+                )
+                status = page.locator(".city-crew-line .team-status").bounding_box()
+                work = page.locator(".city-assignment a").bounding_box()
+                assert abs(status["y"] - work["y"]) < 4
+                expect(page.locator(".city-deadlines li")).to_have_count(0)
                 expect(page.locator(".city-briefing h2")).to_have_count(0)
                 expect(page.locator('.city-briefing a[href*="harvest-accounts"]')).to_have_count(0)
                 page.goto(url + "?tab=mail&mail=schedule")

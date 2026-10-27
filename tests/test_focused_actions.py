@@ -70,7 +70,7 @@ def test_illustrated_work(user, language):
     html = client.get(url, {"city": "c1", "action": "works"}).content.decode()
     row = re.search(r'<article class="local-work-choice work-row".*?</article>', html, re.S).group()
     assert "illustration-building" in row
-    assert ("Préparer" if language == "fr" else "Prepare") in row
+    assert ("<span>Améliorer</span>" if language == "fr" else "<span>Improve</span>") in row
     assert ("Vérifier l’ordre" if language == "fr" else "Review the order") not in row
     assert (
         'class="visually-hidden">lunes</span>' in row
@@ -99,3 +99,14 @@ def test_rectangle_work_detail(user, language, params):
     _, client, url = open_board(user, language)
     html = client.get(url, params).content.decode()
     assert "illustration-building-detail" in html
+
+
+@case("focused-repair-verb", "Owner: damaged works use a repair action in the city catalogue")
+@pytest.mark.parametrize("language", ["fr", "en"])
+def test_repair_verb(user, language):
+    game, client, url = open_board(user, language)
+    game.state["cities"]["c1"].update(damaged=True, integrity=50)
+    game.save()
+    html = client.get(url, {"city": "c1", "action": "works"}).content.decode()
+    row = re.search(r'<article[^>]*id="local-work-repair".*?</article>', html, re.S).group()
+    assert ("<span>Réparer</span>" if language == "fr" else "<span>Repair</span>") in row

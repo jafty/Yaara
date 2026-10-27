@@ -35,7 +35,9 @@ def test_entry(user, language):
     overview = client.get(url, {"city": "c1"}).content.decode()
     assert 'class="city-actions"' in overview and 'id="city-works"' not in overview
     assert 'class="city-resources"' in overview
+    assert 'class="city-granary-free"' not in overview
     assert "action=works" in overview and "action=convoy" in overview
+    assert ("Constructions" if language == "fr" else "Works") in overview
     assert "action=accounts" not in overview and 'class="map-neighbors"' not in overview
     assert (
         "Améliorer les ouvrages de cette cité."

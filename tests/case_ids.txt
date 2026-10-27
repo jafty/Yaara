@@ -425,6 +425,8 @@ focused-rectangle-work-detail/batch-en
 focused-rectangle-work-detail/batch-fr
 focused-rectangle-work-detail/local-en
 focused-rectangle-work-detail/local-fr
+focused-repair-verb/en
+focused-repair-verb/fr
 folio-cancel-destination/reject-external
 folio-cancel-destination/same-folio
 folio-legacy-forge-http

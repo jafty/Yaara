@@ -8,8 +8,9 @@ presentation decisions. No saved rules or reports change. The October 27 follow-
 - Entry opens all nine cities; selecting one reveals its saved roads. Subtle green
   and red territory overlays distinguish owned and rival cities. No map zoom;
   browser zoom stays enabled.
-- Selecting an owned city shows its available granary and Fidèles above a compact
-  compact briefing with present population, defenses, team availability, assigned
+- Selecting an owned city shows granary stock and capacity, the free stock when
+  reservations exist, and available Fidèles above a compact
+  briefing with present population, defenses, team availability, assigned
   work and relevant local commitments, followed by unboxed command rows for
   construction and convoys. The shared harvest date remains in the header. Notices
   occupy their own space above the map rather than covering it.
@@ -18,7 +19,8 @@ presentation decisions. No saved rules or reports change. The October 27 follow-
   accounts remain reachable from precise alert and report links. Resources remain
   visible in action sheets; the city panel has no tab bar or route list.
   A reachable enemy opens preparation directly. The map and city menu share the
-  workspace until an action is opened. Context navigation retains the map canvas,
+  workspace until an action is opened. The closure notice is omitted; the Council
+  retains the Moon closure control. Context navigation retains the map canvas,
   supports browser Back and respects reduced-motion preferences.
 - Local works show only that city's next quote and use a hidden city field, never
   a compulsory checklist. Switching cities preserves the work family, not a draft.

@@ -22,7 +22,7 @@ from .calendar import closing_moon
 from .cartography import city_schedule, schedule, workspace_context
 from .forms import GameForm, SignupForm
 from .models import Game, Report
-from .narration import work_effect, work_phrase
+from .narration import work_effect, work_name, work_phrase
 from .presentation import localize, report_view
 from .projections import player_view
 from .rules import ACTION_LABELS, RuleError, allocate, expedition_prices
@@ -176,6 +176,9 @@ def desk(request, game_id):
                 "name": localize(
                     work_phrase(work["kind"], work["level"], game.state.get("economy_version", 1))
                 ),
+                "display_name": localize(
+                    work_name(work["kind"], work["level"], game.state.get("economy_version", 1))
+                ),
                 "phase": "active",
                 "start_moon": work["start_month"],
                 "finish_moon": work["finish_month"],
@@ -191,6 +194,9 @@ def desk(request, game_id):
             {
                 "name": localize(
                     work_phrase(task["kind"], task["level"], game.state.get("economy_version", 1))
+                ),
+                "display_name": localize(
+                    work_name(task["kind"], task["level"], game.state.get("economy_version", 1))
                 ),
                 "phase": "reserved",
                 "start_moon": order["execute_month"],
@@ -367,6 +373,21 @@ def desk(request, game_id):
     local_work = None
     if tab == "map" and action and action.get("cities") and selected["owned"]:
         local_work = next((c for c in action["cities"] if c["id"] == selected["id"]), None)
+    local_schedule = city_schedule(
+        view,
+        selected,
+        {
+            order["id"]: order["origin"]
+            for order in game.state["orders"]
+            if order["actor"] == actor and order["kind"] == "convoy"
+        },
+    )
+    crew_anchors = {item["anchor"] for item in selected.get("crew_assignments", [])}
+    panel_schedule = [
+        event
+        for event in local_schedule
+        if event["anchor"] not in crew_anchors and event["anchor"] != "harvest-accounts"
+    ]
     return render(
         request,
         "simulation/chronicle.html",
@@ -380,15 +401,8 @@ def desk(request, game_id):
             "local_work": local_work,
             "mail_section": mail_section,
             "schedule": schedule(view),
-            "city_schedule": city_schedule(
-                view,
-                selected,
-                {
-                    order["id"]: order["origin"]
-                    for order in game.state["orders"]
-                    if order["actor"] == actor and order["kind"] == "convoy"
-                },
-            ),
+            "city_schedule": local_schedule,
+            "city_panel_schedule": panel_schedule,
             **workspace_context(view, selected, action_kind),
             "prologue_previous": prologue_page - 1,
             "prologue_next": prologue_page + 1,

@@ -5,6 +5,6 @@
     {% include 'simulation/work_details.html' with city=work.option brief=brief %}
     {% if not view.finished and not view.eliminated and not game.paused %}<form method="post" action="{% url 'preview' game.id %}" data-local-work="{{ selected.id }}">
         {% csrf_token %}<input type="hidden" name="kind" value="{{ work.kind }}"><input type="hidden" name="cities" value="{{ selected.id }}">
-        <button class="local-work-submit" type="submit" aria-label="{% translate 'Préparer le chantier' %} · {{ work.label }}" {% if not work.option.available or view.local_funding and work.option.shortfall %}disabled{% endif %}><span>{% if brief %}{% translate "Préparer" %}{% else %}{% translate "Préparer le chantier" %}{% endif %}</span></button>
+        <button class="local-work-submit" type="submit" aria-label="{% if work.repair %}{% translate 'Réparer' %}{% else %}{% translate 'Améliorer' %}{% endif %} · {{ work.label }}" {% if not work.option.available or view.local_funding and work.option.shortfall %}disabled{% endif %}><span>{% if work.repair %}{% translate "Réparer" %}{% else %}{% translate "Améliorer" %}{% endif %}</span></button>
     </form>{% endif %}
 </article>

@@ -413,3 +413,14 @@ bilingual browser and map journeys. The map journey checks that a sealed-order
 notice does not cover the map; a mobile inspection covered the occupied team,
 finish date, population and defenses. Translation compilation, lint and format
 checks passed. Game rules and archived reports are unchanged.
+
+## City work wording and compact resources — October 27
+
+The presentation checkpoint covers the compact resource row, total and available
+stock, assigned-work name and finish date, suppression of repeated work dates and
+the closure notice, and translated improvement and repair actions. The affected
+PostgreSQL 17 checks passed 159 cases; the two new repair-label variations were
+reviewed in the case catalog. French and English browser journeys cover narrow
+screens, enlarged text, keyboard and native navigation. A 320px reserved-stock
+inspection verified the resource row and aligned team name. No game rules or
+archived reports changed.

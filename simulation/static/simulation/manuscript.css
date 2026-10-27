@@ -300,20 +300,6 @@ main {
   align-items: center;
   min-height: 44px;
 }
-.next-closure {
-  padding: 0.65rem 0.85rem;
-  margin-block: 0.75rem;
-  border-block: 1px solid var(--ochre);
-  background: var(--leaf);
-}
-.next-closure p {
-  margin: 0 0 0.3rem;
-}
-.next-closure a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-}
 .archive-exports {
   margin: 0.75rem 0;
   padding: 0.5rem 0;

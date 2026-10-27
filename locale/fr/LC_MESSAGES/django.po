@@ -4545,3 +4545,16 @@ msgstr "Situation de la cité"
 #, python-format
 msgid "%(population)s habitants présents"
 msgstr "%(population)s habitants présents"
+
+msgid "Les ressources de la cité"
+msgstr "Les ressources de la cité"
+
+msgid "Améliorer"
+msgstr "Améliorer"
+
+msgid "Réparer"
+msgstr "Réparer"
+
+msgctxt "city actions"
+msgid "Constructions"
+msgstr "Constructions"

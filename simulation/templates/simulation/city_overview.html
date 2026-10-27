@@ -6,9 +6,10 @@
 <section class="city-briefing" aria-label="{% translate 'Situation de la cité' %}">
     <p id="city-briefing-stats" class="city-briefing-stats">{% blocktranslate with population=selected.present_population %}{{ population }} habitants présents{% endblocktranslate %} · {{ selected.wall_label }}</p>
     <div class="city-crew">
-        <span class="team-status" data-team-state="{% if selected.busy %}occupied{% else %}available{% endif %}">{% include 'simulation/nav_icon.html' with icon='works' %}{% if selected.busy %}{% translate "Équipe occupée" %}{% else %}{% translate "Équipe libre" %}{% endif %}</span>{% for assignment in selected.crew_assignments %}<span class="city-assignment" data-crew-phase="{{ assignment.phase }}"> : <a href="?tab=mail&amp;mail=schedule#{{ assignment.anchor }}">{{ assignment.name }}</a><small>{% blocktranslate with moon=assignment.finish_moon %}Fin prévue : lune {{ moon }}{% endblocktranslate %}</small></span>{% endfor %}
+        <div class="city-crew-line"><span class="team-status" data-team-state="{% if selected.busy %}occupied{% else %}available{% endif %}">{% include 'simulation/nav_icon.html' with icon='works' %}{% if selected.busy %}{% translate "Équipe occupée" %} :{% else %}{% translate "Équipe libre" %}{% endif %}</span>{% for assignment in selected.crew_assignments %}<span class="city-assignment" data-crew-phase="{{ assignment.phase }}"><a href="?tab=mail&amp;mail=schedule#{{ assignment.anchor }}">{{ assignment.display_name }}</a></span>{% endfor %}</div>
+        {% for assignment in selected.crew_assignments %}<small class="city-finish">{% blocktranslate with moon=assignment.finish_moon %}Fin prévue : lune {{ moon }}{% endblocktranslate %}</small>{% endfor %}
     </div>
-    {% if city_schedule %}<div class="city-deadlines" data-city-deadlines>
-        <ol>{% for event in city_schedule %}{% if event.anchor != "harvest-accounts" %}<li><span class="city-deadline-date">{% blocktranslate with v0=event.moon %}Lune {{ v0 }}{% endblocktranslate %}</span><a href="?tab=mail&amp;mail=schedule#{{ event.anchor }}">{{ event.label }}{% if event.detail and event.detail != selected.name %} · {{ event.detail }}{% endif %}</a></li>{% endif %}{% endfor %}</ol>
-    </div>{% endif %}
+    <div class="city-deadlines" data-city-deadlines>
+        <ol>{% for event in city_panel_schedule %}<li><span class="city-deadline-date">{% blocktranslate with v0=event.moon %}Lune {{ v0 }}{% endblocktranslate %}</span><a href="?tab=mail&amp;mail=schedule#{{ event.anchor }}">{{ event.label }}{% if event.detail and event.detail != selected.name %} · {{ event.detail }}{% endif %}</a></li>{% endfor %}</ol>
+    </div>
 </section>

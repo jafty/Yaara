@@ -1,5 +1,5 @@
 {% load i18n %}
-<dl class="city-resources" aria-label="{% translate 'Les moyens libres de la cité' %}">
-    <div id="city-granary"><dt>{% translate "Grenier" %}</dt><dd><strong>{{ selected.available_stock }}</strong><span class="visually-hidden"> {% translate "Mesures libres" %}</span></dd></div>
-    <div><dt>{% translate "Fidèles" %}</dt><dd><strong>{{ selected.available_fideles }}</strong><span class="visually-hidden"> {% translate "Fidèles disponibles" %}</span></dd></div>
+<dl class="city-resources" tabindex="0" aria-label="{% translate 'Les ressources de la cité' %}">
+    <div id="city-granary"><dt>{% include 'simulation/nav_icon.html' with icon='grain' %}<span class="visually-hidden">{% translate "Grenier" %}</span></dt><dd><strong>{{ selected.stock }}</strong> / {{ selected.capacity }}<span class="visually-hidden"> {% translate "Mesures" %}</span></dd>{% if selected.reserved_stock %}<dd class="city-granary-free">({{ selected.available_stock }} {% translate "Libres" %})<span class="visually-hidden"> {% translate "Mesures libres" %}</span></dd>{% endif %}</div>
+    <div><dt>{% include 'simulation/nav_icon.html' with icon='warrior' %}<span class="visually-hidden">{% translate "Fidèles" %}</span></dt><dd><strong>{{ selected.available_fideles }}</strong><span class="visually-hidden"> {% translate "Fidèles disponibles" %}</span></dd></div>
 </dl>
