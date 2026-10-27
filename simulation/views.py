@@ -19,7 +19,7 @@ from . import engine, multiplayer, services
 from .archives import condense_archive
 from .archives import reign_archive as build_reign_archive
 from .calendar import closing_moon
-from .cartography import schedule, workspace_context
+from .cartography import city_schedule, schedule, workspace_context
 from .forms import GameForm, SignupForm
 from .models import Game, Report
 from .narration import work_effect, work_phrase
@@ -380,6 +380,15 @@ def desk(request, game_id):
             "local_work": local_work,
             "mail_section": mail_section,
             "schedule": schedule(view),
+            "city_schedule": city_schedule(
+                view,
+                selected,
+                {
+                    order["id"]: order["origin"]
+                    for order in game.state["orders"]
+                    if order["actor"] == actor and order["kind"] == "convoy"
+                },
+            ),
             **workspace_context(view, selected, action_kind),
             "prologue_previous": prologue_page - 1,
             "prologue_next": prologue_page + 1,

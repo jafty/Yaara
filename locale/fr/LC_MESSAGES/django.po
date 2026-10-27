@@ -4538,3 +4538,6 @@ msgstr "Améliorer les ouvrages de cette cité."
 
 msgid "Déplacer des Mesures entre vos cités."
 msgstr "Déplacer des Mesures entre vos cités."
+
+msgid "Situation de la cité"
+msgstr "Situation de la cité"

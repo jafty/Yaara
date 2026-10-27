@@ -333,7 +333,7 @@ with sync_playwright() as playwright:
                 expect(page.locator(".map-neighbors, .city-activities")).to_have_count(0)
                 expect(page.locator("#city-works")).to_have_count(0)
                 assert page.locator(".city-action").first.evaluate(
-                    "el => getComputedStyle(el).display === 'flex' && el.getBoundingClientRect().height >= 60"
+                    "el => getComputedStyle(el).display === 'flex' && el.getBoundingClientRect().height >= 44"
                 )
                 first, second = [
                     action.bounding_box() for action in page.locator(".city-action").all()

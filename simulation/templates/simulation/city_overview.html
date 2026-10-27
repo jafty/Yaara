@@ -2,3 +2,11 @@
 {% if selected.forecast_overflow %}<p class="reserve-warning">{% blocktranslate with amount=selected.forecast_overflow moon=view.harvest_moon %}Débordement possible : {{ amount }} Mesures à la récolte de lune {{ moon }}.{% endblocktranslate %}</p>{% endif %}
 {% if selected.siege_shortfall %}<p class="reserve-warning">{% translate "Réserves de siège insuffisantes" %} · {{ selected.siege_shortfall }} {% translate "Mesures" %}</p>{% endif %}
 {% if selected.restricted_fideles %}<p>{% blocktranslate with count=selected.restricted_fideles moon=selected.restricted_until %}{{ count }} Fidèles hérités assurent la défense locale. Départs et secours possibles à partir de la lune {{ moon }}.{% endblocktranslate %}</p>{% endif %}
+
+<section class="city-briefing" aria-label="{% translate 'Situation de la cité' %}">
+    <div class="city-crew">{% include 'simulation/team_status.html' with city=selected detailed=True %}</div>
+    {% if city_schedule %}<div class="city-deadlines" data-city-deadlines>
+        <h2>{% translate "Échéances" %}</h2>
+        <ol>{% for event in city_schedule %}<li><span class="city-deadline-date">{% blocktranslate with v0=event.moon %}Lune {{ v0 }}{% endblocktranslate %}</span><a href="?tab=mail&amp;mail=schedule#{{ event.anchor }}">{{ event.label }}{% if event.detail and event.detail != selected.name %} · {{ event.detail }}{% endif %}</a></li>{% endfor %}</ol>
+    </div>{% endif %}
+</section>

@@ -9,8 +9,9 @@ presentation decisions. No saved rules or reports change. The October 27 follow-
   and red territory overlays distinguish owned and rival cities. No map zoom;
   browser zoom stays enabled.
 - Selecting an owned city shows its available granary and Fidèles above a compact
-  menu of stacked actions for construction and convoys, each with a short purpose.
-  Each opens a full sheet; return
+  local briefing with team availability, assigned work and the city's dated
+  commitments, followed by unboxed command rows for construction and convoys.
+  Each command opens a full sheet; return
   restores the city menu, or the works list when leaving a work detail. City
   accounts remain reachable from precise alert and report links. Resources remain
   visible in action sheets; the city panel has no tab bar or route list.

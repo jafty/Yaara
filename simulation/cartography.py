@@ -243,3 +243,29 @@ def schedule(view):
         }
     )
     return sorted(events, key=lambda event: event["moon"])
+
+
+def city_schedule(view, city, convoy_origins):
+    """Select dated commitments from the actor's already-authorized schedule."""
+    if not city["owned"]:
+        return []
+    anchors = {"harvest-accounts"}
+    anchors.update(item["anchor"] for item in city["crew_assignments"])
+    anchors.update(
+        "order-" + order["id"]
+        for order in view["orders"]
+        if city["id"] in order["origins"]
+        or order["target_id"] == city["id"]
+        or convoy_origins.get(order["id"]) == city["id"]
+    )
+    anchors.update(
+        "mission-" + mission["id"]
+        for mission in view["missions"]
+        if city["id"] in mission["origins"] or mission["target_id"] == city["id"]
+    )
+    anchors.update(
+        f"convoy-{index}"
+        for index, convoy in enumerate(view["convoys"])
+        if city["name"] in (convoy["origin"], convoy["target"])
+    )
+    return [event for event in schedule(view) if event["anchor"] in anchors]

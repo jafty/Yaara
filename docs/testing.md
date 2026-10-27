@@ -395,3 +395,13 @@ passed 161 cases; all 1,750 catalog entries collected. The bilingual browser
 journey and map journey passed, including no-JavaScript, reduced motion,
 large text and narrow screens. Translations, lint, format and diff checks
 passed. Railway status remains separate from local verification.
+
+## Local city briefing — October 27
+
+Presentation verification passed 93 PostgreSQL 17 cases, including sixteen new
+bilingual variations for free/sealed/active teams and sealed/active local
+expeditions and convoys. The catalog contains 1,766 collected variations. The
+complete bilingual browser and map journeys passed with native and JavaScript
+navigation, narrow screens and enlarged text. Rules and archived reports are
+unchanged; no native-core documentation change is required. A mobile inspection
+also verified the occupied team's assignment, dates and unboxed command rows.
