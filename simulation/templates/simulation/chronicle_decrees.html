@@ -5,15 +5,15 @@
     <ol class="decree-steps"><li>{% translate "Vérifier l’ordre" %}</li><li>{% translate "Confirmer et sceller l’ordre" %}</li></ol>
     {% if selected.owned and city_requested %}<p class="marginal-note">{% blocktranslate with v0=selected.name %}Vous préparez un décret pour <strong>{{ v0 }}</strong>. Sa case est précochée ; vous pouvez choisir d’autres cités.{% endblocktranslate %}</p>{% endif %}
     {% if action %}
-        {% if action.kind == 'expedition' %}<p class="reading-links"><a href="?tab=decrees{% if city_requested %}&amp;city={{ selected.id }}{% endif %}">← {% translate "Revenir aux décrets" %}</a></p>
-        {% else %}<p class="back-link"><a href="?tab=constructions" data-works-return>← {% translate "Tous les chantiers" %}</a></p>{% endif %}
+        {% if action.kind == 'expedition' %}<p class="reading-links"><a href="?tab=decrees{% if city_requested %}&amp;city={{ selected.id }}{% endif %}">{% translate "Revenir aux décrets" %}</a></p>
+        {% else %}<p class="back-link"><a href="?tab=constructions" data-works-return>{% translate "Tous les chantiers" %}</a></p>{% endif %}
         {% include 'simulation/decree_form.html' %}
     {% else %}
         {% include 'simulation/work_choices.html' %}
         <section class="chapter-section" aria-labelledby="campaign-heading"><h2 id="campaign-heading">{% translate "Des hommes que l’on envoie" %}</h2>
             <p>{% translate "Les Fidèles partis ne défendent plus leur origine et ne contribuent plus à l’impôt jusqu’à leur retour. Le butin n’est utilisable qu’au retour." %}</p>
             <p class="cost-hint">{% blocktranslate with raid_base=view.expedition_prices.raid.base raid_person=view.expedition_prices.raid.per_person raid_min=view.raid_minimum capture_base=view.expedition_prices.capture.base capture_person=view.expedition_prices.capture.per_person capture_min=view.capture_minimum %}Pillage : {{ raid_base }} Mesures + {{ raid_person }} par Fidèle, au moins {{ raid_min }} Fidèles.<br>Capture : {{ capture_base }} Mesures + {{ capture_person }} par Fidèle, au moins {{ capture_min }} Fidèles.{% endblocktranslate %}</p>
-            <a class="dictate-link" href="?tab=decrees&action=expedition">{% translate "Dicter l’ordre d’une expédition" %} →</a>
+            <a class="dictate-link" href="?tab=decrees&action=expedition">{% translate "Dicter l’ordre d’une expédition" %} </a>
         </section>
     {% endif %}
     <p class="aside-text">{% if view.cancellable %}{% translate "Avant la clôture, un décret peut être retiré. Pour le modifier, il faut le rédiger de nouveau ; sa priorité sur la cible sera perdue." %}{% else %}{% translate "Dans ce règne ancien, un sceau est définitif. Aucun décret confirmé ne peut être annulé." %}{% endif %} {% translate "Après le départ, ni rappel ni remboursement ne sont possibles." %}</p>

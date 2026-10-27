@@ -2,7 +2,7 @@
 <nav class="folio-tools" aria-label="{% translate 'Les repères du livre' %}">
                 <a href="{% url 'email_settings' game.id %}">{% translate "Notifications par e-mail" %}</a>
                 <a href="{% url 'game' game.id %}?tab=help">{% include 'simulation/nav_icon.html' with icon='book' %}{% translate "Comment jouer" %}</a>
-                {% if game.shared and game.can_manage %}<a href="{% url 'shared_operator_room' game.id %}">{% translate "Gérer cette partie" %} →</a>{% endif %}
+                {% if game.shared and game.can_manage %}<a href="{% url 'shared_operator_room' game.id %}">{% translate "Gérer cette partie" %} </a>{% endif %}
                 {% if view and not view.finished %}<a href="{% url 'game' game.id %}?tab=domain#turn-page">{% include 'simulation/nav_icon.html' with icon='moon' %}{% if game.awaiting_start and game.can_manage %}{% translate "Commencer" %}{% elif game.can_advance %}{% translate "Clore la lune…" %}{% else %}{% translate "Calendrier" %}{% endif %}</a>{% endif %}
             </nav>
             <footer class="book-footer">

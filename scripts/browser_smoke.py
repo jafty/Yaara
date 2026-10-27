@@ -27,7 +27,16 @@ def no_overflow(page):
         source = scene.evaluate("el => getComputedStyle(el, '::before').backgroundImage")
         # Standalone originals keep their complete composition; atlas excerpts are wider.
         catalogue = scene.evaluate("el => Boolean(el.closest('.work-card'))")
-        ratio = 1.5 if not framed or (".jpg" in source and not catalogue) else 2
+        building = scene.evaluate("el => el.classList.contains('illustration-building')")
+        building_detail = scene.evaluate(
+            "el => el.classList.contains('illustration-building-detail')"
+        )
+        if building:
+            ratio = 1
+        elif building_detail or not framed or (".jpg" in source and not catalogue):
+            ratio = 1.5
+        else:
+            ratio = 2
         assert abs(box["width"] / box["height"] - ratio) < 0.02
         if framed:
             # Never stretch a scene or expose adjacent atlas cells.
@@ -70,6 +79,8 @@ def city_heading_starts_panel(page):
       const gap = heading.top - header.bottom;
       const panel = document.querySelector('#map-context').getBoundingClientRect();
       const desktop = matchMedia('(min-width: 1100px) and (min-height: 600px)').matches;
+      if (getComputedStyle(document.querySelector('#map-context')).position === 'absolute')
+        return panel.top >= 0 && panel.bottom <= innerHeight + 1;
       return desktop
         ? gap >= 0 && panel.left >= map.right && map.top >= header.bottom
         : gap >= 0 && heading.bottom <= innerHeight
@@ -141,9 +152,7 @@ def scannable_layout(page):
     expect(
         page.locator(".chapter-heading .illustration, .map-heading .illustration")
     ).to_have_count(0)
-    for scene in page.locator(
-        ".letter-entry > .illustration, .family-heading > .illustration"
-    ).all():
+    for scene in page.locator(".letter-entry > .illustration").all():
         assert scene.evaluate("""el => Math.abs(el.getBoundingClientRect().width
           - el.parentElement.getBoundingClientRect().width) < 2""")
     for selector in (".guide-index a",):
@@ -754,12 +763,12 @@ with sync_playwright() as playwright:
             "Small arsenal" if en else "Petit arsenal"
         )
         expect(storage.locator(".work-transition").first).to_have_text(
-            "Additional granaries → Silo complex"
+            "Additional granaries to Silo complex"
             if en
-            else "Greniers supplémentaires → Ensemble de silos"
+            else "Greniers supplémentaires à Ensemble de silos"
         )
         expect(storage.locator(".work-benefit").first).to_contain_text(
-            "3,600,000 → 5,400,000" if en else "3\u202f600\u202f000 → 5\u202f400\u202f000"
+            "3,600,000 to 5,400,000" if en else "3\u202f600\u202f000 à 5\u202f400\u202f000"
         )
         assert storage.locator(".work-advice").count() == 0
         readable_hierarchy(page)

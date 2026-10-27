@@ -30,5 +30,5 @@
 <h2>{% translate "Les comptes finaux" %}</h2>
 {% for actor, account in archive.final_accounts.items %}{% include 'simulation/archive_account.html' %}{% endfor %}
 </section>
-<p class="reading-links">{% if has_personal_book %}<a href="{% url 'game' game.id %}">← {% translate "Retour au conseil" %}</a>{% else %}<a href="{% url 'shared_operator_room' game.id %}">← {% translate "Gérer cette partie" %}</a>{% endif %}</p>
+<p class="reading-links">{% if has_personal_book %}<a href="{% url 'game' game.id %}">{% translate "Retour au conseil" %}</a>{% else %}<a href="{% url 'shared_operator_room' game.id %}">{% translate "Gérer cette partie" %}</a>{% endif %}</p>
 {% endblock %}

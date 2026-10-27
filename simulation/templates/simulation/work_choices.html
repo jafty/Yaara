@@ -2,9 +2,9 @@
 <section class="work-choices" aria-label="{% translate 'Les ouvrages de vos cités' %}">
     {% for action in view.work_actions %}
     {% if not action.repair or action.prices %}<a id="work-{{ action.kind }}" class="work-card ledger-note" href="?tab=constructions&amp;action={{ action.kind }}{% if city_requested %}&amp;city={{ selected.id }}{% endif %}">
-        {% include 'simulation/illustration.html' with scene=action.scene|default:action.kind %}
+        {% include 'simulation/illustration.html' with scene=action.scene|default:action.kind shape='building' %}
         <h2>{{ action.label }}</h2>
-        <span aria-hidden="true">→</span>
+
         <ul class="work-card-prices">{% for price in action.prices %}<li class="work-price">
             <em class="work-price-name">{{ price.name }}</em>
             <span class="work-price-figures">

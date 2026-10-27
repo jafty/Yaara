@@ -229,3 +229,38 @@ The component review applies the same criteria throughout the workspace:
 
 `planning-city-free-means` checks that the row shows free grain after reservations
 while the accounts retain total stock and capacity. No simulation changes apply.
+
+
+## October 27 — Stable map proportions and focused action folios
+
+The owner's next review rejects the compressed map proportions. Keep the map's
+native 680:500 frame at every viewport and preserve SVG aspect ratio. Selecting a
+city, opening work/convoy/army preparation and expanding a sheet must retain the
+same map dimensions at that viewport. Letterboxing around a proportional desktop
+map is preferable to changing its geography. Remove all state-dependent 28/72,
+20/80 and 8/92 map splits. Mobile action folios cover the map, with a text Retour
+control that returns directly to the city or map. Native URLs, Escape, browser Back
+and retained map artwork remain supported. Explicit expansion also overlays the
+map, rather than reallocating its space.
+
+Raids use a torch and conquest uses a flag over a fort, with visible Piller and
+Conquérir labels. Saved command identifiers remain unchanged. French UI vocabulary
+uses conquête; canonical rules and stored reports are not rewritten.
+
+Building lists use small square illustrations. Building detail views retain a
+modest 3:2 rectangle showing the complete original composition. List cost/duration
+pairs show grain/moon icons and numbers together; names and units remain available
+to assistive technology. Compact Préparer actions open the existing read-only
+preview, followed by the existing seal. They never start construction on a GET.
+
+The owner's final follow-up removes arrows throughout the interface: navigation
+suffixes, directional map heads and comparison symbols. Comparisons use à/to and
+convoy prose uses vers/to. Expansion uses plain frame corners. Native disclosures
+use underlined text instead of triangle markers; keyboard operation remains native.
+House names and original message identities are preserved.
+
+Independent contracts: focused-action-sheet, focused-conquest-choice,
+focused-illustrated-work, focused-rectangle-work-detail and focused-no-ui-arrows.
+Browser journeys assert the map ratio and unchanged dimensions, focused native
+forms, one-click return, square list/rectangular detail artwork, readable numeric
+pairs and the existing review/seal flow in both languages and without JavaScript.

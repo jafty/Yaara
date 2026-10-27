@@ -6,6 +6,6 @@
         <p data-loot-preview {% if mission_kind == 'capture' %}hidden{% endif %}>{% translate "Transport max." %}<strong data-carry-limit>{{ expedition_capacity }}</strong><small>{% translate "Mesures" %}</small></p>
     </div>
     <p class="cost-hint" data-expedition-budget aria-live="polite"></p>
-    <button class="primary-action" type="submit" form="expedition-form" aria-describedby="mission-help">{% translate "Vérifier l’ordre" %} →</button>
+    <button class="primary-action" type="submit" form="expedition-form" aria-describedby="mission-help">{% translate "Vérifier l’ordre" %} </button>
     <p class="aside-text">{% if detached %}{% translate "Aucun moyen réservé avant confirmation." %}{% else %}{% translate "Vous pourrez vérifier le récapitulatif avant de confirmer. Aucun moyen n’est réservé." %}{% endif %}</p>
 </div>

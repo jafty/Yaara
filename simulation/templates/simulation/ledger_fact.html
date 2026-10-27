@@ -1,4 +1,4 @@
 <div class="ledger-fact">
-    <dt>{% if icon %}{% include 'simulation/nav_icon.html' %}{% endif %}{{ caption }}</dt>
-    <dd><strong>{{ value }}</strong> <span>{{ unit }}</span></dd>
+    <dt>{% if icon %}{% include 'simulation/nav_icon.html' %}{% endif %}<span{% if compact %} class="visually-hidden"{% endif %}>{{ caption }}</span></dt>
+    <dd><strong>{{ value }}</strong> <span{% if compact %} class="visually-hidden"{% endif %}>{{ unit }}</span></dd>
 </div>

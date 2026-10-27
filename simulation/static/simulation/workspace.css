@@ -13,7 +13,7 @@
 }
 .workspace-page:has(.is-expanded) > .reign-header,
 .workspace-page:has(.is-expanded) > .moon-banner {
-  display: none;
+  visibility: hidden;
 }
 .workspace-page > .book {
   position: relative;
@@ -38,14 +38,19 @@
 }
 .map-workspace > .realm-map {
   position: relative;
+  display: grid;
+  place-items: center;
+  container-type: size;
   min-width: 0;
   min-height: 0;
   margin: 0;
   background: var(--map-paper);
 }
 .map-workspace .map-frame {
-  width: 100%;
-  height: 100%;
+  width: min(100%, calc(100cqh * 680 / 500));
+  height: auto;
+  aspect-ratio: 680 / 500;
+  max-height: 100%;
 }
 .map-workspace .map-sheet {
   width: 100%;
@@ -84,8 +89,10 @@
   background: var(--paper);
   border-left: 1px solid var(--rule);
 }
-.map-workspace.is-expanded {
-  grid-template-columns: minmax(0, 0fr) minmax(0, 1fr);
+.map-workspace.is-expanded > .context-sheet {
+  position: absolute;
+  inset: calc(100cqh - 100dvh) 0 0;
+  z-index: 6;
 }
 .map-workspace.is-expanded > .realm-map {
   visibility: hidden;
@@ -155,6 +162,12 @@
 }
 .sheet-expand[hidden] {
   display: none;
+}
+.panel-close {
+  width: auto;
+  min-width: 44px;
+  padding-inline: 0.4rem;
+  font-size: 0.85rem;
 }
 .sheet-expand .nav-icon {
   width: 1.2rem;
@@ -265,8 +278,9 @@
   margin-block: 0.4rem;
 }
 .compact-facts .ledger-fact {
-  display: flex;
-  flex-wrap: wrap;
+  display: inline-flex;
+  flex-wrap: nowrap;
+  white-space: nowrap;
   align-items: baseline;
   gap: 0.3rem;
 }
@@ -283,27 +297,42 @@
   margin: 0 0.6rem 0 0;
 }
 .local-work-submit {
-  padding: 0.45rem 0.7rem;
-  border: 1px solid var(--navigation);
-  background: var(--navigation);
-  color: var(--navigation-ink);
-  font-size: 0.9rem;
+  min-height: 44px;
+  padding: 0.3rem 0.5rem;
+  border: 1px solid var(--rule);
+  background: transparent;
+  color: var(--navigation);
+  font-size: 0.85rem;
 }
 .local-work-submit:hover {
-  color: var(--navigation-accent);
+  color: var(--accent);
+  border-color: currentColor;
 }
 .local-work-submit:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
-.work-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0 0.75rem;
+.local-work-choice > .illustration-building-detail {
+  width: min(100%, 216px);
+  margin: 0.25rem 0 0.5rem;
 }
-.work-row h3 {
-  flex-basis: 100%;
+.work-row {
+  display: grid;
+  grid-template-columns: 88px minmax(0, 1fr);
+  gap: 0.25rem 0.75rem;
+  align-items: start;
+}
+.work-row > .illustration-building {
+  grid-column: 1;
+  grid-row: 1 / span 3;
+  width: 100%;
+  margin: 0.4rem 0 0;
+}
+.work-row h3,
+.work-row .work-city-details,
+.work-row form {
+  grid-column: 2;
+  min-width: 0;
 }
 .work-row h3 a {
   display: inline-flex;
@@ -311,15 +340,14 @@
   min-height: 44px;
   text-decoration: none;
 }
-.work-row .work-city-details {
-  flex: 1 1 12rem;
-  min-width: 0;
-}
 .work-row form {
   margin: 0;
+  justify-self: start;
 }
 .work-row .work-facts {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.75rem;
 }
 
 .sheet-tabs {
@@ -380,25 +408,29 @@
   display: none;
 }
 @media (max-width: 899px) {
+  .workspace-page:has([data-focus-action]) > .reign-header,
+  .workspace-page:has([data-focus-action]) > .moon-banner {
+    visibility: hidden;
+  }
   .map-workspace {
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: minmax(0, 50%) minmax(0, 50%);
-  }
-  .map-workspace:has(.city-sheet, .mail-panel, .review-panel) {
-    grid-template-rows: minmax(0, 28%) minmax(0, 72%);
-  }
-  .map-workspace:has(.expedition-form) {
-    grid-template-rows: minmax(0, 20%) minmax(0, 80%);
-  }
-  .map-workspace.is-expanded {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: minmax(0, 0fr) minmax(0, 1fr);
+    grid-template-rows: minmax(0, min(55cqh, calc(100cqw * 500 / 680))) minmax(0, 1fr);
   }
   .context-sheet {
     border-left: 0;
     border-top: 1px solid var(--rule);
   }
-
+  .context-sheet[data-focus-action] {
+    position: absolute;
+    inset: calc(100cqh - 100dvh) 0 0;
+    z-index: 6;
+  }
+  .context-sheet[data-focus-action] .sheet-expand {
+    display: none;
+  }
+  .map-workspace:has([data-focus-action]) > .realm-map {
+    visibility: hidden;
+  }
 }
 @media (max-width: 360px) {
   .sheet-seal {
@@ -413,12 +445,6 @@
   }
 }
 @container (max-width: 899px) and (max-height: 36rem) {
-  .map-workspace:has(.city-sheet, .mail-panel, .review-panel) {
-    grid-template-rows: minmax(0, 8%) minmax(0, 92%);
-  }
-  .map-workspace.is-expanded {
-    grid-template-rows: minmax(0, 0fr) minmax(0, 1fr);
-  }
   .sheet-seal {
     display: none;
   }

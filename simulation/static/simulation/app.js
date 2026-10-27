@@ -460,7 +460,6 @@ function initializePage() {
       `M ${origin.x + dx * inset} ${origin.y + dy * inset} L ${target.x - dx * inset} ${target.y - dy * inset}`,
     );
     path.setAttribute("class", "march-line");
-    path.setAttribute("marker-end", "url(#march-tip)");
     layer.append(path);
   }
 
@@ -539,6 +538,10 @@ async function openContext(url, push = true) {
     ) {
       currentSheet.replaceChildren(...nextSheet.childNodes);
       currentSheet.className = nextSheet.className + " sheet-retained";
+      currentSheet.toggleAttribute(
+        "data-focus-action",
+        nextSheet.hasAttribute("data-focus-action"),
+      );
       nextSheet.replaceWith(currentSheet);
       if (!reducedMotion)
         currentSheet

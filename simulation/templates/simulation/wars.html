@@ -11,7 +11,7 @@
         {% if city_requested %}
         <p class="map-neighbors">{% translate "Routes directes" %} : {% for neighbor in neighbors %}<a href="?tab=wars&amp;city={{ neighbor.id }}#map-context">{{ neighbor.name }}</a>{% if not forloop.last %} · {% endif %}{% empty %}{% translate "Aucune" %}{% endfor %}.</p>
         {% if selected.owned %}
-            <p>{% blocktranslate with count=selected.available_fideles %}{{ count }} Fidèles disponibles.{% endblocktranslate %} <a href="?tab=city&amp;city={{ selected.id }}">{% translate "Les comptes de la cité" %} →</a></p>
+            <p>{% blocktranslate with count=selected.available_fideles %}{{ count }} Fidèles disponibles.{% endblocktranslate %} <a href="?tab=city&amp;city={{ selected.id }}">{% translate "Les comptes de la cité" %} </a></p>
         {% elif selected.engaged %}<p>{% if selected.own_engagement %}{% translate "Vous avez déjà engagé une expédition vers cette cité." %}{% else %}{% translate "Une expédition d’une autre maison réserve déjà cette cité." %}{% endif %}</p>
         {% elif not selected_target %}<p>{% translate "Cette oasis est hors de nos frontières. Nos hommes doivent pouvoir la rejoindre par nos terres." %}</p>{% endif %}
         {% endif %}
@@ -19,7 +19,7 @@
             {% if selected_target or not city_requested %}
             {% if view.seasonal_raids and selected.raid_available_moon > view.open_moon %}<p class="marginal-note">{% blocktranslate with moon=selected.raid_available_moon %}Villages dispersés : un nouveau pillage pourra arriver à partir de la lune {{ moon }}. La capture reste possible.{% endblocktranslate %}</p>{% endif %}
             <section class="target-knowledge"><h3>{% translate "Ce que nous savons de cette cible" %}</h3>
-                {% for letter in target_observations %}<p><strong>{% blocktranslate with moon=letter.month %}Observation de la lune {{ moon }}{% endblocktranslate %}</strong> · {{ letter.observation }} <a href="?tab=letters#report-{{ letter.id|unlocalize }}">{% translate "Lire le rapport complet" %} →</a></p>{% empty %}<p>{% translate "Aucun témoignage de combat conservé pour cette cible. Ses effectifs, ses réserves et ses ouvrages non observés restent inconnus." %}</p>{% endfor %}
+                {% for letter in target_observations %}<p><strong>{% blocktranslate with moon=letter.month %}Observation de la lune {{ moon }}{% endblocktranslate %}</strong> · {{ letter.observation }} <a href="?tab=letters#report-{{ letter.id|unlocalize }}">{% translate "Lire le rapport complet" %} </a></p>{% empty %}<p>{% translate "Aucun témoignage de combat conservé pour cette cible. Ses effectifs, ses réserves et ses ouvrages non observés restent inconnus." %}</p>{% endfor %}
             </section>
             <div id="expedition-order">{% include 'simulation/decree_form.html' with inline=True %}</div>
             {% endif %}
@@ -29,4 +29,4 @@
 {% include 'simulation/missions.html' %}
 {% include 'simulation/orders_register.html' %}
 
-{% if view.strategic_rules and not view.finished and not view.eliminated and not game.paused and action.kind != 'convoy' %}<p class="reading-links"><a href="?tab=wars&amp;action=convoy#convoy-order">{% translate "Acheminer des ressources" %} →</a></p>{% endif %}
+{% if view.strategic_rules and not view.finished and not view.eliminated and not game.paused and action.kind != 'convoy' %}<p class="reading-links"><a href="?tab=wars&amp;action=convoy#convoy-order">{% translate "Acheminer des ressources" %} </a></p>{% endif %}

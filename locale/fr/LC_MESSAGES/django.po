@@ -223,10 +223,10 @@ msgid "Capitulation par pénurie"
 msgstr "Capitulation par pénurie"
 
 msgid "Capturer la cité"
-msgstr "Capturer la cité"
+msgstr "Conquérir la cité"
 
 msgid "Capturer une cité"
-msgstr "Capturer une cité"
+msgstr "Conquérir une cité"
 
 msgid "Ce Prétendant ne peut plus donner d’ordres."
 msgstr "Ce Prétendant ne peut plus donner d’ordres."
@@ -664,7 +664,7 @@ msgid ""
 "La capture est volontairement hors de portée des réserves initiales. "
 "Préparez votre économie avant de lancer de grandes campagnes."
 msgstr ""
-"La capture est volontairement hors de portée des réserves initiales. "
+"La conquête est volontairement hors de portée des réserves initiales. "
 "Préparez votre économie avant de lancer de grandes campagnes."
 
 msgid ""
@@ -718,7 +718,7 @@ msgstr ""
 "devis fixe le prix selon la population actuelle."
 
 msgid "La garnison locale sera mieux protégée contre les captures."
-msgstr "La garnison locale sera mieux protégée contre les captures."
+msgstr "La garnison locale sera mieux protégée contre les conquêtes."
 
 msgid "La ligue d’Azal"
 msgstr "La ligue d’Azal"
@@ -1041,7 +1041,7 @@ msgid ""
 "Les murs renforcent la garnison contre une capture ; ils ne protègent pas "
 "les villages d’un raid."
 msgstr ""
-"Les murs renforcent la garnison contre une capture ; ils ne protègent pas "
+"Les murs renforcent la garnison contre une conquête ; ils ne protègent pas "
 "les villages d’un pillage."
 
 msgid "Les ouvrages confiés à nos cités"
@@ -1275,7 +1275,7 @@ msgid ""
 "%(capture_person)s par Fidèle, au moins %(capture_min)s Fidèles."
 msgstr ""
 "Pillage : %(raid_base)s Mesures + %(raid_person)s par Fidèle, au moins "
-"%(raid_min)s Fidèles.<br>Capture : %(capture_base)s Mesures + "
+"%(raid_min)s Fidèles.<br>Conquête : %(capture_base)s Mesures + "
 "%(capture_person)s par Fidèle, au moins %(capture_min)s Fidèles."
 
 msgid "Pillage impossible"
@@ -1504,7 +1504,7 @@ msgid ""
 "les villages d’un raid."
 msgstr ""
 "Une armée rejoint une frontière par vos possessions reliées entre elles. Les"
-" secours défendent les cités contre les captures ; les murs n’abritent pas "
+" secours défendent les cités contre les conquêtes ; les murs n’abritent pas "
 "les villages d’un pillage."
 
 msgid ""
@@ -2190,7 +2190,7 @@ msgid "Agrandir le grenier ne crée pas de grain. La capacité reste propre à c
 msgstr "Agrandir le grenier ne crée pas de grain. La capacité reste propre à chaque cité ; un surplus de récolte ou de butin qui ne peut y tenir est perdu."
 
 msgid "L’enceinte protège la garnison locale contre les captures, sans renforcer les secours. Elle ne protège pas contre le pillage des villages."
-msgstr "L’enceinte protège la garnison locale contre les captures, sans renforcer les secours. Elle ne protège pas contre le pillage des villages."
+msgstr "L’enceinte protège la garnison locale contre les conquêtes, sans renforcer les secours. Elle ne protège pas contre le pillage des villages."
 
 msgid "La réparation restaure l’enceinte existante sans l’agrandir. Une enceinte endommagée doit être réparée avant de pouvoir être renforcée."
 msgstr "La réparation restaure l’enceinte existante sans l’agrandir. Une enceinte endommagée doit être réparée avant de pouvoir être renforcée."
@@ -2202,13 +2202,13 @@ msgid "Ce règne conserve un armement commun à toute la maison, y compris ses f
 msgstr "Ce règne conserve un armement commun à toute la maison, y compris ses futurs habitants. Le devis dépend de sa population actuelle. Les expéditions déjà parties conservent leur équipement."
 
 msgid "Impôt par habitant présent : {before} → {after} Mesures par lune."
-msgstr "Impôt par habitant présent : {before} → {after} Mesures par lune."
+msgstr "Impôt par habitant présent : {before} à {after} Mesures par lune."
 
 msgid "Capacité du grenier : {before} → {after} Mesures."
-msgstr "Capacité du grenier : {before} → {after} Mesures."
+msgstr "Capacité du grenier : {before} à {after} Mesures."
 
 msgid "Armement : {before} → {after}."
-msgstr "Armement : {before} → {after}."
+msgstr "Armement : {before} à {after}."
 
 msgid "L’enceinte retrouvera toute sa protection, sans être agrandie."
 msgstr "L’enceinte retrouvera toute sa protection, sans être agrandie."
@@ -2283,16 +2283,16 @@ msgid "Chaque cité dispose d’une équipe : un chantier ou un décret de trava
 msgstr "Chaque cité dispose d’une équipe : un chantier ou un décret de travaux scellé l’occupe. Une seule sélection peut réunir plusieurs cités, même à des stades différents. Chaque ligne indique l’état actuel, l’ouvrage proposé, son bénéfice, son prix et sa durée. Les bénéfices commencent à l’achèvement."
 
 msgid "Les canaux améliorent le prélèvement ; les enceintes protègent la cité lors des captures, sans abriter les villages d’un raid. Une enceinte endommagée peut être réparée."
-msgstr "Les canaux améliorent le prélèvement ; les enceintes protègent la cité lors des captures, sans abriter les villages d’un pillage. Une enceinte endommagée peut être réparée."
+msgstr "Les canaux améliorent le prélèvement ; les enceintes protègent la cité lors des conquêtes, sans abriter les villages d’un pillage. Une enceinte endommagée peut être réparée."
 
 msgid "Chaque cité peut recevoir une forge. Ses armes bénéficient à toute votre maison ; perdre ou gagner une forge par capture transfère son bénéfice au nouveau propriétaire."
-msgstr "Chaque cité peut recevoir une forge. Ses armes bénéficient à toute votre maison ; perdre ou gagner une forge par capture transfère son bénéfice au nouveau propriétaire."
+msgstr "Chaque cité peut recevoir une forge. Ses armes bénéficient à toute votre maison ; perdre ou gagner une forge par conquête transfère son bénéfice au nouveau propriétaire."
 
 msgid "Dans ce règne ancien, la forge équipe toute la maison et conserve son chantier distinct des équipes des cités."
 msgstr "Dans ce règne ancien, la forge équipe toute la maison et conserve son chantier distinct des équipes des cités."
 
 msgid "Un raid cherche du butin dans les villages ; une capture cherche à prendre la cité. Les bordures de la carte représentent des territoires, pas les routes : les mentions de portée indiquent les cibles accessibles par vos possessions reliées. Une seule attaque peut être engagée vers une cible."
-msgstr "Un pillage cherche du butin dans les villages ; une capture cherche à prendre la cité. Les bordures de la carte représentent des territoires, pas les routes : les mentions de portée indiquent les cibles accessibles par vos possessions reliées. Une seule attaque peut être engagée vers une cible."
+msgstr "Un pillage cherche du butin dans les villages ; une conquête cherche à prendre la cité. Les bordures de la carte représentent des territoires, pas les routes : les mentions de portée indiquent les cibles accessibles par vos possessions reliées. Une seule attaque peut être engagée vers une cible."
 
 msgid "La carte montre les propriétaires et les fortifications publiques. Les forces et les stocks rivaux restent secrets ; vos rapports gardent les observations du jour où ils ont été écrits. Le devis annonce départ, combat et retour prévu. Un siège peut prolonger l’expédition."
 msgstr "La carte montre les propriétaires et les fortifications publiques. Les forces et les stocks rivaux restent secrets ; vos rapports gardent les observations du jour où ils ont été écrits. Le devis annonce départ, combat et retour prévu. Un siège peut prolonger l’expédition."
@@ -2412,7 +2412,7 @@ msgid "Feuillet %(page)s sur 4"
 msgstr "Feuillet %(page)s sur 4"
 
 msgid "Il faut au moins %(raid)s Fidèles pour un raid, %(capture)s pour une capture. Le formulaire précise les cités capables de fournir les hommes."
-msgstr "Il faut au moins %(pillage)s Fidèles pour un pillage, %(capture)s pour une capture. Le formulaire précise les cités capables de fournir les hommes."
+msgstr "Il faut au moins %(pillage)s Fidèles pour un pillage, %(conquête)s pour une conquête. Le formulaire précise les cités capables de fournir les hommes."
 
 msgid "Achèvement prévu à la clôture de la lune %(moon)s."
 msgstr "Achèvement prévu à la clôture de la lune %(moon)s."
@@ -2433,7 +2433,7 @@ msgid "Chaque cité finance ses travaux. Pour une expédition, chaque origine pa
 msgstr "Chaque cité finance ses travaux. Pour une expédition, chaque origine paie ses hommes et une part des frais fixes proportionnelle à son effectif. Aucun transfert entre greniers n’est possible."
 
 msgid "Chaque cité peut recevoir une forge. Ses armes équipent les habitants de cette cité ; perdre ou gagner une forge par capture transfère son bénéfice au nouveau propriétaire."
-msgstr "Chaque cité peut recevoir une forge. Ses armes équipent les habitants de cette cité ; perdre ou gagner une forge par capture transfère son bénéfice au nouveau propriétaire."
+msgstr "Chaque cité peut recevoir une forge. Ses armes équipent les habitants de cette cité ; perdre ou gagner une forge par conquête transfère son bénéfice au nouveau propriétaire."
 
 msgid "Chaque origine paie ses hommes et sa part des frais fixes, proportionnelle aux effectifs envoyés. Le devis détaille les prélèvements ; les autres cités ne contribuent pas."
 msgstr "Chaque origine paie ses hommes et sa part des frais fixes, proportionnelle aux effectifs envoyés. Le devis détaille les prélèvements ; les autres cités ne contribuent pas."
@@ -2538,7 +2538,7 @@ msgid "Après une pause, la reprise conserve le temps restant et rejoint le prem
 msgstr "Après une pause, la reprise conserve le temps restant et rejoint le premier repère qui le permet."
 
 msgid "Pillage : %(raid_base)s Mesures + %(raid_person)s par Fidèle. Capture : %(capture_base)s Mesures + %(capture_person)s par Fidèle."
-msgstr "Pillage : %(raid_base)s Mesures + %(raid_person)s par Fidèle. Capture : %(capture_base)s Mesures + %(capture_person)s par Fidèle."
+msgstr "Pillage : %(raid_base)s Mesures + %(raid_person)s par Fidèle. Conquête : %(capture_base)s Mesures + %(capture_person)s par Fidèle."
 
 msgid "Part de cette cité : %(charge)s Mesures ; disponibles : %(available)s."
 msgstr "Part de cette cité : %(charge)s Mesures ; disponibles : %(available)s."
@@ -2636,7 +2636,7 @@ msgstr "Action"
 
 #. Approved playability revision, October 2026.
 msgid "Après un pillage victorieux ayant causé des pertes agricoles, les villages restent dispersés deux lunes : pillés en lune 7, ils peuvent de nouveau être pillés en lune 10. Une capture reste possible. Les raids de la lune de récolte sont déduits avant son versement."
-msgstr "Après un pillage victorieux ayant causé des pertes agricoles, les villages restent dispersés deux lunes : pillés en lune 7, ils peuvent de nouveau être pillés en lune 10. Une capture reste possible. Les pillages de la lune de récolte sont déduits avant son versement."
+msgstr "Après un pillage victorieux ayant causé des pertes agricoles, les villages restent dispersés deux lunes : pillés en lune 7, ils peuvent de nouveau être pillés en lune 10. Une conquête reste possible. Les pillages de la lune de récolte sont déduits avant son versement."
 
 #. Approved playability revision, October 2026.
 msgid "Ateliers de bât"
@@ -2664,7 +2664,7 @@ msgstr "Capacité de butin des survivants originaires de cette cité : +50 % au 
 
 #. Approved playability revision, October 2026.
 msgid "Capturer"
-msgstr "Capturer"
+msgstr "Conquérir"
 
 #. Approved playability revision, October 2026.
 msgid "Choisir les cités"
@@ -2700,15 +2700,15 @@ msgstr "Défense des pillages : 60 % des Fidèles disponibles."
 
 #. Approved playability revision, October 2026.
 msgid "Défense locale contre capture : ×2 à pleine efficacité."
-msgstr "Défense locale contre capture : ×2 à pleine efficacité."
+msgstr "Défense locale contre conquête : ×2 à pleine efficacité."
 
 #. Approved playability revision, October 2026.
 msgid "Défense locale contre capture : ×4 à pleine efficacité."
-msgstr "Défense locale contre capture : ×4 à pleine efficacité."
+msgstr "Défense locale contre conquête : ×4 à pleine efficacité."
 
 #. Approved playability revision, October 2026.
 msgid "Défense locale contre capture : ×7 à pleine efficacité."
-msgstr "Défense locale contre capture : ×7 à pleine efficacité."
+msgstr "Défense locale contre conquête : ×7 à pleine efficacité."
 
 #. Approved playability revision, October 2026.
 msgid "Dépôts renforcés"
@@ -2892,7 +2892,7 @@ msgstr "Sans matériel de siège"
 
 #. Approved playability revision, October 2026.
 msgid "Sans surveillance, 20 %, 30 % ou 40 % des Fidèles disponibles défendent les villages. Les postes de veille garantissent 40 %, les tours 60 %. Les fortifications protègent seulement des captures. Le matériel de siège réduit leur bonus, jamais la défense de base."
-msgstr "Sans surveillance, 20 %, 30 % ou 40 % des Fidèles disponibles défendent les villages. Les postes de veille garantissent 40 %, les tours 60 %. Les fortifications protègent seulement des captures. Le matériel de siège réduit leur bonus, jamais la défense de base."
+msgstr "Sans surveillance, 20 %, 30 % ou 40 % des Fidèles disponibles défendent les villages. Les postes de veille garantissent 40 %, les tours 60 %. Les fortifications protègent seulement des conquêtes. Le matériel de siège réduit leur bonus, jamais la défense de base."
 
 #. Approved playability revision, October 2026.
 msgid "Tours de guet"
@@ -2948,10 +2948,10 @@ msgstr "Équipement du petit arsenal"
 
 #. Approved playability revision, October 2026.
 msgid "Villages dispersés : un nouveau pillage pourra arriver à partir de la lune %(moon)s. La capture reste possible."
-msgstr "Villages dispersés : un nouveau pillage pourra arriver à partir de la lune %(moon)s. La capture reste possible."
+msgstr "Villages dispersés : un nouveau pillage pourra arriver à partir de la lune %(moon)s. La conquête reste possible."
 
 msgid "Bonus défensif local restauré : +{before} % → +{after} %."
-msgstr "Bonus défensif local restauré : +{before} % → +{after} %."
+msgstr "Bonus défensif local restauré : +{before} % à +{after} %."
 
 msgid "L’attaque a réussi ; la défense a cédé."
 msgstr "L’attaque a réussi ; la défense a cédé."
@@ -3019,7 +3019,7 @@ msgstr " Victimes parmi les habitants non engagés : {count}. "
 
 #: Strategic preparation and recipient reports
 msgid "%(origin)s → %(target)s : %(cargo)s Mesures. Arrivée prévue à la lune %(moon)s."
-msgstr "%(origin)s → %(target)s : %(cargo)s Mesures. Arrivée prévue à la lune %(moon)s."
+msgstr "%(origin)s à %(target)s : %(cargo)s Mesures. Arrivée prévue à la lune %(moon)s."
 
 #: Strategic preparation and recipient reports
 msgid "Acheminer des ressources"
@@ -3191,7 +3191,7 @@ msgstr "La destination a changé de maître. Le convoi tentera de rejoindre {cit
 
 #: Strategic preparation and recipient reports
 msgid "La garnison locale sera mieux protégée contre les captures ; les réserves restent nécessaires pour tenir un siège."
-msgstr "La garnison locale sera mieux protégée contre les captures ; les réserves restent nécessaires pour tenir un siège."
+msgstr "La garnison locale sera mieux protégée contre les conquêtes ; les réserves restent nécessaires pour tenir un siège."
 
 #: Strategic preparation and recipient reports
 msgid "Le chemin du convoi n’est plus amical."
@@ -3267,7 +3267,7 @@ msgstr "Lune %(moon)s"
 
 #: Strategic preparation and recipient reports
 msgid "L’arsenal équipe les Fidèles de son origine en attaque comme en défense. Le matériel de siège réduit l’avantage des murs lors d’une capture ; il ne sert pas au pillage. Le transport augmente le butin que les survivants peuvent rapporter."
-msgstr "L’arsenal équipe les Fidèles de son origine en attaque comme en défense. Le matériel de siège réduit l’avantage des murs lors d’une capture ; il ne sert pas au pillage. Le transport augmente le butin que les survivants peuvent rapporter."
+msgstr "L’arsenal équipe les Fidèles de son origine en attaque comme en défense. Le matériel de siège réduit l’avantage des murs lors d’une conquête ; il ne sert pas au pillage. Le transport augmente le butin que les survivants peuvent rapporter."
 
 #: Strategic preparation and recipient reports
 msgid "L’ouvrage retrouvera toute son efficacité ; l’équipe sera occupée pendant la réparation."
@@ -3689,7 +3689,7 @@ msgstr "%(count)s dans chaque cité"
 
 #: simulation/templates/simulation/new_game.html
 msgid "Une capture coûte au moins %(cost)s Mesures. Elle est abordable dès le début, mais sa réussite dépend des forces et des réserves adverses."
-msgstr "Une capture coûte au moins %(cost)s Mesures. Elle est abordable dès le début, mais sa réussite dépend des forces et des réserves adverses."
+msgstr "Une conquête coûte au moins %(cost)s Mesures. Elle est abordable dès le début, mais sa réussite dépend des forces et des réserves adverses."
 
 #: simulation/templates/simulation/reign_archive.html
 msgid "Exporter les archives"
@@ -4190,7 +4190,7 @@ msgid "Confirmez votre adresse sous 48 heures pour recevoir les nouvelles choisi
 msgstr "Confirmez votre adresse sous 48 heures pour recevoir les nouvelles choisies."
 
 msgid "Conquêtes et résultats de capture"
-msgstr "Conquêtes et résultats de capture"
+msgstr "Conquêtes et résultats de conquête"
 
 msgid "Conservez ce lien pour retrouver votre maison sur un autre appareil. Il donne accès à votre place : gardez-le secret."
 msgstr "Conservez ce lien pour retrouver votre maison sur un autre appareil. Il donne accès à votre place : gardez-le secret."
@@ -4511,3 +4511,24 @@ msgstr "Part : %(charge)s · Disponibles : %(available)s Mesures."
 
 msgid "Les moyens libres de la cité"
 msgstr "Les moyens libres de la cité"
+
+msgid "Conquérir"
+msgstr "Conquérir"
+
+msgid "Préparer"
+msgstr "Préparer"
+
+msgid "Préparer le chantier"
+msgstr "Préparer le chantier"
+
+msgid "Revenir à la cité"
+msgstr "Revenir à la cité"
+
+msgid "à"
+msgstr "à"
+
+msgid "Pillage : %(raid_base)s Mesures + %(raid_person)s par Fidèle. Conquête : %(capture_base)s Mesures + %(capture_person)s par Fidèle."
+msgstr "Pillage : %(raid_base)s Mesures + %(raid_person)s par Fidèle. Conquête : %(capture_base)s Mesures + %(capture_person)s par Fidèle."
+
+msgid "%(origin)s vers %(target)s : %(cargo)s Mesures. Arrivée prévue à la lune %(moon)s."
+msgstr "%(origin)s vers %(target)s : %(cargo)s Mesures. Arrivée prévue à la lune %(moon)s."

@@ -1,12 +1,11 @@
 # Material and illustration assets
 
-Original narrative images and sprite atlases are unchanged. Landscape frames
-span the reading column below report and selected-work titles. Standalone scenes
-keep their complete 3:2 composition; atlas excerpts use a centered 2:1 frame,
-with isolated cells and undistorted proportions.
-Catalogue tiles use 2:1 crops above their headings as visual scanning cues;
-the owner accepts cropping while reviewing this layout. There are no tiny
-illustrations beside headings or in city summaries.
+Original narrative images and sprite atlases are unchanged. Report illustrations
+span the reading column; standalone scenes keep their complete 3:2 composition
+and narrative atlas excerpts use centered 2:1 frames. Building details use modest
+3:2 rectangles, while catalogue tiles and local work rows use square crops. Atlas
+cells remain isolated and all source art keeps its native proportions. The owner
+accepts cropping in lists. City summaries have no decorative heading thumbnails.
 The experimental AI-widened granary, forge and fortifications were rejected for
 yellow coloration and a less schematic rendering. They are not application assets.
 
@@ -40,3 +39,5 @@ illustration with fibrous papyrus texture and plain walls. Flags remain live SVG
 using existing house emblems and viewer-relative green/red colors. SVG square
 viewports clip each cell without stretching it or showing adjacent cells.
 The map background layers the existing papyrus texture over the decorative terrain.
+
+The map frame now preserves its native 680:500 ratio; action sheets cover it rather than squeezing its geography. No source artwork is repainted.

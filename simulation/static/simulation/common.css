@@ -41,6 +41,8 @@ button:disabled, input:disabled { cursor: not-allowed; opacity: .5; }
 input, select { max-width: 100%; min-width: 0; }
 fieldset { min-width: 0; margin: 0 0 .8rem; padding: 0; border: 0; }
 legend { margin-bottom: .4rem; }
+summary { list-style: none; text-decoration: underline; text-underline-offset: .22em; }
+summary::-webkit-details-marker { display: none; }
 .language-switch { display: flex; align-items: center; flex-wrap: wrap; gap: .5rem; }
 .language-switch select { display: inline; width: auto; padding: .25rem; font-size: inherit; }
 .skip-link { position: fixed; top: .5rem; left: .5rem; padding: .5rem; background: white; color: #222; transform: translateY(-150%); z-index: 20; }

@@ -7,5 +7,5 @@
         {% if panel_subtitle %}<p>{{ panel_subtitle }}</p>{% endif %}
     </div>
     {% include 'simulation/sheet_expand.html' %}
-    <a class="panel-close" href="{{ panel_return|default:'?tab=map' }}" aria-label="{{ panel_close_label|default:_('Revenir à la carte') }}"><span aria-hidden="true">×</span><span class="visually-hidden">{{ panel_close_label|default:_('Revenir à la carte') }}</span></a>
+    <a class="panel-close" href="{{ panel_return|default:'?tab=map' }}" aria-label="{{ panel_close_label|default:_('Revenir à la carte') }}"><span aria-hidden="true">{% translate "Retour" %}</span><span class="visually-hidden">{{ panel_close_label|default:_('Revenir à la carte') }}</span></a>
 </header>

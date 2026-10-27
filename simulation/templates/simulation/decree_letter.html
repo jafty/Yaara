@@ -3,7 +3,7 @@
 {% block content %}
     <div class="map-workspace">
     {% include 'simulation/realm_map.html' %}
-    <section id="map-context" class="context-sheet review-panel" aria-labelledby="context-title">
+    <section id="map-context" class="context-sheet review-panel" data-focus-action aria-labelledby="context-title">
     {% translate "Vérifier votre ordre" as review_title %}
     {% translate "Reprendre la plume sans rien engager" as review_close %}
     {% with return_url=edit_url|add:'#map-context' %}{% include 'simulation/context_header.html' with panel_title=review_title panel_subtitle=label panel_return=return_url panel_close_label=review_close %}{% endwith %}

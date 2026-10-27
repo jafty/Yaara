@@ -1,8 +1,11 @@
 {% load i18n %}
 <div class="map-workspace">
     {% include 'simulation/realm_map.html' %}
-    {% if city_requested and tab != 'domain' %}<section id="map-context" class="context-sheet city-sheet" aria-labelledby="context-title">
-        {% include 'simulation/context_header.html' with panel_city=selected %}
+    {% if city_requested and tab != 'domain' %}<section id="map-context" class="context-sheet city-sheet" aria-labelledby="context-title"{% if activity %} data-focus-action{% endif %}>
+        {% if selected.owned and activity %}
+            {% translate "Revenir à la cité" as city_return_label %}
+            {% with city_return='?tab=map&city='|add:selected.id %}{% include 'simulation/context_header.html' with panel_city=selected panel_return=city_return panel_close_label=city_return_label %}{% endwith %}
+        {% else %}{% include 'simulation/context_header.html' with panel_city=selected %}{% endif %}
         {% if selected.owned %}
             <nav class="city-activities" aria-label="{% translate 'Choisir une activité' %}">
                 <a href="?tab=map&amp;city={{ selected.id }}" {% if not activity %}aria-current="page"{% endif %}>{% translate "Aperçu" %}</a>
@@ -22,7 +25,6 @@
                     <div class="city-section-heading"><h2 id="works-title">{% translate "Chantier de la cité" %}</h2>{% include 'simulation/team_status.html' with city=selected detailed=True %}</div>
                     {% if local_work %}
                         {% for work in local_actions %}{% if work.kind == activity %}{% include 'simulation/local_work_choice.html' with brief=False %}{% endif %}{% endfor %}
-                        {% include 'simulation/illustration.html' with scene=action.scene|default:action.kind %}
                     {% else %}{% for work in local_actions %}{% include 'simulation/local_work_choice.html' with brief=True %}{% endfor %}{% endif %}
                 </section>
             {% endif %}
@@ -30,12 +32,12 @@
             {% if not view.finished and not view.eliminated and not game.paused %}
                 <div id="expedition-order">{% include 'simulation/decree_form.html' with inline=True %}</div>
                 <details class="target-knowledge"><summary>{% translate "Ce que nous savons de cette cible" %}</summary>
-                    {% for letter in target_observations %}<p>{{ letter.observation }} <a href="?tab=mail&amp;mail=chronicle#report-{{ letter.id }}">{% translate "Lire le rapport complet" %} →</a></p>{% empty %}<p>{% translate "Aucun témoignage de combat conservé pour cette cible. Ses effectifs, ses réserves et ses ouvrages non observés restent inconnus." %}</p>{% endfor %}
+                    {% for letter in target_observations %}<p>{{ letter.observation }} <a href="?tab=mail&amp;mail=chronicle#report-{{ letter.id }}">{% translate "Lire le rapport complet" %} </a></p>{% empty %}<p>{% translate "Aucun témoignage de combat conservé pour cette cible. Ses effectifs, ses réserves et ses ouvrages non observés restent inconnus." %}</p>{% endfor %}
                 </details>
             {% endif %}
         {% else %}
             {% if not selected_target %}<p>{% translate "Cette oasis est hors de nos frontières. Nos hommes doivent pouvoir la rejoindre par nos terres." %}</p>{% endif %}
-            {% if selected.own_engagement %}<a href="?tab=mail&amp;mail=schedule">{% translate "Suivre nos expéditions" %} →</a>{% endif %}
+            {% if selected.own_engagement %}<a href="?tab=mail&amp;mail=schedule">{% translate "Suivre nos expéditions" %} </a>{% endif %}
         {% endif %}
         <details class="map-neighbors"><summary>{% translate "Routes directes" %}</summary><p>{% for neighbor in neighbors %}<a href="?tab=map&amp;city={{ neighbor.id }}#map-context">{{ neighbor.name }}</a>{% if not forloop.last %} · {% endif %}{% endfor %}</p></details>
         </div>

@@ -10,6 +10,6 @@
 <form method="post" class="stack-form" data-recruitment-form>{% csrf_token %}{{ form.as_p }}<button class="button primary" type="submit">{% translate "Prendre cette place" %}</button></form>
 {% else %}<p>{% translate "Ce règne n’accepte plus de nouveaux joueurs. Utilisez votre lien privé pour retrouver une maison déjà choisie." %}</p>{% endif %}
 <p role="status" data-shared-status data-closed="{% translate 'Ce règne n’accepte plus de nouveaux joueurs.' %}" data-taken="{% translate 'Cette place vient d’être choisie. Sélectionnez un autre territoire ; votre nom est conservé.' %}"></p>
-<p class="reading-links"><a href="{{ request.path }}">{% translate "Actualiser les places" %} →</a></p>
+<p class="reading-links"><a href="{{ request.path }}">{% translate "Actualiser les places" %} </a></p>
 </section></section><script defer src="{% static 'simulation/shared.js' %}"></script>
 {% endblock %}

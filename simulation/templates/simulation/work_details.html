@@ -1,11 +1,11 @@
 {% load i18n %}
         <div class="work-city-details">
-            <p class="work-transition">{% if brief %}{{ city.work_name|default:city.current_name }}{% else %}{{ city.current_name }}{% if city.work_name %} → {{ city.work_name }}{% endif %}{% endif %}</p>{% if city.current_damaged %}{% include 'simulation/damage_state.html' %}{% endif %}
+            <p class="work-transition">{% if brief %}{{ city.work_name|default:city.current_name }}{% else %}{{ city.current_name }}{% if city.work_name %} {% translate "à" %} {{ city.work_name }}{% endif %}{% endif %}</p>{% if city.current_damaged %}{% include 'simulation/damage_state.html' %}{% endif %}
             {% if city.benefit %}<p class="work-benefit">{{ city.benefit }}</p>{% endif %}
             {% if city.work_name %}
                 <dl class="work-facts{% if brief %} compact-facts{% endif %}">
-                    {% include 'simulation/ledger_fact.html' with icon='grain' caption=_('Coût') value=city.cost unit=_('Mesures') %}
-                    {% include 'simulation/ledger_fact.html' with icon='moon' caption=_('Durée') value=city.duration unit=_('lunes') %}
+                    {% include 'simulation/ledger_fact.html' with icon='grain' caption=_('Coût') value=city.cost unit=_('Mesures') compact=brief %}
+                    {% include 'simulation/ledger_fact.html' with icon='moon' caption=_('Durée') value=city.duration unit=_('lunes') compact=brief %}
                     {% if view.local_funding and not brief %}{% include 'simulation/ledger_fact.html' with caption=_('Disponible') value=city.available_stock unit=_('Mesures') %}{% endif %}
                 </dl>
                 {% if view.local_funding and city.shortfall %}<p class="work-shortfall">{% blocktranslate with amount=city.shortfall %}Il manque {{ amount }} Mesures dans cette cité.{% endblocktranslate %}</p>{% endif %}

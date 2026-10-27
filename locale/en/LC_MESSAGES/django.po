@@ -3486,13 +3486,13 @@ msgid "Ce règne conserve un armement commun à toute la maison, y compris ses f
 msgstr "This reign retains shared equipment for the entire realm, including future inhabitants. The quote depends on its current population. Departed expeditions keep their equipment."
 
 msgid "Impôt par habitant présent : {before} → {after} Mesures par lune."
-msgstr "Levy per inhabitant present: {before} → {after} Measures per Moon."
+msgstr "Levy per inhabitant present: {before} to {after} Measures per Moon."
 
 msgid "Capacité du grenier : {before} → {after} Mesures."
-msgstr "Granary capacity: {before} → {after} Measures."
+msgstr "Granary capacity: {before} to {after} Measures."
 
 msgid "Armement : {before} → {after}."
-msgstr "Equipment: {before} → {after}."
+msgstr "Equipment: {before} to {after}."
 
 msgid "L’enceinte retrouvera toute sa protection, sans être agrandie."
 msgstr "The wall will regain its full protection without being enlarged."
@@ -3948,7 +3948,7 @@ msgstr "Loot capacity of survivors from this city: +50% in total."
 
 #. Approved playability revision, October 2026.
 msgid "Capturer"
-msgstr "Capture"
+msgstr "Conquer"
 
 #. Approved playability revision, October 2026.
 msgid "Choisir les cités"
@@ -4235,7 +4235,7 @@ msgid "Villages dispersés : un nouveau pillage pourra arriver à partir de la l
 msgstr "Dispersed villages: a new foray may arrive from Moon %(moon)s. Capture remains possible."
 
 msgid "Bonus défensif local restauré : +{before} % → +{after} %."
-msgstr "Restored local defense bonus: +{before}% → +{after}%."
+msgstr "Restored local defense bonus: +{before}% to +{after}%."
 
 msgid "L’attaque a réussi ; la défense a cédé."
 msgstr "The attack succeeded; the defense gave way."
@@ -4303,7 +4303,7 @@ msgstr " Casualties among residents outside the fighting: {count}. "
 
 #: Strategic preparation and recipient reports
 msgid "%(origin)s → %(target)s : %(cargo)s Mesures. Arrivée prévue à la lune %(moon)s."
-msgstr "%(origin)s → %(target)s: %(cargo)s Measures. Arrival expected at Moon %(moon)s."
+msgstr "%(origin)s to %(target)s: %(cargo)s Measures. Arrival expected at Moon %(moon)s."
 
 #: Strategic preparation and recipient reports
 msgid "Acheminer des ressources"
@@ -5795,3 +5795,21 @@ msgstr "Share: %(charge)s · Available: %(available)s Measures."
 
 msgid "Les moyens libres de la cité"
 msgstr "The city’s available means"
+
+msgid "Conquérir"
+msgstr "Conquer"
+
+msgid "Préparer"
+msgstr "Prepare"
+
+msgid "Préparer le chantier"
+msgstr "Prepare construction"
+
+msgid "Revenir à la cité"
+msgstr "Return to the city"
+
+msgid "Pillage : %(raid_base)s Mesures + %(raid_person)s par Fidèle. Conquête : %(capture_base)s Mesures + %(capture_person)s par Fidèle."
+msgstr "Plunder: %(raid_base)s Measures + %(raid_person)s per Fidèle. Conquest: %(capture_base)s Measures + %(capture_person)s per Fidèle."
+
+msgid "%(origin)s vers %(target)s : %(cargo)s Mesures. Arrivée prévue à la lune %(moon)s."
+msgstr "%(origin)s to %(target)s: %(cargo)s Measures. Arrival expected in Moon %(moon)s."

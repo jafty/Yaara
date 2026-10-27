@@ -4,6 +4,6 @@
     <h1>{% translate "Conservez l’accès à votre règne" %}</h1>
     <p>{% translate "Votre partie est déjà conservée dans ce navigateur. Un compte vous permet de la retrouver ailleurs, sans recommencer." %}</p>
     <form method="post" class="stack-form">{% csrf_token %}{{ form.as_p }}<input type="hidden" name="next" value="{{ next }}"><button class="button primary" type="submit">{% translate "Sauvegarder mon règne" %}</button></form>
-    <p class="reading-links"><a href="{% url 'guest_attach' %}?next={{ next|urlencode }}">{% translate "J’ai déjà un compte" %}</a><a href="{% url 'game' guest_game_id %}">{% translate "Continuer à jouer" %} →</a></p>
+    <p class="reading-links"><a href="{% url 'guest_attach' %}?next={{ next|urlencode }}">{% translate "J’ai déjà un compte" %}</a><a href="{% url 'game' guest_game_id %}">{% translate "Continuer à jouer" %} </a></p>
 </section>
 {% endblock %}

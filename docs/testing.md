@@ -104,6 +104,16 @@ depend on the active browser language.
 
 ## Local verification levels
 
+The owner's next proportional-map revision is Presentation work: templates, CSS,
+shared context navigation and localized copy, with no simulation or persistence
+change. New bilingual contracts cover focused action folios, native 680:500 map
+frames, conquest labels/icons, square list art, rectangular detail art, and arrow-free
+UI. Existing comparison expectations change only at the translated HTTP boundary;
+core message identities retain their previous expectations. Browser checks verify
+unchanged map dimensions between contexts, full-screen mobile forms with direct
+return, native controls, enlarged text and paired cost/duration values. Recruitment
+journeys additionally cover shared pre-game templates after arrow removal.
+
 The latest October 27 mobile-planning revision adds eighteen bilingual presentation
 variations for expandable frames, native army totals, envelope alerts, convoy fields
 and compact city/owner headings, plus free local means after reservations. Resource-label expectations follow the owner's

@@ -640,10 +640,6 @@ summary {
   padding: 0.45rem 0;
   font-size: 1.125rem;
 }
-summary::marker {
-  color: var(--muted);
-  font-size: 0.75em;
-}
 .ledger-help {
   margin: 0.25rem 0;
 }
@@ -935,6 +931,7 @@ input[type="number"] {
   height: 44px;
   padding: 0;
   list-style: none;
+  text-decoration: none;
   font-size: 1rem;
   font-style: italic;
   color: var(--muted);
@@ -1020,6 +1017,11 @@ input[type="number"] {
   font-size: 1rem;
 }
 
+.decree-form .work-review {
+  width: auto;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.9rem;
+}
 .order-status {
   color: var(--accent);
   font-size: 0.875rem;
@@ -1037,7 +1039,7 @@ input[type="number"] {
   margin-top: 2rem;
 }
 .decree-reading .primary-action,
-.decree-form .primary-action {
+.decree-form .primary-action:not(.work-review) {
   width: 100%;
 }
 .unsealed-leaf {
@@ -1474,6 +1476,21 @@ input[type="number"] {
   mask-size: 100% 100%;
   mask-repeat: no-repeat;
 }
+.illustration.illustration-building {
+  aspect-ratio: 1;
+}
+.illustration.illustration-building::before {
+  left: -25%;
+  right: auto;
+  width: 150%;
+}
+.illustration.illustration-building-detail {
+  aspect-ratio: 3 / 2;
+}
+.family-heading > .illustration-building-detail {
+  width: min(100%, 240px);
+  margin-inline: 0;
+}
 .illustration::before {
   content: "";
   position: absolute;
@@ -1695,7 +1712,7 @@ input[type="number"] {
 }
 .work-card {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr);
   gap: 0.15rem 0.75rem;
   align-items: start;
   align-content: start;
@@ -1706,8 +1723,8 @@ input[type="number"] {
 }
 .work-card > .illustration {
   grid-column: 1 / -1;
-  width: 100%;
-  aspect-ratio: 2 / 1;
+  width: min(100%, 192px);
+  aspect-ratio: 1;
   margin: 0 0 0.35rem;
 }
 .work-card h2 {

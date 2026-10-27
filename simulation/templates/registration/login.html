@@ -20,7 +20,7 @@
             <form method="post" class="stack-form">
                 {% csrf_token %}{{ form.as_p }}
                 <input type="hidden" name="next" value="{{ next }}">
-                <button class="button primary" type="submit">{% translate "Reprendre mon règne" %}<span aria-hidden="true">→</span>
+                <button class="button primary" type="submit">{% translate "Reprendre mon règne" %}
                 </button>
             </form>
             <p class="form-foot">{% translate "Première visite ?" %}<a href="{% url 'signup' %}">{% translate "Créer mon compte" %}</a>

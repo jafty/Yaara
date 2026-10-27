@@ -1,5 +1,6 @@
 """Contracts for the owner's mockup-led city sheets, specified before implementation."""
 
+import re
 from copy import deepcopy
 
 import pytest
@@ -59,7 +60,7 @@ def test_work_availability(user, condition):
         assert f'action="{reverse("preview", args=[game.id])}"' not in html
     else:
         assert 'data-local-work="c1"' in html
-        assert 'type="submit" disabled' in html
+        assert re.search(r'<button[^>]*type="submit"[^>]*\bdisabled', html)
     if condition == "busy":
         assert "?tab=mail&amp;mail=schedule#order-" in html
 

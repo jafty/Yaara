@@ -19,7 +19,7 @@
             <h2>{% translate "Devenir Prétendant" %}</h2>
             <form method="post" class="stack-form">
                 {% csrf_token %}{{ form.as_p }}
-                <button class="button primary" type="submit">{% translate "Créer mon compte" %}<span aria-hidden="true">→</span>
+                <button class="button primary" type="submit">{% translate "Créer mon compte" %}
                 </button>
             </form>
             <p class="form-foot">{% translate "Déjà Prétendant ?" %}<a href="{% url 'login' %}">{% translate "Entrer dans Yaara" %}</a>

@@ -184,9 +184,9 @@ def test_mixed_batch_http(user, language):
     assert len(action["cities"]) == 3
     html = page.content.decode()
     assert (
-        "Grenier de la cité → Grand grenier" in html
+        "Grenier de la cité à Grand grenier" in html
         if language == "fr"
-        else "City granary → Great granary" in html
+        else "City granary to Great granary" in html
     )
     assert "work-advice" not in html
     preview = client.post(
@@ -276,7 +276,7 @@ def test_all_busy_http(user, language):
     assert ("jusqu’à la lune 7" if language == "fr" else "until Moon 7") in storage
     assert ("Un décret scellé" if language == "fr" else "A sealed decree") in storage
     assert (
-        "2\u202f400\u202f000 → 3\u202f600\u202f000 Mesures"
+        "2\u202f400\u202f000 à 3\u202f600\u202f000 Mesures"
         if language == "fr"
-        else "2,400,000 → 3,600,000 Measures"
+        else "2,400,000 to 3,600,000 Measures"
     ) in storage

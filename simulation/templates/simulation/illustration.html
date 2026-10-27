@@ -1,1 +1,1 @@
-<div class="illustration illustration-{{ scene }}{% if variant %} illustration-{{ scene }}-{{ variant }}{% endif %}" aria-hidden="true"></div>
+<div class="illustration illustration-{{ scene }}{% if variant %} illustration-{{ scene }}-{{ variant }}{% endif %}{% if shape == 'building' %} illustration-building{% elif shape == 'building-detail' %} illustration-building-detail{% endif %}" aria-hidden="true"></div>

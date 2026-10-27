@@ -7,7 +7,7 @@
 <p>{% translate "Les Mesures sont vos réserves de nourriture. Chaque cité possède son grenier : le conseil affiche son stock, sa capacité et sa part encore disponible. Les fonds promis aux décrets scellés restent dans le stock, mais ne sont plus disponibles." %}</p>
 <p>{% if view.local_funding %}{% translate "Chaque cité finance ses travaux. Pour une expédition, chaque origine paie ses hommes et une part des frais fixes proportionnelle à son effectif." %}{% else %}{% translate "Les dépenses sont réparties entre les fonds libres de vos cités. Les pillages et les limites de stockage concernent chaque grenier séparément. Agrandir un grenier augmente sa capacité, sans créer de nourriture." %}{% endif %}</p>
 <p>{% translate "Les Fidèles font partie des habitants. Partis en expédition, ils ne défendent plus leur cité et ne contribuent plus à son impôt jusqu’à leur retour. L’impôt se prépare chaque lune et est versé toutes les douze lunes." %}</p>
-<p class="reading-links"><a href="?tab=domain#city-ledgers">{% translate "Consulter vos greniers" %} →</a></p></section>
+<p class="reading-links"><a href="?tab=domain#city-ledgers">{% translate "Consulter vos greniers" %} </a></p></section>
 <section id="orders"><h2>{% translate "Vos ordres" %}</h2>
 <p>{% translate "Choisissez vos cités ou vos hommes, puis « Vérifier l’ordre ». La page suivante récapitule le prix, les dates et les conséquences : rien n’est encore réservé. « Confirmer et sceller l’ordre » engage les moyens annoncés. La clôture de la lune fait entrer le décret en vigueur." %}</p>
 {% if view.cancellable %}<h2>{% translate "Retirer un ordre scellé" %}</h2>
@@ -48,4 +48,4 @@
 <p>{% translate "Chaque échéance affichée clôt une lune, même sans nouvel ordre. Vous pouvez suspendre le calendrier au conseil, puis le reprendre : la suspension retarde aussi les ouvrages et les expéditions." %}</p>
 <p>{% translate "La lecture ne suspend pas le calendrier automatique." %}</p>
 {% endif %}</section>
-<p class="reading-links"><a href="?tab=prologue" data-prologue-replay>{% translate "Relire les premiers pas" %} →</a></p>
+<p class="reading-links"><a href="?tab=prologue" data-prologue-replay>{% translate "Relire les premiers pas" %} </a></p>

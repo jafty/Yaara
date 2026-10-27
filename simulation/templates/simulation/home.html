@@ -33,7 +33,7 @@
                 {% if item.shared %}<p class="muted">{% translate "Partie entre joueurs" %}</p>{% endif %}
                 <p>{% blocktranslate with v0=item.cities %}Cités sous votre autorité : {{ v0 }}{% endblocktranslate %}</p>
                 <div class="card-bottom">
-                    <span>{% blocktranslate with v0=item.month v1=item.reign_months %}Lune {{ v0 }} / {{ v1 }}{% endblocktranslate %}</span><span aria-hidden="true">↗</span>
+                    <span>{% blocktranslate with v0=item.month v1=item.reign_months %}Lune {{ v0 }} / {{ v1 }}{% endblocktranslate %}</span>
                 </div>
             </a>{% empty %}
             <div class="panel empty-state">

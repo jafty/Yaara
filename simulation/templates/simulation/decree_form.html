@@ -4,8 +4,8 @@
         {% csrf_token %}
         {% if action.kind == 'expedition' %}
             <fieldset class="mission-options"><legend class="visually-hidden">{% translate "Action" %}</legend>
-                <label><input type="radio" name="kind" value="raid" {% if mission_kind != 'capture' %}checked{% endif %}><span>{% include 'simulation/nav_icon.html' with icon='blades' %}{% translate "Piller" %}</span></label>
-                <label><input type="radio" name="kind" value="capture" {% if mission_kind == 'capture' %}checked{% endif %}><span>{% include 'simulation/nav_icon.html' with icon='council' %}{% translate "Capturer" %}</span></label>
+                <label><input type="radio" name="kind" value="raid" {% if mission_kind != 'capture' %}checked{% endif %}><span>{% include 'simulation/nav_icon.html' with icon='raid' %}{% translate "Piller" %}</span></label>
+                <label><input type="radio" name="kind" value="capture" {% if mission_kind == 'capture' %}checked{% endif %}><span>{% include 'simulation/nav_icon.html' with icon='conquer' %}{% translate "Conquérir" %}</span></label>
             </fieldset>
             {% if selected_target %}<input type="hidden" name="target" id="mission-target" value="{{ selected.id }}">
             {% else %}<p><label for="mission-target">{% translate "Vers quelle cité ?" %}</label><select name="target" id="mission-target" required><option value="">{% translate "Désigner une cité à notre portée" %}</option>{% for target in view.attack_targets %}<option value="{{ target.id }}" {% if target.engaged %}disabled{% endif %}>{{ target.name }} · {{ target.owner_name }}</option>{% endfor %}</select></p>{% endif %}
@@ -41,7 +41,7 @@
                 </div>
                 {% endfor %}</fieldset>
             <details class="expedition-notes"><summary>{% translate "Coûts et règles de l’expédition" %}</summary>
-            <p class="cost-hint">{% blocktranslate with raid_base=view.expedition_prices.raid.base raid_person=view.expedition_prices.raid.per_person capture_base=view.expedition_prices.capture.base capture_person=view.expedition_prices.capture.per_person %}Pillage : {{ raid_base }} Mesures + {{ raid_person }} par Fidèle. Capture : {{ capture_base }} Mesures + {{ capture_person }} par Fidèle.{% endblocktranslate %}</p>
+            <p class="cost-hint">{% blocktranslate with raid_base=view.expedition_prices.raid.base raid_person=view.expedition_prices.raid.per_person capture_base=view.expedition_prices.capture.base capture_person=view.expedition_prices.capture.per_person %}Pillage : {{ raid_base }} Mesures + {{ raid_person }} par Fidèle. Conquête : {{ capture_base }} Mesures + {{ capture_person }} par Fidèle.{% endblocktranslate %}</p>
             <div class="loot-preview" {% if mission_kind == 'capture' %}hidden{% endif %}>
                 <p class="cost-hint">{% translate "Plafond si tous les hommes reviennent. Le butin réel reste inconnu : il dépend des récoltes exposées et des survivants." %}</p>
             </div>
@@ -71,7 +71,7 @@
         {% if action.kind == 'expedition' %}
             {% if not workspace %}{% include 'simulation/expedition_actions.html' %}{% endif %}
         {% else %}
-        <button class="primary-action" type="submit" {% if action.kind == 'equipment' %}{% if not view.equipment_available or view.equipment_shortfall %}disabled{% endif %}{% elif not action.selectable %}disabled{% endif %}>{% translate "Vérifier l’ordre" %}</button>
+        <button class="primary-action work-review" type="submit" {% if action.kind == 'equipment' %}{% if not view.equipment_available or view.equipment_shortfall %}disabled{% endif %}{% elif not action.selectable %}disabled{% endif %}>{% translate "Préparer le chantier" %}</button>
         <p class="aside-text">{% translate "Vous pourrez vérifier le récapitulatif avant de confirmer. Aucun moyen n’est réservé." %}</p>
         {% endif %}
     </form></section>

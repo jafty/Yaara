@@ -1,5 +1,15 @@
 # Implementation decisions
 
+## 2026-10-27 · Proportional map and focused actions
+
+The owner rejected the compressed map. Preserve 680:500 geometry and overlay
+action folios on mobile, with a text Retour control; expansion never resizes the
+map. Use torch/flag-over-fort mission icons and Conquérir. Works retain square
+list art and 3:2 detail art, compact preparation controls and icon/value metadata.
+Remove arrows from navigation, route heads and comparisons. Existing command
+identifiers, prices, quotes, seals, rules and report records remain unchanged.
+See the final section of `docs/map-workspace.md`. This is presentation verification.
+
 ## 2026-10-27 · Denser header and mobile army planning
 
 The owner requested more useful decision space and then removed repeated header

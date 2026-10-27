@@ -2,23 +2,22 @@
 <figure class="realm-map" data-map-revision="{{ game.revision }}" aria-labelledby="map-caption">
     <figcaption id="map-caption" class="visually-hidden">{% translate "Les oasis de Yaara" %}</figcaption>
     <div class="map-frame">
-        <svg class="map-sheet" viewBox="0 0 680 500" preserveAspectRatio="none" aria-labelledby="map-title map-description">
+        <svg class="map-sheet" viewBox="0 0 680 500" preserveAspectRatio="xMidYMid meet" aria-labelledby="map-title map-description">
             <title id="map-title">{% translate "Carte des oasis de Yaara" %}</title>
             <desc id="map-description">{% translate "Les emblèmes identifient les maisons. Bannière verte : votre domaine ; nom souligné : cité à portée ; nom grisé : hors de portée ; bannière pointillée : expédition engagée." %}</desc>
-            <defs><marker id="march-tip" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="context-stroke"/></marker></defs>
             <g class="map-connections" aria-hidden="true">
                 {% for link in view.links %}<line class="map-connection{% if city_requested and selected.id == link.first.id or city_requested and selected.id == link.second.id %} selected-road{% endif %}" data-first="{{ link.first.id }}" data-second="{{ link.second.id }}" x1="{{ link.first.x|unlocalize }}" y1="{{ link.first.y|unlocalize }}" x2="{{ link.second.x|unlocalize }}" y2="{{ link.second.y|unlocalize }}"/>{% endfor %}
             </g>
             {% for march in marches %}<a class="map-march march-{{ march.state }}" data-march-state="{{ march.state }}" href="?tab=mail&amp;mail=schedule#{{ march.anchor }}" aria-label="{{ march.label }} · {{ march.target.name }} · {{ march.moon }}">
                 <title>{{ march.label }} · {{ march.target.name }} · {{ march.moon }}</title>
                 <path class="march-hit" d="{{ march.path }}"/>
-                <path class="march-line" d="{{ march.path }}" marker-end="url(#march-tip)"/>
+                <path class="march-line" d="{{ march.path }}"/>
             </a>{% endfor %}
             <g id="draft-route" aria-hidden="true"></g>
         </svg>
             {% for city in view.cities %}
                 <a class="map-city house-{{ city.owner }}" data-map-state="{% if city.engaged %}engaged{% elif city.owned %}owned{% elif city.reachable %}reachable{% else %}unreachable{% endif %}" href="{% if workspace %}?{{ city.map_query }}#map-context{% else %}?tab=wars&amp;city={{ city.id }}#map-context{% endif %}" {% if city_requested and selected.id == city.id %}aria-current="location"{% endif %} aria-label="{{ city.name }} · {{ city.owner_name }} · {{ city.wall_label }} · {% include 'simulation/map_status.html' %}">
-                    <svg class="territory-layer" viewBox="0 0 680 500" preserveAspectRatio="none" aria-hidden="true"><path class="map-territory" d="{{ city.territory_path }}"/></svg>
+                    <svg class="territory-layer" viewBox="0 0 680 500" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><path class="map-territory" d="{{ city.territory_path }}"/></svg>
                     <svg class="city-marker" style="--map-x: {{ city.x|unlocalize }}; --map-y: {{ city.y|unlocalize }}" viewBox="-70 -65 140 140" aria-hidden="true">
                         <g class="settlement">
                             <svg class="city-art" x="-42" y="-42" width="84" height="84" viewBox="{{ city.settlement_viewbox }}" aria-hidden="true"><image href="{% static 'simulation/illustrations/map/settlements.webp' %}" width="1536" height="1024"/></svg>

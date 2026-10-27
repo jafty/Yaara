@@ -13,7 +13,7 @@
     <ul class="city-ledger">{% for city in view.owned_cities %}
         <li class="city-entry" id="city-{{ city.id }}">
             {% if city.restricted_fideles %}<p class="aside-text">{% blocktranslate with city=city.name count=city.restricted_fideles moon=city.restricted_until %}{{ city }} : {{ count }} Fidèles hérités assurent la défense locale. Départs et secours possibles à partir de la lune {{ moon }}.{% endblocktranslate %}</p>{% endif %}
-            <div class="city-identity"><h3><a href="?tab=city&amp;city={{ city.id }}">{{ city.name }} →</a></h3>{% include 'simulation/team_status.html' %}</div>
+            <div class="city-identity"><h3><a href="?tab=city&amp;city={{ city.id }}">{{ city.name }} </a></h3>{% include 'simulation/team_status.html' %}</div>
             <dl class="ledger-figures">
                 <div><dt>{% translate "Grenier" %}</dt><dd>{{ city.stock }} / {{ city.capacity }}</dd></div>
                 <div><dt>{% translate "Disponible" %}</dt><dd>{{ city.available_stock }}</dd></div>
@@ -22,8 +22,8 @@
             </dl>
             <p class="city-situation">{% if city.engaged %}<strong>{% translate "Une expédition est engagée vers cette cité." %}</strong>{% elif city.frontier %}{% translate "Cité de frontière : accessible à une maison ennemie." %}{% else %}{% translate "Cité intérieure : pas de frontière ennemie directe." %}{% endif %}</p>
             {% if city.siege_shortfall %}<p class="reserve-warning">{% blocktranslate with need=city.siege_food missing=city.siege_shortfall %}Moins d’un mois de siège : besoin de {{ need }} Mesures ; manque de {{ missing }} après les réservations.{% endblocktranslate %}</p>{% endif %}
-            {% for building in city.buildings %}{% if building.damaged %}<p class="city-damage">{% include 'simulation/damage_state.html' %} <a href="?tab=city&amp;city={{ city.id }}#building-{{ building.kind }}">{{ building.name }} →</a></p>{% endif %}{% empty %}{% if city.damaged %}<p class="city-damage">{% include 'simulation/damage_state.html' %} {{ city.wall_label }}</p>{% endif %}{% endfor %}
-            {% if city.recent_report %}<p><a href="?tab=letters#report-{{ city.recent_report.id|unlocalize }}">{% blocktranslate with moon=city.recent_report.month %}Lune {{ moon }}{% endblocktranslate %} · {{ city.recent_report.title }} →</a></p>{% endif %}
+            {% for building in city.buildings %}{% if building.damaged %}<p class="city-damage">{% include 'simulation/damage_state.html' %} <a href="?tab=city&amp;city={{ city.id }}#building-{{ building.kind }}">{{ building.name }} </a></p>{% endif %}{% empty %}{% if city.damaged %}<p class="city-damage">{% include 'simulation/damage_state.html' %} {{ city.wall_label }}</p>{% endif %}{% endfor %}
+            {% if city.recent_report %}<p><a href="?tab=letters#report-{{ city.recent_report.id|unlocalize }}">{% blocktranslate with moon=city.recent_report.month %}Lune {{ moon }}{% endblocktranslate %} · {{ city.recent_report.title }} </a></p>{% endif %}
         </li>
     {% empty %}<li>{% translate "Aucune cité ne demeure sous votre sceau." %}</li>{% endfor %}</ul>
 </section>

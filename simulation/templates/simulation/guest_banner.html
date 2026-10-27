@@ -1,4 +1,4 @@
 {% load i18n %}
 {% if guest_access.is_guest %}<aside class="marginal-note guest-banner" data-guest-access>
-    <p>{% if not workspace %}{% translate "Vous jouez sans inscription. Votre essai est conservé dans ce navigateur." %} {% endif %} <a href="{% url 'guest_claim' %}">{% translate "Sauvegarder mon règne" %} →</a></p>
+    <p>{% if not workspace %}{% translate "Vous jouez sans inscription. Votre essai est conservé dans ce navigateur." %} {% endif %} <a href="{% url 'guest_claim' %}">{% translate "Sauvegarder mon règne" %} </a></p>
 </aside>{% elif guest_access.can_restore %}<aside class="marginal-note guest-banner" data-guest-restore><form method="post" action="{% url 'guest_restore' %}">{% csrf_token %}<button type="submit">{% translate "Reprendre mon essai solo" %}</button></form></aside>{% endif %}

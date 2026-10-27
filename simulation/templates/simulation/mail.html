@@ -1,7 +1,7 @@
 {% load i18n %}
 <div class="map-workspace">
     {% include 'simulation/realm_map.html' %}
-    <section id="map-context" class="context-sheet mail-panel" aria-labelledby="context-title" data-mail-key="{{ game.id }}:{{ view.actor }}">
+    <section id="map-context" class="context-sheet mail-panel" data-focus-action aria-labelledby="context-title" data-mail-key="{{ game.id }}:{{ view.actor }}">
         {% translate "Nouvelles du Scribe" as mail_title %}
         {% include 'simulation/context_header.html' with panel_title=mail_title %}
         <nav class="sheet-tabs" aria-label="{% translate 'Nouvelles' %}">
