@@ -290,7 +290,7 @@ def test_draft_language_switch(user):
     client.cookies["django_language"] = "en"
     response = client.get(reverse("preview", args=[game.id]), {"payload": payload})
     assert response.status_code == 200
-    assert "Unsealed draft" in response.content.decode()
+    assert "Review your order" in response.content.decode()
     assert response.context["payload"] == payload
     game.refresh_from_db()
     assert game.state["orders"] == [] and game.revision == 0

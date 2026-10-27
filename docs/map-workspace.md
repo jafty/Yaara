@@ -275,3 +275,9 @@ focused-illustrated-work, focused-rectangle-work-detail and focused-no-ui-arrows
 Browser journeys assert the map ratio and unchanged dimensions, focused native
 forms, one-click return, square list/rectangular detail artwork, readable numeric
 pairs and the existing review/seal flow in both languages and without JavaScript.
+
+### Navigation and order review
+
+The Yaara mark leads to the website home; Carte returns to the map. The house name opens reign controls, with Moon review first and a direct header link for authorized manual games. Scheduled start and pause controls remain in the same reign view. News shows the recent Moon and links to the complete report archive; alerts and deadlines remain separate. The existing archive URLs and report anchors continue to work.
+
+Order review presents the cost, timing, local funding and material warnings before sealing. Confirmed orders in the deadlines view offer a direct return to the map. Army preparation labels each city's equipment disclosure explicitly. The city briefing shows total inhabitants with a people icon and distinguishes those present when residents are away; available Fidèles use a military icon. Selected saved connections are drawn as subtle curved dashed routes without changing the road graph.

@@ -27,8 +27,9 @@ def test_overview_first_reign(user, language):
     page = client.get(reverse("game", args=[game.id]), {"tab": "domain"})
     content = page.content.decode()
     assert page.status_code == 200
-    assert 'id="recent-letters"' in content
-    assert 'id="upcoming-heading"' in content
+    assert 'id="turn-page"' in content
+    assert 'id="recent-letters"' not in content
+    assert 'id="upcoming-heading"' not in content
     assert 'id="city-ledgers"' not in content
     assert 'class="house-accounts"' not in content
     assert len(page.context["milestones"]) == 1

@@ -34,9 +34,10 @@ def test_council_priority(folio):
     game, client, url = folio
     original = deepcopy(game.state)
     text = client.get(url, {"tab": "domain"}).content.decode()
-    assert text.index('id="recent-letters"') < text.index('id="upcoming-heading"')
+    assert 'id="turn-page"' in text
+    assert 'id="recent-letters"' not in text
     assert 'id="city-ledgers"' not in text
-    assert 'href="#upcoming-heading"' in text
+    assert 'id="upcoming-heading"' not in text
     heading = re.search(r'<header class="sheet-heading.*?</header>', text, re.S).group()
     assert "illustration" not in heading
     game.refresh_from_db()
@@ -79,7 +80,7 @@ def test_report_reading_order(folio):
     )
     original = deepcopy(report.content)
     for compact in (True, False):
-        text = client.get(url, {"tab": "domain" if compact else "letters"}).content.decode()
+        text = client.get(url, {"tab": "mail" if compact else "letters"}).content.decode()
         entry = re.search(
             rf'<article class="letter-entry" id="report-{report.pk}">.*?</article>', text, re.S
         ).group()
@@ -89,14 +90,14 @@ def test_report_reading_order(folio):
         assert entry.index("A dated encounter") < entry.index("illustration-offensive-raid-success")
         if compact:
             assert entry.index("An immutable account.") < entry.index(
-                f"?tab=letters#report-{report.pk}"
+                f"?tab=mail&amp;mail=chronicle#report-{report.pk}"
             )
         else:
             assert entry.index("A dated encounter") < entry.index(
                 "illustration-offensive-raid-success"
             )
             assert "END-OF-LETTER" in entry
-            assert "?tab=domain" in entry
+            assert "?tab=map" in entry
     report.refresh_from_db()
     assert report.content == original
 
@@ -161,7 +162,7 @@ def test_report_anchor(folio):
         title="A preserved report",
         body="Full historical prose",
     )
-    for tab in ("domain", "letters"):
+    for tab in ("mail", "letters"):
         text = client.get(url, {"tab": tab}).content.decode()
         assert f'id="report-{report.pk}"' in text
         if tab == "domain":

@@ -86,6 +86,13 @@ def workspace_context(view, selected=None, activity=None):
     for link in view["links"]:
         link["first"] = cities[link["first"]["id"]]
         link["second"] = cities[link["second"]["id"]]
+        first, second = link["first"], link["second"]
+        dx, dy = second["x"] - first["x"], second["y"] - first["y"]
+        cx = (first["x"] + second["x"]) / 2 - dy * 0.12
+        cy = (first["y"] + second["y"]) / 2 + dx * 0.12
+        link["path"] = (
+            f"M {first['x']} {first['y']} Q {cx:.2f} {cy:.2f} {second['x']} {second['y']}"
+        )
     marches = []
     for item in view["orders"]:
         if item["status"] != "confirmed" or item["kind"] not in ("raid", "capture"):

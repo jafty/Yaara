@@ -10,6 +10,7 @@
         {% endif %}
         {% if order.men %}<p>{% blocktranslate with count=order.men %}Fidèles engagés : <strong>{{ count }}</strong>.{% endblocktranslate %}</p>{% endif %}
         {% if order.status == 'confirmed' %}<p>{% translate "Les moyens sont réservés, sans être encore dépensés." %}</p>{% endif %}
+        {% if tab == 'mail' and order.status == 'confirmed' %}<p><a href="?tab=map">{% translate "Revenir à la carte" %}</a></p>{% endif %}
         {% if order.can_cancel and not game.paused %}<form method="post" action="{% url 'cancel' game.id order.id %}">{% csrf_token %}<input type="hidden" name="return_tab" value="{{ tab }}"><button type="submit">{% translate "Retirer ce décret" %}</button></form>{% endif %}</article>
     {% empty %}<p>{% translate "Vous n’avez encore scellé aucun décret. Le premier mot vous appartient." %}</p>{% endfor %}</section>
 {% endif %}

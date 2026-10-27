@@ -5842,3 +5842,53 @@ msgstr "Works"
 
 msgid "Convois"
 msgstr "Convoys"
+
+msgid "Les greniers restent propres à chaque cité ; vos dépenses puisent dans leurs fonds libres. L’impôt s’accumule chaque lune, mais la récolte ne remplit les greniers que toutes les douze lunes. La carte donne accès aux comptes de chaque cité."
+msgstr "Each city has its own granary; expenses draw on its available stores. Tax accumulates each moon, but the harvest fills granaries only every twelve moons. The map gives access to each city’s accounts."
+
+msgid "Quand vos décisions sont prises, utilisez « Clore la lune » en haut du livre. Vous pouvez laisser passer une lune sans donner d’ordre. Le scribe avancera les ouvrages et les voyages."
+msgstr "When your decisions are made, use “Close the moon” at the top of the book. You may let a moon pass without giving an order. The scribe will advance works and journeys."
+
+msgid "Le règne avance aux échéances du calendrier affichées en haut du livre. Pour prendre votre temps, suspendez-le dans le règne ; reprenez-le lorsque vous êtes prêt."
+msgstr "The reign advances according to the calendar at the top of the book. To take your time, pause it in the reign controls and resume when ready."
+
+msgid "Prenez vos décisions, puis utilisez « Clore la lune » en haut du livre. Vous pouvez aussi ne donner aucun ordre. La clôture avance les ouvrages, les expéditions et le prélèvement."
+msgstr "Make your decisions, then use “Close the moon” at the top of the book. You may also give no orders. Closing advances works, expeditions and the levy."
+
+msgid "Chaque échéance affichée clôt une lune, même sans nouvel ordre. Vous pouvez suspendre le calendrier dans le règne, puis le reprendre : la suspension retarde aussi les ouvrages et les expéditions."
+msgstr "Each displayed deadline closes a moon, even without new orders. You can pause and resume the calendar in the reign controls; pausing also delays works and expeditions."
+
+msgid "Les joueurs qui ont suivi leur lien attendent ici le départ. Leurs pages ouvriront la carte automatiquement."
+msgstr "Players who followed their link wait here for the start. Their pages will open the map automatically."
+
+msgid "Gardez votre lien privé pour revenir à cette maison. Cette page ouvrira la carte dès le départ du règne."
+msgstr "Keep your private link to return to this house. This page will open the map when the reign starts."
+
+msgid "Votre lien privé ouvre votre maison. Vous rejoindrez la carte dès que l’organisateur donnera le départ."
+msgstr "Your private link opens your house. You will reach the map when the organiser starts the reign."
+
+msgid "ouvrir la carte"
+msgstr "open the map"
+
+msgid "Ouvrir la carte"
+msgstr "Open the map"
+
+msgid "Retour à la carte"
+msgstr "Return to the map"
+
+msgid "Équipement"
+msgstr "Equipment"
+
+msgid "<strong>{{ v0 }} Mesures</strong> seront réservées, puis dépensées à la clôture de la <strong>lune {{ v1 }}</strong>."
+msgstr "<strong>{{ v0 }} Measures</strong> will be reserved, then spent when <strong>moon {{ v1 }}</strong> closes."
+
+msgid "Vous pourrez retirer cet ordre avant la clôture et libérer ses réserves."
+msgstr "You can withdraw this order before the moon closes and release its reserves."
+
+#, python-format
+msgid "%(population)s habitants"
+msgstr "%(population)s inhabitants"
+
+#, python-format
+msgid "%(population)s présents"
+msgstr "%(population)s present"

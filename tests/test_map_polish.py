@@ -45,6 +45,9 @@ def test_selected_roads(user, selected, roads):
     _, client, url = open_board(user)
     html = client.get(url, {"city": selected} if selected else {}).content.decode()
     assert html.count('class="map-connection selected-road"') == roads
+    assert re.search(
+        r'<path class="map-connection[^" ]*(?: selected-road)?"[^>]* d="M [^"]+ Q [^"]+"', html
+    )
 
 
 @case("map-header-navigation", REQ)
@@ -55,6 +58,8 @@ def test_header_navigation(user, tab):
     assert 'class="bookmarks"' not in html
     header = re.search(r'<header class="reign-header">.*?</header>', html, re.S).group()
     assert len(re.findall(r'data-section="', header)) == 3
+    assert f'href="{reverse("home")}"' in header
+    assert "#turn-page" in header
     assert f'data-section="{tab}" aria-current="page"' in header
 
 
@@ -103,7 +108,7 @@ def test_curved_geography(user, version, roads):
     response = client.get(url)
     html = response.content.decode()
     assert html.count('<path class="map-territory"') == 9
-    assert html.count('<line class="map-connection') == roads
+    assert html.count('<path class="map-connection') == roads
     shared_edges = {}
     for city in response.context["view"]["cities"]:
         assert "C " in city["territory_path"]
@@ -123,3 +128,35 @@ def test_curved_geography(user, version, roads):
                 assert shared_edges[(end, start)] == (second_control, first_control)
             shared_edges[edge] = (first_control, second_control)
             start = end
+
+
+@case(
+    "map-moon-control",
+    "Manual games provide a direct review link; scheduled games retain their calendar",
+)
+@pytest.mark.parametrize("mode", ["manual", "scheduled"])
+def test_moon_control(user, mode):
+    game = services.create_game(user, "Calendar access", mode=mode, opponents="passive")
+    client = Client()
+    client.force_login(user)
+    url = reverse("game", args=[game.id])
+    header = re.search(
+        r'<header class="reign-header">.*?</header>', client.get(url).content.decode(), re.S
+    ).group()
+    assert ('class="harvest-link moon-close-link"' in header) == (mode == "manual")
+    controls = client.get(url, {"tab": "domain"}).content.decode()
+    assert 'id="turn-page"' in controls
+    if mode == "manual":
+        assert f'action="{reverse("advance", args=[game.id])}"' in controls
+    else:
+        assert f'action="{reverse("start", args=[game.id])}"' in controls
+
+
+@case("map-army-details-label", "Army preparation identifies the equipment details in each city")
+@pytest.mark.parametrize(
+    "language,label", [("fr", "Équipement"), ("en", "Equipment")], ids=["fr", "en"]
+)
+def test_army_details_label(user, language, label):
+    _, client, url = open_board(user, language)
+    html = client.get(url, {"tab": "map", "city": "c4", "action": "expedition"}).content.decode()
+    assert re.search(r'<details class="origin-details">\s*<summary>' + label, html)

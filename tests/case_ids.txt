@@ -729,6 +729,8 @@ local-storage-capacity/1-3600000
 local-storage-capacity/2-6000000
 locale-core-french
 locale-report-replay
+map-army-details-label/en
+map-army-details-label/fr
 map-attention-overflow
 map-attention-repair
 map-conquered-city
@@ -745,6 +747,8 @@ map-local-work/en
 map-local-work/fr
 map-mail-invalid
 map-mail-route
+map-moon-control/manual
+map-moon-control/scheduled
 map-organic-layout/1
 map-organic-layout/2
 map-organic-layout/3

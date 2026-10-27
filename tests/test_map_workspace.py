@@ -28,7 +28,7 @@ def test_entry(user, language):
     game, client, url = open_board(user, language)
     html = client.get(url).content.decode()
     assert "map-workspace" in html
-    assert html.count('<line class="map-connection') == 12
+    assert html.count('<path class="map-connection') == 12
     assert html.count('class="map-city ') == 9
     assert "user-scalable=no" not in html
     assert ("Nouvelles" if language == "fr" else "News") in html
@@ -51,7 +51,9 @@ def test_entry(user, language):
     ) in overview
     news = client.get(url, {"tab": "mail"}).content.decode()
     tabs = news.split('<nav class="sheet-tabs"', 1)[1].split("</nav>", 1)[0]
-    assert tabs.index("mail=attention") < tabs.index("mail=schedule") < tabs.index("mail=chronicle")
+    assert tabs.index("mail=attention") < tabs.index("mail=schedule")
+    assert "mail=chronicle" not in tabs
+    assert "mail=chronicle" in news
 
 
 @case("map-local-work", REQ)
@@ -88,6 +90,9 @@ def test_preview_context(user):
     html = response.content.decode()
     assert "map-workspace" in html
     assert 'name="payload"' in html
+    assert "Brouillon sans sceau" not in html
+    assert "300" in html and "lune 4" in html
+    assert "retirer cet ordre avant la clôture" in html
     assert 'class="panel-close" href="' in html
     assert "?tab=map&amp;action=irrigation&amp;city=c1#map-context" in html
     assert "c1" in html
@@ -108,6 +113,7 @@ def test_mail_route(user):
     html = response.content.decode()
     assert f"#mission-{order['id']}" in html
     assert 'data-march-state="outbound"' in html
+    assert 'href="?tab=map"' in html
 
 
 @case("map-attention-overflow", REQ)

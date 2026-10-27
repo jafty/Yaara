@@ -30,7 +30,7 @@
                     {% if view.local_funding %}<small class="origin-funding" aria-live="polite">{% blocktranslate with charge=city.expedition_charge available=city.available_stock %}Part : {{ charge }} · Disponibles : {{ available }} Mesures.{% endblocktranslate %}{% if city.expedition_shortfall %} {% blocktranslate with amount=city.expedition_shortfall %}Il manque {{ amount }} Mesures dans cette cité.{% endblocktranslate %}{% endif %}</small>{% endif %}
                     {% if view.local_funding and view.rules == 'V1' %}<small class="reserve-warning" data-origin-warning aria-live="polite">{% if city.expedition_siege_shortfall %}{% translate "Attention : moins d’un mois de réserves de siège après ce départ." %}{% endif %}</small>{% endif %}
                     <details class="origin-details">
-                        <summary title="{% translate 'Détails du contingent' %}"><span aria-hidden="true">i</span><span class="visually-hidden">{% translate "Détails du contingent" %} · {{ city.name }}</span></summary>
+                        <summary>{% translate "Équipement" %}<span class="visually-hidden"> · {{ city.name }}</span></summary>
                         <dl class="origin-means" data-origin-means>
                             <div><dt>{% include 'simulation/nav_icon.html' with icon='blades' %}{% translate "Armement" %}</dt><dd>{{ city.equipment }}</dd></div>
                             {% if view.seasonal_raids %}<div><dt>{% include 'simulation/nav_icon.html' with icon='siege' %}{% translate "Siège" %}</dt><dd>{{ city.siege_equipment }}{% if city.siege_effect %}<small>{{ city.siege_effect }}</small>{% endif %}</dd></div>

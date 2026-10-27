@@ -144,7 +144,6 @@ def scannable_layout(page):
     for selector in (
         ".notice",
         ".marginal-note",
-        ".unsealed-leaf",
     ):
         for element in page.locator(selector).all():
             assert element.evaluate("el => parseFloat(getComputedStyle(el).borderLeftWidth)") == 0
@@ -163,7 +162,7 @@ def scannable_layout(page):
         for first, second in zip(links, links[1:]):
             assert abs(first["x"] - second["x"]) < 1
             assert second["y"] >= first["y"] + first["height"]
-    for note in page.locator(".notice, .marginal-note, .unsealed-leaf").all():
+    for note in page.locator(".notice, .marginal-note").all():
         contrast = note.evaluate("""el => {
           const style = getComputedStyle(el);
           function luminance(colour) {
@@ -295,22 +294,10 @@ with sync_playwright() as playwright:
                 page.locator("[data-prologue-enter]").click()
         page.set_viewport_size({"width": 1440, "height": 1100})
         page.goto(game_url + "?tab=domain")
-        expect(
-            page.get_by_role(
-                "heading", name="Your house council" if en else "Le conseil de votre maison"
-            )
-        ).to_be_visible()
-        expect(page.locator("#recent-letters")).to_be_visible()
-        expect(page.locator("#upcoming-heading")).to_be_visible()
+        expect(page.get_by_role("heading", name="Reign" if en else "Règne")).to_be_visible()
+        expect(page.locator("#turn-page")).to_be_visible()
         redesign_reflow(page)
         expect(page.locator(".alerts-trigger")).to_have_attribute("data-alert-count", "0")
-        page.locator("#realm-alerts > summary").focus()
-        page.keyboard.press("Enter")
-        expect(page.locator("#realm-alerts")).to_have_attribute("open", "")
-        expect(page.locator("#alert-list")).to_contain_text(
-            "No current alerts" if en else "Aucune alerte en cours"
-        )
-        page.locator("#realm-alerts > summary").click()
         assert page.locator("#city-ledgers").count() == 0
         links = page.locator(".council-links a").all()
         for first, second in zip(links, links[1:]):
@@ -500,16 +487,16 @@ with sync_playwright() as playwright:
         work.locator('button[type="submit"]').click()
         expect(page.locator(".decree-reading")).to_contain_text("Qasr")
         expect(page.locator(".decree-reading")).to_contain_text("Tamesh")
-        expect(page.locator(".unsealed-leaf")).to_contain_text(
-            "Unsealed draft" if en else "Brouillon sans sceau"
+        expect(page.locator("#context-title")).to_have_text(
+            "Review your order" if en else "Vérifier votre ordre"
         )
         # The panel language action reopens the same signed, read-only draft.
         for selected_language in ("fr" if en else "en", language):
             page.locator(".review-language summary").click()
             page.locator("#language").select_option(selected_language)
             page.locator(".language-switch button").click()
-            expect(page.locator(".unsealed-leaf")).to_contain_text(
-                "Unsealed draft" if selected_language == "en" else "Brouillon sans sceau"
+            expect(page.locator("#context-title")).to_have_text(
+                "Review your order" if selected_language == "en" else "Vérifier votre ordre"
             )
         expect(page.locator(".resource-ribbon")).to_contain_text(
             "2,700,000" if en else "2\u00a0700\u00a0000"
@@ -626,6 +613,7 @@ with sync_playwright() as playwright:
             page.goto(page.url.split("?")[0] + "?tab=domain")
             expect(page.locator(".resource-ribbon")).to_contain_text(str(moon + 1))
             if moon == 1:
+                page.goto(game_url + "?tab=mail")
                 illustration_asset(
                     page.locator(".illustration-start-army"),
                     "action-starts.png",
@@ -635,9 +623,9 @@ with sync_playwright() as playwright:
             page.get_by_role("heading", name="Expeditions" if en else "Expéditions", exact=True)
         ).to_be_visible()
         page.locator('.reign-header a[data-section="domain"]').click()
-        page.locator('a[href="?tab=letters"]').click()
+        page.goto(game_url + "?tab=letters")
         assert (
-            page.locator('.letter-entry a[href="?tab=domain"]').count()
+            page.locator('.letter-entry a[href="?tab=map"]').count()
             == page.locator(".letter-entry").count()
         )
         for title in (
@@ -950,7 +938,7 @@ with sync_playwright() as playwright:
         plain_storage = plain_page.locator("#work-storage")
         plain_storage.locator('input[value="c3"]').check()
         plain_storage.locator('button[type="submit"]').click()
-        expect(plain_page.locator(".unsealed-leaf")).to_be_visible()
+        expect(plain_page.locator(".review-panel")).to_be_visible()
         plain_page.goto(game_url + "?tab=wars")
         plain_page.locator('.map-city[href*="city=c4"] .city-marker').click()
         expect(plain_page.locator("#map-context")).to_contain_text("Sefra")

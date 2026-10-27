@@ -8,7 +8,6 @@
             <a href="?tab=mail" {% if mail_section == 'news' %}aria-current="page"{% endif %}>{% translate "Nouvelles" %}</a>
             <a href="?tab=mail&amp;mail=attention" {% if mail_section == 'attention' %}aria-current="page"{% endif %}>{% translate "Alertes" %} · {{ attention.count }}</a>
             <a href="?tab=mail&amp;mail=schedule" {% if mail_section == 'schedule' %}aria-current="page"{% endif %}>{% translate "Échéances" %}</a>
-            <a href="?tab=mail&amp;mail=chronicle" {% if mail_section == 'chronicle' %}aria-current="page"{% endif %}>{% translate "Chronique" %}</a>
         </nav>
         <div class="sheet-body">
         {% if mail_section == 'news' %}
@@ -28,6 +27,7 @@
                 {% include 'simulation/ledger_help.html' with topic='forecast' %}
             </section>
         {% else %}
+            <h2>{% translate "Tous les rapports" %}</h2>
             <p>{% translate "Chacune de ces lettres conserve les faits connus à sa date." %}</p>
             {% include 'simulation/letter_entries.html' %}
         {% endif %}

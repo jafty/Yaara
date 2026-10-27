@@ -4561,3 +4561,53 @@ msgstr "Constructions"
 
 msgid "Convois"
 msgstr "Convois"
+
+msgid "Les greniers restent propres à chaque cité ; vos dépenses puisent dans leurs fonds libres. L’impôt s’accumule chaque lune, mais la récolte ne remplit les greniers que toutes les douze lunes. La carte donne accès aux comptes de chaque cité."
+msgstr "Les greniers restent propres à chaque cité ; vos dépenses puisent dans leurs fonds libres. L’impôt s’accumule chaque lune, mais la récolte ne remplit les greniers que toutes les douze lunes. La carte donne accès aux comptes de chaque cité."
+
+msgid "Quand vos décisions sont prises, utilisez « Clore la lune » en haut du livre. Vous pouvez laisser passer une lune sans donner d’ordre. Le scribe avancera les ouvrages et les voyages."
+msgstr "Quand vos décisions sont prises, utilisez « Clore la lune » en haut du livre. Vous pouvez laisser passer une lune sans donner d’ordre. Le scribe avancera les ouvrages et les voyages."
+
+msgid "Le règne avance aux échéances du calendrier affichées en haut du livre. Pour prendre votre temps, suspendez-le dans le règne ; reprenez-le lorsque vous êtes prêt."
+msgstr "Le règne avance aux échéances du calendrier affichées en haut du livre. Pour prendre votre temps, suspendez-le dans le règne ; reprenez-le lorsque vous êtes prêt."
+
+msgid "Prenez vos décisions, puis utilisez « Clore la lune » en haut du livre. Vous pouvez aussi ne donner aucun ordre. La clôture avance les ouvrages, les expéditions et le prélèvement."
+msgstr "Prenez vos décisions, puis utilisez « Clore la lune » en haut du livre. Vous pouvez aussi ne donner aucun ordre. La clôture avance les ouvrages, les expéditions et le prélèvement."
+
+msgid "Chaque échéance affichée clôt une lune, même sans nouvel ordre. Vous pouvez suspendre le calendrier dans le règne, puis le reprendre : la suspension retarde aussi les ouvrages et les expéditions."
+msgstr "Chaque échéance affichée clôt une lune, même sans nouvel ordre. Vous pouvez suspendre le calendrier dans le règne, puis le reprendre : la suspension retarde aussi les ouvrages et les expéditions."
+
+msgid "Les joueurs qui ont suivi leur lien attendent ici le départ. Leurs pages ouvriront la carte automatiquement."
+msgstr "Les joueurs qui ont suivi leur lien attendent ici le départ. Leurs pages ouvriront la carte automatiquement."
+
+msgid "Gardez votre lien privé pour revenir à cette maison. Cette page ouvrira la carte dès le départ du règne."
+msgstr "Gardez votre lien privé pour revenir à cette maison. Cette page ouvrira la carte dès le départ du règne."
+
+msgid "Votre lien privé ouvre votre maison. Vous rejoindrez la carte dès que l’organisateur donnera le départ."
+msgstr "Votre lien privé ouvre votre maison. Vous rejoindrez la carte dès que l’organisateur donnera le départ."
+
+msgid "ouvrir la carte"
+msgstr "ouvrir la carte"
+
+msgid "Ouvrir la carte"
+msgstr "Ouvrir la carte"
+
+msgid "Retour à la carte"
+msgstr "Retour à la carte"
+
+msgid "Équipement"
+msgstr "Équipement"
+
+msgid "<strong>{{ v0 }} Mesures</strong> seront réservées, puis dépensées à la clôture de la <strong>lune {{ v1 }}</strong>."
+msgstr "<strong>{{ v0 }} Mesures</strong> seront réservées, puis dépensées à la clôture de la <strong>lune {{ v1 }}</strong>."
+
+msgid "Vous pourrez retirer cet ordre avant la clôture et libérer ses réserves."
+msgstr "Vous pourrez retirer cet ordre avant la clôture et libérer ses réserves."
+
+#, python-format
+msgid "%(population)s habitants"
+msgstr "%(population)s habitants"
+
+#, python-format
+msgid "%(population)s présents"
+msgstr "%(population)s présents"

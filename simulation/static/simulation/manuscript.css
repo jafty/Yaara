@@ -90,6 +90,14 @@ button:hover {
   align-items: center;
   min-height: 44px;
 }
+.map-link {
+  display: inline-flex;
+  align-items: center;
+  min-width: 44px;
+  min-height: 44px;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
 .house-identity {
   display: flex;
   flex-direction: column;
@@ -138,6 +146,10 @@ button:hover {
   color: var(--muted);
   font-size: 0.75rem;
   white-space: nowrap;
+}
+.moon-close-link {
+  color: var(--accent);
+  font-weight: 700;
 }
 .realm-identity [data-section][aria-current] {
   text-decoration: underline;
@@ -481,6 +493,9 @@ strong {
 .order-entry {
   border-bottom: 1px solid var(--rule);
   padding: 0.7rem 0;
+}
+.order-entry:focus:not(:focus-visible) {
+  outline: none;
 }
 .letter-entry {
   border-bottom: 1px solid var(--rule);
@@ -867,30 +882,12 @@ input[type="number"] {
   display: none;
 }
 .origin-details summary {
-  position: absolute;
-  top: 0.2rem;
-  right: 0;
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  padding: 0;
-  list-style: none;
-  text-decoration: none;
-  font-size: 1rem;
-  font-style: italic;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   color: var(--muted);
-}
-.origin-details summary::-webkit-details-marker {
-  display: none;
-}
-.origin-details summary > [aria-hidden] {
-  display: grid;
-  place-items: center;
-  width: 1.25rem;
-  height: 1.25rem;
-  border: 1px solid var(--rule);
-  border-radius: 50%;
+  font-size: 1rem;
+  cursor: pointer;
 }
 .origin-means {
   display: grid;
@@ -981,18 +978,11 @@ input[type="number"] {
 }
 .decree-reading > form {
   text-align: center;
-  margin-top: 2rem;
+  margin-top: 0.75rem;
 }
 .decree-reading .primary-action,
 .decree-form .primary-action:not(.work-review) {
   width: 100%;
-}
-.unsealed-leaf {
-  margin-bottom: 1.25rem;
-}
-.unsealed-leaf h2 {
-  color: var(--accent);
-  margin-top: 0;
 }
 .book-footer {
   display: flex;
@@ -1057,9 +1047,6 @@ input[type="number"] {
   font-size: 0.875rem;
   margin-bottom: 0.4rem;
 }
-.briefing-news > h2 {
-  margin-top: 0;
-}
 .milestones {
   list-style: none;
   padding: 0;
@@ -1116,6 +1103,7 @@ input[type="number"] {
   stroke: #766a59;
   stroke-width: 2;
   stroke-linecap: round;
+  fill: none;
 }
 .map-connection {
   opacity: 0;
@@ -1239,9 +1227,10 @@ input[type="number"] {
 }
 .map-connection.selected-road,
 .map-connection.draft-road {
-  opacity: 0.85;
-  stroke: #244e45;
-  stroke-width: 4;
+  opacity: 0.72;
+  stroke: #426c5d;
+  stroke-width: 2.5;
+  stroke-dasharray: 5 7;
 }
 .map-march {
   color: #853d2b;

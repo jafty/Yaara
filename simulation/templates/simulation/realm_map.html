@@ -6,7 +6,7 @@
             <title id="map-title">{% translate "Carte des oasis de Yaara" %}</title>
             <desc id="map-description">{% translate "Les emblèmes identifient les maisons. Bannière verte : votre domaine ; nom souligné : cité à portée ; nom grisé : hors de portée ; bannière pointillée : expédition engagée." %}</desc>
             <g class="map-connections" aria-hidden="true">
-                {% for link in view.links %}<line class="map-connection{% if city_requested and selected.id == link.first.id or city_requested and selected.id == link.second.id %} selected-road{% endif %}" data-first="{{ link.first.id }}" data-second="{{ link.second.id }}" x1="{{ link.first.x|unlocalize }}" y1="{{ link.first.y|unlocalize }}" x2="{{ link.second.x|unlocalize }}" y2="{{ link.second.y|unlocalize }}"/>{% endfor %}
+                {% for link in view.links %}<path class="map-connection{% if city_requested and selected.id == link.first.id or city_requested and selected.id == link.second.id %} selected-road{% endif %}" data-first="{{ link.first.id }}" data-second="{{ link.second.id }}" d="{{ link.path }}"/>{% endfor %}
             </g>
             {% for march in marches %}<a class="map-march march-{{ march.state }}" data-march-state="{{ march.state }}" href="?tab=mail&amp;mail=schedule#{{ march.anchor }}" aria-label="{{ march.label }} · {{ march.target.name }} · {{ march.moon }}">
                 <title>{{ march.label }} · {{ march.target.name }} · {{ march.moon }}</title>

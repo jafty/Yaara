@@ -47,12 +47,12 @@ summary::-webkit-details-marker { display: none; }
 .language-switch select { display: inline; width: auto; padding: .25rem; font-size: inherit; }
 .skip-link { position: fixed; top: .5rem; left: .5rem; padding: .5rem; background: white; color: #222; transform: translateY(-150%); z-index: 20; }
 .skip-link:focus { transform: translateY(0); }
-.notice, .marginal-note, .unsealed-leaf {
+.notice, .marginal-note {
   background: var(--leaf);
   border-block: 1px solid var(--rule);
   padding: .8rem 1rem;
 }
-.notice > :last-child, .marginal-note > :last-child, .unsealed-leaf > :last-child { margin-bottom: 0; }
+.notice > :last-child, .marginal-note > :last-child { margin-bottom: 0; }
 .notice.error, .errorlist { color: #852419; }
 .notices { margin-top: 1.5rem; }
 .guest-banner { margin-block: .75rem; padding: .6rem .8rem; font-size: .875rem; }

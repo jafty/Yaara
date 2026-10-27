@@ -184,7 +184,7 @@ def run_map_journeys():
                     page.evaluate("document.documentElement.style.fontSize = '100%'")
                 page.locator('[data-local-work] button[type="submit"]').click()
                 expect(page.locator(".map-workspace")).to_be_visible()
-                expect(page.locator(".unsealed-leaf")).to_be_visible()
+                expect(page.locator(".review-panel")).to_be_visible()
                 page.locator(".decree-reading > form button").click()
                 expect(page.locator(".orders-register")).to_contain_text("300")
                 page.evaluate("document.documentElement.style.fontSize = '200%'")

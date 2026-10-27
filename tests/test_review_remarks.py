@@ -146,7 +146,7 @@ def test_prologue_action_order(user, page):
 
 @pytest.mark.integration
 @pytest.mark.usefixtures("test_static_storage")
-@case("remarks-report-return", "Owner: every complete report links back to Council")
+@case("remarks-report-return", "Owner: every complete report links back to the map")
 @pytest.mark.parametrize("language", ["fr", "en"])
 def test_report_return(user, language):
     game = services.create_game(user, "Letters", opponents="passive", economy_version=2)
@@ -156,8 +156,8 @@ def test_report_return(user, language):
     html = client.get(reverse("game", args=[game.id]), {"tab": "letters"}).content.decode()
     letters = re.findall(r'<article class="letter-entry".*?</article>', html, re.S)
     assert letters
-    assert all('href="?tab=domain"' in letter for letter in letters)
-    assert ("Retour au conseil" if language == "fr" else "Return to Council") in letters[0]
+    assert all('href="?tab=map"' in letter for letter in letters)
+    assert ("Retour à la carte" if language == "fr" else "Return to the map") in letters[0]
 
 
 @pytest.mark.integration

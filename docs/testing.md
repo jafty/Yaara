@@ -432,3 +432,7 @@ PostgreSQL 17 cases and the bilingual browser and map journeys. A focused
 sixteen-case rerun checks the convoy label within the city action menu and the
 briefing text. The reviewed case catalog remains unchanged. Accessible map
 labels and damage warnings remain available; game rules are unchanged.
+
+### Navigation and order review follow-up
+
+Presentation-level verification covers the home, map and manual Moon-review links, scheduled controls, news/archive navigation, concise order review and the bilingual equipment disclosure. Existing report anchors and order confirmation remain exercised on PostgreSQL; browser smoke covers the responsive and keyboard journeys. No simulation rules or calendar behavior changed.
