@@ -30,13 +30,15 @@
   height: 100%;
   padding: 0;
   container-type: size;
+  display: flex;
+  flex-direction: column;
 }
 .map-workspace {
-  position: absolute;
-  inset: 0;
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  min-height: 0;
 }
 .map-workspace > .realm-map {
   position: relative;
@@ -61,26 +63,25 @@
 }
 .workspace-notices {
   font-size: 0.875rem;
-  position: absolute;
-  z-index: 3;
-  left: 0.75rem;
-  top: 3.25rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  width: min(25rem, calc(100% - 1.5rem));
-  max-height: 45%;
+  position: relative;
+  flex: 0 0 auto;
+  max-height: 25%;
   overflow-y: auto;
+  background: var(--header-paper);
 }
-.workspace-notices:empty {
+.workspace-notices:empty,
+.workspace-page:has(.is-expanded) .workspace-notices,
+.workspace-page:has([data-focus-action]) .workspace-notices {
   display: none;
 }
 .workspace-notices > :not(:empty) {
-  padding: 0.5rem;
+  padding: 0.3rem 0.75rem;
   margin: 0;
   background: var(--paper);
-  border: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
 }
+.workspace-notices .next-closure p { margin: 0; }
+.workspace-notices .next-closure a { display: inline-block; padding-block: 0.3rem; }
 .context-sheet {
   position: relative;
   display: flex;
@@ -210,9 +211,11 @@
 .city-briefing {
   margin: 0 0 0.5rem;
 }
-.city-crew { padding: 0.25rem 0; }
-.city-crew .crew-assignment { margin-top: 0.15rem; }
-.city-deadlines h2 { margin: 0.35rem 0 0.15rem; }
+.city-briefing-stats { margin: 0 0 0.15rem; }
+.city-crew { padding: 0.15rem 0; }
+.city-assignment a { position: relative; display: inline-block; padding-block: 0.35rem; }
+.city-assignment a::before { content: ""; position: absolute; inset: -8px 0; }
+.city-assignment small { display: block; color: var(--muted); }
 .city-deadlines ol { list-style: none; padding: 0; margin: 0; }
 .city-deadlines li {
   display: grid;

@@ -4541,3 +4541,7 @@ msgstr "Déplacer des Mesures entre vos cités."
 
 msgid "Situation de la cité"
 msgstr "Situation de la cité"
+
+#, python-format
+msgid "%(population)s habitants présents"
+msgstr "%(population)s habitants présents"

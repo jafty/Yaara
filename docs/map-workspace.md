@@ -9,8 +9,10 @@ presentation decisions. No saved rules or reports change. The October 27 follow-
   and red territory overlays distinguish owned and rival cities. No map zoom;
   browser zoom stays enabled.
 - Selecting an owned city shows its available granary and Fidèles above a compact
-  local briefing with team availability, assigned work and the city's dated
-  commitments, followed by unboxed command rows for construction and convoys.
+  compact briefing with present population, defenses, team availability, assigned
+  work and relevant local commitments, followed by unboxed command rows for
+  construction and convoys. The shared harvest date remains in the header. Notices
+  occupy their own space above the map rather than covering it.
   Each command opens a full sheet; return
   restores the city menu, or the works list when leaving a work detail. City
   accounts remain reachable from precise alert and report links. Resources remain

@@ -405,3 +405,11 @@ complete bilingual browser and map journeys passed with native and JavaScript
 navigation, narrow screens and enlarged text. Rules and archived reports are
 unchanged; no native-core documentation change is required. A mobile inspection
 also verified the occupied team's assignment, dates and unboxed command rows.
+
+## Compact city panel — October 27
+
+Presentation verification passed 72 PostgreSQL 17 cases, the case catalog, and
+bilingual browser and map journeys. The map journey checks that a sealed-order
+notice does not cover the map; a mobile inspection covered the occupied team,
+finish date, population and defenses. Translation compilation, lint and format
+checks passed. Game rules and archived reports are unchanged.

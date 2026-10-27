@@ -32,7 +32,10 @@ def test_local_commitments(user, language, stage):
     html = response.content.decode()
     assert 'class="city-briefing"' in html
     assert "data-city-deadlines" in html
-    assert "harvest-accounts" in html
+    briefing = html.split('<section class="city-briefing"', 1)[1].split("</section>", 1)[0]
+    assert "harvest-accounts" not in briefing
+    assert 'id="city-briefing-stats"' in briefing
+    assert "<h2>Échéances</h2>" not in briefing
     busy = stage in ("sealed", "active")
     assert f'data-team-state="{"occupied" if busy else "available"}"' in html
     if stage in ("sealed", "other-city"):

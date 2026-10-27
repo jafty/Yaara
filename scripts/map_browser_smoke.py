@@ -200,6 +200,14 @@ def run_map_journeys():
                 assert bounded, panel
                 assert page.locator(".sheet-body").evaluate("el => el.clientHeight > 80")
                 page.evaluate("document.documentElement.style.fontSize = '100%'")
+                page.goto(url + "?tab=map&city=c1")
+                notice = page.locator(".workspace-notices").bounding_box()
+                board = page.locator(".realm-map").bounding_box()
+                assert notice["y"] + notice["height"] <= board["y"] + 1
+                expect(page.locator("#city-briefing-stats")).to_be_visible()
+                expect(page.locator(".city-briefing h2")).to_have_count(0)
+                expect(page.locator('.city-briefing a[href*="harvest-accounts"]')).to_have_count(0)
+                page.goto(url + "?tab=mail&mail=schedule")
                 page.locator(".orders-register button").click()
                 page.goto(url + "?tab=map&city=c1&action=convoy&origin=c1")
                 for width in (390, 320):

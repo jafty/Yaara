@@ -5822,3 +5822,7 @@ msgstr "Move Measures between your cities."
 
 msgid "Situation de la cité"
 msgstr "City situation"
+
+#, python-format
+msgid "%(population)s habitants présents"
+msgstr "%(population)s inhabitants present"
