@@ -5733,3 +5733,24 @@ msgstr "Emblems identify the houses. Green banner: your domain; underlined name:
 
 msgid "Choisissez une cité : ses routes apparaissent. Le terrain est décoratif."
 msgstr "Select a city to reveal its roads. Terrain is decorative."
+
+msgid "Nouvelles"
+msgstr "News"
+
+msgid "Nouvelles du Scribe"
+msgstr "News from the Scribe"
+
+msgid "Choisissez une cité : ses routes apparaissent."
+msgstr "Select a city to reveal its routes."
+
+msgid "Bannière verte : vos cités. Bannière rouge : les cités rivales."
+msgstr "Green banner: your cities. Red banner: rival cities."
+
+msgid "Un nom souligné indique une cité que vos hommes peuvent atteindre."
+msgstr "An underlined name marks a city your warriors can reach."
+
+msgid "Un nom grisé indique une cité inaccessible pour le moment."
+msgstr "A muted name marks a city currently out of reach."
+
+msgid "Une bannière pointillée signale une expédition engagée."
+msgstr "A dashed banner marks a committed expedition."

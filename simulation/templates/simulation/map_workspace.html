@@ -41,8 +41,8 @@
         </div>
     </section>{% else %}
     <section id="map-context" class="context-sheet realm-sheet" aria-labelledby="context-title">
-        <header class="sheet-heading"><div class="sheet-identity"><h1 id="context-title" tabindex="-1">{% translate "Le conseil de votre maison" %}</h1></div></header>
-        <div class="sheet-body">{% include 'simulation/realm_overview.html' %}</div>
+        <header class="sheet-heading"><div class="sheet-identity"><h1 id="context-title" tabindex="-1">{% if tab == 'domain' %}{% translate "Le conseil de votre maison" %}{% else %}{% translate "Carte des oasis de Yaara" %}{% endif %}</h1></div></header>
+        <div class="sheet-body">{% if tab == 'domain' %}{% include 'simulation/realm_overview.html' %}{% else %}{% include 'simulation/map_guide.html' %}{% endif %}</div>
     </section>{% endif %}
 </div>
 {{ map_graph|json_script:'map-graph' }}

@@ -27,7 +27,7 @@
         {% endif %}
         <div class="book">
             <main id="main">
-                {% if guest_access.is_guest or guest_access.can_restore %}{% include 'simulation/guest_banner.html' %}{% endif %}
+                {% if not workspace %}{% include 'simulation/guest_banner.html' %}{% endif %}
                 {% if workspace %}<div class="workspace-notices">{% endif %}
                 {% if messages %}<div class="notices" aria-live="polite">{% for message in messages %}<p class="notice {{ message.tags }}">{{ message }}</p>{% endfor %}</div>{% endif %}
                 {% if view.sealed_count and game.can_advance and not game.paused and not view.finished %}<aside class="next-closure" data-next-closure>

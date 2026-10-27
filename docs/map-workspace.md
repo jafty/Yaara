@@ -148,3 +148,21 @@ Presentation verification: native forms, responsive layout, enlarged text,
 keyboard, selected roads and existing order journeys. Independent
 `map-permanent-overview` cases cover map, Reign and onboarding entry. No game
 rules or persisted data change.
+
+## Mobile readability and map orientation
+
+The default Map pane explains selection, public reachability, flag states and
+roads, followed by house emblems and links to their cities. The Reign destination
+retains accounts and calendar management; reports and deadlines remain in
+Nouvelles (formerly Courrier). No reference disclosure floats over the board.
+Guest account controls live in the pane content rather than covering map or text.
+
+Territory SVGs fill the frame without letterboxing or padded margins. Each city
+has a separate, proportioned SVG marker in the same native anchor, so artwork
+and names stay readable while territory geography adapts to the pane. Roads use
+the same public coordinate system. Native links, keyboard focus and saved game
+rules are unchanged. Compact headings and guide copy leave more decision space.
+
+Presentation checks include bilingual PostgreSQL rendering and native browser
+journeys. The map journey explicitly checks city-name bounds and edge-to-edge
+territories at 1440×1000, 390×740 and 320×640, with and without JavaScript.

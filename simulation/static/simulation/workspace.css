@@ -42,71 +42,14 @@
 .map-workspace .map-frame {
   width: 100%;
   height: 100%;
-  border: 0;
 }
 .map-workspace .map-sheet {
   width: 100%;
   height: 100%;
-  padding: 3rem 1rem 4.5rem;
-}
-.map-workspace .realm-map > .map-legend {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.35rem 1rem;
-  margin: 0;
-  padding: 0.5rem 0.75rem;
-  max-height: 22%;
-  overflow: auto;
-  background: var(--header-paper);
-  border-bottom: 1px solid var(--rule);
-}
-.map-workspace .map-instruction {
-  position: absolute;
-  left: 0.75rem;
-  bottom: 4rem;
-  margin: 0;
-  max-width: calc(100% - 1.5rem);
-  font-size: 0.8rem;
-}
-.map-workspace .map-reference {
-  position: absolute;
-  right: 0.75rem;
-  bottom: 0.3rem;
-  max-width: min(26rem, 49%);
-  max-height: 55%;
-  overflow: auto;
-  background: var(--paper);
-  padding: 0.15rem 0.5rem;
-  font-size: 0.85rem;
-}
-.map-workspace .march-legend {
-  position: absolute;
-  left: 0.75rem;
-  bottom: 4.8rem;
-  margin: 0;
-  background: var(--paper);
-  padding: 0.2rem 0.5rem;
-  max-width: calc(100% - 1.5rem);
-}
-.workspace-page #main > .guest-banner {
-  position: absolute;
-  z-index: 2;
-  left: 0.75rem;
-  bottom: 0.3rem;
-  max-width: 45%;
-  margin: 0;
-  padding: 0.15rem 0.5rem;
-  font-size: 0.8rem;
-  background: var(--paper);
-}
-.workspace-page #main > .guest-banner p {
-  margin: 0;
+  padding: 0;
 }
 .workspace-notices {
+  font-size: 0.875rem;
   position: absolute;
   z-index: 3;
   left: 0.75rem;
@@ -152,8 +95,8 @@
 }
 .sheet-identity h1 {
   margin: 0;
-  font-size: 1.25rem;
-  line-height: 1.15;
+  font-size: 1.1rem;
+  line-height: 1.2;
 }
 .sheet-identity p {
   margin: 0.25rem 0 0;
@@ -186,6 +129,8 @@
   color: var(--ink);
 }
 .sheet-body {
+  font-size: 0.9rem;
+  line-height: 1.4;
   padding: 0.75rem 1rem;
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -194,14 +139,14 @@
   scroll-padding: 0.75rem;
 }
 .sheet-body h2 {
-  font-size: 1.35rem;
+  font-size: 1.1rem;
 }
 .sheet-body h3 {
-  font-size: 1.2rem;
+  font-size: 1rem;
 }
 .sheet-body p {
-  font-size: 1rem;
-  margin-bottom: 0.6rem;
+  font-size: inherit;
+  margin-bottom: 0.5rem;
 }
 .city-activities {
   display: flex;
@@ -477,19 +422,7 @@
     border-left: 0;
     border-top: 1px solid var(--rule);
   }
-  .map-workspace .map-name {
-    font-size: 34px;
-  }
-  .map-workspace .map-sheet {
-    padding: 2rem 0.25rem 2rem;
-  }
-  .map-workspace .map-instruction,
-  .map-workspace .march-legend {
-    display: none;
-  }
-  .map-workspace .map-legend {
-    font-size: 0.8rem;
-  }
+
 }
 @media (max-width: 360px) {
   .sheet-seal {
@@ -497,6 +430,8 @@
   }
   .sheet-heading,
   .sheet-body {
+  font-size: 0.9rem;
+  line-height: 1.4;
     padding-inline: 0.7rem;
   }
   .city-resources {
@@ -519,3 +454,11 @@
     grid-template-rows: minmax(0, 10%) minmax(0, 90%);
   }
 }
+.map-guide-key { margin: 0; }
+.map-guide-key > div { padding-block: 0.4rem; border-bottom: 1px solid var(--rule); }
+.map-guide-key dt { display: flex; align-items: center; gap: 0.4rem; font-weight: 600; }
+.map-guide-key dd { margin: 0.15rem 0 0; }
+.map-house { padding-block: 0.3rem; }
+.map-house h3 { display: flex; align-items: center; gap: 0.4rem; margin: 0; }
+.map-house nav { display: flex; flex-wrap: wrap; gap: 0 0.8rem; }
+.map-house a { display: inline-flex; align-items: center; min-height: 44px; }

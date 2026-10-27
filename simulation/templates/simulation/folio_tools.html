@@ -10,3 +10,4 @@
                 {% include 'simulation/language_switch.html' %}
                 {% if not guest_access.is_guest %}<form method="post" action="{% url 'logout' %}">{% csrf_token %}<button type="submit">{% translate "Quitter" %}</button></form>{% endif %}
             </footer>
+{% include 'simulation/guest_banner.html' %}

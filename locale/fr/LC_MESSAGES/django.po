@@ -4449,3 +4449,24 @@ msgstr "Les emblèmes identifient les maisons. Bannière verte : votre domaine ;
 
 msgid "Choisissez une cité : ses routes apparaissent. Le terrain est décoratif."
 msgstr "Choisissez une cité : ses routes apparaissent. Le terrain est décoratif."
+
+msgid "Nouvelles"
+msgstr "Nouvelles"
+
+msgid "Nouvelles du Scribe"
+msgstr "Nouvelles du Scribe"
+
+msgid "Choisissez une cité : ses routes apparaissent."
+msgstr "Choisissez une cité : ses routes apparaissent."
+
+msgid "Bannière verte : vos cités. Bannière rouge : les cités rivales."
+msgstr "Bannière verte : vos cités. Bannière rouge : les cités rivales."
+
+msgid "Un nom souligné indique une cité que vos hommes peuvent atteindre."
+msgstr "Un nom souligné indique une cité que vos hommes peuvent atteindre."
+
+msgid "Un nom grisé indique une cité inaccessible pour le moment."
+msgstr "Un nom grisé indique une cité inaccessible pour le moment."
+
+msgid "Une bannière pointillée signale une expédition engagée."
+msgstr "Une bannière pointillée signale une expédition engagée."

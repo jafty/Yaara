@@ -30,13 +30,29 @@ def run_map_journeys():
                 url = page.url.split("?")[0]
                 expect(page.locator(".map-city")).to_have_count(9)
                 expect(page.locator(".map-connection")).to_have_count(12)
-                assert page.locator(".map-connection").evaluate_all(
-                    "lines => lines.every(el => getComputedStyle(el).opacity === '0')"
-                )
+                for road in page.locator(".map-connection").all():
+                    expect(road).to_have_css("opacity", "0")
                 expect(page.locator(".map-marker, .map-inner")).to_have_count(0)
                 canvas = page.locator(".map-workspace > .realm-map").bounding_box()
                 assert canvas["width"] == 720
                 assert abs(canvas["y"] - page.locator(".reign-header").bounding_box()["height"]) < 2
+                expect(page.locator(".map-guide-key")).to_be_visible()
+                expect(page.locator(".map-reference")).to_have_count(0)
+                for width, height in ((1440, 1000), (390, 740), (320, 640)):
+                    page.set_viewport_size({"width": width, "height": height})
+                    page.evaluate("document.fonts.ready")
+                    assert page.locator(".map-frame").evaluate("""frame => {
+                        const bounds = frame.getBoundingClientRect();
+                        const layer = frame.querySelector('.territory-layer').getBoundingClientRect();
+                        return Math.abs(layer.width - frame.clientWidth) < 1 &&
+                          Math.abs(layer.height - frame.clientHeight) < 1 &&
+                          [...frame.querySelectorAll('.map-name')].every(el => {
+                            const box = el.getBoundingClientRect();
+                            return box.left >= bounds.left && box.right <= bounds.right &&
+                              box.top >= bounds.top && box.bottom <= bounds.bottom;
+                          });
+                    }""")
+                page.set_viewport_size({"width": 1440, "height": 1000})
                 page.evaluate(
                     "window.originalMap = document.querySelector('.map-workspace > .realm-map')"
                 )

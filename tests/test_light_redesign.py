@@ -98,22 +98,16 @@ def test_report_reading_order(folio):
     assert report.content == original
 
 
-@case("layout-map-reference", "Redesign: map reading advice is a native optional disclosure")
+@case("layout-map-reference", "Owner: map guide lives in the default pane, never over the map")
 @pytest.mark.parametrize("folio", ["fr", "en"], indirect=True)
 def test_map_reference(folio):
     _, client, url = folio
-    text = client.get(url, {"tab": "wars", "city": "c4"}).content.decode()
-    legend = re.search(r'<details class="map-reference">.*?</details>', text, re.S).group()
-    label = (
-        "Understanding the map"
-        if client.cookies["django_language"].value == "en"
-        else "Comprendre la carte"
-    )
-    assert f"<summary>{label}</summary>" in legend and "map-states" in legend
-    assert f'aria-label="{label}"' in legend
-    assert not re.search(r"<details[^>]*\bopen", legend)
-    assert "target-knowledge" not in legend and "expedition-form" not in legend
-    assert 'id="map-context"' in text and 'id="mission-target"' in text
+    text = client.get(url, {"tab": "map"}).content.decode()
+    assert 'class="map-guide-key"' in text
+    assert 'id="map-houses-title"' in text
+    assert 'class="map-reference"' not in text
+    assert 'class="map-key engaged-key"' in text
+    assert 'id="recent-letters"' not in text
 
 
 @case("layout-named-quotes", "Redesign: every catalogue quote pairs its upgrade name and price")
