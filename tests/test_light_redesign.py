@@ -40,14 +40,14 @@ def test_council_priority(folio):
     assert game.state == original
 
 
-@case("layout-resource-labels", "Redesign: icons and exact values retain visible resource names")
+@case("layout-resource-labels", "Owner: compact icon/value resources retain accessible names")
 @pytest.mark.parametrize("folio", ["fr", "en"], indirect=True)
 def test_resource_labels(folio):
     _, client, url = folio
     text = client.get(url, {"tab": "domain"}).content.decode()
     ribbon = re.search(r'<div class="resource-ribbon[^\"]*".*?</div>', text, re.S).group()
     assert all(f'data-icon="{icon}"' in ribbon for icon in ("grain", "warrior", "moon"))
-    captions = re.findall(r'<span class="resource-caption">(.*?)</span>', ribbon)
+    captions = re.findall(r'<span class="resource-caption visually-hidden">(.*?)</span>', ribbon)
     assert captions == (
         ["Available measures", "Available warriors", "Moon"]
         if client.cookies["django_language"].value == "en"

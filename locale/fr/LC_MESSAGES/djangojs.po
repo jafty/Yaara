@@ -33,3 +33,35 @@ msgstr "Attention : moins d’un mois de réserves de siège après ce départ."
 #: simulation/static/simulation/app.js
 msgid "Il faudra conserver au moins %(amount)s Mesures de butin pour rembourser cette expédition."
 msgstr "Il faudra conserver au moins %(amount)s Mesures de butin pour rembourser cette expédition."
+
+# Mobile planning workspace
+msgid "Agrandir le panneau"
+msgstr "Agrandir le panneau"
+
+msgid "Réduire le panneau"
+msgstr "Réduire le panneau"
+
+msgid "Aucun moyen réservé avant confirmation."
+msgstr "Aucun moyen réservé avant confirmation."
+
+msgid "Départ"
+msgstr "Départ"
+
+msgid "Combat"
+msgstr "Combat"
+
+msgid "Retour"
+msgstr "Retour"
+
+msgid "Lune %(moon)s"
+msgstr "Lune %(moon)s"
+
+msgid "Minimum : %(minimum)s Fidèles."
+msgstr "Minimum : %(minimum)s Fidèles."
+
+msgid "Encore %(count)s à mobiliser."
+msgstr "Encore %(count)s à mobiliser."
+
+
+msgid "Part : %(charge)s · Disponibles : %(available)s Mesures."
+msgstr "Part : %(charge)s · Disponibles : %(available)s Mesures."

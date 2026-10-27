@@ -3,9 +3,11 @@
     <h2>{% translate "Acheminer des ressources" %}</h2>
     <form method="post" action="{% url 'preview' game.id %}">
         {% csrf_token %}<input type="hidden" name="kind" value="convoy">
+        <div class="convoy-fields">
         <p><label for="convoy-origin">{% translate "Cité de départ" %}</label><select name="origin" id="convoy-origin" required><option value="">{% translate "Choisir une cité" %}</option>{% for city in view.convoy_origins %}<option value="{{ city.id }}" {% if not city.available %}disabled{% elif city.id == convoy_origin %}selected{% endif %}>{{ city.name }} · {{ city.fee_percent }} % {% translate "de frais" %}{% if not city.available %} · {% translate "Convoi déjà engagé" %}{% endif %}</option>{% endfor %}</select></p>
         <p><label for="convoy-target">{% translate "Cité à ravitailler" %}</label><select name="target" id="convoy-target" required><option value="">{% translate "Choisir une cité" %}</option>{% for city in view.owned_cities %}<option value="{{ city.id }}" {% if city.id == convoy_target %}selected{% endif %}>{{ city.name }}</option>{% endfor %}</select></p>
         <p><label for="convoy-cargo">{% translate "Cargaison en Mesures" %}</label><input type="number" id="convoy-cargo" name="cargo" min="1" max="500000" step="1" inputmode="numeric" value="{{ convoy_cargo }}" required></p>
+        </div>
         <p>{% blocktranslate with departure=view.open_moon arrival=return_moon %}Départ à la clôture de la lune {{ departure }} ; arrivée à la clôture de la lune {{ arrival }}, après les combats.{% endblocktranslate %}</p>
         <button class="primary-action" type="submit">{% translate "Vérifier l’ordre" %}</button>
         <p class="aside-text">{% translate "Vous pourrez vérifier le récapitulatif avant de confirmer. Aucun moyen n’est réservé." %}</p>

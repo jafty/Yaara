@@ -76,10 +76,25 @@ def run_map_journeys():
                         assert board["x"] + board["width"] <= sheet["x"] + 1
                     else:
                         assert board["y"] + board["height"] <= sheet["y"] + 1
+                        assert sheet["height"] > board["height"]
                     assert board["width"] > 0 and board["height"] > 0
+                    expand = page.locator("[data-sheet-expand]")
+                    if javascript:
+                        expand.focus()
+                        page.keyboard.press("Enter")
+                        expect(expand).to_have_attribute("aria-expanded", "true")
+                        expect(page.locator(".realm-map")).to_be_hidden()
+                        assert page.locator(".sheet-body").evaluate("el => el.clientHeight > 150")
+                        page.keyboard.press("Escape")
+                        expect(expand).to_have_attribute("aria-expanded", "false")
+                        expect(expand).to_be_focused()
+                        expect(page.locator("#context-title")).to_have_text("Qasr")
+                    else:
+                        expect(expand).to_be_hidden()
                 page.set_viewport_size({"width": 1440, "height": 1000})
                 expect(page.locator(".map-connection.selected-road")).to_have_count(3)
-                expect(page.locator("#city-granary meter")).to_be_visible()
+                expect(page.locator("#city-granary")).to_be_visible()
+                expect(page.locator(".city-resources meter, .city-capabilities")).to_have_count(0)
                 assert page.locator('[data-local-work="c1"]').count() > 1
                 if javascript:
                     assert page.evaluate(
@@ -159,26 +174,86 @@ def run_map_journeys():
                 assert page.locator(".sheet-body").evaluate("el => el.clientHeight > 80")
                 page.evaluate("document.documentElement.style.fontSize = '100%'")
                 page.locator(".orders-register button").click()
+                page.goto(url + "?tab=map&city=c1&action=convoy&origin=c1")
+                for width in (390, 320):
+                    page.set_viewport_size({"width": width, "height": 740})
+                    fields = page.locator(".convoy-fields :is(input, select)")
+                    boxes = [field.bounding_box() for field in fields.all()]
+                    assert (
+                        max(box["width"] for box in boxes) - min(box["width"] for box in boxes) < 1
+                    )
+                    assert all(box["height"] >= 44 for box in boxes)
+                    for field in ("origin", "target", "cargo"):
+                        label = page.locator(f'label[for="convoy-{field}"]').bounding_box()
+                        control = page.locator(f"#convoy-{field}").bounding_box()
+                        assert label["y"] + label["height"] <= control["y"]
+                page.set_viewport_size({"width": 390, "height": 740})
                 page.goto(url + "?tab=map&city=c4#map-context")
                 expect(page.locator(".expedition-form")).to_be_visible()
+                expect(page.locator('.alerts-trigger [data-icon="envelope"]')).to_have_count(1)
+                assert page.locator("[data-army-summary]").evaluate(
+                    "el => !el.closest('.sheet-body')"
+                )
+                for width, height in ((1440, 1000), (390, 740), (320, 640)):
+                    page.set_viewport_size({"width": width, "height": height})
+                    for scale in ("100%", "200%"):
+                        page.evaluate("s => document.documentElement.style.fontSize = s", scale)
+                        expect(
+                            page.locator(".primary-action[form='expedition-form']")
+                        ).to_be_in_viewport()
+                        expect(page.locator(".panel-close")).to_be_in_viewport()
+                        geometry = page.locator(".sheet-body").evaluate("""el => ({
+                            height: el.clientHeight, width: el.clientWidth,
+                            scrollWidth: el.scrollWidth,
+                            position: getComputedStyle(el.parentElement).position
+                        })""")
+                        assert (
+                            geometry["height"] > 80 and geometry["scrollWidth"] <= geometry["width"]
+                        ), (language, javascript, width, height, scale, geometry)
+                        if javascript and geometry["position"] == "absolute":
+                            expect(page.locator(".realm-map")).to_have_attribute(
+                                "aria-hidden", "true"
+                            )
+                            assert page.locator(".reign-header").evaluate("el => el.inert")
+                        assert page.locator(".sheet-body").evaluate("""el =>
+                            el.getBoundingClientRect().bottom <=
+                            document.querySelector('[data-army-summary]').getBoundingClientRect().top + 1
+                        """)
+                    page.evaluate("document.documentElement.style.fontSize = '100%'")
+                page.set_viewport_size({"width": 390, "height": 740})
                 controls = page.locator('[data-origin="c1"] [data-contingent-controls]')
                 if javascript:
                     controls.locator('[data-adjust="1"]').click()
                     expect(page.locator("#men-c1")).to_have_value("1")
-                    controls.locator('input[type="range"]').fill("5")
-                    expect(page.locator("#men-c1")).to_have_value("5")
+                    page.locator("#men-c1").fill("5")
+                    expect(page.locator("#army-total")).to_have_text("5")
                     controls.locator("[data-maximum]").click()
                     expect(page.locator("#men-c1")).to_have_value("100")
                     controls.locator('[data-adjust="-1"]').click()
                     expect(page.locator("#men-c1")).to_have_value("99")
                 else:
-                    expect(controls).to_be_hidden()
+                    expect(controls.locator('[data-adjust="1"]')).to_be_hidden()
+                    expect(controls.locator('input[type="range"]')).to_have_count(0)
+                    expect(page.locator("#men-c1")).to_be_visible()
                 page.locator("#men-c1").fill("10")
                 page.locator("#men-c3").fill("20")
                 if javascript:
+                    expect(page.locator("#army-total")).to_have_text("30")
+                    page.locator('input[name="kind"][value="capture"]').check()
+                    expect(page.locator("[data-loot-preview]")).to_be_hidden()
+                    expect(page.locator("#mission-help")).to_contain_text("80")
+                    page.locator('input[name="kind"][value="raid"]').check()
+                    expect(page.locator("[data-loot-preview]")).to_be_visible()
                     expect(page.locator("#draft-route path")).to_have_count(1)
                     assert page.locator("#draft-route path").get_attribute("d").startswith("M ")
-                page.locator('.expedition-form button[type="submit"]').click()
+                    page.locator("[data-sheet-expand]").click()
+                    expect(page.locator("#men-c1")).to_have_value("10")
+                    expect(page.locator("#men-c3")).to_have_value("20")
+                    page.keyboard.press("Escape")
+                page.screenshot(
+                    path=str(artifacts / f"army-{language}-{javascript}.png"), full_page=True
+                )
+                page.locator('.primary-action[form="expedition-form"]').click()
                 page.locator(".decree-reading > form button").click()
                 expect(page.locator('[data-march-state="sealed"]')).to_have_count(1)
                 page.goto(url + "?tab=domain#turn-page")

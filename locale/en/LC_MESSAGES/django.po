@@ -5754,3 +5754,44 @@ msgstr "A muted name marks a city currently out of reach."
 
 msgid "Une bannière pointillée signale une expédition engagée."
 msgstr "A dashed banner marks a committed expedition."
+
+# Mobile planning workspace
+msgid "Agrandir le panneau"
+msgstr "Expand panel"
+
+msgid "Réduire le panneau"
+msgstr "Collapse panel"
+
+msgid "Aucun moyen réservé avant confirmation."
+msgstr "No resources reserved before confirmation."
+
+msgid "Départ"
+msgstr "Departure"
+
+msgid "Combat"
+msgstr "Combat"
+
+msgid "Retour"
+msgstr "Return"
+
+msgid "Minimum : %(minimum)s Fidèles."
+msgstr "Minimum: %(minimum)s Fidèles."
+
+msgid "Encore %(count)s à mobiliser."
+msgstr "Mobilize %(count)s more."
+
+
+msgid "Transport max."
+msgstr "Max. carrying"
+
+msgid "Récolte · L%(moon)s"
+msgstr "Harvest · M%(moon)s"
+
+msgid "Coûts et règles de l’expédition"
+msgstr "Expedition costs and rules"
+
+msgid "Part : %(charge)s · Disponibles : %(available)s Mesures."
+msgstr "Share: %(charge)s · Available: %(available)s Measures."
+
+msgid "Les moyens libres de la cité"
+msgstr "The city’s available means"

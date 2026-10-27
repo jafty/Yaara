@@ -10,7 +10,8 @@ presentation decisions. No saved rules or reports change. The October 27 follow-
   together. A reachable enemy opens preparation directly. Convoys and detailed
   accounts remain deliberate activities in the same workspace. The map
   shares the workspace with a permanent decision pane: equal columns on
-  desktop and equal stacked areas on mobile. The default pane shows the house
+  desktop. On mobile, the map guide uses equal areas; selected city/mail/review
+  sheets use 72% of the workspace and army preparation uses 80%. The default pane shows the house
   overview and calendar controls. Selecting a city replaces the pane contents.
   Progressive context navigation retains the map canvas and supports browser Back.
 - Local works show only that city's next quote and use a hidden city field, never
@@ -166,3 +167,65 @@ rules are unchanged. Compact headings and guide copy leave more decision space.
 Presentation checks include bilingual PostgreSQL rendering and native browser
 journeys. The map journey explicitly checks city-name bounds and edge-to-edge
 territories at 1440×1000, 390×740 and 320×640, with and without JavaScript.
+
+## October 27 — Compact header and decision-first mobile planning
+
+The owner's latest screenshots and follow-up supersede visible resource captions,
+the separate Reign subtitle and harvest row, and the permanent equal mobile split.
+The header shows three icon/exact-value resources and an inline harvest-Moon link.
+Names remain available to assistive technology and on hover or keyboard focus.
+The house name stays a single clipped line with its full name available; there is
+no repeated game title. An envelope labelled Alertes retains the unresolved count;
+zero is neutral. The shared news destination still contains schedule and archives.
+
+City and owner share a compact heading. Body text is 14px at normal browser size,
+with 16px number fields and 44px touch targets. Each selected mobile sheet receives
+most of the workspace; an explicit expand button uses the whole screen and Escape
+first restores the split. Short screens and enlarged text automatically give the
+decision sheet the full viewport, including without JavaScript. Covered map/header
+controls become inert in the enhanced flow; native close links remain available.
+
+Army totals and their form-associated review button are siblings of the scrolling
+body, so they never cover troop fields. Native number inputs share a row with
+progressive decrement/increment and maximum controls. Each city shows its
+available troops and exact local charge; an accessible i disclosure keeps equipment
+and siege-reserve details optional, with shortfall warnings always visible. Dates,
+mission choice and minimum troops remain in the main flow; explanatory formulas,
+break-even guidance and rules move into a native disclosure. Convoy labels sit
+above equal-width native fields. No costs, rules, authorization or stored data change.
+
+Independent bilingual contracts: `planning-expandable-sheet` for map/city/mail/review,
+`planning-native-army`, `planning-envelope-news`, `planning-convoy-fields`,
+`planning-compact-city-identity`, and the revised accessible `layout-resource-labels`.
+Browser journeys verify expand/restore, retained drafts, unobscured army fields and
+review controls, mission switching, aligned convoy fields, native forms, narrow
+screens and 200% text. Regular-size captures are separate from accessibility stress
+captures. The native core and gameplay reference remain unchanged and accurate.
+
+
+The owner's subsequent component review rejects dashboard cards and gauges as
+an organizing model for this manuscript game. Own-city means occupy one ruled
+ledger row: free grain and available Fidèles. Capacity, reservations, absences and
+forecasts remain in Comptes; overflow, siege shortfalls and inherited-troop
+restrictions remain visible when they affect a decision. Equipment capabilities
+are not repeated above the local works that already explain them. Native mission
+radios replace the paper tiles; troop sliders are removed. Dates and army totals
+read as ledger lines. Number fields and step/max controls retain full touch areas.
+Crew availability is plain text. Route links are an optional disclosure because
+selected roads already appear on the map.
+
+The component review applies the same criteria throughout the workspace:
+
+| Component | Primary decision information | Secondary detail |
+| --- | --- | --- |
+| House header | Free means, current Moon and unresolved alerts | Resource names on focus; links to harvest and house records |
+| City heading | City and current owner | Full long names without enlarging the heading |
+| City ledger row | Spendable grain and available Fidèles | Balances, capacity and forecasts in Comptes |
+| Local works | Next capability, effect, cost, duration and availability | Illustration and full quote on the named work page |
+| Army order | Mission, dates, minimum, quantities, local charges and warnings | Equipment/reserves behind i; formulas and rules in a disclosure |
+| Army review line | Gathered troops, price and return ceiling | Read-only review before any reservation |
+| Convoy order | Origin, destination, cargo and arrival | Native reference notes |
+| Map and letters | Public geography and recipient-specific facts | Route list and archived reports opened deliberately |
+
+`planning-city-free-means` checks that the row shows free grain after reservations
+while the accounts retain total stock and capacity. No simulation changes apply.

@@ -4470,3 +4470,44 @@ msgstr "Un nom grisé indique une cité inaccessible pour le moment."
 
 msgid "Une bannière pointillée signale une expédition engagée."
 msgstr "Une bannière pointillée signale une expédition engagée."
+
+# Mobile planning workspace
+msgid "Agrandir le panneau"
+msgstr "Agrandir le panneau"
+
+msgid "Réduire le panneau"
+msgstr "Réduire le panneau"
+
+msgid "Aucun moyen réservé avant confirmation."
+msgstr "Aucun moyen réservé avant confirmation."
+
+msgid "Départ"
+msgstr "Départ"
+
+msgid "Combat"
+msgstr "Combat"
+
+msgid "Retour"
+msgstr "Retour"
+
+msgid "Minimum : %(minimum)s Fidèles."
+msgstr "Minimum : %(minimum)s Fidèles."
+
+msgid "Encore %(count)s à mobiliser."
+msgstr "Encore %(count)s à mobiliser."
+
+
+msgid "Transport max."
+msgstr "Transport max."
+
+msgid "Récolte · L%(moon)s"
+msgstr "Récolte · L%(moon)s"
+
+msgid "Coûts et règles de l’expédition"
+msgstr "Coûts et règles de l’expédition"
+
+msgid "Part : %(charge)s · Disponibles : %(available)s Mesures."
+msgstr "Part : %(charge)s · Disponibles : %(available)s Mesures."
+
+msgid "Les moyens libres de la cité"
+msgstr "Les moyens libres de la cité"

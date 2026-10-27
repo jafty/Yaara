@@ -2,6 +2,28 @@
 
 let pageTimers = [];
 let headerObserver = null;
+let sheetExpanded = false;
+function sizeSheet(expanded) {
+  const workspace = document.querySelector(".map-workspace");
+  const button = workspace?.querySelector("[data-sheet-expand]");
+  if (!button) return;
+  sheetExpanded = expanded;
+  workspace.classList.toggle("is-expanded", expanded);
+  const coversMap =
+    expanded ||
+    getComputedStyle(workspace.querySelector(".context-sheet")).position === "absolute";
+  const map = workspace.querySelector(".realm-map");
+  map.inert = coversMap;
+  document.querySelector(".reign-header").inert = coversMap;
+  if (coversMap) map.setAttribute("aria-hidden", "true");
+  else map.removeAttribute("aria-hidden");
+  button.setAttribute("aria-expanded", String(expanded));
+  const label = expanded
+    ? gettext("Réduire le panneau")
+    : gettext("Agrandir le panneau");
+  button.setAttribute("aria-label", label);
+  button.title = label;
+}
 function measureHeader() {
   const header = document.querySelector(".reign-header");
   if (!header) return;
@@ -24,11 +46,20 @@ function initializePage() {
   pageTimers.forEach(window.clearInterval);
   pageTimers = [];
   if (headerObserver) headerObserver.disconnect();
+  const expand = document.querySelector("[data-sheet-expand]");
+  if (expand) {
+    if (!document.querySelector(".panel-close")) sheetExpanded = false;
+    expand.hidden = false;
+    sizeSheet(sheetExpanded);
+    expand.addEventListener("click", () => sizeSheet(!sheetExpanded));
+  }
   const header = document.querySelector(".reign-header");
   if (header) {
     measureHeader();
     headerObserver = new ResizeObserver(() => {
       measureHeader();
+      if (document.querySelector("[data-sheet-expand]"))
+        sizeSheet(sheetExpanded);
       const target = folioFragment();
       if (!target) return;
       const top = target.getBoundingClientRect().top;
@@ -122,6 +153,7 @@ function initializePage() {
       ...document.querySelectorAll('input[name="kind"][type="radio"]'),
     ];
     const form = targetSelect.closest("form");
+    const plan = form.closest(".context-sheet") || form;
     const rows = [...document.querySelectorAll(".contribution")];
     const format = new Intl.NumberFormat(document.documentElement.lang);
     const updateTotals = () => {
@@ -134,13 +166,13 @@ function initializePage() {
       const kind = kinds.find((input) => input.checked).value;
       const price = prices[kind];
       const cost = price.base + total * price.per_person;
-      form.querySelector("[data-carry-limit]").textContent = format.format(
+      plan.querySelector("[data-carry-limit]").textContent = format.format(
         rows.reduce(
           (sum, row, index) => sum + counts[index] * Number(row.dataset.carry),
           0,
         ),
       );
-      form.querySelector("[data-loot-preview]").hidden = kind !== "raid";
+      plan.querySelector("[data-loot-preview]").hidden = kind !== "raid";
       form.querySelector(".loot-preview").hidden = kind !== "raid";
       document.querySelector("#army-total").textContent = format.format(total);
       document.querySelector("#army-cost").textContent = format.format(cost);
@@ -163,9 +195,6 @@ function initializePage() {
       }
       let shortfall = 0;
       rows.forEach((row, index) => {
-        const controls = row.querySelector("[data-contingent-controls]");
-        if (controls)
-          controls.querySelector('input[type="range"]').value = counts[index];
         const chargeForOrigin = fees[index] + counts[index] * price.per_person;
         const remainingStock = Number(row.dataset.freeStock) - chargeForOrigin;
         const need =
@@ -198,7 +227,7 @@ function initializePage() {
         note.textContent =
           interpolate(
             gettext(
-              "Part de cette cité : %(charge)s Mesures ; disponibles : %(available)s.",
+              "Part : %(charge)s · Disponibles : %(available)s Mesures.",
             ),
             {
               charge: format.format(charge),
@@ -218,7 +247,7 @@ function initializePage() {
       if (form.dataset.localFunding !== "true") {
         shortfall = Math.max(0, cost - Number(form.dataset.freeStock));
       }
-      form.querySelector("[data-expedition-budget]").textContent = shortfall
+      plan.querySelector("[data-expedition-budget]").textContent = shortfall
         ? interpolate(
             gettext(
               "Il manque %(amount)s Mesures pour cette expédition. Aucun moyen n’est réservé.",
@@ -236,13 +265,21 @@ function initializePage() {
         { amount: format.format(cost) },
         true,
       );
-      document.querySelector("#mission-help").textContent = interpolate(
-        gettext(
-          "Il faut au moins %(minimum)s Fidèles. Départ à la clôture de cette lune, combat à la suivante, retour une lune après le combat. Le butin ne sera disponible qu’au retour.",
-        ),
-        { minimum: price.minimum },
-        true,
-      );
+      const help = document.querySelector("#mission-help");
+      help.textContent =
+        interpolate(
+          gettext("Minimum : %(minimum)s Fidèles."),
+          { minimum: price.minimum },
+          true,
+        ) +
+        (total < price.minimum
+          ? " " +
+            interpolate(
+              gettext("Encore %(count)s à mobiliser."),
+              { count: price.minimum - total },
+              true,
+            )
+          : "");
     };
     const updateOrigins = () => {
       const eligible = origins[targetSelect.value] || [];
@@ -251,7 +288,7 @@ function initializePage() {
         input.disabled = !eligible.includes(row.dataset.origin);
         row
           .querySelectorAll(
-            "[data-contingent-controls] input, [data-contingent-controls] button",
+            "[data-contingent-controls] button",
           )
           .forEach((control) => {
             control.disabled = input.disabled || Number(input.max) === 0;
@@ -280,12 +317,9 @@ function initializePage() {
         number.value = Math.max(0, Math.min(Number(number.max), value));
         updateTotals();
       };
-      controls.hidden = false;
-      controls
-        .querySelector('input[type="range"]')
-        .addEventListener("input", (event) =>
-          setCount(Number(event.target.value)),
-        );
+      controls.querySelectorAll("[hidden]").forEach((control) => {
+        control.hidden = false;
+      });
       controls.querySelectorAll("[data-adjust]").forEach((button) => {
         button.addEventListener("click", () =>
           setCount(Number(number.value || 0) + Number(button.dataset.adjust)),
@@ -463,6 +497,7 @@ initializePage();
 // Same-document hashes and font reflow can follow a change in header height.
 document.fonts.ready.then(alignFolioFragment);
 window.addEventListener("hashchange", alignFolioFragment);
+window.addEventListener("resize", () => sizeSheet(sheetExpanded));
 
 // Context links keep the cartographic surface mounted as the application's home.
 // Native URLs remain fully usable with JavaScript disabled or a failed request.
@@ -629,6 +664,12 @@ window.addEventListener("popstate", () => {
 
 document.addEventListener("keydown", (event) => {
   if (event.key !== "Escape" || event.defaultPrevented) return;
+  if (sheetExpanded) {
+    sizeSheet(false);
+    document.querySelector("[data-sheet-expand]")?.focus({ preventScroll: true });
+    event.preventDefault();
+    return;
+  }
   const close = document.querySelector(".map-workspace .panel-close");
   if (close) {
     event.preventDefault();

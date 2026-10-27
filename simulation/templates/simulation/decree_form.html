@@ -1,6 +1,6 @@
 {% load i18n l10n %}
 <section class="{% if not inline %}chapter-section {% endif %}decree-form">{% if not inline %}<h2>{{ action.label }}</h2>{% endif %}
-    <form method="post" action="{% url 'preview' game.id %}" {% if action.kind == 'expedition' %}class="expedition-form" data-local-funding="{{ view.local_funding|yesno:'true,false' }}" data-free-stock="{{ view.available_stock|unlocalize }}"{% elif action.kind != 'equipment' %}data-work-form data-local-funding="{{ view.local_funding|yesno:'true,false' }}" data-free-stock="{{ view.available_stock|unlocalize }}"{% endif %}>
+    <form method="post" action="{% url 'preview' game.id %}" {% if action.kind == 'expedition' %}id="expedition-form" class="expedition-form" data-local-funding="{{ view.local_funding|yesno:'true,false' }}" data-free-stock="{{ view.available_stock|unlocalize }}"{% elif action.kind != 'equipment' %}data-work-form data-local-funding="{{ view.local_funding|yesno:'true,false' }}" data-free-stock="{{ view.available_stock|unlocalize }}"{% endif %}>
         {% csrf_token %}
         {% if action.kind == 'expedition' %}
             <fieldset class="mission-options"><legend class="visually-hidden">{% translate "Action" %}</legend>
@@ -9,22 +9,28 @@
             </fieldset>
             {% if selected_target %}<input type="hidden" name="target" id="mission-target" value="{{ selected.id }}">
             {% else %}<p><label for="mission-target">{% translate "Vers quelle cité ?" %}</label><select name="target" id="mission-target" required><option value="">{% translate "Désigner une cité à notre portée" %}</option>{% for target in view.attack_targets %}<option value="{{ target.id }}" {% if target.engaged %}disabled{% endif %}>{{ target.name }} · {{ target.owner_name }}</option>{% endfor %}</select></p>{% endif %}
-            <p>{% blocktranslate with departure=view.open_moon combat=combat_moon arrival=return_moon %}Départ : lune {{ departure }} · Combat : lune {{ combat }} · Retour : lune {{ arrival }}.{% endblocktranslate %}</p>
-            <fieldset><legend>{% translate "Fidèles par cité d’origine" %}</legend>
+            <dl class="mission-timeline">
+                <div><dt>{% translate "Départ" %}</dt><dd>{% blocktranslate with moon=view.open_moon %}Lune {{ moon }}{% endblocktranslate %}</dd></div>
+                <div><dt>{% translate "Combat" %}</dt><dd>{% blocktranslate with moon=combat_moon %}Lune {{ moon }}{% endblocktranslate %}</dd></div>
+                <div><dt>{% translate "Retour" %}</dt><dd>{% blocktranslate with moon=return_moon %}Lune {{ moon }}{% endblocktranslate %}</dd></div>
+            </dl>
+            <p class="aside-text" id="mission-help">{% if mission_kind == 'capture' %}{% blocktranslate with minimum=view.expedition_prices.capture.minimum %}Minimum : {{ minimum }} Fidèles.{% endblocktranslate %}{% else %}{% blocktranslate with minimum=view.expedition_prices.raid.minimum %}Minimum : {{ minimum }} Fidèles.{% endblocktranslate %}{% endif %}</p>
+            <fieldset class="army-origins"><legend>{% translate "Fidèles par cité d’origine" %}</legend>
                 {% for city in view.owned_cities %}
                 <div class="contribution" data-origin="{{ city.id }}" data-free-stock="{{ city.available_stock|unlocalize }}" data-present="{{ city.present_population|unlocalize }}" data-carry="{{ city.carry_per_survivor|default:5000|unlocalize }}">
                     <div class="origin-heading"><label for="men-{{ city.id }}">{{ city.name }}</label><small>{% blocktranslate with v0=city.available_fideles %}{{ v0 }} Fidèles disponibles.{% endblocktranslate %}</small><small class="origin-note"></small></div>
-                    <span class="manpower-input"><input id="men-{{ city.id }}" type="number" name="men_{{ city.id }}" value="{{ city.contribution|default:'0' }}" min="0" max="{{ city.available_fideles }}" inputmode="numeric" aria-label="{% blocktranslate with v0=city.name %}Fidèles de {{ v0 }}{% endblocktranslate %}"> <span aria-hidden="true">{% include 'simulation/nav_icon.html' with icon='warrior' %}</span></span>
-                    {% if workspace %}<div class="contingent-controls" data-contingent-controls hidden>
-                        <button type="button" data-adjust="-1" aria-label="{% translate 'Retirer un Fidèle' %}">−</button>
-                        <input type="range" min="0" max="{{ city.available_fideles }}" value="{{ city.contribution|default:'0' }}" aria-label="{% blocktranslate with v0=city.name %}Fidèles de {{ v0 }}{% endblocktranslate %}">
-                        <button type="button" data-adjust="1" aria-label="{% translate 'Ajouter un Fidèle' %}">+</button>
-                        <button type="button" data-maximum>{% translate "Max." %}</button>
-                    </div>{% endif %}
-                    {% if view.local_funding %}<small class="origin-funding" aria-live="polite">{% blocktranslate with charge=city.expedition_charge available=city.available_stock %}Part de cette cité : {{ charge }} Mesures ; disponibles : {{ available }}.{% endblocktranslate %}{% if city.expedition_shortfall %} {% blocktranslate with amount=city.expedition_shortfall %}Il manque {{ amount }} Mesures dans cette cité.{% endblocktranslate %}{% endif %}</small>{% endif %}
+                    <div class="contingent-controls"{% if workspace %} data-contingent-controls{% endif %}>
+                        {% if workspace %}<button type="button" data-adjust="-1" aria-label="{% translate 'Retirer un Fidèle' %}" hidden>−</button>{% endif %}
+                        <span class="manpower-input"><input id="men-{{ city.id }}" type="number" name="men_{{ city.id }}" value="{{ city.contribution|default:'0' }}" min="0" max="{{ city.available_fideles|unlocalize }}" step="1" inputmode="numeric" aria-label="{% blocktranslate with v0=city.name %}Fidèles de {{ v0 }}{% endblocktranslate %}"{% if selected_target and city.id not in selected_target.origins %} disabled{% endif %}></span>
+                        {% if workspace %}
+                        <button type="button" data-adjust="1" aria-label="{% translate 'Ajouter un Fidèle' %}" hidden>+</button>
+                        <button type="button" data-maximum hidden>{% translate "Max." %}</button>
+                        {% endif %}
+                    </div>
+                    {% if view.local_funding %}<small class="origin-funding" aria-live="polite">{% blocktranslate with charge=city.expedition_charge available=city.available_stock %}Part : {{ charge }} · Disponibles : {{ available }} Mesures.{% endblocktranslate %}{% if city.expedition_shortfall %} {% blocktranslate with amount=city.expedition_shortfall %}Il manque {{ amount }} Mesures dans cette cité.{% endblocktranslate %}{% endif %}</small>{% endif %}
                     {% if view.local_funding and view.rules == 'V1' %}<small class="reserve-warning" data-origin-warning aria-live="polite">{% if city.expedition_siege_shortfall %}{% translate "Attention : moins d’un mois de réserves de siège après ce départ." %}{% endif %}</small>{% endif %}
                     <details class="origin-details">
-                        <summary>{% translate "Détails du contingent" %}<span class="visually-hidden"> · {{ city.name }}</span></summary>
+                        <summary title="{% translate 'Détails du contingent' %}"><span aria-hidden="true">i</span><span class="visually-hidden">{% translate "Détails du contingent" %} · {{ city.name }}</span></summary>
                         <dl class="origin-means" data-origin-means>
                             <div><dt>{% include 'simulation/nav_icon.html' with icon='blades' %}{% translate "Armement" %}</dt><dd>{{ city.equipment }}</dd></div>
                             {% if view.seasonal_raids %}<div><dt>{% include 'simulation/nav_icon.html' with icon='siege' %}{% translate "Siège" %}</dt><dd>{{ city.siege_equipment }}{% if city.siege_effect %}<small>{{ city.siege_effect }}</small>{% endif %}</dd></div>
@@ -34,6 +40,7 @@
                     </details>
                 </div>
                 {% endfor %}</fieldset>
+            <details class="expedition-notes"><summary>{% translate "Coûts et règles de l’expédition" %}</summary>
             <p class="cost-hint">{% blocktranslate with raid_base=view.expedition_prices.raid.base raid_person=view.expedition_prices.raid.per_person capture_base=view.expedition_prices.capture.base capture_person=view.expedition_prices.capture.per_person %}Pillage : {{ raid_base }} Mesures + {{ raid_person }} par Fidèle. Capture : {{ capture_base }} Mesures + {{ capture_person }} par Fidèle.{% endblocktranslate %}</p>
             <div class="loot-preview" {% if mission_kind == 'capture' %}hidden{% endif %}>
                 <p class="cost-hint">{% translate "Plafond si tous les hommes reviennent. Le butin réel reste inconnu : il dépend des récoltes exposées et des survivants." %}</p>
@@ -42,8 +49,7 @@
             {% if view.seasonal_raids %}{% include 'simulation/ledger_help.html' with topic='raid' %}{% endif %}
             {% if view.seasonal_raids %}{% include 'simulation/ledger_help.html' with topic='contingents' %}{% endif %}
             {% if view.rules == 'V1' %}{% include 'simulation/ledger_help.html' with topic='siege' %}{% endif %}
-            <p class="cost-hint" data-expedition-budget aria-live="polite"></p>
-            <p class="aside-text" id="mission-help"></p>
+            </details>
             {{ attack_origins|json_script:'attack-origins' }}
             {{ view.expedition_prices|json_script:'expedition-prices' }}
         {% elif action.kind == 'equipment' %}<input type="hidden" name="kind" value="equipment">
@@ -62,12 +68,10 @@
                 <p class="cost-hint" data-budget-note aria-live="polite"></p>
             </div>
         {% endif %}
-        {% if action.kind == 'expedition' %}<div class="order-actions"><div class="expedition-totals" aria-live="polite">
-            <p>{% translate "Effectif réuni :" %}<strong id="army-total">{{ expedition_total }}</strong></p>
-            <p data-loot-preview {% if mission_kind == 'capture' %}hidden{% endif %}>{% translate "Capacité de retour" %}<strong data-carry-limit>{{ expedition_capacity }}</strong><small>{% translate "Mesures" %}</small></p>
-            <p>{% translate "Prix :" %}<strong id="army-cost">{{ expedition_cost }}</strong><small>{% translate "Mesures" %}</small></p>
-        </div>{% endif %}
-        <button class="primary-action" type="submit" {% if action.kind == 'equipment' %}{% if not view.equipment_available or view.equipment_shortfall %}disabled{% endif %}{% elif action.kind != 'expedition' and not action.selectable %}disabled{% endif %}>{% translate "Vérifier l’ordre" %}</button>
+        {% if action.kind == 'expedition' %}
+            {% if not workspace %}{% include 'simulation/expedition_actions.html' %}{% endif %}
+        {% else %}
+        <button class="primary-action" type="submit" {% if action.kind == 'equipment' %}{% if not view.equipment_available or view.equipment_shortfall %}disabled{% endif %}{% elif not action.selectable %}disabled{% endif %}>{% translate "Vérifier l’ordre" %}</button>
         <p class="aside-text">{% translate "Vous pourrez vérifier le récapitulatif avant de confirmer. Aucun moyen n’est réservé." %}</p>
-        {% if action.kind == 'expedition' %}</div>{% endif %}
+        {% endif %}
     </form></section>

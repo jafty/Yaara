@@ -104,6 +104,21 @@ depend on the active browser language.
 
 ## Local verification levels
 
+The latest October 27 mobile-planning revision adds eighteen bilingual presentation
+variations for expandable frames, native army totals, envelope alerts, convoy fields
+and compact city/owner headings, plus free local means after reservations. Resource-label expectations follow the owner's
+new icon/value header with accessible captions. The browser journey checks normal
+text separately from 200% reflow, integrated troop controls, preserved counts through
+expansion, an unobscured external summary, native form-associated submission and
+consistent convoy fields. Two stale map assertions now check only public marker
+coordinates in inline styles and house emblems in the existing map guide, instead
+of requiring the older in-map legend. No privacy expectation is relaxed. Full local
+verification is selected after discovering those baseline test mismatches.
+The final component review removes the city meter and repeated capabilities,
+replaces stock/troop cards with one ledger row, and removes troop sliders.
+Native number controls, accounts, warnings and per-work effects retain their
+contracts; browser checks exercise the actual controls.
+
 The light redesign adds independent bilingual contracts for news/date/account order,
 visible resource captions with retained icons, immutable report reading order, native
 optional map explanations, individually named work quotes, and direct batch selection.

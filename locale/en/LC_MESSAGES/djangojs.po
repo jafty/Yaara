@@ -95,3 +95,35 @@ msgstr "Warning: less than one month's siege supplies after this departure."
 #: simulation/static/simulation/app.js
 msgid "Il faudra conserver au moins %(amount)s Mesures de butin pour rembourser cette expédition."
 msgstr "At least %(amount)s Measures of spoils must be retained to repay this expedition."
+
+# Mobile planning workspace
+msgid "Agrandir le panneau"
+msgstr "Expand panel"
+
+msgid "Réduire le panneau"
+msgstr "Collapse panel"
+
+msgid "Aucun moyen réservé avant confirmation."
+msgstr "No resources reserved before confirmation."
+
+msgid "Départ"
+msgstr "Departure"
+
+msgid "Combat"
+msgstr "Combat"
+
+msgid "Retour"
+msgstr "Return"
+
+msgid "Lune %(moon)s"
+msgstr "Moon %(moon)s"
+
+msgid "Minimum : %(minimum)s Fidèles."
+msgstr "Minimum: %(minimum)s Fidèles."
+
+msgid "Encore %(count)s à mobiliser."
+msgstr "Mobilize %(count)s more."
+
+
+msgid "Part : %(charge)s · Disponibles : %(available)s Mesures."
+msgstr "Share: %(charge)s · Available: %(available)s Measures."

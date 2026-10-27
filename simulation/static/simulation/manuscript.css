@@ -4,7 +4,7 @@
   --navigation: #263f40;
   --navigation-ink: #faf4e9;
   --navigation-accent: #efb18a;
-  --header-height: 10rem;
+  --header-height: 6rem;
 }
 html {
   scroll-padding-top: calc(var(--header-height) + 1rem);
@@ -14,7 +14,7 @@ body {
   background: var(--paper);
   color: var(--ink);
   font:
-    1.0625rem/1.45 "Alegreya",
+    1rem/1.4 "Alegreya",
     Georgia,
     "Times New Roman",
     serif;
@@ -74,17 +74,18 @@ button:hover {
 .workspace-heading {
   max-width: 76rem;
   margin-inline: auto;
-  padding: 0.25rem 0.5rem;
+  padding: 0.2rem 0.5rem;
+  container-type: inline-size;
 }
 .realm-identity {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.4rem;
   border-bottom: 1px solid var(--rule);
 }
 .realm-identity .book-world {
-  font-size: 1.1rem;
+  font-size: 1rem;
   display: inline-flex;
   align-items: center;
   min-height: 44px;
@@ -93,24 +94,34 @@ button:hover {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  flex: 1 1 6rem;
+  flex: 1 1 3rem;
   min-width: 0;
   min-height: 44px;
   text-decoration: none;
   margin: 0;
   font-style: italic;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   overflow-wrap: anywhere;
+}
+.house-identity > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .realm-identity .alerts-trigger {
   border: 1px solid var(--rule);
   padding: 0.2rem 0.45rem;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0;
   color: var(--ink);
   gap: 0.4rem;
 }
 .realm-identity .alerts-trigger strong {
   border-radius: 0;
+  background: transparent;
+  color: var(--muted);
+  border-color: var(--rule);
+}
+.realm-identity .alerts-trigger.has-alerts strong {
   background: var(--accent);
   color: var(--paper);
   border-color: var(--accent);
@@ -119,17 +130,14 @@ button:hover {
   border-left: 1px solid var(--rule);
 }
 .harvest-link {
-  display: block;
-  text-align: right;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-height: 44px;
+  padding-left: 0.35rem;
   color: var(--muted);
   font-size: 0.75rem;
-  min-height: 24px;
-  padding-top: 0.15rem;
-}
-.house-identity small {
-  font-size: 0.75rem;
-  font-style: normal;
-  color: var(--mineral);
+  white-space: nowrap;
 }
 .realm-identity [data-section][aria-current] {
   text-decoration: underline;
@@ -181,9 +189,11 @@ button:hover {
   stroke-linejoin: round;
 }
 .resource-ribbon {
+  position: relative;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 6rem), 1fr));
-  padding-top: 0.4rem;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 0.8fr) minmax(0, 0.6fr) auto;
+  align-items: center;
+  padding-top: 0;
   font-size: 1rem;
   line-height: 1.3;
   font-variant-numeric: tabular-nums;
@@ -195,7 +205,7 @@ button:hover {
   flex-shrink: 0;
   min-height: 44px;
   color: var(--muted);
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   text-decoration: none;
 }
 .alerts-trigger .nav-icon {
@@ -214,6 +224,8 @@ button:hover {
   border: 1px solid currentColor;
 }
 .resource-value {
+  min-width: 0;
+  min-height: 44px;
   display: grid;
   padding: 0 0.25rem;
   grid-template-columns: auto auto;
@@ -222,16 +234,27 @@ button:hover {
   gap: 0.1rem 0.25rem;
 }
 .resource-value strong {
-  font-size: 1rem;
+  font-size: 0.875rem;
   white-space: nowrap;
   grid-column: 2;
   grid-row: 1;
 }
-.resource-caption {
-  grid-column: 1 / -1;
-  grid-row: 2;
-  font-size: 0.75rem;
-  color: var(--muted);
+.resource-value:is(:hover, :focus) .resource-caption {
+  position: absolute;
+  inset: 100% 0 auto;
+  z-index: 1;
+  width: auto;
+  height: auto;
+  margin: 0;
+  padding: 0.4rem 0.65rem;
+  clip-path: none;
+  overflow: visible;
+  white-space: normal;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 0.8rem;
+  box-shadow: 0 3px 8px #302c2614;
 }
 .resource-value .nav-icon {
   grid-column: 1;
@@ -240,7 +263,7 @@ button:hover {
   height: 20px;
   color: var(--accent);
 }
-.resource-value:last-child .nav-icon {
+.resource-value .nav-icon[data-icon="moon"] {
   color: var(--mineral);
 }
 main {
@@ -534,8 +557,6 @@ strong {
   align-items: center;
   gap: 0.35rem;
   max-width: 100%;
-  padding: 0.2rem 0.45rem;
-  border: 1px solid var(--rule);
   color: var(--muted);
   font-size: 0.875rem;
   line-height: 1.4;
@@ -547,7 +568,6 @@ strong {
 }
 .team-status[data-team-state="occupied"] {
   color: var(--accent);
-  background: #f6eae4;
 }
 .crew-assignment {
   display: block;
@@ -774,17 +794,101 @@ input[type="number"] {
   min-height: 44px;
   width: 5rem;
   border: 1px solid var(--ochre);
-  padding: 0.2rem;
+  border-radius: 0;
+  padding: 0.5rem;
   background: var(--paper);
+  font-size: 1rem;
+  line-height: 1.25;
+  font-variant-numeric: tabular-nums;
   text-align: center;
 }
+.convoy-fields {
+  display: grid;
+  gap: 0.65rem;
+}
+.convoy-fields p {
+  margin: 0;
+}
+.convoy-fields label {
+  display: block;
+  margin-bottom: 0.25rem;
+}
+.convoy-fields input,
+.convoy-fields select {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid var(--ochre);
+  border-radius: 0;
+  background-color: var(--paper);
+  font-size: 1rem;
+  line-height: 1.25;
+  text-align: left;
+}
+.mission-timeline {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin: 0 0 0.4rem;
+  padding: 0.5rem 0;
+  border-block: 1px solid var(--rule);
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+}
+.mission-timeline > div {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.15rem 0.3rem;
+}
+.mission-timeline dt {
+  color: var(--muted);
+}
+.mission-timeline dd {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+.army-origins legend {
+  font-weight: 600;
+}
+.contingent-controls {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+.contingent-controls button {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0.3rem 0.5rem;
+  text-align: center;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  font-size: 1rem;
+}
+.contingent-controls :is(button, input)[hidden] {
+  display: none;
+}
+.contingent-controls input[type="number"] {
+  width: 4.5rem;
+  appearance: textfield;
+}
+.contingent-controls input[type="number"]::-webkit-inner-spin-button,
+.contingent-controls input[type="number"]::-webkit-outer-spin-button {
+  appearance: none;
+  margin: 0;
+}
 .contribution {
+  position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   gap: 0.3rem 0.75rem;
-  padding: 0.75rem 0;
-  border-bottom: 1px solid var(--rule);
+  padding: 0.65rem 0;
+  border-top: 1px solid var(--rule);
 }
 .contribution small {
   display: block;
@@ -797,10 +901,20 @@ input[type="number"] {
 .origin-note {
   display: block;
 }
-.origin-heading label {
+.origin-heading {
+  grid-column: 1 / -1;
+  padding-right: 44px;
   display: flex;
-  align-items: center;
-  min-height: 44px;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.15rem 0.5rem;
+}
+.origin-heading label {
+  font-weight: 600;
+  font-size: 1rem;
+}
+.origin-heading .origin-note {
+  flex-basis: 100%;
 }
 .origin-funding,
 .contribution > .reserve-warning,
@@ -812,8 +926,29 @@ input[type="number"] {
   display: none;
 }
 .origin-details summary {
-  font-size: 1.0625rem;
+  position: absolute;
+  top: 0.2rem;
+  right: 0;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  list-style: none;
+  font-size: 1rem;
+  font-style: italic;
   color: var(--muted);
+}
+.origin-details summary::-webkit-details-marker {
+  display: none;
+}
+.origin-details summary > [aria-hidden] {
+  display: grid;
+  place-items: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 1px solid var(--rule);
+  border-radius: 50%;
 }
 .origin-means {
   display: grid;
@@ -846,36 +981,43 @@ input[type="number"] {
   align-items: center;
   gap: 0.35rem;
 }
-.manpower-input .nav-icon {
-  width: 1.1rem;
-  height: 1.1rem;
-  vertical-align: middle;
-}
 .loot-preview {
   padding: 0.75rem;
   margin-block: 0.75rem;
   background: var(--leaf);
   border: 1px solid var(--rule);
 }
-/* Shared expedition review totals; the workspace makes this action area sticky. */
+/* The workspace places this summary outside the scrolling form body. */
 .expedition-totals {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.5rem;
-  margin-block: 0.5rem;
-  font-size: 0.85rem;
-  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.2rem 0.75rem;
+  margin: 0 0 0.4rem;
+  font-variant-numeric: tabular-nums;
 }
 .expedition-totals p {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.2rem 0.35rem;
   margin: 0;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
 }
-.expedition-totals strong,
+.expedition-totals [data-loot-preview] {
+  flex-basis: 100%;
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+.expedition-totals [hidden] {
+  display: none;
+}
 .expedition-totals small {
-  display: block;
+  font-size: inherit;
 }
 .expedition-totals strong {
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 
 .order-status {
@@ -1613,40 +1755,37 @@ input[type="number"] {
 }
 .mission-options {
   display: flex;
-  gap: 0.5rem;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.5rem;
   padding: 0;
 }
 .mission-options label {
-  position: relative;
-  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 44px;
   cursor: pointer;
 }
 .mission-options input {
-  position: absolute;
-  opacity: 0;
+  margin: 0;
+  accent-color: var(--accent);
 }
 .mission-options span {
-  display: flex;
+  display: inline-flex;
   min-height: 44px;
   align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.5rem;
-  border: 1px solid var(--rule);
-  background: var(--leaf) url("illustrations/papyrus.webp") center / 24rem auto;
-  background-blend-mode: multiply;
+  gap: 0.35rem;
+  border-bottom: 1px solid transparent;
 }
 .mission-options .nav-icon {
+  width: 1.1rem;
+  height: 1.1rem;
   flex-shrink: 0;
 }
 .mission-options input:checked + span {
-  color: #783a29;
-  border-color: var(--accent);
-  background-color: #f3ded3;
-}
-.mission-options input:focus-visible + span {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
+  color: var(--accent);
+  border-color: currentColor;
+  font-weight: 600;
 }
 
 @media (min-width: 900px) {
@@ -1660,16 +1799,13 @@ input[type="number"] {
   .realm-identity {
     border: 0;
   }
-  .harvest-link {
-    grid-column: 2;
-  }
   .realm-identity .alerts-trigger {
     margin: 0;
   }
 }
 @media (max-width: 360px) {
   :root {
-    --header-height: 12rem;
+    --header-height: 6rem;
   }
   .workspace-heading {
     padding-inline: 0.5rem;
@@ -1679,11 +1815,19 @@ input[type="number"] {
     flex-wrap: wrap;
   }
   .realm-identity .book-world {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
   .realm-identity .alerts-trigger {
     gap: 0.2rem;
     font-size: 0.8rem;
+  }
+}
+@container (max-width: 14rem) {
+  .resource-ribbon {
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 0.9fr) minmax(0, 0.6fr);
+  }
+  .harvest-link {
+    grid-column: 1 / -1;
   }
 }
 @media (prefers-reduced-motion: reduce) {

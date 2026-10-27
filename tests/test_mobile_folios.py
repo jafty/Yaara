@@ -45,7 +45,7 @@ def test_navigation(user, tab, active, language):
     assert len(re.findall('aria-current="page"', nav)) == (1 if active else 0)
     if active:
         assert f'data-section="{active}" aria-current="page"' in nav
-    assert 'data-icon="bell"' in nav
+    assert 'data-icon="envelope"' in nav
     assert ("Map" if language == "en" else "Carte") in nav
     ribbon = re.search(r'<div class="resource-ribbon[^"]*".*?</div>', html, re.S).group()
     assert "turn-page" not in ribbon
@@ -76,7 +76,10 @@ def test_map(user, language):
     assert all(
         "equipment" not in city for city in page.context["view"]["cities"] if not city["owned"]
     )
-    assert "style=" not in atlas
+    # Marker placement is public presentation data; no private values enter styles.
+    assert re.findall(r'style="([^"]*)"', atlas) == [
+        f"--map-x: {city['x']}; --map-y: {city['y']}" for city in page.context["view"]["cities"]
+    ]
 
 
 @case(
@@ -92,13 +95,13 @@ def test_map_house_emblems(user, language):
     client = Client()
     client.force_login(user)
     client.cookies["django_language"] = language
-    html = client.get(reverse("game", args=[game.id]), {"tab": "wars"}).content.decode()
+    html = client.get(reverse("game", args=[game.id])).content.decode()
     atlas = re.search(r'<figure class="realm-map".*?</figure>', html, re.S).group()
     for owner, emblem in (("p1", "sun"), ("p2", "lotus"), ("p3", "palm")):
         cities = re.findall(rf'<a class="map-city house-{owner}".*?</a>', atlas, re.S)
         assert cities
         assert all(f'data-house-emblem="{emblem}"' in city for city in cities)
-        legend = re.search(rf'<li class="house-{owner}">.*?</li>', atlas, re.S).group()
+        legend = re.search(rf'<div class="map-house house-{owner}">.*?</div>', html, re.S).group()
         assert f'data-house-emblem="{emblem}"' in legend
         assert 'aria-hidden="true"' in legend
     assert 'class="map-sigil"' not in atlas

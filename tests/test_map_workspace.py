@@ -31,7 +31,7 @@ def test_entry(user, language):
     assert html.count('<line class="map-connection') == 12
     assert html.count('class="map-city ') == 9
     assert "user-scalable=no" not in html
-    assert ("Nouvelles" if language == "fr" else "News") in html
+    assert ("Alertes" if language == "fr" else "Alerts") in html
 
 
 @case("map-local-work", REQ)

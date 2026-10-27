@@ -12,7 +12,7 @@
             </nav>
         {% endif %}
         <div class="sheet-body">
-        <p class="aside-text">{{ selected.owner_name }} · {{ selected.wall_label }}{% if selected.damaged %} · {% translate "Ouvrage endommagé" %}{% endif %}</p>
+        {% if not selected.owned or selected.damaged %}<p class="aside-text">{{ selected.wall_label }}{% if selected.damaged %} · {% translate "Ouvrage endommagé" %}{% endif %}</p>{% endif %}
         {% if selected.owned %}
             {% if activity == 'accounts' %}{% include 'simulation/city_folio.html' %}
             {% elif activity == 'convoy' %}{% if not view.finished and not view.eliminated and not game.paused %}{% include 'simulation/convoy_form.html' %}{% endif %}
@@ -28,20 +28,21 @@
             {% endif %}
         {% elif activity == 'expedition' and selected_target and not selected.engaged %}
             {% if not view.finished and not view.eliminated and not game.paused %}
+                <div id="expedition-order">{% include 'simulation/decree_form.html' with inline=True %}</div>
                 <details class="target-knowledge"><summary>{% translate "Ce que nous savons de cette cible" %}</summary>
                     {% for letter in target_observations %}<p>{{ letter.observation }} <a href="?tab=mail&amp;mail=chronicle#report-{{ letter.id }}">{% translate "Lire le rapport complet" %} →</a></p>{% empty %}<p>{% translate "Aucun témoignage de combat conservé pour cette cible. Ses effectifs, ses réserves et ses ouvrages non observés restent inconnus." %}</p>{% endfor %}
                 </details>
-                <div id="expedition-order">{% include 'simulation/decree_form.html' with inline=True %}</div>
             {% endif %}
         {% else %}
             {% if not selected_target %}<p>{% translate "Cette oasis est hors de nos frontières. Nos hommes doivent pouvoir la rejoindre par nos terres." %}</p>{% endif %}
             {% if selected.own_engagement %}<a href="?tab=mail&amp;mail=schedule">{% translate "Suivre nos expéditions" %} →</a>{% endif %}
         {% endif %}
-        <p class="map-neighbors">{% translate "Routes directes" %} : {% for neighbor in neighbors %}<a href="?tab=map&amp;city={{ neighbor.id }}#map-context">{{ neighbor.name }}</a>{% if not forloop.last %} · {% endif %}{% endfor %}</p>
+        <details class="map-neighbors"><summary>{% translate "Routes directes" %}</summary><p>{% for neighbor in neighbors %}<a href="?tab=map&amp;city={{ neighbor.id }}#map-context">{{ neighbor.name }}</a>{% if not forloop.last %} · {% endif %}{% endfor %}</p></details>
         </div>
+        {% if not selected.owned and activity == 'expedition' and selected_target and not selected.engaged and not view.finished and not view.eliminated and not game.paused %}{% include 'simulation/expedition_actions.html' with detached=True %}{% endif %}
     </section>{% else %}
     <section id="map-context" class="context-sheet realm-sheet" aria-labelledby="context-title">
-        <header class="sheet-heading"><div class="sheet-identity"><h1 id="context-title" tabindex="-1">{% if tab == 'domain' %}{% translate "Le conseil de votre maison" %}{% else %}{% translate "Carte des oasis de Yaara" %}{% endif %}</h1></div></header>
+        <header class="sheet-heading"><div class="sheet-identity"><h1 id="context-title" tabindex="-1">{% if tab == 'domain' %}{% translate "Le conseil de votre maison" %}{% else %}{% translate "Carte des oasis de Yaara" %}{% endif %}</h1></div>{% include 'simulation/sheet_expand.html' %}</header>
         <div class="sheet-body">{% if tab == 'domain' %}{% include 'simulation/realm_overview.html' %}{% else %}{% include 'simulation/map_guide.html' %}{% endif %}</div>
     </section>{% endif %}
 </div>

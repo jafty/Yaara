@@ -1,21 +1,8 @@
-{% load i18n l10n %}
-<div class="city-resources">
-    <section id="city-granary" class="city-granary" aria-labelledby="granary-title">
-        <h2 id="granary-title">{% translate "Grenier de la cité" %}</h2>
-        <p class="stock-amount"><strong>{{ selected.stock }}</strong> / {{ selected.capacity }} <span>{% translate "Mesures" %}</span></p>
-        <meter min="0" max="{{ selected.capacity|unlocalize }}" value="{{ selected.stock|unlocalize }}" aria-label="{% translate 'Occupation du grenier' %}"></meter>
-        <dl><div><dt>{% translate "Mesures libres" %}</dt><dd>{{ selected.available_stock }}</dd></div><div><dt>{% translate "Mesures réservées" %}</dt><dd>{{ selected.reserved_stock }}</dd></div></dl>
-        <p class="stock-forecast">{% blocktranslate with amount=selected.harvest_forecast moon=view.harvest_moon %}Récolte estimée : {{ amount }} · lune {{ moon }}.{% endblocktranslate %}</p>
-    </section>
-    <section class="city-troops" aria-labelledby="troops-title"><h2 id="troops-title">{% translate "Fidèles disponibles" %}</h2><strong class="troop-amount">{{ selected.available_fideles }}</strong>
-        <dl><div><dt>{% translate "Réservés" %}</dt><dd>{{ selected.reserved_fideles }}</dd></div><div><dt>{% translate "En route" %}</dt><dd>{{ selected.absent }}</dd></div></dl>
-    </section>
-</div>
+{% load i18n %}
+<dl class="city-resources" aria-label="{% translate 'Les moyens libres de la cité' %}">
+    <div id="city-granary"><dt>{% translate "Grenier" %}</dt><dd><strong>{{ selected.available_stock }}</strong><span class="visually-hidden"> {% translate "Mesures libres" %}</span></dd></div>
+    <div><dt>{% translate "Fidèles" %}</dt><dd><strong>{{ selected.available_fideles }}</strong><span class="visually-hidden"> {% translate "Fidèles disponibles" %}</span></dd></div>
+</dl>
 {% if selected.forecast_overflow %}<p class="reserve-warning">{% blocktranslate with amount=selected.forecast_overflow moon=view.harvest_moon %}Débordement possible : {{ amount }} Mesures à la récolte de lune {{ moon }}.{% endblocktranslate %}</p>{% endif %}
 {% if selected.siege_shortfall %}<p class="reserve-warning">{% translate "Réserves de siège insuffisantes" %} · {{ selected.siege_shortfall }} {% translate "Mesures" %}</p>{% endif %}
 {% if selected.restricted_fideles %}<p>{% blocktranslate with count=selected.restricted_fideles moon=selected.restricted_until %}{{ count }} Fidèles hérités assurent la défense locale. Départs et secours possibles à partir de la lune {{ moon }}.{% endblocktranslate %}</p>{% endif %}
-<dl class="city-capabilities">
-    <div><dt>{% translate "Armement" %}</dt><dd>{{ selected.equipment }}</dd></div>
-    {% if view.seasonal_raids %}<div><dt>{% translate "Transport" %}</dt><dd>{{ selected.transport_equipment }}</dd></div><div><dt>{% translate "Siège" %}</dt><dd>{{ selected.siege_equipment }}</dd></div>{% endif %}
-    {% for building in selected.buildings %}{% if building.kind == 'watch' %}<div><dt>{% translate "Surveillance" %}</dt><dd>{{ building.name }}{% if building.damaged %} · {% translate "Ouvrage endommagé" %}{% endif %}</dd></div>{% endif %}{% endfor %}
-</dl>

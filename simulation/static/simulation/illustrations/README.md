@@ -20,7 +20,8 @@ center was transparent; it is not used by the interface.
 
 The October 27 map assets below replace `map-terrain.png`. Reading text uses clean surfaces.
 `papyrus.webp`, generated for the earlier October 24 material revision, now
-supplies the subtle mission-button texture. The header uses solid pale stone;
+supplies the subtle map texture. Mission choices use plain ink and native radios
+instead of textured tiles. The header uses solid pale stone;
 mineral green remains in controls and owned flags. Fallback surface
 colors remain when images are disabled.
 

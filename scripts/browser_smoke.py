@@ -191,8 +191,14 @@ def redesign_reflow(page):
                 # The permanent decision pane scrolls independently of the map.
                 heading = page.locator(".letter-entry h3").first.bounding_box()
                 assert heading["y"] + heading["height"] <= page.viewport_size["height"]
-            for caption in page.locator(".resource-caption").all():
-                expect(caption).to_be_visible()
+            # Covered navigation is inert; otherwise labels appear on keyboard focus.
+            if page.locator(".reign-header").evaluate("el => el.inert"):
+                expect(page.locator(".context-sheet")).to_have_css("position", "absolute")
+            else:
+                for resource in page.locator(".resource-value").all():
+                    resource.focus()
+                    expect(resource.locator(".resource-caption")).to_have_css("clip-path", "none")
+                page.locator(".book-world").focus()
     page.evaluate("document.documentElement.style.removeProperty('font-size')")
     page.set_viewport_size(viewport)
 
@@ -527,11 +533,13 @@ with sync_playwright() as playwright:
         expect(page.locator("#mission-target")).to_have_value("c4")
         for origin in ("c1", "c2", "c3"):
             page.locator(f'input[name="men_{origin}"]').fill("20")
-        page.locator('.expedition-form button[type="submit"]').click()
+        page.locator('.primary-action[form="expedition-form"]').click()
         expect(page.locator('input[name="kind"][value="capture"]')).to_be_checked()
         expect(page.locator("#mission-target")).to_have_value("c4")
         expect(page.locator('input[name="men_c1"]')).to_have_value("20")
         assert "tab=map" in page.url and "action=expedition" in page.url
+        page.locator(".expedition-notes > summary").focus()
+        page.keyboard.press("Enter")
         help_note = page.locator(".ledger-help").first
         help_note.locator("summary").focus()
         page.keyboard.press("Enter")
@@ -559,7 +567,7 @@ with sync_playwright() as playwright:
         page.locator('input[name="men_c2"]').fill("0")
         page.locator('input[name="men_c3"]').fill("60")
         expect(page.locator("#army-cost")).to_contain_text("65,000" if en else "65\u202f000")
-        page.locator('.expedition-form button[type="submit"]').click()
+        page.locator('.primary-action[form="expedition-form"]').click()
         expect(
             page.get_by_role("heading", name="The people committed" if en else "Les hommes engagés")
         ).to_be_visible()
@@ -782,7 +790,7 @@ with sync_playwright() as playwright:
                 }
                 assert (
                     page.locator("body").evaluate("el => parseFloat(getComputedStyle(el).fontSize)")
-                    == 17
+                    == 16
                 )
                 if suffix == "?tab=constructions":
                     page.locator("#work-storage").click()
@@ -947,7 +955,7 @@ with sync_playwright() as playwright:
         expect(page.locator("[data-expedition-budget]")).to_contain_text(
             "35,000" if en else "35\u202f000"
         )
-        page.locator('.expedition-form button[type="submit"]').click()
+        page.locator('.primary-action[form="expedition-form"]').click()
         expect(page.locator(".notices")).to_contain_text("Qasr")
         expect(page.locator('input[name="men_c1"]')).to_have_value("10")
         assert "action=expedition" in page.url
@@ -963,7 +971,7 @@ with sync_playwright() as playwright:
         expect(native_page.locator("#army-total")).to_have_text("30")
         expect(native_page.locator("#army-cost")).to_have_text("35,000" if en else "35\u00a0000")
         assert native_page.locator(".origin-funding").count() == 3
-        native_page.locator('.expedition-form button[type="submit"]').click()
+        native_page.locator('.primary-action[form="expedition-form"]').click()
         expect(native_page.locator('input[name="men_c3"]')).to_have_value("10")
         no_overflow(native_page)
         native_page.screenshot(

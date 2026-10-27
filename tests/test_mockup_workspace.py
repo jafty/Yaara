@@ -33,8 +33,8 @@ def test_city_direct_work(user, language):
     html = client.get(url, {"city": "c1"}).content.decode()
     assert 'class="context-sheet city-sheet"' in html
     assert 'class="sheet-heading"' in html and 'class="sheet-body"' in html
-    assert 'id="city-granary"' in html and "<meter " in html
-    assert 'class="city-capabilities"' in html
+    assert 'id="city-granary"' in html and 'class="city-resources"' in html
+    assert "<meter " not in html and 'class="city-capabilities"' not in html
     assert 'data-local-work="c1"' in html
     assert 'name="kind" value="irrigation"' in html
     assert 'type="checkbox"' not in html

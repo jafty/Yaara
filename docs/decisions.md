@@ -1,5 +1,21 @@
 # Implementation decisions
 
+## 2026-10-27 · Denser header and mobile army planning
+
+The owner requested more useful decision space and then removed repeated header
+labels and secondary prose. Keep icon/exact-value resources with accessible names,
+an inline harvest link and envelope/Alertes count. Put the owner beside the compact
+city title. Mobile decisions take most of the screen; explicit expansion and a
+large-text fallback provide a full-screen sheet. Army review totals sit outside
+the scrolling form; local funding and warnings stay visible, while equipment and
+explanations use native disclosures. Uniform native fields preserve all existing
+review/seal flows. See `docs/map-workspace.md`. This is presentation work; no native
+core or saved-rule change requires a gameplay-reference update.
+The owner's component review replaces cards/gauges with one local-means ledger
+row, removes duplicated capabilities and troop sliders, and presents mission
+choices, dates, crew status and totals as restrained manuscript controls. Details
+belong in their accounts, work items or native disclosures.
+
 ## 2026-10-27 · Schematic map and continuous contextual sheets
 
 The owner authorized map/city artwork and removed the need for the three-item
