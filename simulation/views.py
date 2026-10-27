@@ -375,7 +375,7 @@ def desk(request, game_id):
             "view": view,
             "tab": tab,
             "prologue_page": prologue_page,
-            "workspace": tab in ("map", "mail"),
+            "workspace": tab in ("map", "mail", "domain", "prologue"),
             "activity": action_kind,
             "local_work": local_work,
             "mail_section": mail_section,
@@ -383,11 +383,6 @@ def desk(request, game_id):
             **workspace_context(view, selected, action_kind),
             "prologue_previous": prologue_page - 1,
             "prologue_next": prologue_page + 1,
-            "nav_section": "wars"
-            if action_kind == "expedition" or tab == "wars"
-            else "constructions"
-            if tab == "constructions" or action_kind
-            else "domain",
             "selected": selected,
             "reports": [report_view(report, state=game.state) for report in reports],
             "news_moon": max(1, news_month),
@@ -659,7 +654,6 @@ def preview_order(request, game_id):
             **workspace_context(preview_view, selected),
             "view": preview_view,
             "tab": "decrees",
-            "nav_section": "wars" if kind in ("raid", "capture", "convoy") else "constructions",
             "order": order,
             "target": city_names.get(order.get("target")),
             "origin": city_names.get(order.get("origin")),

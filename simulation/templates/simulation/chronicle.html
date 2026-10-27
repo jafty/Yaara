@@ -2,40 +2,20 @@
 {% block title %}{{ view.realm }} · {{ game.title }} · Yaara{% endblock %}
 {% block content %}
     {% if not workspace %}<header class="chapter-heading compact-heading">
-        <h1>{% if tab == 'domain' %}{% translate "Le conseil de votre maison" %}{% elif tab == 'city' %}{% blocktranslate with v0=selected.name %}Le feuillet de {{ v0 }}{% endblocktranslate %}{% elif tab == 'decrees' %}{% translate "Ce que vous dicterez" %}{% elif tab == 'constructions' %}{% translate "Chantiers" %}{% elif tab == 'wars' %}{% translate "Expéditions" %}{% elif tab == 'help' %}{% translate "Comment jouer" %}{% elif tab == 'prologue' %}{% translate "Premiers pas" %}{% else %}{% translate "Rapports" %}{% endif %}</h1>
+        <h1>{% if tab == 'city' %}{% blocktranslate with v0=selected.name %}Le feuillet de {{ v0 }}{% endblocktranslate %}{% elif tab == 'decrees' %}{% translate "Ce que vous dicterez" %}{% elif tab == 'constructions' %}{% translate "Chantiers" %}{% elif tab == 'wars' %}{% translate "Expéditions" %}{% elif tab == 'help' %}{% translate "Comment jouer" %}{% else %}{% translate "Rapports" %}{% endif %}</h1>
         <p class="visually-hidden">{% blocktranslate with v0=view.realm %}Au service de {{ v0 }}.{% endblocktranslate %}</p>
     </header>{% endif %}
     {% if tab == 'city' %}{% include 'simulation/illustration.html' with scene='city' variant=selected.id %}{% endif %}
     {% if not workspace %}{% include 'simulation/game_status.html' %}{% endif %}
-    {% if tab == 'map' %}{% include 'simulation/map_workspace.html' %}
+    {% if tab == 'map' or tab == 'domain' %}{% include 'simulation/map_workspace.html' %}
     {% elif tab == 'mail' %}{% include 'simulation/mail.html' %}
-    {% elif tab == 'domain' %}
-        {% if not view.closed_moon and not view.finished and not game.paused %}<section class="first-decisions" data-first-decisions aria-label="{% translate 'Vos premiers ordres' %}">
-            <p>{% translate "Vous gouvernez trois cités. Construisez, protégez vos réserves et prenez les cités rivales." %}</p>
-            <nav class="first-decision-links" aria-label="{% translate 'Choisir un premier ordre' %}"><a href="?tab=constructions">{% translate "Choisir un chantier" %} →</a><a href="?tab=wars">{% translate "Préparer une expédition" %} →</a></nav>
-            <p class="aside-text">{% translate "Préparez un ordre, vérifiez ses termes, puis scellez-le. Il prendra effet à la clôture de la lune." %}</p>
-        </section>{% endif %}
-        <nav class="council-jumps reading-links" aria-label="{% translate 'Dans ce conseil' %}">{% if not view.finished %}<a href="#upcoming-heading">{% translate "Les prochaines échéances" %} ↓</a>{% endif %}<a href="#city-ledgers">{% translate "Les comptes de vos cités" %} ↓</a></nav>
-        <div class="council-layout"><div class="council-dispatches">
-        <section class="briefing-news" aria-labelledby="recent-letters">
-            <h2 id="recent-letters">{% blocktranslate with v0=news_moon %}Les nouvelles de la lune {{ v0 }}{% endblocktranslate %}</h2>
-            {% include 'simulation/letter_entries.html' with compact=True %}
-            <p class="reading-links"><a href="?tab=letters">{% translate "Tous les rapports" %} →</a></p>
-        </section>
-        {% if not view.finished %}<section class="chapter-section" aria-labelledby="upcoming-heading">
-            <h2 id="upcoming-heading">{% translate "Les prochaines échéances" %}</h2>
-            {% if game.paused %}<p class="aside-text">{% translate "Ces échéances attendent la reprise du calendrier." %}</p>{% endif %}
-            <ol class="milestones">{% for event in milestones %}<li>
-                <span class="milestone-date">{% blocktranslate with v0=event.moon %}Lune {{ v0 }}{% endblocktranslate %}</span>
-                <a href="?tab={{ event.tab }}{% if event.tab == 'domain' %}#upcoming-heading{% endif %}">{{ event.label }}</a>{% if event.detail %} · {{ event.detail }}{% endif %}
-            </li>{% endfor %}</ol>
-            {% if not view.eliminated and not game.paused %}<p class="reading-links"><a href="?tab=decrees">{% translate "Préparer un décret" %} →</a></p>{% endif %}
-        </section>{% endif %}
-        </div>{% include 'simulation/city_ledger.html' %}</div>
-        {% include 'simulation/standings.html' %}
-        {% include 'simulation/orders_register.html' %}
     {% elif tab == 'help' %}{% include 'simulation/help.html' %}
-    {% elif tab == 'prologue' %}{% include 'simulation/prologue.html' %}
+    {% elif tab == 'prologue' %}<div class="map-workspace">
+        {% include 'simulation/realm_map.html' %}
+        <section id="map-context" class="context-sheet" aria-labelledby="context-title">
+            <header class="sheet-heading"><h1 id="context-title">{% translate "Premiers pas" %}</h1></header>
+            <div class="sheet-body">{% include 'simulation/prologue.html' %}{% include 'simulation/folio_tools.html' %}</div>
+        </section></div>
     {% elif tab == 'city' %}{% include 'simulation/city_folio.html' %}
     {% elif tab == 'constructions' %}{% include 'simulation/constructions.html' %}
     {% elif tab == 'wars' %}{% include 'simulation/wars.html' %}
@@ -45,5 +25,5 @@
         <p>{% translate "J’ai réuni les lettres qui vous sont destinées. Chacune garde sa date ; les observations d’hier ne décrivent pas nécessairement les forces d’aujourd’hui." %}</p>
         <section class="correspondence" aria-label="{% translate "Les lettres de votre maison" %}">{% include 'simulation/letter_entries.html' %}</section>
     {% endif %}
-    {% if tab == 'domain' or tab == 'decrees' %}{% include 'simulation/turn_closing.html' %}{% endif %}
+    {% if tab == 'decrees' %}{% include 'simulation/turn_closing.html' %}{% endif %}
 {% endblock %}

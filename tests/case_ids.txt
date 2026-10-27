@@ -701,6 +701,9 @@ map-organic-layout/1
 map-organic-layout/2
 map-organic-layout/3
 map-own-route-projection
+map-permanent-overview/domain
+map-permanent-overview/map
+map-permanent-overview/prologue
 map-preview-context
 map-public-fortification-art/1-0-0
 map-public-fortification-art/1-1-4

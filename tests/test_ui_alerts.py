@@ -144,6 +144,10 @@ def test_crew_assignment(user, language, phase, kind, french, english, finish):
         ) in assignments[0]
         if query.get("tab") == "city":
             assert ("Start: Moon 1" if language == "en" else "Début : lune 1") in assignments[0]
-        assert ("#orders-heading" if phase == "sealed" else "#active-works") in assignments[0]
+        if query["tab"] == "domain":
+            assert "tab=mail&amp;mail=schedule#" in assignments[0]
+            assert ("#order-" if phase == "sealed" else "#work-c2-") in assignments[0]
+        else:
+            assert ("#orders-heading" if phase == "sealed" else "#active-works") in assignments[0]
     game.refresh_from_db()
     assert game.state == original

@@ -1,7 +1,7 @@
 {% load i18n %}
 <div class="map-workspace">
     {% include 'simulation/realm_map.html' %}
-    {% if city_requested %}<section id="map-context" class="context-sheet city-sheet" aria-labelledby="context-title">
+    {% if city_requested and tab != 'domain' %}<section id="map-context" class="context-sheet city-sheet" aria-labelledby="context-title">
         {% include 'simulation/context_header.html' with panel_city=selected %}
         {% if selected.owned %}
             <nav class="city-activities" aria-label="{% translate 'Choisir une activité' %}">
@@ -12,6 +12,7 @@
             </nav>
         {% endif %}
         <div class="sheet-body">
+        <p class="aside-text">{{ selected.owner_name }} · {{ selected.wall_label }}{% if selected.damaged %} · {% translate "Ouvrage endommagé" %}{% endif %}</p>
         {% if selected.owned %}
             {% if activity == 'accounts' %}{% include 'simulation/city_folio.html' %}
             {% elif activity == 'convoy' %}{% if not view.finished and not view.eliminated and not game.paused %}{% include 'simulation/convoy_form.html' %}{% endif %}
@@ -38,6 +39,10 @@
         {% endif %}
         <p class="map-neighbors">{% translate "Routes directes" %} : {% for neighbor in neighbors %}<a href="?tab=map&amp;city={{ neighbor.id }}#map-context">{{ neighbor.name }}</a>{% if not forloop.last %} · {% endif %}{% endfor %}</p>
         </div>
+    </section>{% else %}
+    <section id="map-context" class="context-sheet realm-sheet" aria-labelledby="context-title">
+        <header class="sheet-heading"><div class="sheet-identity"><h1 id="context-title" tabindex="-1">{% translate "Le conseil de votre maison" %}</h1></div></header>
+        <div class="sheet-body">{% include 'simulation/realm_overview.html' %}</div>
     </section>{% endif %}
 </div>
 {{ map_graph|json_script:'map-graph' }}

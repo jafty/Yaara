@@ -9,8 +9,9 @@ presentation decisions. No saved rules or reports change. The October 27 follow-
 - Selecting an owned city opens stocks, troops, capabilities and local work quotes
   together. A reachable enemy opens preparation directly. Convoys and detailed
   accounts remain deliberate activities in the same workspace. The map
-  fills the available play area. Context panels overlay the board on the
-  right on desktop and rise from the bottom on mobile; no reserved side column.
+  shares the workspace with a permanent decision pane: equal columns on
+  desktop and equal stacked areas on mobile. The default pane shows the house
+  overview and calendar controls. Selecting a city replaces the pane contents.
   Progressive context navigation retains the map canvas and supports browser Back.
 - Local works show only that city's next quote and use a hidden city field, never
   a compulsory checklist. Switching cities preserves the work family, not a draft.
@@ -136,11 +137,14 @@ plain walls and separately drawn banners remain unchanged.
 
 ## City sheet and papyrus revision
 
-Selecting a city reserves a right-hand column on wide screens and a lower pane
-on narrow screens, leaving the map available for selecting another city. With no
-city selected the map fills the workspace. The city sheet retains its scrolling
-body, fixed tabs and close control; mail retains its separate window. The map
-uses a papyrus texture and a freshly drawn six-cell schematic settlement atlas.
-This is presentation only: city selection, roads and public intelligence are
-unchanged. Browser verification covers city switching, close, responsive and
-keyboard navigation alongside the existing order journeys.
+The workspace permanently divides into equal map and decision areas, including
+entry, city selection, mail and review. Entry and the Reign link share a single
+house overview template. Onboarding uses the same shell; its finish and skip links
+enter the map. The former Council layout wrappers/styles, mail overlay wrapper,
+conditional city split rules and panel entry animation are removed. Secondary
+batch-work, help and archival folios remain supported features.
+
+Presentation verification: native forms, responsive layout, enlarged text,
+keyboard, selected roads and existing order journeys. Independent
+`map-permanent-overview` cases cover map, Reign and onboarding entry. No game
+rules or persisted data change.

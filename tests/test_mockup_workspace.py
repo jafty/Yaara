@@ -93,7 +93,7 @@ def test_unreachable(user):
 def test_mail_frame(user, section):
     game, client, url = open_board(user)
     html = client.get(url, {"tab": "mail", "mail": section}).content.decode()
-    assert 'class="courrier-window"' in html
+    assert 'class="courrier-window"' not in html
     assert 'class="context-sheet mail-panel"' in html
     assert 'class="sheet-body"' in html
     assert 'class="sheet-tabs"' in html

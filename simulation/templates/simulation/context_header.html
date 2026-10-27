@@ -3,7 +3,7 @@
     {% if panel_city %}<span class="sheet-seal house-{{ panel_city.owner }}" aria-hidden="true">{% include 'simulation/house_mark.html' with owner=panel_city.owner %}</span>{% endif %}
     <div class="sheet-identity">
         <h1 id="context-title" tabindex="-1">{% if panel_city %}{{ panel_city.name }}{% else %}{{ panel_title }}{% endif %}</h1>
-        {% if panel_city %}<p>{{ panel_city.owner_name }} · {{ panel_city.wall_label }}{% if panel_city.damaged %} · {% translate "Ouvrage endommagé" %}{% endif %}</p>{% elif panel_subtitle %}<p>{{ panel_subtitle }}</p>{% endif %}
+        {% if panel_subtitle %}<p>{{ panel_subtitle }}</p>{% endif %}
     </div>
     <a class="panel-close" href="{{ panel_return|default:'?tab=map' }}" aria-label="{{ panel_close_label|default:_('Revenir à la carte') }}"><span aria-hidden="true">×</span><span class="visually-hidden">{{ panel_close_label|default:_('Revenir à la carte') }}</span></a>
 </header>

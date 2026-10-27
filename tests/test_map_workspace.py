@@ -172,3 +172,19 @@ def test_conquered_city(user):
     assert 'name="men_c4"' not in html
     local = client.get(url, {"tab": "map", "city": "c4", "action": "storage"})
     assert local.context["local_work"]["id"] == "c4"
+
+
+@case("map-permanent-overview", "Owner: permanent half-screen workspace on entry and Council")
+@pytest.mark.parametrize("tab", ["map", "domain", "prologue"])
+def test_permanent_workspace(user, tab):
+    game, client, url = open_board(user)
+    response = client.get(url, {"tab": tab})
+    html = response.content.decode()
+    assert response.context["workspace"] is True
+    assert html.count('id="map-context"') == 1
+    assert 'class="map-workspace"' in html
+    assert 'class="chapter-heading compact-heading"' not in html
+    assert 'class="council-layout"' not in html
+    if tab != "prologue":
+        assert 'class="context-sheet realm-sheet"' in html
+        assert 'id="turn-page"' in html

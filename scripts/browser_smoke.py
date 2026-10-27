@@ -187,8 +187,8 @@ def redesign_reflow(page):
                 and page.locator('.alerts-trigger[data-alert-count="0"]').count()
                 and page.locator(".letter-entry").count()
             ):
-                page.evaluate("scrollTo({top: 0, behavior: 'instant'})")
-                # The wide story image follows a visible headline; long prose can scroll.
+                page.locator(".letter-entry h3").first.scroll_into_view_if_needed()
+                # The permanent decision pane scrolls independently of the map.
                 heading = page.locator(".letter-entry h3").first.bounding_box()
                 assert heading["y"] + heading["height"] <= page.viewport_size["height"]
             for caption in page.locator(".resource-caption").all():

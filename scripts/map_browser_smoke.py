@@ -35,7 +35,7 @@ def run_map_journeys():
                 )
                 expect(page.locator(".map-marker, .map-inner")).to_have_count(0)
                 canvas = page.locator(".map-workspace > .realm-map").bounding_box()
-                assert canvas["width"] == 1440
+                assert canvas["width"] == 720
                 assert abs(canvas["y"] - page.locator(".reign-header").bounding_box()["height"]) < 2
                 page.evaluate(
                     "window.originalMap = document.querySelector('.map-workspace > .realm-map')"
@@ -71,7 +71,7 @@ def run_map_journeys():
                     )
                     expect(page.locator(".moon-banner")).to_have_count(0)
                     page.keyboard.press("Escape")
-                    expect(page.locator("#map-context")).to_have_count(0)
+                    expect(page.locator(".realm-sheet")).to_be_visible()
                     page.go_back()
                     expect(page.locator("#context-title")).to_have_text("Qasr")
                 if javascript:

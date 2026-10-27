@@ -2,7 +2,7 @@
 <div class="workspace-heading">
     <div class="realm-identity">
         <a class="book-world" href="{% url 'game' game.id %}" data-section="map" {% if tab == 'map' or workspace and tab == 'decrees' %}aria-current="page"{% endif %} aria-label="{% translate 'Carte' %}">Yaara</a>
-        <a class="house-identity" href="{% url 'game' game.id %}?tab=domain" data-section="domain" {% if not workspace and tab != 'letters' %}aria-current="page"{% endif %}><span>{{ view.realm }}</span><small>{% translate "Règne" %} →</small></a>
+        <a class="house-identity" href="{% url 'game' game.id %}?tab=domain" data-section="domain" {% if tab == 'domain' or tab == 'prologue' or not workspace and tab != 'letters' %}aria-current="page"{% endif %}><span>{{ view.realm }}</span><small>{% translate "Règne" %} →</small></a>
         <a class="alerts-trigger{% if attention.count or not attention and alert_center.count %} has-alerts{% endif %}" href="{% url 'game' game.id %}?tab=mail" data-section="mail" {% if tab == 'mail' or tab == 'letters' %}aria-current="page"{% endif %} data-alert-count="{% if attention %}{{ attention.count }}{% else %}{{ alert_center.count }}{% endif %}">{% include 'simulation/nav_icon.html' with icon='bell' %}<span>{% translate "Courrier" %}</span><strong>{% if attention %}{{ attention.count }}{% else %}{{ alert_center.count }}{% endif %}</strong></a>
     </div>
     <div class="resource-ribbon" aria-label="{% translate 'Les moyens libres de votre maison' %}">
