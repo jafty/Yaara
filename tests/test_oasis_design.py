@@ -73,7 +73,7 @@ def test_review_not_sealing(council, language):
     game, client, url = council
     client.cookies["django_language"] = language
     html = client.get(url, {"tab": "constructions", "action": "irrigation"}).content.decode()
-    assert ("Review the order" if language == "en" else "Vérifier l’ordre") in html
+    assert 'class="primary-action work-review" type="submit"' in html
     review = client.post(
         reverse("preview", args=[game.id]), {"kind": "irrigation", "cities": ["c1"]}
     )

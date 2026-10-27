@@ -31,7 +31,13 @@ def test_entry(user, language):
     assert html.count('<line class="map-connection') == 12
     assert html.count('class="map-city ') == 9
     assert "user-scalable=no" not in html
-    assert ("Alertes" if language == "fr" else "Alerts") in html
+    assert ("Nouvelles" if language == "fr" else "News") in html
+    overview = client.get(url, {"city": "c1"}).content.decode()
+    assert 'class="city-actions"' in overview and 'id="city-works"' not in overview
+    assert 'class="city-resources"' in overview
+    news = client.get(url, {"tab": "mail"}).content.decode()
+    tabs = news.split('<nav class="sheet-tabs"', 1)[1].split("</nav>", 1)[0]
+    assert tabs.index("mail=attention") < tabs.index("mail=schedule") < tabs.index("mail=chronicle")
 
 
 @case("map-local-work", REQ)
@@ -95,7 +101,7 @@ def test_overflow(user):
     game, client, url = open_board(user)
     game.state["cities"]["c1"]["stock"] = 2400000
     game.save()
-    html = client.get(url, {"tab": "mail"}).content.decode()
+    html = client.get(url, {"tab": "mail", "mail": "attention"}).content.decode()
     assert 'data-alert-kind="overflow"' in html
     assert "city=c1#city-stocks" in html
     assert "illustration-harvest" in html
@@ -107,7 +113,7 @@ def test_repair_tracking(user):
     game.state["cities"]["c1"].update(damaged=True, integrity=50)
     engine.confirm_order(game.state, "p1", {"kind": "repair", "cities": ["c1"]}, str(uuid.uuid4()))
     game.save()
-    response = client.get(url, {"tab": "mail"})
+    response = client.get(url, {"tab": "mail", "mail": "attention"})
     assert not any(item["kind"] == "damage" for item in response.context["attention"]["items"])
     html = client.get(url, {"tab": "mail", "mail": "schedule"}).content.decode()
     assert "#order-" in html

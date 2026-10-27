@@ -98,7 +98,7 @@ def test_map_house_emblems(user, language):
     html = client.get(reverse("game", args=[game.id])).content.decode()
     atlas = re.search(r'<figure class="realm-map".*?</figure>', html, re.S).group()
     for owner, emblem in (("p1", "sun"), ("p2", "lotus"), ("p3", "palm")):
-        cities = re.findall(rf'<a class="map-city house-{owner}".*?</a>', atlas, re.S)
+        cities = re.findall(rf'<a class="map-city house-{owner} [^"]+".*?</a>', atlas, re.S)
         assert cities
         assert all(f'data-house-emblem="{emblem}"' in city for city in cities)
         legend = re.search(rf'<div class="map-house house-{owner}">.*?</div>', html, re.S).group()

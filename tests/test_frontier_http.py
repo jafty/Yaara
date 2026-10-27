@@ -35,7 +35,7 @@ def test_warning_http(user, language, watch, departed):
     client.force_login(user)
     client.cookies["django_language"] = language
     url = reverse("game", args=[game.id])
-    html = client.get(url, {"tab": "mail"}).content.decode()
+    html = client.get(url, {"tab": "mail", "mail": "attention"}).content.decode()
     visible = departed and watch > 0
     assert ('data-threat-city="c3"' in html) == visible
     assert game.reports.filter(recipient="p1", kind="warning").count() == int(visible)

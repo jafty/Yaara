@@ -74,8 +74,8 @@ def test_full_report_link(user, language):
     client.force_login(user)
     client.cookies["django_language"] = language
     html = client.get(reverse("game", args=[game.id]), {"tab": "domain"}).content.decode()
-    assert f"?tab=letters#report-{report.pk}" in html and 'href="#city-ledgers"' in html
-    assert html.index('id="recent-letters"') < html.index('id="city-ledgers"')
+    assert f"?tab=letters#report-{report.pk}" in html
+    assert 'id="city-ledgers"' not in html
     full = client.get(reverse("game", args=[game.id]), {"tab": "letters"}).content.decode()
     assert "END-OF-REPORT" in full and f'id="report-{report.pk}"' in full
 

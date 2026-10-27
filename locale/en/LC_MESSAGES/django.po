@@ -3536,8 +3536,8 @@ msgstr "Expeditions"
 msgid "Les lunes"
 msgstr "The Moons"
 
-msgid "Les Mesures sont vos réserves de nourriture. Chaque cité possède son grenier : le conseil affiche son stock, sa capacité et sa part encore disponible. Les fonds promis aux décrets scellés restent dans le stock, mais ne sont plus disponibles."
-msgstr "Measures are your food reserves. Each city has its own granary: the Council shows its stock, capacity and remaining available share. Funds promised to sealed orders remain in stock but are no longer available."
+msgid "Les Mesures sont vos réserves de nourriture. Chaque cité possède son grenier : ses comptes affichent son stock, sa capacité et sa part encore disponible. Les fonds promis aux décrets scellés restent dans le stock, mais ne sont plus disponibles."
+msgstr "Measures are your food reserves. Each city has its own granary: its accounts show its stock, capacity and remaining available share. Funds promised to sealed orders remain in stock but are no longer available."
 
 msgid "Les dépenses sont réparties entre les fonds libres de vos cités. Les pillages et les limites de stockage concernent chaque grenier séparément. Agrandir un grenier augmente sa capacité, sans créer de nourriture."
 msgstr "Expenses are shared between your cities’ free funds. Forays and storage limits affect each granary separately. Enlarging a granary increases its capacity without creating food."

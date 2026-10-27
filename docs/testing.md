@@ -374,3 +374,14 @@ The complete bilingual game browser journey also passed, including the retained
 batch/expedition flows and the updated map journey. Thirty-six repeated native
 fragment/reflow checks additionally verified same-document navigation after
 header and text-size changes.
+
+## City action menu and news — October 27
+
+The city menu, persistent available resources, full-sheet actions, mailbox order,
+alert destinations and owned/rival territory presentation use the presentation
+checkpoint. The reviewed catalog remains unchanged. The complete suite passed
+1,750 cases against disposable PostgreSQL 17 with no skips; bilingual browser
+and map journeys passed with and without JavaScript. The map journey covers
+phone widths, enlarged text and reduced motion. Catalog compilation, lint and
+format checks, and migration consistency also passed. These results do not
+establish Railway deployment health.

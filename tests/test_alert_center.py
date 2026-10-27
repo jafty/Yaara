@@ -83,7 +83,7 @@ def open_game(user, language, economy=4):
     return game, client, reverse("game", args=[game.id])
 
 
-@case("alerts-damaged-building", "Owner: damage is visible in the header, city list and details")
+@case("alerts-damaged-building", "Owner: damage is visible in alerts and city details")
 @pytest.mark.parametrize("language", ["fr", "en"])
 @pytest.mark.parametrize(
     "family,repair", [("walls", "repair"), ("watch", "repair_watch"), ("shelter", "repair_shelter")]
@@ -105,8 +105,6 @@ def test_damaged_building(user, language, family, repair):
         assert f"action={repair}&amp;city=c1" in alert
         assert ("Damaged structure" if language == "en" else "Ouvrage endommagé") in alert
         assert ("Inspect repair" if language == "en" else "Examiner la réparation") in alert
-        if query.get("tab") == "domain":
-            assert 'class="damage-state"' in text
         if query.get("tab") == "city":
             assert f'data-damaged-building="{family}"' in text
     game.refresh_from_db()

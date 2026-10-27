@@ -16,7 +16,7 @@
             <g id="draft-route" aria-hidden="true"></g>
         </svg>
             {% for city in view.cities %}
-                <a class="map-city house-{{ city.owner }}" data-map-state="{% if city.engaged %}engaged{% elif city.owned %}owned{% elif city.reachable %}reachable{% else %}unreachable{% endif %}" href="{% if workspace %}?{{ city.map_query }}#map-context{% else %}?tab=wars&amp;city={{ city.id }}#map-context{% endif %}" {% if city_requested and selected.id == city.id %}aria-current="location"{% endif %} aria-label="{{ city.name }} · {{ city.owner_name }} · {{ city.wall_label }} · {% include 'simulation/map_status.html' %}">
+                <a class="map-city house-{{ city.owner }} {% if city.owned %}territory-owned{% else %}territory-enemy{% endif %}" data-map-state="{% if city.engaged %}engaged{% elif city.owned %}owned{% elif city.reachable %}reachable{% else %}unreachable{% endif %}" href="{% if workspace %}?{{ city.map_query }}#map-context{% else %}?tab=wars&amp;city={{ city.id }}#map-context{% endif %}" {% if city_requested and selected.id == city.id %}aria-current="location"{% endif %} aria-label="{{ city.name }} · {{ city.owner_name }} · {{ city.wall_label }} · {% include 'simulation/map_status.html' %}">
                     <svg class="territory-layer" viewBox="0 0 680 500" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><path class="map-territory" d="{{ city.territory_path }}"/></svg>
                     <svg class="city-marker" style="--map-x: {{ city.x|unlocalize }}; --map-y: {{ city.y|unlocalize }}" viewBox="-70 -65 140 140" aria-hidden="true">
                         <g class="settlement">

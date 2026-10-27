@@ -5,7 +5,7 @@
             <nav class="first-decision-links" aria-label="{% translate 'Choisir un premier ordre' %}"><a href="?tab=constructions">{% translate "Choisir un chantier" %} </a><a href="?tab=wars">{% translate "Préparer une expédition" %} </a></nav>
             <p class="aside-text">{% translate "Préparez un ordre, vérifiez ses termes, puis scellez-le. Il prendra effet à la clôture de la lune." %}</p>
         </section>{% endif %}
-        <nav class="reading-links" aria-label="{% translate 'Dans ce conseil' %}">{% if not view.finished %}<a href="#upcoming-heading">{% translate "Les prochaines échéances" %} ↓</a>{% endif %}<a href="#city-ledgers">{% translate "Les comptes de vos cités" %} ↓</a></nav>
+        <nav class="reading-links" aria-label="{% translate 'Dans ce conseil' %}">{% if not view.finished %}<a href="#upcoming-heading">{% translate "Les prochaines échéances" %} ↓</a>{% endif %}</nav>
 
         <section class="briefing-news" aria-labelledby="recent-letters">
             <h2 id="recent-letters">{% blocktranslate with v0=news_moon %}Les nouvelles de la lune {{ v0 }}{% endblocktranslate %}</h2>
@@ -21,7 +21,6 @@
             </li>{% endfor %}</ol>
             {% if not view.eliminated and not game.paused %}<p class="reading-links"><a href="?tab=decrees">{% translate "Préparer un décret" %} </a></p>{% endif %}
         </section>{% endif %}
-        {% include 'simulation/city_ledger.html' %}
         {% include 'simulation/standings.html' %}
         {% include 'simulation/orders_register.html' %}
 {% include 'simulation/turn_closing.html' %}

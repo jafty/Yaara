@@ -5,15 +5,15 @@ presentation decisions. No saved rules or reports change. The October 27 follow-
 
 ## Interaction contract
 
-- Entry opens all nine cities; selecting one reveals its saved roads. No map zoom; browser zoom stays enabled.
-- Selecting an owned city opens stocks, troops, capabilities and local work quotes
-  together. A reachable enemy opens preparation directly. Convoys and detailed
-  accounts remain deliberate activities in the same workspace. The map
-  shares the workspace with a permanent decision pane: equal columns on
-  desktop. On mobile, the map guide uses equal areas; selected city/mail/review
-  sheets use 72% of the workspace and army preparation uses 80%. The default pane shows the house
-  overview and calendar controls. Selecting a city replaces the pane contents.
-  Progressive context navigation retains the map canvas and supports browser Back.
+- Entry opens all nine cities; selecting one reveals its saved roads. Subtle green
+  and red territory overlays distinguish owned and rival cities. No map zoom;
+  browser zoom stays enabled.
+- Selecting an owned city shows its available granary and Fidèles above a compact
+  menu of actions. Construction, accounts and convoys each open a full sheet;
+  returning restores the city menu. Resources remain visible in those sheets.
+  A reachable enemy opens preparation directly. The map and city menu share the
+  workspace until an action is opened. Context navigation retains the map canvas,
+  supports browser Back and respects reduced-motion preferences.
 - Local works show only that city's next quote and use a hidden city field, never
   a compulsory checklist. Switching cities preserves the work family, not a draft.
   The realm catalogue remains a secondary batch convenience.
@@ -22,7 +22,8 @@ presentation decisions. No saved rules or reports change. The October 27 follow-
 - Own sealed, outbound and returning expeditions have separate map states. Draft
   routes use the public friendly graph and automatic frontier rule. Enemy warnings
   identify only the threatened city and intelligence already projected to its owner.
-- Courrier has À traiter, Échéances and Chronique. Actionable items retain short
+- Nouvelles opens recent Moon reports, followed by Alertes, Échéances and the full
+  Chronique. Actionable items retain short
   scribe prose and existing artwork. Idle teams are not warnings. Repairs already
   commissioned move to the schedule. Forecast overflow is a warning with its date.
 - Each event links to its precise work, expedition, order or account. Reading

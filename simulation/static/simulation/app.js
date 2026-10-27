@@ -524,6 +524,8 @@ async function openContext(url, push = true) {
     }
     const currentSheet = document.querySelector(".context-sheet");
     const nextSheet = next.querySelector(".context-sheet");
+    const enteringAction = nextSheet?.hasAttribute("data-focus-action") &&
+      !currentSheet?.hasAttribute("data-focus-action");
     const reducedMotion = matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
@@ -604,6 +606,12 @@ async function openContext(url, push = true) {
     renderedURL =
       new URL(url, location.href).pathname + new URL(url, location.href).search;
     initializePage();
+    if (enteringAction && !reducedMotion) {
+      document.querySelector(".context-sheet")?.animate(
+        [{ opacity: 0.7, clipPath: "inset(18% 0 0 0)" }, { opacity: 1, clipPath: "inset(0)" }],
+        { duration: 180, easing: "ease-out" },
+      );
+    }
     const hash = new URL(url, location.href).hash;
     const focus = hash
       ? document.getElementById(decodeURIComponent(hash.slice(1)))

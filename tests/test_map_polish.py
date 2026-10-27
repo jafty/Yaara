@@ -65,6 +65,7 @@ def test_fixed_tabs(user, action):
     html = client.get(url, {"city": "c1", "action": action}).content.decode()
     tabs = re.search(r'<nav class="city-activities".*?</nav>', html, re.S).group()
     assert html.index(tabs) < html.index('class="sheet-body"')
+    assert 'class="city-resources"' in html and "data-focus-action" in html
     assert "#" not in tabs
 
 

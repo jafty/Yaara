@@ -312,14 +312,29 @@ with sync_playwright() as playwright:
             "No current alerts" if en else "Aucune alerte en cours"
         )
         page.locator("#realm-alerts > summary").click()
-        expect(page.locator('.city-identity [data-team-state="available"]')).to_have_count(3)
+        assert page.locator("#city-ledgers").count() == 0
         links = page.locator(".council-links a").all()
         for first, second in zip(links, links[1:]):
             a, b = first.bounding_box(), second.bounding_box()
             assert b["x"] >= a["x"] + a["width"] + 10 or b["y"] >= a["y"] + a["height"]
-        expect(page.locator(".ledger-summary dt")).to_have_count(3)
         assert page.locator(".house-accounts").count() == 0
         assert page.locator(".reign-header a[data-section]").count() == 3
+        # City actions open a full sheet and retain local resources at every size.
+        for width in (1440, 390, 320):
+            page.set_viewport_size({"width": width, "height": 844})
+            for action in ("works", "accounts", "convoy"):
+                page.goto(game_url + "?tab=map&city=c1")
+                expect(page.locator(".city-actions")).to_be_visible()
+                expect(page.locator("#city-works")).to_have_count(0)
+                page.locator(f'.city-actions a[href*="action={action}"]').click()
+                expect(page.locator(".city-sheet[data-focus-action]")).to_be_visible()
+                expect(page.locator(".city-resources")).to_be_visible()
+                expect(page.locator(".reign-header")).to_be_hidden()
+                no_overflow(page)
+                page.locator(".panel-close").click()
+                expect(page.locator(".city-actions")).to_be_visible()
+                expect(page.locator(".reign-header")).to_be_visible()
+        page.set_viewport_size({"width": 1440, "height": 1100})
         page.goto(game_url + "?tab=constructions")
         expect(
             page.get_by_role("heading", name="Works" if en else "Chantiers", exact=True)
@@ -372,8 +387,7 @@ with sync_playwright() as playwright:
             == "none"
         )
         assert page.evaluate("document.fonts.check('16px Alegreya')")
-        assert page.locator(".city-entry").count() == 3
-        expect(page.locator(".city-entry .illustration")).to_have_count(0)
+        assert page.locator("#city-ledgers").count() == 0
         for width in (390, 320):
             page.set_viewport_size({"width": width, "height": 844})
             page.evaluate("document.documentElement.style.fontSize = '125%'")
@@ -584,6 +598,8 @@ with sync_playwright() as playwright:
         assert page.locator('[data-map-state="engaged"]').count() == 0
         page.screenshot(path=str(artifacts / f"decrees-desktop-{language}.png"), full_page=True)
         for moon in range(1, 4):
+            if not page.locator(".reign-header").is_visible():
+                page.locator(".panel-close").click()
             page.locator('.reign-header a[data-section="domain"]').click()
             page.locator("#turn-page button.primary-action").click()
             page.goto(page.url.split("?")[0] + "?tab=domain")
@@ -727,6 +743,8 @@ with sync_playwright() as playwright:
         storage.locator('button[type="submit"]').click()
         page.locator(".decree-reading > form button[type=submit]").click()
         for _ in range(5):
+            if not page.locator(".reign-header").is_visible():
+                page.locator(".panel-close").click()
             page.locator('.reign-header a[data-section="domain"]').click()
             page.locator("#turn-page button.primary-action").click()
             page.goto(page.url.split("?")[0] + "?tab=domain")
@@ -743,8 +761,8 @@ with sync_playwright() as playwright:
         forge.locator('input[value="c2"]').check()
         forge.locator('button[type="submit"]').click()
         page.locator(".decree-reading > form button[type=submit]").click()
-        page.goto(game_url + "?tab=domain")
-        commitment = page.locator('#city-c2 [data-crew-phase="reserved"]')
+        page.goto(game_url + "?tab=map&city=c2&action=accounts")
+        commitment = page.locator('[data-local-accounts] [data-crew-phase="reserved"]')
         expect(commitment).to_contain_text("Small arsenal" if en else "Petit arsenal")
         expect(commitment).to_contain_text("Expected finish: Moon" if en else "Fin prévue : lune")
         page.goto(game_url + "?tab=city&city=c2")
@@ -836,6 +854,13 @@ with sync_playwright() as playwright:
             viewport={"width": 320, "height": 844},
         )
         plain_page = plain.new_page()
+        plain_page.goto(game_url + "?tab=map&city=c1")
+        expect(plain_page.locator(".city-actions")).to_be_visible()
+        plain_page.locator('.city-actions a[href*="action=accounts"]').click()
+        expect(plain_page.locator(".city-sheet[data-focus-action]")).to_be_visible()
+        expect(plain_page.locator(".city-resources")).to_be_visible()
+        plain_page.locator(".panel-close").click()
+        expect(plain_page.locator(".city-actions")).to_be_visible()
         plain_page.goto(game_url + "?tab=help")
         plain_page.locator("#realm-alerts > summary").focus()
         plain_page.keyboard.press("Enter")
@@ -853,14 +878,12 @@ with sync_playwright() as playwright:
         plain_page.locator("[data-prologue-skip]").click()
         expect(plain_page.locator(".map-guide-key")).to_be_visible()
         plain_page.goto(game_url + "?tab=domain")
-        expect(plain_page.locator(".city-entry .illustration")).to_have_count(0)
-        expect(
-            plain_page.locator('#city-c2 .city-identity [data-team-state="occupied"]')
-        ).to_be_visible()
-        expect(plain_page.locator('#city-c2 [data-crew-phase="reserved"]')).to_contain_text(
+        plain_page.goto(game_url + "?tab=map&city=c2&action=accounts")
+        expect(plain_page.locator('[data-team-state="occupied"]').first).to_be_visible()
+        expect(plain_page.locator('[data-crew-phase="reserved"]').first).to_contain_text(
             "Small arsenal" if en else "Petit arsenal"
         )
-        plain_page.locator('.city-entry a[href*="city=c1"]').click()
+        plain_page.goto(game_url + "?tab=city&city=c1")
         expect(plain_page.locator("[data-local-accounts]")).to_be_visible()
         expect(plain_page.locator(".illustration-city-c1")).to_be_visible()
         illustration_asset(plain_page.locator(".illustration-city-c1"), "cityscapes.png")

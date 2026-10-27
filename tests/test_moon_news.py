@@ -150,7 +150,7 @@ def test_header_moon(user, language, finished, calendar_version):
     assert "Récolte dans" not in ribbon and "Harvest in" not in ribbon
 
 
-@case("council-local-preparation", "Owner: each city shows its accrued unavailable levy in Council")
+@case("council-local-preparation", "Owner: each city account shows its accrued unavailable levy")
 @pytest.mark.parametrize("language", ["fr", "en"])
 def test_local_preparation(user, language):
     game = services.create_game(user, "Levies", opponents="passive", economy_version=2)
@@ -160,12 +160,15 @@ def test_local_preparation(user, language):
     client = Client()
     client.force_login(user)
     client.cookies["django_language"] = language
-    html = client.get(reverse("game", args=[game.id]), {"tab": "domain"}).content.decode()
     for city, tax in zip(("c1", "c2", "c3"), (12345, 45678, 78901)):
-        entry = re.search(rf'id="city-{city}".*?</li>', html, re.S).group()
-        assert f"<dd>{tax}</dd>" in entry.replace("\xa0", "").replace(",", "")
-        assert ("Prélèvement en préparation" if language == "fr" else "Accruing levy") in entry
-    assert ("encore indisponibles" if language == "fr" else "not yet available") in html
+        html = client.get(
+            reverse("game", args=[game.id]), {"tab": "map", "city": city, "action": "accounts"}
+        ).content.decode()
+        text = (
+            re.sub(r"<[^>]+>", "", html).replace("\xa0", "").replace("\u202f", "").replace(",", "")
+        )
+        assert str(tax) in text
+        assert ("prélèvement en préparation" if language == "fr" else "accrued tax") in text.lower()
 
 
 @case("news-event-icons", "Owner: report types have decorative icons while titles remain readable")

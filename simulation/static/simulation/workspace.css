@@ -12,7 +12,9 @@
   flex: 0 0 auto;
 }
 .workspace-page:has(.is-expanded) > .reign-header,
-.workspace-page:has(.is-expanded) > .moon-banner {
+.workspace-page:has(.is-expanded) > .moon-banner,
+.workspace-page:has([data-focus-action]) > .reign-header,
+.workspace-page:has([data-focus-action]) > .moon-banner {
   visibility: hidden;
 }
 .workspace-page > .book {
@@ -89,12 +91,17 @@
   background: var(--paper);
   border-left: 1px solid var(--rule);
 }
-.map-workspace.is-expanded > .context-sheet {
+.map-workspace.is-expanded > .context-sheet,
+.context-sheet[data-focus-action] {
   position: absolute;
   inset: calc(100cqh - 100dvh) 0 0;
   z-index: 6;
 }
-.map-workspace.is-expanded > .realm-map {
+.context-sheet[data-focus-action] .sheet-expand {
+  display: none;
+}
+.map-workspace.is-expanded > .realm-map,
+.map-workspace:has([data-focus-action]) > .realm-map {
   visibility: hidden;
 }
 .sheet-heading {
@@ -221,6 +228,25 @@
   box-shadow: inset 0 -2px var(--accent);
   font-weight: bold;
 }
+.city-actions {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0.5rem 0;
+}
+.city-actions a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 44px;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--rule);
+  color: var(--ink);
+  text-decoration: none;
+}
+.city-actions a:hover, .city-actions a:focus-visible {
+  border-color: var(--accent);
+  color: var(--accent);
+}
 .city-resources {
   display: flex;
   flex-wrap: wrap;
@@ -228,7 +254,7 @@
   align-items: baseline;
   gap: 0.3rem 1rem;
   margin: 0;
-  padding: 0.45rem 0;
+  padding: 0.45rem 0.75rem;
   border-bottom: 1px solid var(--rule);
   font-size: 0.875rem;
   font-variant-numeric: tabular-nums;
@@ -299,14 +325,15 @@
 .local-work-submit {
   min-height: 44px;
   padding: 0.3rem 0.5rem;
-  border: 1px solid var(--rule);
-  background: transparent;
-  color: var(--navigation);
+  border: 1px solid var(--navigation);
+  background: var(--navigation);
+  color: var(--navigation-ink);
   font-size: 0.85rem;
 }
-.local-work-submit:hover {
-  color: var(--accent);
-  border-color: currentColor;
+.local-work-submit:not(:disabled):hover,
+.local-work-submit:focus-visible {
+  background: var(--paper);
+  color: var(--navigation);
 }
 .local-work-submit:disabled {
   opacity: 0.5;
@@ -408,10 +435,6 @@
   display: none;
 }
 @media (max-width: 899px) {
-  .workspace-page:has([data-focus-action]) > .reign-header,
-  .workspace-page:has([data-focus-action]) > .moon-banner {
-    visibility: hidden;
-  }
   .map-workspace {
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: minmax(0, min(55cqh, calc(100cqw * 500 / 680))) minmax(0, 1fr);
@@ -419,17 +442,6 @@
   .context-sheet {
     border-left: 0;
     border-top: 1px solid var(--rule);
-  }
-  .context-sheet[data-focus-action] {
-    position: absolute;
-    inset: calc(100cqh - 100dvh) 0 0;
-    z-index: 6;
-  }
-  .context-sheet[data-focus-action] .sheet-expand {
-    display: none;
-  }
-  .map-workspace:has([data-focus-action]) > .realm-map {
-    visibility: hidden;
   }
 }
 @media (max-width: 360px) {

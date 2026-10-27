@@ -1,5 +1,5 @@
 {% load i18n %}
-{% if not workspace %}<p class="reading-links"><a href="{% url 'game' game.id %}?tab=domain#city-ledgers">{% translate "Revenir au domaine" %}</a></p>{% endif %}
+{% if not workspace %}<p class="reading-links"><a href="{% url 'game' game.id %}?tab=domain">{% translate "Revenir au domaine" %}</a></p>{% endif %}
 <p class="salutation">{% translate "Monseigneur," %}</p>
 <p id="city-defenses" tabindex="-1">{% blocktranslate with v0=selected.name v1=selected.owner_name %}{{ v0 }} relève de <strong>{{ v1 }}</strong>.{% endblocktranslate %} {{ selected.wall_label }}{% if selected.damaged %}, {% translate "endommagée" %}{% endif %}.</p>
 {% if selected.owned %}

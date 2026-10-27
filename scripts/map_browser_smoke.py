@@ -96,7 +96,8 @@ def run_map_journeys():
                 expect(page.locator(".map-connection.selected-road")).to_have_count(3)
                 expect(page.locator("#city-granary")).to_be_visible()
                 expect(page.locator(".city-resources meter, .city-capabilities")).to_have_count(0)
-                assert page.locator('[data-local-work="c1"]').count() > 1
+                expect(page.locator(".city-actions")).to_be_visible()
+                expect(page.locator('[data-local-work="c1"]')).to_have_count(0)
                 if javascript:
                     assert page.evaluate(
                         "window.originalMap === document.querySelector('.map-workspace > .realm-map')"
@@ -112,12 +113,11 @@ def run_map_journeys():
                         window.originalArt = document.querySelector('.city-art');
                         document.querySelector('.sheet-body').scrollTop = 200;
                     }""")
-                map_before_action = page.locator(".map-frame").bounding_box()
-                page.locator('.city-activities a[href*="action=works"]').click()
+                page.locator('.city-actions a[href*="action=works"]').click()
                 page.wait_for_url("**action=works")
-                map_after_action = page.locator(".map-frame").bounding_box()
-                assert abs(map_before_action["width"] - map_after_action["width"]) < 1
-                assert abs(map_before_action["height"] - map_after_action["height"]) < 1
+                expect(page.locator(".realm-map")).to_be_hidden()
+                expect(page.locator(".city-resources")).to_be_visible()
+                assert page.locator('[data-local-work="c1"]').count() > 1
                 expect(page.locator("#city-works")).to_be_in_viewport()
                 if javascript:
                     assert page.evaluate("""() =>
@@ -254,10 +254,9 @@ def run_map_journeys():
                     expect(page.locator("#draft-route path")).to_have_count(1)
                     assert page.locator("#draft-route path").get_attribute("d").startswith("M ")
                     page.set_viewport_size({"width": 1440, "height": 1000})
-                    page.locator("[data-sheet-expand]").click()
+                    expect(page.locator(".city-sheet[data-focus-action]")).to_be_visible()
                     expect(page.locator("#men-c1")).to_have_value("10")
                     expect(page.locator("#men-c3")).to_have_value("20")
-                    page.keyboard.press("Escape")
                     page.set_viewport_size({"width": 390, "height": 740})
                 page.screenshot(
                     path=str(artifacts / f"army-{language}-{javascript}.png"), full_page=True

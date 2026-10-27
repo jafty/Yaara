@@ -87,9 +87,9 @@ def test_crew_status(user, language, stage):
     url = reverse("game", args=[game.id])
     busy = stage in ("sealed", "active")
     expected = "occupied" if busy else "available"
-    roster = client.get(url, {"tab": "domain"}).content.decode()
-    identity = re.search(r'id="city-c2".*?<div class="city-identity">(.*?)</div>', roster, re.S)[1]
-    assert "Tamesh" in identity and f'data-team-state="{expected}"' in identity
+    roster = client.get(url, {"tab": "city", "city": "c2"}).content.decode()
+    identity = re.search(r'<span class="team-status".*?</span></span>', roster, re.S)[0]
+    assert f'data-team-state="{expected}"' in identity
     label = (
         ("Crew occupied" if busy else "Crew available")
         if language == "en"
@@ -131,7 +131,7 @@ def test_crew_assignment(user, language, phase, kind, french, english, finish):
     name = english if language == "en" else french
     expected_phase = "reserved" if phase == "sealed" else "active"
     for query in (
-        {"tab": "domain"},
+        {"tab": "map", "city": "c2", "action": "accounts"},
         {"tab": "city", "city": "c2"},
         {"tab": "constructions", "action": "storage"},
     ):
@@ -144,7 +144,7 @@ def test_crew_assignment(user, language, phase, kind, french, english, finish):
         ) in assignments[0]
         if query.get("tab") == "city":
             assert ("Start: Moon 1" if language == "en" else "Début : lune 1") in assignments[0]
-        if query["tab"] == "domain":
+        if query["tab"] == "map":
             assert "tab=mail&amp;mail=schedule#" in assignments[0]
             assert ("#order-" if phase == "sealed" else "#work-c2-") in assignments[0]
         else:

@@ -36,9 +36,11 @@ def test_city_direct_work(user, language):
     assert 'class="sheet-heading"' in html and 'class="sheet-body"' in html
     assert 'id="city-granary"' in html and 'class="city-resources"' in html
     assert "<meter " not in html and 'class="city-capabilities"' not in html
-    assert 'data-local-work="c1"' in html
-    assert 'name="kind" value="irrigation"' in html
-    assert 'type="checkbox"' not in html
+    assert 'class="city-actions"' in html
+    assert "action=works" in html and 'data-local-work="c1"' not in html
+    works = client.get(url, {"city": "c1", "action": "works"}).content.decode()
+    assert 'data-local-work="c1"' in works and 'name="kind" value="irrigation"' in works
+    assert 'type="checkbox"' not in works
     game.refresh_from_db()
     assert game.state == before
 
@@ -54,7 +56,7 @@ def test_work_availability(user, condition):
     else:
         game.paused = True
     game.save()
-    response = client.get(url, {"city": "c1"})
+    response = client.get(url, {"city": "c1", "action": "works"})
     html = response.content.decode()
     if condition == "paused":
         assert f'action="{reverse("preview", args=[game.id])}"' not in html

@@ -1,8 +1,4 @@
 {% load i18n %}
-<dl class="city-resources" aria-label="{% translate 'Les moyens libres de la cité' %}">
-    <div id="city-granary"><dt>{% translate "Grenier" %}</dt><dd><strong>{{ selected.available_stock }}</strong><span class="visually-hidden"> {% translate "Mesures libres" %}</span></dd></div>
-    <div><dt>{% translate "Fidèles" %}</dt><dd><strong>{{ selected.available_fideles }}</strong><span class="visually-hidden"> {% translate "Fidèles disponibles" %}</span></dd></div>
-</dl>
 {% if selected.forecast_overflow %}<p class="reserve-warning">{% blocktranslate with amount=selected.forecast_overflow moon=view.harvest_moon %}Débordement possible : {{ amount }} Mesures à la récolte de lune {{ moon }}.{% endblocktranslate %}</p>{% endif %}
 {% if selected.siege_shortfall %}<p class="reserve-warning">{% translate "Réserves de siège insuffisantes" %} · {{ selected.siege_shortfall }} {% translate "Mesures" %}</p>{% endif %}
 {% if selected.restricted_fideles %}<p>{% blocktranslate with count=selected.restricted_fideles moon=selected.restricted_until %}{{ count }} Fidèles hérités assurent la défense locale. Départs et secours possibles à partir de la lune {{ moon }}.{% endblocktranslate %}</p>{% endif %}

@@ -7,12 +7,13 @@
             {% with city_return='?tab=map&city='|add:selected.id %}{% include 'simulation/context_header.html' with panel_city=selected panel_return=city_return panel_close_label=city_return_label %}{% endwith %}
         {% else %}{% include 'simulation/context_header.html' with panel_city=selected %}{% endif %}
         {% if selected.owned %}
-            <nav class="city-activities" aria-label="{% translate 'Choisir une activité' %}">
+            {% include "simulation/city_resources.html" %}
+            {% if activity %}<nav class="city-activities" aria-label="{% translate 'Choisir une activité' %}">
                 <a href="?tab=map&amp;city={{ selected.id }}" {% if not activity %}aria-current="page"{% endif %}>{% translate "Aperçu" %}</a>
                 <a href="?tab=map&amp;city={{ selected.id }}&amp;action=works" {% if activity == 'works' or local_work %}aria-current="page"{% endif %}>{% translate "Construire" %}</a>
                 <a href="?tab=map&amp;city={{ selected.id }}&amp;action=accounts" {% if activity == 'accounts' %}aria-current="page"{% endif %}>{% translate "Comptes" %}</a>
                 {% if view.strategic_rules and not view.finished and not view.eliminated and not game.paused %}<a href="?tab=map&amp;city={{ selected.id }}&amp;action=convoy&amp;origin={{ selected.id }}" {% if activity == 'convoy' %}aria-current="page"{% endif %}>{% translate "Envoyer un convoi" %}</a>{% endif %}
-            </nav>
+            </nav>{% endif %}
         {% endif %}
         <div class="sheet-body">
         {% if not selected.owned or selected.damaged %}<p class="aside-text">{{ selected.wall_label }}{% if selected.damaged %} · {% translate "Ouvrage endommagé" %}{% endif %}</p>{% endif %}
@@ -20,13 +21,19 @@
             {% if activity == 'accounts' %}{% include 'simulation/city_folio.html' %}
             {% elif activity == 'convoy' %}{% if not view.finished and not view.eliminated and not game.paused %}{% include 'simulation/convoy_form.html' %}{% endif %}
             {% else %}
-                {% if not local_work and activity != 'works' %}{% include 'simulation/city_overview.html' %}{% endif %}
-                <section id="city-works" class="city-works" aria-labelledby="works-title">
+                {% if not activity %}
+                    {% include 'simulation/city_overview.html' %}
+                    <nav class="city-actions" aria-label="{% translate 'Choisir une activité' %}">
+                        <a href="?tab=map&amp;city={{ selected.id }}&amp;action=works">{% translate "Construire" %}</a>
+                        <a href="?tab=map&amp;city={{ selected.id }}&amp;action=accounts">{% translate "Comptes" %}</a>
+                        {% if view.strategic_rules and not view.finished and not view.eliminated and not game.paused %}<a href="?tab=map&amp;city={{ selected.id }}&amp;action=convoy&amp;origin={{ selected.id }}">{% translate "Envoyer un convoi" %}</a>{% endif %}
+                    </nav>
+                {% else %}<section id="city-works" class="city-works" aria-labelledby="works-title">
                     <div class="city-section-heading"><h2 id="works-title">{% translate "Chantier de la cité" %}</h2>{% include 'simulation/team_status.html' with city=selected detailed=True %}</div>
                     {% if local_work %}
                         {% for work in local_actions %}{% if work.kind == activity %}{% include 'simulation/local_work_choice.html' with brief=False %}{% endif %}{% endfor %}
                     {% else %}{% for work in local_actions %}{% include 'simulation/local_work_choice.html' with brief=True %}{% endfor %}{% endif %}
-                </section>
+                </section>{% endif %}
             {% endif %}
         {% elif activity == 'expedition' and selected_target and not selected.engaged %}
             {% if not view.finished and not view.eliminated and not game.paused %}

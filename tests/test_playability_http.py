@@ -33,8 +33,8 @@ def test_current_pages(user, language):
     text = family.content.decode()
     assert text.count('name="cities"') == 3
     assert ("Channels and small dikes" if language == "en" else "Rigoles et petites digues") in text
-    assert ("Review the order" if language == "en" else "Vérifier l’ordre") in text
-    assert 'class="illustration illustration-irrigation"' in text
+    assert 'class="primary-action work-review" type="submit"' in text
+    assert 'class="illustration illustration-irrigation illustration-building-detail"' in text
     assert "illustration-irrigation illustration-small" not in text
     preview = client.post(
         reverse("preview", args=[game.id]), {"kind": "irrigation", "cities": ["c1", "c2"]}
@@ -129,14 +129,14 @@ def test_city_list_text_only(user, language, actor, city_ids):
     client = Client()
     client.force_login(user)
     client.cookies["django_language"] = language
-    page = client.get(reverse("game", args=[game.id]), {"tab": "domain"})
-    text = page.content.decode()
-    entries = re.findall(r'<li class="city-entry".*?</li>', text, re.S)
-    assert len(entries) == 3
-    for entry, city_id in zip(entries, city_ids, strict=True):
-        assert "illustration" not in entry
-        assert f"?tab=city&amp;city={city_id}" in entry
-    assert 'class="illustration illustration-city ' not in text
+    url = reverse("game", args=[game.id])
+    text = client.get(url, {"tab": "domain"}).content.decode()
+    assert 'id="city-ledgers"' not in text
+    for city_id in city_ids:
+        city = client.get(url, {"tab": "map", "city": city_id}).content.decode()
+        assert 'class="city-resources"' in city
+        assert 'class="city-actions"' in city
+        assert 'class="illustration illustration-city ' not in city
 
 
 @case(

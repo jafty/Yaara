@@ -29,7 +29,7 @@ def test_overview_first_reign(user, language):
     assert page.status_code == 200
     assert 'id="recent-letters"' in content
     assert 'id="upcoming-heading"' in content
-    assert content.index('id="recent-letters"') < content.index('id="city-ledgers"')
+    assert 'id="city-ledgers"' not in content
     assert 'class="house-accounts"' not in content
     assert len(page.context["milestones"]) == 1
     assert page.context["milestones"][0]["moon"] == 12

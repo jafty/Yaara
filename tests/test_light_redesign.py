@@ -25,15 +25,18 @@ def folio(user, request):
     return game, client, reverse("game", args=[game.pk])
 
 
-@case("layout-council-priority", "Redesign: news and forthcoming events precede city accounts")
+@case(
+    "layout-council-priority",
+    "Redesign: news precedes forthcoming events without a council city ledger",
+)
 @pytest.mark.parametrize("folio", ["fr", "en"], indirect=True)
 def test_council_priority(folio):
     game, client, url = folio
     original = deepcopy(game.state)
     text = client.get(url, {"tab": "domain"}).content.decode()
     assert text.index('id="recent-letters"') < text.index('id="upcoming-heading"')
-    assert text.index('id="upcoming-heading"') < text.index('id="city-ledgers"')
-    assert 'href="#upcoming-heading"' in text and 'href="#city-ledgers"' in text
+    assert 'id="city-ledgers"' not in text
+    assert 'href="#upcoming-heading"' in text
     heading = re.search(r'<header class="sheet-heading.*?</header>', text, re.S).group()
     assert "illustration" not in heading
     game.refresh_from_db()
@@ -121,7 +124,7 @@ def test_named_quotes(folio):
         if action["repair"] and not action["prices"]:
             continue
         card = re.search(rf'<a id="work-{action["kind"]}".*?</a>', text, re.S).group()
-        assert f'illustration-{action.get("scene", action["kind"])}"' in card
+        assert f'illustration-{action.get("scene", action["kind"])} illustration-building"' in card
         quotes = re.findall(r'<li class="work-price">(.*?)</li>', card, re.S)
         assert len(quotes) == len(action["prices"])
         for quote, price in zip(quotes, action["prices"], strict=True):
@@ -140,7 +143,7 @@ def test_family_decision(folio):
     text = client.get(url, {"tab": "constructions", "action": "storage"}).content.decode()
     assert text.index('id="work-selection"') < text.index("illustration-storage")
     assert text.count('name="cities"') == 3
-    assert 'class="primary-action" type="submit"' in text
+    assert 'class="primary-action work-review" type="submit"' in text
 
 
 @case(

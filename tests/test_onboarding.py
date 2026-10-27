@@ -1,6 +1,5 @@
 """Guidance stays outside routine play while cities and confirmation remain discoverable."""
 
-import re
 import uuid
 from copy import deepcopy
 
@@ -177,7 +176,7 @@ def test_scheduled_intro_clock(user):
 
 @case(
     "council-city-ledger",
-    "Owner: Council prominently links owned city accounts and distinguishes total stock from free stock",
+    "Owner: city accounts distinguish total stock from free stock without a council ledger",
 )
 @pytest.mark.parametrize("language", ["fr", "en"])
 def test_city_ledger(user, language):
@@ -193,18 +192,14 @@ def test_city_ledger(user, language):
     client.cookies["django_language"] = language
     response = client.get(reverse("game", args=[game.id]), {"tab": "domain"})
     html = response.content.decode()
-    assert html.index('id="recent-letters"') < html.index('id="city-ledgers"')
+    assert 'id="city-ledgers"' not in html
     assert 'id="frontier-notes"' not in html and 'id="standings-heading"' in html
-    assert ("Les comptes de vos cités" if language == "fr" else "Your cities’ accounts") in html
     first = response.context["view"]["owned_cities"][0]
     assert first["stock"] == 300000 and first["available_stock"] == 216667 and first["busy"]
-    assert "tab=city&amp;city=c1" in html
-    ledger = re.search(
-        r'<section[^>]*aria-labelledby="city-ledgers".*?</section>', html, re.S
-    ).group()
-    assert all(name in ledger for name in ("Qasr", "Tamesh", "Namar"))
-    assert "Sefra" not in ledger
-    assert ("216\u00a0667" if language == "fr" else "216,667") in ledger
+    city_html = client.get(
+        reverse("game", args=[game.id]), {"tab": "map", "city": "c1", "action": "accounts"}
+    ).content.decode()
+    assert ("216\u00a0667" if language == "fr" else "216,667") in city_html
     assert "?tab=help" in html
 
 
@@ -232,7 +227,10 @@ def test_order_labels(user, language, kind):
         else {"tab": "constructions", "action": kind}
     )
     html = client.get(reverse("game", args=[game.id]), query).content.decode()
-    assert ("Review the order" if language == "en" else "Vérifier l’ordre") in html
+    if kind == "raid":
+        assert ("Review the order" if language == "en" else "Vérifier l’ordre") in html
+    else:
+        assert 'class="primary-action work-review" type="submit"' in html
     assert "Faire relire" not in html
     spec = {"kind": kind}
     if kind == "storage":

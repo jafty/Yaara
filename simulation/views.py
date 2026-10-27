@@ -239,8 +239,8 @@ def desk(request, game_id):
         "prologue",
     ):
         raise Http404
-    mail_section = request.GET.get("mail", "attention")
-    if mail_section not in ("attention", "schedule", "chronicle"):
+    mail_section = request.GET.get("mail", "news")
+    if mail_section not in ("news", "attention", "schedule", "chronicle"):
         raise Http404
     prologue_page = 1
     if tab == "prologue":

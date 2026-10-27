@@ -5,12 +5,17 @@
         {% translate "Nouvelles du Scribe" as mail_title %}
         {% include 'simulation/context_header.html' with panel_title=mail_title %}
         <nav class="sheet-tabs" aria-label="{% translate 'Nouvelles' %}">
-            <a href="?tab=mail" {% if mail_section == 'attention' %}aria-current="page"{% endif %}>{% translate "À traiter" %} · {{ attention.count }}</a>
+            <a href="?tab=mail" {% if mail_section == 'news' %}aria-current="page"{% endif %}>{% translate "Nouvelles" %}</a>
+            <a href="?tab=mail&amp;mail=attention" {% if mail_section == 'attention' %}aria-current="page"{% endif %}>{% translate "Alertes" %} · {{ attention.count }}</a>
             <a href="?tab=mail&amp;mail=schedule" {% if mail_section == 'schedule' %}aria-current="page"{% endif %}>{% translate "Échéances" %}</a>
             <a href="?tab=mail&amp;mail=chronicle" {% if mail_section == 'chronicle' %}aria-current="page"{% endif %}>{% translate "Chronique" %}</a>
         </nav>
         <div class="sheet-body">
-        {% if mail_section == 'attention' %}
+        {% if mail_section == 'news' %}
+            <h2>{% blocktranslate with v0=news_moon %}Les nouvelles de la lune {{ v0 }}{% endblocktranslate %}</h2>
+            {% include 'simulation/letter_entries.html' with compact=True %}
+            <p class="reading-links"><a href="?tab=mail&amp;mail=chronicle">{% translate "Tous les rapports" %}</a></p>
+        {% elif mail_section == 'attention' %}
             <p class="salutation">{% translate "Monseigneur, ces affaires attendent votre attention." %}</p>
             {% include 'simulation/attention_items.html' %}
         {% elif mail_section == 'schedule' %}

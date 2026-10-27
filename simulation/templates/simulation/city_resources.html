@@ -1,0 +1,5 @@
+{% load i18n %}
+<dl class="city-resources" aria-label="{% translate 'Les moyens libres de la cité' %}">
+    <div id="city-granary"><dt>{% translate "Grenier" %}</dt><dd><strong>{{ selected.available_stock }}</strong><span class="visually-hidden"> {% translate "Mesures libres" %}</span></dd></div>
+    <div><dt>{% translate "Fidèles" %}</dt><dd><strong>{{ selected.available_fideles }}</strong><span class="visually-hidden"> {% translate "Fidèles disponibles" %}</span></dd></div>
+</dl>
