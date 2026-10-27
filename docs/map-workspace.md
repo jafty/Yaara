@@ -129,3 +129,7 @@ At enlarged text sizes, mobile sheets may cover the resource header so their fix
 tabs and scrollable decision content remain usable. The close control stays in the
 viewport. Secondary native folio fragments use the measured header height and
 settle after font reflow and same-document fragment changes; no game data is involved in either behavior.
+
+The latest artwork pass simplifies the six city silhouettes and uses faded pigments
+and worn parchment texture. Their transparent 512-pixel cells, fortification mapping,
+plain walls and separately drawn banners remain unchanged.
