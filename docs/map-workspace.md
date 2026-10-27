@@ -133,3 +133,14 @@ settle after font reflow and same-document fragment changes; no game data is inv
 The latest artwork pass simplifies the six city silhouettes and uses faded pigments
 and worn parchment texture. Their transparent 512-pixel cells, fortification mapping,
 plain walls and separately drawn banners remain unchanged.
+
+## City sheet and papyrus revision
+
+Selecting a city reserves a right-hand column on wide screens and a lower pane
+on narrow screens, leaving the map available for selecting another city. With no
+city selected the map fills the workspace. The city sheet retains its scrolling
+body, fixed tabs and close control; mail retains its separate window. The map
+uses a papyrus texture and a freshly drawn six-cell schematic settlement atlas.
+This is presentation only: city selection, roads and public intelligence are
+unchanged. Browser verification covers city switching, close, responsive and
+keyboard navigation alongside the existing order journeys.

@@ -50,6 +50,18 @@ def run_map_journeys():
                 page.locator('.map-city[href*="city=c1"]').focus()
                 page.keyboard.press("Enter")
                 expect(page.locator("#context-title")).to_have_text("Qasr")
+                for width in (1440, 390, 320):
+                    page.set_viewport_size(
+                        {"width": width, "height": 1000 if width == 1440 else 844}
+                    )
+                    board = page.locator(".map-workspace > .realm-map").bounding_box()
+                    sheet = page.locator(".city-sheet").bounding_box()
+                    if width == 1440:
+                        assert board["x"] + board["width"] <= sheet["x"] + 1
+                    else:
+                        assert board["y"] + board["height"] <= sheet["y"] + 1
+                    assert board["width"] > 0 and board["height"] > 0
+                page.set_viewport_size({"width": 1440, "height": 1000})
                 expect(page.locator(".map-connection.selected-road")).to_have_count(3)
                 expect(page.locator("#city-granary meter")).to_be_visible()
                 assert page.locator('[data-local-work="c1"]').count() > 1

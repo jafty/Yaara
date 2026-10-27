@@ -1006,8 +1006,9 @@ input[type="number"] {
   margin: 0;
 }
 .map-frame {
-  background: var(--map-paper) url("illustrations/map/parchment.webp") center /
-    cover no-repeat;
+  background: url("illustrations/map/parchment.webp") center / cover no-repeat,
+    var(--map-paper) url("illustrations/papyrus.webp") center / 32rem repeat;
+  background-blend-mode: soft-light, normal;
   border: 1px solid #d4c9b7;
 }
 .map-sheet {

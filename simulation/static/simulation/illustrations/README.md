@@ -34,13 +34,8 @@ Final imagegen source: `exec-ba2fdf82-6582-4472-b957-4b9e8fcbf244.png`.
 `map/settlements.webp`: lossless RGBA 1536×1024 atlas, six 512×512 cells.
 Top row: open settlement, timber palisade, reinforced palace.
 Bottom row: stone walls, legacy earth wall, legacy great enclosure.
-Simplified frontal manuscript vignettes with faded worn-parchment texture, matching the original works illustrations; all vertical walls are plain, without arrow slits
-or small dark window marks. Only full-height enclosure gates remain. Flags are
-live SVG, using existing house emblems and viewer-relative green/red colors.
-Final imagegen source: `exec-538e109d-7a42-4dfd-8ac3-ba15e86b0ab1.png`.
-Both originals remain in `/workspace/generated_images`; production conversion uses
-ImageMagick WebP encoding without repainting. SVG square viewports clip each cell
-without stretching it or showing adjacent cells. The earlier realistic and isometric geometric city drafts
-and sparse sepia map drafts were rejected and are not shipped. The final city
-generation directly referenced `fortifications.jpg`, `granary.jpg`, `forge.jpg`
-and `yaara-atlas.png`, followed by a transparent cell-separation pass.
+Schematic frontal manuscript vignettes, regenerated from the fortifications
+illustration with fibrous papyrus texture and plain walls. Flags remain live SVG,
+using existing house emblems and viewer-relative green/red colors. SVG square
+viewports clip each cell without stretching it or showing adjacent cells.
+The map background layers the existing papyrus texture over the decorative terrain.
