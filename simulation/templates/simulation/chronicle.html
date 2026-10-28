@@ -12,7 +12,7 @@
     {% elif tab == 'help' %}{% include 'simulation/help.html' %}
     {% elif tab == 'prologue' %}<div class="map-workspace">
         {% include 'simulation/realm_map.html' %}
-        <section id="map-context" class="context-sheet" aria-labelledby="context-title">
+        <section id="map-context" class="context-sheet" data-focus-action aria-labelledby="context-title">
             <header class="sheet-heading"><h1 id="context-title">{% translate "Premiers pas" %}</h1></header>
             <div class="sheet-body">{% include 'simulation/prologue.html' %}{% include 'simulation/folio_tools.html' %}</div>
         </section></div>

@@ -2,6 +2,7 @@
 
 let pageTimers = [];
 let headerObserver = null;
+let newsObserver = null;
 let sheetExpanded = false;
 function sizeSheet(expanded) {
   const workspace = document.querySelector(".map-workspace");
@@ -46,6 +47,7 @@ function initializePage() {
   pageTimers.forEach(window.clearInterval);
   pageTimers = [];
   if (headerObserver) headerObserver.disconnect();
+  if (newsObserver) newsObserver.disconnect();
   const expand = document.querySelector("[data-sheet-expand]");
   if (expand) {
     if (!document.querySelector(".panel-close") || document.querySelector(".city-sheet"))
@@ -478,10 +480,10 @@ function initializePage() {
     const updateCount = () => {
       const ids = badge.dataset.newsIds.split(",").filter(Boolean);
       const unread = ids.filter((id) => !read.has(`report-${id}`)).length;
-      const alerts = Number(badge.dataset.alertCount) || 0;
       badge.dataset.newsCount = String(unread);
-      badge.querySelector("strong").textContent = String(unread + alerts);
-      badge.classList.toggle("has-alerts", unread + alerts > 0);
+      badge.querySelector("strong").textContent = String(unread);
+      badge.querySelector("strong").hidden = unread === 0;
+      badge.classList.toggle("has-alerts", unread > 0);
       document.querySelectorAll("[data-news-label-count]").forEach((label) => {
         label.textContent = String(unread);
       });
@@ -507,6 +509,20 @@ function initializePage() {
       button.hidden = false;
       button.addEventListener("click", () => markRead(article.id));
     });
+    const newsTab = document.querySelector('.mail-panel a[aria-current="page"][href="?tab=mail"]');
+    if (newsTab && "IntersectionObserver" in window) {
+      newsObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            markRead(entry.target.id);
+            newsObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.5 });
+      document.querySelectorAll(".mail-panel .letter-entry").forEach((article) => {
+        if (!read.has(article.id)) newsObserver.observe(article);
+      });
+    }
     const reportId = decodeURIComponent(location.hash.slice(1));
     if (reportId.startsWith("report-") && document.querySelector(".mail-panel")) {
       markRead(reportId);
