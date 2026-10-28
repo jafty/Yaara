@@ -271,7 +271,7 @@ def desk(request, game_id):
             report_view(letter, state=game.state)
             for letter in known
             if letter.content.get("observation")
-        ][:3]
+        ][:1]
     # Reports are immutable per-recipient records; never infer access from current ownership.
     reports = Report.objects.filter(game=game, recipient=actor)
     news_month = view["closed_moon"] or game.state["month"]
@@ -765,19 +765,7 @@ def advance(request, game_id):
     authorized_game(request, game_id)
     try:
         target = int(request.POST.get("month", "0"))
-        execution, executed = services.tick(game_id, target, request.user)
-        if executed:
-            messages.success(
-                request,
-                _(
-                    "La lune {moon} est désormais consignée dans ces chroniques. Voici les nouvelles qui nous sont parvenues."
-                ).format(moon=target),
-            )
-        else:
-            messages.info(
-                request,
-                _("Ce mois figure déjà dans nos chroniques. Je n’en ai pas répété les événements."),
-            )
+        services.tick(game_id, target, request.user)
     except (ValueError, RuleError) as error:
         messages.error(
             request,

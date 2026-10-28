@@ -8,7 +8,7 @@
     <div class="letter-text">
         {% if compact %}<p>{{ report.body|truncatewords:35 }}</p>{% else %}{{ report.body|linebreaks }}<p class="signature">{% blocktranslate with v0=report.month %}Consigné par votre scribe à la lune {{ v0 }}.{% endblocktranslate %}</p>{% endif %}
         <div class="letter-actions reading-links">
-            {% if mail_section == 'chronicle' %}<button type="button" data-read-report="report-{{ report.id|unlocalize }}" hidden>{% translate "Marquer comme lu" %}</button>{% endif %}
+            {% if tab == 'mail' %}<button type="button" data-read-report="report-{{ report.id|unlocalize }}" hidden>{% translate "Marquer comme lu" %}</button>{% endif %}
             {% if compact %}<a href="?tab={% if mail_section == "news" and tab == "mail" %}mail&amp;mail=chronicle{% else %}letters{% endif %}#report-{{ report.id|unlocalize }}">{% translate "Lire le rapport complet" %} </a>{% endif %}
             {% if report.city_id %}<a href="{% url 'game' game.id %}?tab={% if workspace %}map{% else %}city{% endif %}&amp;city={{ report.city_id }}">{% translate "Voir la cité concernée" %} </a>{% endif %}
             {% if not compact %}<a href="?tab=map">{% translate "Retour à la carte" %}</a>{% endif %}

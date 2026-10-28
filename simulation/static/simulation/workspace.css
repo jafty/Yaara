@@ -206,6 +206,22 @@
   font-size: inherit;
   margin-bottom: 0.5rem;
 }
+.sheet-feedback {
+  padding: 0.35rem 0.5rem;
+  margin-block: 0 0.5rem;
+  border-inline-start: 2px solid var(--accent);
+  color: var(--accent);
+}
+.mail-alert-count:not([hidden]) {
+  padding: 0.05rem 0.3rem;
+  margin-inline-start: 0.25rem;
+  border-radius: 0.2rem;
+  background: var(--accent);
+  color: var(--paper);
+  font-size: 0.8rem;
+  line-height: 1.25;
+  font-variant-numeric: tabular-nums;
+}
 .city-briefing {
   margin: 0 0 0.5rem;
 }
