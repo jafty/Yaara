@@ -56,10 +56,17 @@ def readable_hierarchy(page):
       const visible = selector => [...root.querySelectorAll(selector)]
         .filter(el => el.getClientRects().length && getComputedStyle(el).visibility !== 'hidden')
         .map(el => parseFloat(getComputedStyle(el).fontSize));
+      const sheet = root.querySelector('.sheet-body');
       return {headings: visible('h1, h2, h3, [role="heading"]'),
+              sheetBody: sheet ? parseFloat(getComputedStyle(sheet).fontSize) : null,
               body: visible('p, legend, .ledger-figures dt, .ledger-figures dd, .work-transition, .work-benefit, .work-reason'),
               disclosures: visible('summary')};
     }""")
+    if sizes["sheetBody"]:
+        # Compare with reading text; instructions and form legends can be larger.
+        assert all(size > sizes["sheetBody"] for size in sizes["headings"]), sizes
+        assert all(size >= sizes["sheetBody"] for size in sizes["disclosures"]), sizes
+        return
     if sizes["headings"] and sizes["body"]:
         assert min(sizes["headings"]) > max(sizes["body"]), sizes
     if sizes["disclosures"] and sizes["body"]:
