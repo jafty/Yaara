@@ -58,7 +58,7 @@ def test_cron_deadline(user):
     assert game.deadline == original + timedelta(minutes=10)
 
 
-@case("audit-news-links", "Owner: Council excerpts link to the complete authorized report")
+@case("audit-news-links", "Owner: News excerpts link to the complete authorized report")
 @pytest.mark.parametrize("language", ["fr", "en"])
 def test_full_report_link(user, language):
     game = services.create_game(user, "Reports", opponents="passive", economy_version=2)
@@ -73,8 +73,9 @@ def test_full_report_link(user, language):
     client = Client()
     client.force_login(user)
     client.cookies["django_language"] = language
-    html = client.get(reverse("game", args=[game.id]), {"tab": "domain"}).content.decode()
-    assert f"?tab=letters#report-{report.pk}" in html
+    html = client.get(reverse("game", args=[game.id]), {"tab": "mail"}).content.decode()
+    assert f"?tab=mail&amp;mail=chronicle#report-{report.pk}" in html
+    assert "END-OF-REPORT" not in html
     assert 'id="city-ledgers"' not in html
     full = client.get(reverse("game", args=[game.id]), {"tab": "letters"}).content.decode()
     assert "END-OF-REPORT" in full and f'id="report-{report.pk}"' in full

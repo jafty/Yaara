@@ -325,10 +325,14 @@ with sync_playwright() as playwright:
                 first, second = [
                     action.bounding_box() for action in page.locator(".city-action").all()
                 ]
-                assert (
-                    abs(first["x"] - second["x"]) < 1
-                    and second["y"] >= first["y"] + first["height"]
-                )
+                if width >= 900:
+                    assert (
+                        abs(first["x"] - second["x"]) < 1
+                        and second["y"] >= first["y"] + first["height"]
+                    )
+                else:
+                    assert abs(first["y"] - second["y"]) < 1
+                    assert second["x"] >= first["x"] + first["width"]
                 assert page.locator(".city-action small").count() == 2
                 assert page.locator(".city-resources").evaluate(
                     "el => getComputedStyle(el).whiteSpace === 'nowrap' && el.getBoundingClientRect().width <= innerWidth"

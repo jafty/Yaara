@@ -22,8 +22,10 @@ def test_house_hud(user, language):
     html = response.content.decode()
     assert 'class="house-identity"' in html
     assert response.context["view"]["realm"] in html
-    assert 'class="harvest-link"' in html
-    assert "?tab=mail&amp;mail=schedule#harvest-accounts" in html
+    assert 'class="harvest-link moon-close-link"' in html
+    assert "?tab=domain#turn-page" in html
+    schedule = client.get(url, {"tab": "mail", "mail": "schedule"}).content.decode()
+    assert 'id="harvest-accounts"' in schedule
 
 
 @case("mockup-city-direct-work", REQ)

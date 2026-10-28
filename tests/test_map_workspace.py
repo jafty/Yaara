@@ -131,12 +131,15 @@ def test_overflow(user):
 def test_repair_tracking(user):
     game, client, url = open_board(user)
     game.state["cities"]["c1"].update(damaged=True, integrity=50)
-    engine.confirm_order(game.state, "p1", {"kind": "repair", "cities": ["c1"]}, str(uuid.uuid4()))
+    order = engine.confirm_order(
+        game.state, "p1", {"kind": "repair", "cities": ["c1"]}, str(uuid.uuid4())
+    )
     game.save()
     response = client.get(url, {"tab": "mail", "mail": "attention"})
     assert not any(item["kind"] == "damage" for item in response.context["attention"]["items"])
     html = client.get(url, {"tab": "mail", "mail": "schedule"}).content.decode()
-    assert "#order-" in html
+    assert f'id="order-{order["id"]}"' in html
+    assert reverse("cancel", args=[game.id, order["id"]]) in html
 
 
 @case("map-public-intelligence", REQ)

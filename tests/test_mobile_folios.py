@@ -2,6 +2,7 @@
 
 import re
 import uuid
+from copy import deepcopy
 
 import pytest
 from django.test import Client
@@ -35,20 +36,37 @@ def test_navigation(user, tab, active, language):
     game = services.create_game(
         user, "Navigation", opponents="passive", economy_version=1, map_version=2
     )
+    before = deepcopy(game.state)
     client = Client()
     client.force_login(user)
     client.cookies["django_language"] = language
-    page = client.get(reverse("game", args=[game.id]), {"tab": tab, "city": "c1"})
+    url = reverse("game", args=[game.id])
+    page = client.get(url, {"tab": tab, "city": "c1"})
+    assert page.status_code == 200
     html = page.content.decode()
     nav = re.search(r'<div class="realm-identity".*?</div>', html, re.S).group()
-    assert len(re.findall(r"<a\b", nav)) == 3
+    # Home is separate from the three in-game destinations.
+    assert len(re.findall(r"<a\b", nav)) == 4
+    assert f'<a class="book-world" href="{reverse("home")}">Yaara</a>' in nav
+    destinations = re.findall(r'<a\b[^>]+data-section="([a-z]+)"[^>]*>', nav)
+    assert destinations == ["map", "domain", "mail"]
+    for section in destinations:
+        assert re.search(rf'<a\b[^>]+href="{re.escape(url)}\?tab={section}"', nav)
     assert len(re.findall('aria-current="page"', nav)) == (1 if active else 0)
     if active:
         assert f'data-section="{active}" aria-current="page"' in nav
     assert 'data-icon="envelope"' in nav
     assert ("Map" if language == "en" else "Carte") in nav
     ribbon = re.search(r'<div class="resource-ribbon[^"]*".*?</div>', html, re.S).group()
-    assert "turn-page" not in ribbon
+    # Manual closure opens a read-only review; advancing still requires its POST form.
+    assert f'href="{url}?tab=domain#turn-page"' in ribbon
+    assert ("Close the Moon…" if language == "en" else "Clore la lune…") in ribbon
+    assert "<form" not in ribbon
+    review = client.get(url, {"tab": "domain"}).content.decode()
+    assert 'id="turn-page"' in review
+    assert f'<form method="post" action="{reverse("advance", args=[game.id])}"' in review
+    game.refresh_from_db()
+    assert game.state == before
 
 
 @case(

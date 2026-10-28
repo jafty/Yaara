@@ -17,12 +17,13 @@ from tests.stubs import FixedRandom
 
 @case(
     "news-completed-work-artwork",
-    "Owner: completed works show their recorded building in Council and full letters without rewriting archives",
+    "Owner: completed works show their recorded building in News and full letters without rewriting archives",
 )
 @pytest.mark.integration
 @pytest.mark.usefixtures("test_static_storage")
 @pytest.mark.parametrize("language", ["fr", "en"])
-@pytest.mark.parametrize("tab", ["domain", "letters"])
+# Preserve historical catalog IDs while following the relocated News destination.
+@pytest.mark.parametrize("tab", [pytest.param("mail", id="domain"), "letters"])
 @pytest.mark.parametrize(
     "phrase,scene",
     [
@@ -185,12 +186,12 @@ def test_completion_neutral_fallback(user, variation):
 
 @case(
     "news-action-start-artwork",
-    "Owner: launched actions use contextual beginning scenes in Council and full letters, including older headings",
+    "Owner: launched actions use contextual beginning scenes in News and full letters, including older headings",
 )
 @pytest.mark.integration
 @pytest.mark.usefixtures("test_static_storage")
 @pytest.mark.parametrize("language", ["fr", "en"])
-@pytest.mark.parametrize("tab", ["domain", "letters"])
+@pytest.mark.parametrize("tab", [pytest.param("mail", id="domain"), "letters"])
 @pytest.mark.parametrize("heading", ["action", "historical"])
 @pytest.mark.parametrize(
     "kind,scene",
@@ -356,12 +357,12 @@ def test_combat_artwork(monkeypatch, kind, outcome, expected):
 
 @case(
     "news-combat-artwork-bilingual",
-    "Owner: Council keeps thumbnails and full reports show complete large images in both languages",
+    "Owner: News summaries and full reports show recipient-specific encounter artwork in both languages",
 )
 @pytest.mark.integration
 @pytest.mark.usefixtures("test_static_storage")
 @pytest.mark.parametrize("language", ["fr", "en"])
-@pytest.mark.parametrize("tab", ["domain", "letters"])
+@pytest.mark.parametrize("tab", [pytest.param("mail", id="domain"), "letters"])
 @pytest.mark.parametrize("recipient,direction", [("p1", "offensive"), ("p2", "received")])
 @pytest.mark.parametrize(
     "kind,outcome,expected",
