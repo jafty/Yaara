@@ -5921,3 +5921,7 @@ msgstr "Select a city on the map to see the available actions."
 #: simulation/templates/simulation/map_guide.html
 msgid "Pointillés gris : routes · Trait rouge : vers une cité ennemie · Trait vert : vers une cité de votre domaine"
 msgstr "Grey dashes: roads · Red line: towards an enemy city · Green line: towards a city in your domain"
+
+#: simulation/templates/simulation/map_guide.html
+msgid "Outils : équipe occupée. Sans symbole : équipe libre dans vos cités."
+msgstr "Tools: crew occupied. No symbol: crew available in your cities."

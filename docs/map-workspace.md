@@ -310,3 +310,13 @@ Rejected local orders display their reason within the action sheet while
 retaining editable quantities. Incoming threats and advisory siege warnings do
 not prevent otherwise valid preparation. Successful or repeated manual Moon
 closure returns to the map without an extra flash notice; errors remain visible.
+
+
+## Owned-city crew marker
+
+A small tools symbol marks an owned city whose team is reserved by a sealed
+construction/repair order or occupied by active work. No symbol means available.
+The city link announces the busy state to assistive technology; the existing city
+panel retains the assignment and finish date. Enemy crew activity remains hidden.
+The marker uses the existing authorized `busy` field and does not change rules,
+saved data, map geometry, or city navigation.

@@ -16,13 +16,14 @@
             <g id="draft-route" aria-hidden="true"></g>
         </svg>
             {% for city in view.cities %}
-                <a class="map-city house-{{ city.owner }} {% if city.owned %}territory-owned{% else %}territory-enemy{% endif %}" data-map-state="{% if city.engaged %}engaged{% elif city.owned %}owned{% elif city.reachable %}reachable{% else %}unreachable{% endif %}" href="{% if workspace %}?{{ city.map_query }}#map-context{% else %}?tab=wars&amp;city={{ city.id }}#map-context{% endif %}" {% if city_requested and selected.id == city.id %}aria-current="location"{% endif %} aria-label="{{ city.name }} · {{ city.owner_name }} · {{ city.wall_label }} · {% include 'simulation/map_status.html' %}">
+                <a class="map-city house-{{ city.owner }} {% if city.owned %}territory-owned{% else %}territory-enemy{% endif %}" data-map-state="{% if city.engaged %}engaged{% elif city.owned %}owned{% elif city.reachable %}reachable{% else %}unreachable{% endif %}" href="{% if workspace %}?{{ city.map_query }}#map-context{% else %}?tab=wars&amp;city={{ city.id }}#map-context{% endif %}" {% if city_requested and selected.id == city.id %}aria-current="location"{% endif %} aria-label="{{ city.name }} · {{ city.owner_name }} · {{ city.wall_label }} · {% include 'simulation/map_status.html' %}{% if city.owned and city.busy %} · {% translate 'Équipe occupée' %}{% endif %}">
                     <svg class="territory-layer" viewBox="0 0 680 500" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><path class="map-territory" d="{{ city.territory_path }}"/></svg>
                     <svg class="city-marker" style="--map-x: {{ city.x|unlocalize }}; --map-y: {{ city.y|unlocalize }}" viewBox="-70 -65 140 140" aria-hidden="true">
                         <g class="settlement">
                             <svg class="city-art" x="-42" y="-42" width="84" height="84" viewBox="{{ city.settlement_viewbox }}" aria-hidden="true"><image href="{% static 'simulation/illustrations/map/settlements.webp' %}" width="1536" height="1024"/></svg>
                             <g transform="translate(22 -31) scale(.65)">{% include 'simulation/map_flag.html' with owned=city.owned owner=city.owner %}</g>
                         </g>
+                        {% if city.owned and city.busy %}<g class="map-team-busy" transform="translate(-52 8)" data-busy-city="{{ city.id }}"><title>{% translate "Équipe occupée" %}</title>{% include 'simulation/map_team.html' %}</g>{% endif %}
                         {% if city.incoming_warnings %}<g class="map-warning" transform="translate(-65 0) scale(.65)" data-threat-city="{{ city.id }}"><title>{% translate "Armée signalée" %}</title><path d="M25,-60 L47,-22 L3,-22 Z"/><text x="25" y="-30" text-anchor="middle">!</text></g>{% endif %}
                         <text class="map-name" y="53" text-anchor="middle">{{ city.name }}</text>
                     </svg>

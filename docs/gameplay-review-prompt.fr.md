@@ -268,3 +268,7 @@ les autres restant aux archives. Une menace entrante ou un avertissement de
 réserves de siège ne bloque pas un ordre par ailleurs valide ; un refus de
 préparation est expliqué dans le panneau. Ces descriptions ne constituent pas
 une attestation de déploiement.
+
+Un petit symbole d’outils indique une équipe réservée ou occupée dans une cité
+possédée. Sans symbole, l’équipe est libre. Le nom du chantier et sa date de fin
+restent dans la fiche de cité ; aucune activité d’équipe ennemie n’est dévoilée.

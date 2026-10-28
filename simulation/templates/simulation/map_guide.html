@@ -4,6 +4,7 @@
     <div><dt><svg class="map-key" viewBox="-22 -24 44 54" aria-hidden="true">{% include 'simulation/map_flag.html' with owned=True owner=None %}</svg>{% translate "Votre domaine" %}</dt><dd>{% translate "Bannière verte : vos cités. Bannière rouge : les cités rivales." %}</dd></div>
     <div><dt class="reachable-key">{% translate "À portée" %}</dt><dd>{% translate "Un nom souligné indique une cité que vos hommes peuvent atteindre." %}</dd></div>
     <div><dt class="unreachable-key">{% translate "Hors de portée" %}</dt><dd>{% translate "Un nom grisé indique une cité inaccessible pour le moment." %}</dd></div>
+    <div><dt><svg class="map-key map-team-busy" viewBox="-3 -3 30 30" aria-hidden="true">{% include 'simulation/map_team.html' %}</svg>{% translate "Équipe occupée" %}</dt><dd>{% translate "Outils : équipe occupée. Sans symbole : équipe libre dans vos cités." %}</dd></div>
     <div><dt><svg class="map-key engaged-key" viewBox="-22 -24 44 54" aria-hidden="true">{% include 'simulation/map_flag.html' with owned=False owner=None %}</svg>{% translate "Expédition engagée" %}</dt><dd>{% translate "Une bannière pointillée signale une expédition engagée." %}</dd></div>
 </dl>
 <p class="aside-text">{% translate "Les frontières sont indicatives ; seules les routes relient les cités." %}</p>

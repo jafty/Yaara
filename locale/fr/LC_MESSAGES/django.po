@@ -4640,3 +4640,7 @@ msgstr "Sélectionnez une cité sur la carte pour voir les actions disponibles."
 #: simulation/templates/simulation/map_guide.html
 msgid "Pointillés gris : routes · Trait rouge : vers une cité ennemie · Trait vert : vers une cité de votre domaine"
 msgstr "Pointillés gris : routes · Trait rouge : vers une cité ennemie · Trait vert : vers une cité de votre domaine"
+
+#: simulation/templates/simulation/map_guide.html
+msgid "Outils : équipe occupée. Sans symbole : équipe libre dans vos cités."
+msgstr "Outils : équipe occupée. Sans symbole : équipe libre dans vos cités."

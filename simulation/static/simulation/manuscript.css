@@ -1235,6 +1235,18 @@ input[type="number"] {
 .map-march:hover .march-line {
   stroke-width: 7;
 }
+.map-team-busy circle {
+  fill: var(--paper);
+  stroke: #426c5d;
+  stroke-width: 1.5;
+}
+.map-team-busy path {
+  fill: none;
+  stroke: #426c5d;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
 .map-warning path {
   fill: #853d2b;
   stroke: #fff;

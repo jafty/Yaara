@@ -194,6 +194,7 @@ def run_map_journeys():
                 expect(page.locator(".map-workspace")).to_be_visible()
                 expect(page.locator(".review-panel")).to_be_visible()
                 page.locator(".decree-reading > form button").click()
+                expect(page.locator('[data-busy-city="c1"]')).to_have_count(1)
                 expect(page.locator(".orders-register")).to_contain_text("300")
                 page.evaluate("document.documentElement.style.fontSize = '200%'")
                 for _ in range(50):
