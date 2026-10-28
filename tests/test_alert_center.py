@@ -4,7 +4,7 @@ import re
 import uuid
 from copy import deepcopy
 from html import unescape
-from urllib.parse import urlsplit
+from urllib.parse import urljoin, urlsplit
 
 import pytest
 from django.test import Client
@@ -26,15 +26,18 @@ pytestmark = [pytest.mark.integration, pytest.mark.usefixtures("test_static_stor
     [
         ("threat", "city-defenses"),
         ("reserves", "city-stocks"),
-        ("repair", "work-selection"),
-        ("repair_watch", "work-selection"),
-        ("repair_shelter", "work-selection"),
-        ("sealed", "orders-heading"),
-        ("active", "active-works"),
+        pytest.param("repair", "local-work-repair", id="repair-work-selection"),
+        pytest.param("repair_watch", "local-work-repair_watch", id="repair_watch-work-selection"),
+        pytest.param(
+            "repair_shelter", "local-work-repair_shelter", id="repair_shelter-work-selection"
+        ),
+        pytest.param("sealed", None, id="sealed-orders-heading"),
+        pytest.param("active", "work-c3-0", id="active-active-works"),
     ],
 )
 def test_alert_destination(user, language, issue, anchor):
     game, client, url = open_game(user, language)
+    order = None
     if issue == "threat":
         engine.confirm_order(
             game.state,
@@ -51,24 +54,33 @@ def test_alert_destination(user, language, issue, anchor):
         else:
             game.state["cities"]["c3"].update(damaged=True, integrity=50)
         if issue in ("sealed", "active"):
-            engine.confirm_order(
+            order = engine.confirm_order(
                 game.state, "p1", {"kind": "repair", "cities": ["c3"]}, str(uuid.uuid4())
             )
             if issue == "active":
                 engine.advance_month(game.state, "departure")
     game.save()
     original = deepcopy(game.state)
-    html = client.get(url, {"tab": "domain"}).content.decode()
-    alert = re.search(r"<li[^>]*data-alert-kind=.*?</li>", html, re.S)[0]
-    link = unescape(re.search(r'href="([^"]+)"', alert)[1])
+    html = client.get(url, {"tab": "mail", "mail": "attention"}).content.decode()
+    if issue in ("sealed", "active"):
+        # A commissioned repair belongs to the schedule, not unresolved attention.
+        assert 'data-alert-kind="damage"' not in html
+        briefing = client.get(url, {"tab": "map", "city": "c3"}).content.decode()
+        commitment = re.search(r'<span class="city-assignment".*?</span>', briefing, re.S)[0]
+        link = unescape(re.search(r'href="([^"]+)"', commitment)[1])
+        anchor = "order-" + order["id"] if issue == "sealed" else "work-c3-0"
+    else:
+        alert = re.search(r"<li[^>]*data-alert-kind=.*?</li>", html, re.S)[0]
+        link = unescape(re.search(r'href="([^"]+)"', alert)[1])
     destination = urlsplit(link)
     assert destination.fragment == anchor
-    target = client.get(link).content.decode()
+    target = client.get(urljoin(url, link)).content.decode()
     assert target.count(f'id="{anchor}"') == 1
-    if issue not in ("sealed", "active"):
-        assert re.search(rf'<[^>]+id="{anchor}"[^>]+tabindex="-1"', target)
+    assert re.search(rf'<[^>]+id="{anchor}"[^>]+tabindex="-1"', target)
     if issue.startswith("repair"):
-        assert re.search(r'<input[^>]+name="cities"[^>]+value="c3"[^>]+\bchecked', target)
+        assert '<input type="hidden" name="cities" value="c3">' in target
+        assert f'<input type="hidden" name="kind" value="{issue}">' in target
+        assert re.search(r'<form[^>]+method="post"[^>]+data-local-work="c3"', target)
     game.refresh_from_db()
     assert game.state == original
 
@@ -96,14 +108,25 @@ def test_damaged_building(user, language, family, repair):
         game.state["cities"]["c1"].update(**{family: 1}, damaged_works=[family])
     game.save()
     before = deepcopy(game.state)
-    for query in ({"tab": "domain"}, {"tab": "wars"}, {"tab": "city", "city": "c1"}):
+    for query in (
+        {"tab": "mail", "mail": "attention"},
+        {"tab": "wars"},
+        {"tab": "city", "city": "c1"},
+    ):
         text = client.get(url, query).content.decode()
         assert 'data-alert-count="1"' in text
         assert text.count('data-alert-kind="damage"') == 1
         alert = re.search(r'<li[^>]*data-alert-kind="damage".*?</li>', text, re.S)[0]
         assert "Qasr" in alert
         assert f"action={repair}&amp;city=c1" in alert
-        assert ("Damaged structure" if language == "en" else "Ouvrage endommagé") in alert
+        if query["tab"] == "mail":
+            assert (
+                "The structure remains damaged"
+                if language == "en"
+                else "L’ouvrage demeure endommagé"
+            ) in alert
+        else:
+            assert ("Damaged structure" if language == "en" else "Ouvrage endommagé") in alert
         assert ("Inspect repair" if language == "en" else "Examiner la réparation") in alert
         if query.get("tab") == "city":
             assert f'data-damaged-building="{family}"' in text
@@ -128,17 +151,31 @@ def test_repair_lifecycle(user, language, stage):
         for _ in range(3 if stage == "completed" else int(stage == "active")):
             engine.advance_month(game.state, "repair")
     game.save()
-    text = client.get(url, {"tab": "domain"}).content.decode()
+    before = deepcopy(game.state)
+    text = client.get(url, {"tab": "mail", "mail": "attention"}).content.decode()
     assert f'data-alert-count="{0 if stage in ("completed", "sealed", "active") else 1}"' in text
     if stage == "completed":
         assert 'data-alert-kind="damage"' not in text
     elif stage in ("sealed", "active"):
+        assert 'data-alert-kind="damage"' not in text
         phase = "reserved" if stage == "sealed" else "active"
-        assert f'data-repair-phase="{phase}"' in text
-        assert ("#orders-heading" if stage == "sealed" else "#active-works") in text
-        assert ("Expected finish: Moon 3" if language == "en" else "Fin prévue : lune 3") in text
+        city = client.get(url, {"tab": "map", "city": "c1"})
+        briefing = city.content.decode()
+        assert f'data-crew-phase="{phase}"' in briefing
+        anchor = "order-" + order["id"] if stage == "sealed" else "work-c1-0"
+        assert f"?tab=mail&amp;mail=schedule#{anchor}" in briefing
+        assert (
+            "Expected finish: Moon 3" if language == "en" else "Fin prévue : lune 3"
+        ) in briefing
+        schedule = client.get(url, {"tab": "mail", "mail": "schedule"}).content.decode()
+        assert f'id="{anchor}"' in schedule
+        assert city.context["selected"]["damaged"]
     else:
-        assert 'data-repair-phase="none"' in text
+        assert 'data-alert-kind="damage" data-alert-city="c1"' in text
+    accounts = client.get(url, {"tab": "map", "action": "accounts", "city": "c1"})
+    assert accounts.context["selected"]["damaged"] == (stage != "completed")
+    game.refresh_from_db()
+    assert game.state == before
 
 
 @case(
@@ -172,8 +209,12 @@ def test_centralized_state(user, language, scenario):
         game.state["cities"]["c1"].update(walls=1, damaged=True)
     game.save()
     original = deepcopy(game.state)
-    for tab in ("domain", "wars", "constructions"):
-        text = client.get(url, {"tab": tab}).content.decode()
+    for query in (
+        {"tab": "mail", "mail": "attention"},
+        {"tab": "wars"},
+        {"tab": "constructions"},
+    ):
+        text = client.get(url, query).content.decode()
         kinds = re.findall(r'data-alert-kind="([a-z]+)"', text)
         expected = (
             ["threat", "damage", "reserves"]

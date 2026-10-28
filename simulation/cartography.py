@@ -69,6 +69,30 @@ def territory_path(polygon):
     return " ".join(path) + " Z"
 
 
+def road_chain(links, owned, origin, target):
+    """Follow public saved curves using the permitted intermediate city identities."""
+    edges = {}
+    for link in links:
+        first, second = link["first"], link["second"]
+        curve = link["path"].split(" Q ", 1)[1].split()
+        control = " ".join(curve[:2])
+        edges[first["id"], second["id"]] = f"Q {control} {second['x']} {second['y']}"
+        edges[second["id"], first["id"]] = f"Q {control} {first['x']} {first['y']}"
+    todo = [(origin["id"], [])]
+    seen = {origin["id"]}
+    for current, segments in todo:
+        if current == target["id"]:
+            return f"M {origin['x']} {origin['y']} " + " ".join(segments)
+        for first, second in edges:
+            if first != current or second in seen:
+                continue
+            if second not in owned and second != target["id"]:
+                continue
+            seen.add(second)
+            todo.append((second, [*segments, edges[first, second]]))
+    return ""
+
+
 def workspace_context(view, selected=None, activity=None):
     cities = {city["id"]: city for city in view["cities"]}
     owned = {city["id"] for city in view["owned_cities"]}
@@ -95,30 +119,46 @@ def workspace_context(view, selected=None, activity=None):
         )
     marches = []
     for item in view["orders"]:
-        if item["status"] != "confirmed" or item["kind"] not in ("raid", "capture"):
+        if item["status"] != "confirmed" or item["kind"] not in ("raid", "capture", "convoy"):
             continue
-        origin = item["launch_city"]
-        if origin:
-            marches.append(
-                {
-                    "origin": cities[origin],
-                    "target": cities[item["target_id"]],
-                    "state": "sealed",
-                    "anchor": "order-" + item["id"],
-                    "label": _("Ordre scellé"),
-                    "moon": item["execute_month"],
-                }
-            )
-    for item in view["missions"]:
-        origins = item["origins"] if item["returning"] else [item["launch_city"]]
+        origins = (
+            [item["origin_id"]]
+            if item["kind"] == "convoy"
+            else [item["launch_city"]]
+            if item["launch_city"]
+            else item["origins"]
+        )
         for origin in origins:
             if origin:
                 marches.append(
                     {
-                        "origin": cities[item["target_id"]]
+                        "origin": cities[origin],
+                        "target": cities[item["target_id"]],
+                        "state": "sealed",
+                        "anchor": "order-" + item["id"],
+                        "label": _("Ordre scellé"),
+                        "moon": item["execute_month"],
+                    }
+                )
+    for item in view["missions"]:
+        origins = (
+            item["origins"]
+            if item["returning"] or not item["launch_city"]
+            else [item["launch_city"]]
+        )
+        for origin in origins:
+            if (
+                origin
+                and origin not in item["arrived_origins"]
+                and (not item["returning"] or item["cohorts"].get(origin, 0))
+            ):
+                refuge = item["return_routes"].get(origin)
+                marches.append(
+                    {
+                        "origin": cities[origin if refuge else item["target_id"]]
                         if item["returning"]
                         else cities[origin],
-                        "target": cities[origin]
+                        "target": cities[refuge or origin]
                         if item["returning"]
                         else cities[item["target_id"]],
                         "state": "returning" if item["returning"] else "outbound",
@@ -127,15 +167,24 @@ def workspace_context(view, selected=None, activity=None):
                         "moon": item["return_month"] if item["returning"] else item["combat_month"],
                     }
                 )
-    for march in marches:
-        origin, target = march["origin"], march["target"]
-        dx, dy = target["x"] - origin["x"], target["y"] - origin["y"]
-        distance = hypot(dx, dy)
-        inset = min(45, distance / 4) / max(distance, 1)
-        march["path"] = (
-            f"M {origin['x'] + dx * inset:.2f} {origin['y'] + dy * inset:.2f} "
-            f"L {target['x'] - dx * inset:.2f} {target['y'] - dy * inset:.2f}"
+    orders = {item["id"]: item for item in view["orders"]}
+    for index, item in enumerate(view["convoys"]):
+        origin = orders[item["id"]]["target_id"] if item["returning"] else item["origin_id"]
+        marches.append(
+            {
+                "origin": cities[origin],
+                "target": cities[item["target_id"]],
+                "state": "returning" if item["returning"] else "outbound",
+                "anchor": f"convoy-{index}",
+                "label": _("Retour prévu") if item["returning"] else _("Arrivée prévue"),
+                "moon": item["arrival_moon"],
+            }
         )
+    for march in marches:
+        permitted = owned if march["state"] == "sealed" else cities.keys()
+        march["path"] = road_chain(view["links"], permitted, march["origin"], march["target"])
+        march["friendly"] = march["target"]["owned"]
+    marches = [march for march in marches if march["path"]]
     attention = build_alert_center(view)
     attention["items"] = [
         item
@@ -144,7 +193,12 @@ def workspace_context(view, selected=None, activity=None):
     ]
     for item in attention["items"]:
         if item["kind"] == "damage":
-            item["query"] = item["query"].replace("tab=constructions", "tab=map")
+            repair = "repair" if item["family"] == "walls" else "repair_" + item["family"]
+            item["query"] = (
+                item["query"]
+                .replace("tab=constructions", "tab=map")
+                .replace("#work-selection", f"#local-work-{repair}")
+            )
             item["scene"] = item["family"]
         else:
             item["scene"] = "army" if item["kind"] == "threat" else "storage"

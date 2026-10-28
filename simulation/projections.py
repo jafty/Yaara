@@ -291,6 +291,7 @@ def player_view(state, actor):
                 "label": ACTION_LABELS[order["kind"]],
                 "target_id": order.get("target"),
                 "launch_city": order.get("launch_city"),
+                "origin_id": order.get("origin"),
                 "origins": list(order.get("contributions", {})),
                 "kind": order["kind"],
                 "status": order["status"],
@@ -323,6 +324,9 @@ def player_view(state, actor):
             "target_id": mission["target"],
             "launch_city": mission.get("launch_city"),
             "origins": list(mission["cohorts"]),
+            "cohorts": dict(mission["cohorts"]),
+            "return_routes": dict(mission.get("return_routes", {})),
+            "arrived_origins": list(mission.get("arrived_origins", [])),
             "target": by_id[mission["target"]]["name"],
             "men": sum(mission["cohorts"].values()),
             "combat_month": mission["combat_month"],
@@ -543,6 +547,9 @@ def player_view(state, actor):
         else [],
         "convoys": [
             {
+                "id": item["id"],
+                "origin_id": item["origin"],
+                "target_id": item["target"],
                 "origin": by_id[item["origin"]]["name"],
                 "target": by_id[item["target"]]["name"],
                 "cargo": item["cargo"],

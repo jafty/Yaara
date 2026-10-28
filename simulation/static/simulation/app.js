@@ -444,25 +444,14 @@ function initializePage() {
       );
     if (!candidates.length) return;
     const departure = candidates[0];
-    const origin = graph.cities.find((city) => city.id === departure.id);
-    const target = graph.cities.find((city) => city.id === targetId);
-    for (const edge of document.querySelectorAll(".map-connection")) {
-      if (
-        departure.reached.has(edge.dataset.first) &&
-        departure.reached.has(edge.dataset.second)
-      )
-        edge.classList.add("draft-road");
-    }
-    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    const dx = target.x - origin.x,
-      dy = target.y - origin.y;
-    const distance = Math.hypot(dx, dy);
-    const inset = Math.min(45, distance / 4) / Math.max(distance, 1);
-    path.setAttribute(
-      "d",
-      `M ${origin.x + dx * inset} ${origin.y + dy * inset} L ${target.x - dx * inset} ${target.y - dy * inset}`,
+    const edge = [...document.querySelectorAll(".map-connection")].find((road) =>
+      [road.dataset.first, road.dataset.second].includes(departure.id) &&
+      [road.dataset.first, road.dataset.second].includes(targetId),
     );
-    path.setAttribute("class", "march-line");
+    if (!edge) return;
+    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute("d", edge.getAttribute("d"));
+    path.setAttribute("class", "march-line march-hostile");
     layer.append(path);
   }
 
