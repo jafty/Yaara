@@ -455,8 +455,14 @@
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: minmax(0, min(55cqh, calc(100cqw * 500 / 680))) minmax(0, 1fr);
   }
-  .map-workspace:has(.city-sheet:not([data-focus-action])) {
-    grid-template-rows: minmax(0, min(42cqh, calc(100cqw * 500 / 680))) minmax(0, 1fr);
+  .city-sheet:not([data-focus-action]) .sheet-body {
+    padding-block: 0.35rem;
+  }
+  .city-sheet:not([data-focus-action]) .city-briefing {
+    margin-bottom: 0.25rem;
+  }
+  .city-sheet:not([data-focus-action]) .city-actions {
+    margin-top: 0.15rem;
   }
   .context-sheet {
     border-left: 0;
