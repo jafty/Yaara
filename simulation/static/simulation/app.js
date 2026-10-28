@@ -3,6 +3,7 @@
 let pageTimers = [];
 let headerObserver = null;
 let newsObserver = null;
+const readReports = new Map();
 let sheetExpanded = false;
 function sizeSheet(expanded) {
   const workspace = document.querySelector(".map-workspace");
@@ -444,25 +445,14 @@ function initializePage() {
       );
     if (!candidates.length) return;
     const departure = candidates[0];
-    const origin = graph.cities.find((city) => city.id === departure.id);
-    const target = graph.cities.find((city) => city.id === targetId);
-    for (const edge of document.querySelectorAll(".map-connection")) {
-      if (
-        departure.reached.has(edge.dataset.first) &&
-        departure.reached.has(edge.dataset.second)
-      )
-        edge.classList.add("draft-road");
-    }
-    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    const dx = target.x - origin.x,
-      dy = target.y - origin.y;
-    const distance = Math.hypot(dx, dy);
-    const inset = Math.min(45, distance / 4) / Math.max(distance, 1);
-    path.setAttribute(
-      "d",
-      `M ${origin.x + dx * inset} ${origin.y + dy * inset} L ${target.x - dx * inset} ${target.y - dy * inset}`,
+    const edge = [...document.querySelectorAll(".map-connection")].find((road) =>
+      [road.dataset.first, road.dataset.second].includes(departure.id) &&
+      [road.dataset.first, road.dataset.second].includes(targetId),
     );
-    path.setAttribute("class", "march-line");
+    if (!edge) return;
+    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute("d", edge.getAttribute("d"));
+    path.setAttribute("class", "march-line march-hostile");
     layer.append(path);
   }
 
@@ -470,20 +460,26 @@ function initializePage() {
   const badge = document.querySelector(".alerts-trigger[data-mail-key]");
   if (badge && badge.dataset.newsIds !== undefined) {
     const key = `yaara-read:${badge.dataset.mailKey}`;
-    let read;
-    try {
-      const stored = JSON.parse(localStorage.getItem(key) || "[]");
-      read = new Set(Array.isArray(stored) ? stored : []);
-    } catch {
-      read = new Set();
+    const read = readReports.get(key) || new Set();
+    for (const storageName of ["localStorage", "sessionStorage"]) {
+      try {
+        const stored = JSON.parse(window[storageName].getItem(key) || "[]");
+        if (Array.isArray(stored)) {
+          stored.filter((id) => typeof id === "string").forEach((id) => read.add(id));
+        }
+      } catch {
+        /* Restricted storage must not prevent reading or context navigation. */
+      }
     }
+    readReports.set(key, read);
     const updateCount = () => {
       const ids = badge.dataset.newsIds.split(",").filter(Boolean);
       const unread = ids.filter((id) => !read.has(`report-${id}`)).length;
       badge.dataset.newsCount = String(unread);
-      badge.querySelector("strong").textContent = String(unread);
-      badge.querySelector("strong").hidden = unread === 0;
-      badge.classList.toggle("has-alerts", unread > 0);
+      const notifications = unread + Number(badge.dataset.alertCount || 0);
+      badge.querySelector("strong").textContent = String(notifications);
+      badge.querySelector("strong").hidden = notifications === 0;
+      badge.classList.toggle("has-alerts", notifications > 0);
       document.querySelectorAll("[data-news-label-count]").forEach((label) => {
         label.textContent = String(unread);
       });
@@ -491,10 +487,12 @@ function initializePage() {
     const markRead = (id) => {
       if (!id || !document.getElementById(id)) return;
       read.add(id);
-      try {
-        localStorage.setItem(key, JSON.stringify([...read]));
-      } catch {
-        /* Optional preference. */
+      for (const storageName of ["localStorage", "sessionStorage"]) {
+        try {
+          window[storageName].setItem(key, JSON.stringify([...read]));
+        } catch {
+          /* The in-memory receipt survives enhanced context navigation. */
+        }
       }
       const article = document.getElementById(id);
       article.classList.remove("unread-report");
@@ -513,14 +511,14 @@ function initializePage() {
     if (newsTab && "IntersectionObserver" in window) {
       newsObserver = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            markRead(entry.target.id);
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.99) {
+            markRead(entry.target.closest(".letter-entry").id);
             newsObserver.unobserve(entry.target);
           }
         });
-      }, { threshold: 0.5 });
+      }, { root: document.querySelector(".mail-panel .sheet-body"), threshold: 1 });
       document.querySelectorAll(".mail-panel .letter-entry").forEach((article) => {
-        if (!read.has(article.id)) newsObserver.observe(article);
+        if (!read.has(article.id)) newsObserver.observe(article.querySelector(".letter-heading"));
       });
     }
     const reportId = decodeURIComponent(location.hash.slice(1));

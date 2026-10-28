@@ -29,7 +29,7 @@
             <main id="main">
                 {% if not workspace %}{% include 'simulation/guest_banner.html' %}{% endif %}
                 {% if workspace %}<div class="workspace-notices">{% endif %}
-                {% if messages %}<div class="notices" aria-live="polite">{% for message in messages %}<p class="notice {{ message.tags }}">{{ message }}</p>{% endfor %}</div>{% endif %}
+                {% if not workspace or tab != 'map' or not city_requested %}{% if messages %}<div class="notices" aria-live="polite">{% for message in messages %}<p class="notice {{ message.tags }}">{{ message }}</p>{% endfor %}</div>{% endif %}{% endif %}
                 {% if workspace %}{% include 'simulation/game_status.html' %}</div>{% else %}{% include 'simulation/alert_center.html' %}{% endif %}
                 {% block content %}{% endblock %}
             </main>

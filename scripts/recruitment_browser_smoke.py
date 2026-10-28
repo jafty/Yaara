@@ -55,7 +55,8 @@ def work_order(page, game_url, city, seal=True):
     page.goto(game_url + "?tab=constructions&action=irrigation")
     page.locator(f'input[name="cities"][value="{city}"]').check()
     page.locator("form[data-work-form] button[type=submit]").click()
-    expect(page.locator(".unsealed-leaf")).to_be_visible()
+    expect(page.locator(".review-panel")).to_be_visible()
+    expect(page.locator('.decree-reading input[name="payload"]')).to_have_count(1)
     if seal:
         page.locator(".decree-reading > form button[type=submit]").click()
 
@@ -83,6 +84,7 @@ def guest_journey(browser, language, javascript=True):
     outsider.close()
     work_order(page, game_url, "c1")
     assert state_for(page, game_url)["view"]["sealed_count"] == 1
+    page.goto(game_url)
     expect(page.locator('a[href*="#turn-page"]').first).to_be_visible()
     for _ in range(4):
         page.goto(game_url + "?tab=domain#turn-page")
@@ -215,6 +217,7 @@ def multiplayer_journey(browser, language, operator):
     expect(admin.locator("[data-spots-left]")).to_have_text("0", timeout=10000)
     admin.screenshot(path=str(ARTIFACTS / f"operator-ready-{language}.png"), full_page=True)
     for _, page in players:
+        page.bring_to_front()
         page.wait_for_url(re.compile(re.escape(game_url) + r"(?:\?.*)?$"), timeout=20000)
         expect(page.locator(".reign-header a[data-section]")).to_have_count(3)
         assert page.locator('form[action$="/advance/"]').count() == 0

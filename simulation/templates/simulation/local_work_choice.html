@@ -1,5 +1,5 @@
 {% load i18n %}
-<article class="local-work-choice{% if brief %} work-row{% endif %}" id="local-work-{{ work.kind }}">
+<article class="local-work-choice{% if brief %} work-row{% endif %}" id="local-work-{{ work.kind }}" tabindex="-1">
     {% if brief %}{% include 'simulation/illustration.html' with scene=work.scene|default:work.kind shape='building' %}{% else %}{% include 'simulation/illustration.html' with scene=work.scene|default:work.kind shape='building-detail' %}{% endif %}
     <h3>{% if brief %}<a href="?tab=map&amp;city={{ selected.id }}&amp;action={{ work.kind }}#local-work-{{ work.kind }}" title="{% translate 'Détails du devis' %}">{{ work.label }} </a>{% else %}{{ work.label }}{% endif %}</h3>
     {% include 'simulation/work_details.html' with city=work.option brief=brief %}

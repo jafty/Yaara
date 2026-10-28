@@ -56,10 +56,17 @@ def readable_hierarchy(page):
       const visible = selector => [...root.querySelectorAll(selector)]
         .filter(el => el.getClientRects().length && getComputedStyle(el).visibility !== 'hidden')
         .map(el => parseFloat(getComputedStyle(el).fontSize));
+      const sheet = root.querySelector('.sheet-body');
       return {headings: visible('h1, h2, h3, [role="heading"]'),
+              sheetBody: sheet ? parseFloat(getComputedStyle(sheet).fontSize) : null,
               body: visible('p, legend, .ledger-figures dt, .ledger-figures dd, .work-transition, .work-benefit, .work-reason'),
               disclosures: visible('summary')};
     }""")
+    if sizes["sheetBody"]:
+        # Compare with reading text; instructions and form legends can be larger.
+        assert all(size > sizes["sheetBody"] for size in sizes["headings"]), sizes
+        assert all(size >= sizes["sheetBody"] for size in sizes["disclosures"]), sizes
+        return
     if sizes["headings"] and sizes["body"]:
         assert min(sizes["headings"]) > max(sizes["body"]), sizes
     if sizes["disclosures"] and sizes["body"]:
@@ -325,10 +332,14 @@ with sync_playwright() as playwright:
                 first, second = [
                     action.bounding_box() for action in page.locator(".city-action").all()
                 ]
-                assert (
-                    abs(first["x"] - second["x"]) < 1
-                    and second["y"] >= first["y"] + first["height"]
-                )
+                if width >= 900:
+                    assert (
+                        abs(first["x"] - second["x"]) < 1
+                        and second["y"] >= first["y"] + first["height"]
+                    )
+                else:
+                    assert abs(first["y"] - second["y"]) < 1
+                    assert second["x"] >= first["x"] + first["width"]
                 assert page.locator(".city-action small").count() == 2
                 assert page.locator(".city-resources").evaluate(
                     "el => getComputedStyle(el).whiteSpace === 'nowrap' && el.getBoundingClientRect().width <= innerWidth"
@@ -931,7 +942,7 @@ with sync_playwright() as playwright:
         plain_forge = plain_page.locator("#work-storage")
         plain_forge.locator('input[value="c1"]').check()
         plain_forge.locator('button[type="submit"]').click()
-        expect(plain_page.locator(".notices")).to_contain_text(
+        expect(plain_page.locator(".sheet-feedback, .notices")).to_contain_text(
             "The granary in Qasr needs" if en else "Le grenier de Qasr manque"
         )
         plain_page.goto(game_url + "?tab=constructions")
@@ -998,7 +1009,7 @@ with sync_playwright() as playwright:
             "35,000" if en else "35\u202f000"
         )
         page.locator('.primary-action[form="expedition-form"]').click()
-        expect(page.locator(".notices")).to_contain_text("Qasr")
+        expect(page.locator(".sheet-feedback, .notices")).to_contain_text("Qasr")
         expect(page.locator('input[name="men_c1"]')).to_have_value("10")
         assert "action=expedition" in page.url
         empty = page.request.get(empty_url + "state/").json()["view"]

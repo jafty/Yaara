@@ -48,14 +48,16 @@ def test_raid_financial_letter_http(user, language):
         assert "Provisional balance: deficit of 50,000 Measures" in html
         assert "Final Measures balance: deficit of 50,000 Measures" in html
         assert "Tamesh: 31,667 Measures paid" in html
-    council = client.get(
-        reverse("game", args=[game.pk]), {"tab": "domain"}, HTTP_ACCEPT_LANGUAGE=language
+    news = client.get(
+        reverse("game", args=[game.pk]),
+        {"tab": "mail", "mail": "chronicle"},
+        HTTP_ACCEPT_LANGUAGE=language,
     ).content.decode()
     assert (
-        "Solde final des Mesures : déficit de 50 000 Mesures"
+        "Solde final des Mesures : déficit de 50\u202f000 Mesures"
         if language == "fr"
         else "Final Measures balance: deficit of 50,000 Measures"
-    ) in council
+    ) in news
     assert all(
         "Coût payé" not in report.body
         for report in Report.objects.filter(game=game, recipient="p2")

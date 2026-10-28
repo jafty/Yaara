@@ -1083,14 +1083,14 @@ input[type="number"] {
 
 .map-connections {
   pointer-events: none;
-  stroke: #766a59;
+  stroke: #555;
   stroke-width: 2;
+  stroke-dasharray: 5 7;
   stroke-linecap: round;
   fill: none;
 }
 .map-connection {
-  opacity: 0;
-  transition: opacity 180ms ease;
+  opacity: 0.72;
 }
 .map-city {
   position: absolute;
@@ -1207,16 +1207,13 @@ input[type="number"] {
 }
 .map-connection.selected-road,
 .map-connection.draft-road {
-  opacity: 0.72;
-  stroke: #426c5d;
   stroke-width: 2.5;
-  stroke-dasharray: 5 7;
 }
 .map-march {
   color: #853d2b;
 }
-.march-returning {
-  color: #244763;
+.march-friendly {
+  color: #426c5d;
 }
 .march-hit {
   fill: none;
@@ -1228,13 +1225,10 @@ input[type="number"] {
   stroke: currentColor;
   stroke-width: 4;
   pointer-events: none;
-}
-.march-sealed .march-line,
-#draft-route .march-line {
-  stroke-dasharray: 8 6;
+  stroke-dasharray: none;
 }
 #draft-route {
-  color: #244e45;
+  color: #853d2b;
   pointer-events: none;
 }
 .map-march:focus-visible .march-line,

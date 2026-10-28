@@ -31,7 +31,8 @@ def run_map_journeys():
                 expect(page.locator(".map-city")).to_have_count(9)
                 expect(page.locator(".map-connection")).to_have_count(12)
                 for road in page.locator(".map-connection").all():
-                    expect(road).to_have_css("opacity", "0")
+                    expect(road).to_have_css("opacity", "0.72")
+                    expect(road).to_have_css("stroke-dasharray", "5px, 7px")
                 expect(page.locator(".map-marker, .map-inner")).to_have_count(0)
                 canvas = page.locator(".map-workspace > .realm-map").bounding_box()
                 assert canvas["width"] == 720
@@ -320,13 +321,13 @@ def run_map_journeys():
                 expect(page.locator(".expedition-form")).to_have_count(0)
                 page.goto(url + "?tab=mail&mail=chronicle")
                 if javascript:
-                    page.goto(url + "?tab=mail")
                     news = page.locator(".alerts-trigger")
                     before = int(news.get_attribute("data-news-count"))
                     assert before > 0
-                    page.locator('.letter-entry a[href*="mail=chronicle#report-"]').first.click()
+                    button = page.locator("[data-read-report]:visible").first
+                    article_id = button.get_attribute("data-read-report")
+                    button.click()
                     expect(news).to_have_attribute("data-news-count", str(before - 1))
-                    article_id = page.url.split("#", 1)[1]
                     page.reload()
                     expect(page.locator(".alerts-trigger")).to_have_attribute(
                         "data-news-count", str(before - 1)

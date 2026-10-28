@@ -17,8 +17,19 @@ def test_static_storage(settings):
 
 
 @pytest.fixture
-def user(db):
-    return get_user_model().objects.create_user("pretender", password="Test-only-password-832!")
+def user(db, user_password_hash):
+    user = get_user_model().objects.create_user("pretender", password=None)
+    user.password = user_password_hash
+    user.save(update_fields=["password"])
+    return user
+
+
+@pytest.fixture(scope="session")
+def user_password_hash():
+    # Reuse real encoded fixture credentials; application password hashing stays unchanged.
+    from django.contrib.auth.hashers import make_password
+
+    return make_password("Test-only-password-832!")
 
 
 @pytest.fixture

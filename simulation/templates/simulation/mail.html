@@ -6,7 +6,7 @@
         {% include 'simulation/context_header.html' with panel_title=mail_title %}
         <nav class="sheet-tabs" aria-label="{% translate 'Nouvelles' %}">
             <a href="?tab=mail" {% if mail_section == 'news' %}aria-current="page"{% endif %}>{% translate "Nouvelles" %} · <span data-news-label-count>{{ news_count }}</span></a>
-            <a href="?tab=mail&amp;mail=attention" {% if mail_section == 'attention' %}aria-current="page"{% endif %}>{% translate "Alertes" %} · {{ attention.count }}</a>
+            <a href="?tab=mail&amp;mail=attention" {% if mail_section == 'attention' %}aria-current="page"{% endif %}>{% translate "Alertes" %} · <strong{% if attention.count %} class="mail-alert-count"{% endif %}>{{ attention.count }}</strong></a>
             <a href="?tab=mail&amp;mail=schedule" {% if mail_section == 'schedule' %}aria-current="page"{% endif %}>{% translate "Échéances" %}</a>
         </nav>
         <div class="sheet-body">

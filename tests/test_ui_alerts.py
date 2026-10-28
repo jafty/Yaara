@@ -49,14 +49,30 @@ def test_incoming_threat(user, language, stage):
     client = Client()
     client.force_login(user)
     client.cookies["django_language"] = language
-    for tab in ("domain", "wars", "constructions"):
-        text = client.get(reverse("game", args=[game.id]), {"tab": tab}).content.decode()
-        alerts = re.findall(r'<aside class="threat-notice".*?</aside>', text, re.S)
+    for query in (
+        {"tab": "mail", "mail": "attention"},
+        {"tab": "wars"},
+        {"tab": "constructions"},
+    ):
+        text = client.get(reverse("game", args=[game.id]), query).content.decode()
+        alerts = re.findall(
+            r'<li[^>]*data-alert-kind="threat".*?</li>'
+            if query["tab"] == "mail"
+            else r'<aside class="threat-notice".*?</aside>',
+            text,
+            re.S,
+        )
         if stage in ("confirmed", "active", "paused"):
             assert len(alerts) == 1
             assert 'data-threat-city="c3"' in alerts[0] and "Namar" in alerts[0]
-            assert ("Enemy expedition" if language == "en" else "Expédition ennemie") in alerts[0]
-            assert "tab=city&amp;city=c3" in alerts[0]
+            if query["tab"] == "mail":
+                assert ("Army sighted" if language == "en" else "Armée signalée") in alerts[0]
+                assert "tab=map&amp;action=accounts&amp;city=c3#city-defenses" in alerts[0]
+            else:
+                assert ("Enemy expedition" if language == "en" else "Expédition ennemie") in alerts[
+                    0
+                ]
+                assert "tab=city&amp;city=c3" in alerts[0]
             wording = re.sub(r"<[^>]+>", "", alerts[0])
             assert "20" not in wording and "Sefra" not in wording
         else:

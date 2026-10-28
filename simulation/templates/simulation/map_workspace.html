@@ -14,6 +14,7 @@
 
         {% endif %}
         <div class="sheet-body">
+        {% if messages %}<div class="sheet-feedback" role="alert">{% for message in messages %}<p class="notice {{ message.tags }}">{{ message }}</p>{% endfor %}</div>{% endif %}
         {% if selected.damaged %}<p class="aside-text">{% translate "Ouvrage endommagé" %}</p>{% endif %}
         {% if selected.owned %}
             {% if activity == 'accounts' %}{% include 'simulation/city_folio.html' %}

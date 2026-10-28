@@ -1,10 +1,11 @@
 {% load i18n %}
+{% with alert_count=attention.count|default:0 %}{% with notification_count=news_count|default:0|add:alert_count %}
 <div class="workspace-heading">
     <div class="realm-identity">
         <a class="book-world" href="{% url 'home' %}">Yaara</a>
         <a class="map-link" href="{% url 'game' game.id %}?tab=map" data-section="map" {% if tab == 'map' or workspace and tab == 'decrees' %}aria-current="page"{% endif %}>{% translate "Carte" %}</a>
         <a class="house-identity" href="{% url 'game' game.id %}?tab=domain" data-section="domain" {% if tab == 'domain' or tab == 'prologue' or not workspace and tab != 'letters' %}aria-current="page"{% endif %}><span title="{{ view.realm }}">{{ view.realm }}</span></a>
-        <a class="alerts-trigger{% if news_count %} has-alerts{% endif %}" href="{% url 'game' game.id %}?tab=mail" data-section="mail" {% if tab == 'mail' or tab == 'letters' %}aria-current="page"{% endif %} data-mail-key="{{ game.id }}:{{ view.actor }}" data-news-ids="{{ news_ids|join:',' }}" data-news-count="{{ news_count|default:0 }}" data-alert-count="{% if attention %}{{ attention.count }}{% else %}{{ alert_center.count }}{% endif %}">{% include 'simulation/nav_icon.html' with icon='envelope' %}<span class="visually-hidden">{% translate "Nouvelles" %} · <span data-news-label-count>{{ news_count|default:0 }}</span>; {% translate "Alertes" %} · {% if attention %}{{ attention.count }}{% else %}{{ alert_center.count }}{% endif %}</span><strong{% if not news_count %} hidden{% endif %}>{{ news_count|default:0 }}</strong></a>
+        <a class="alerts-trigger{% if notification_count %} has-alerts{% endif %}" href="{% url 'game' game.id %}?tab=mail" data-section="mail" {% if tab == 'mail' or tab == 'letters' %}aria-current="page"{% endif %} data-mail-key="{{ game.id }}:{{ view.actor }}" data-news-ids="{{ news_ids|join:',' }}" data-news-count="{{ news_count|default:0 }}" data-alert-count="{% if attention %}{{ attention.count }}{% else %}{{ alert_center.count }}{% endif %}">{% include 'simulation/nav_icon.html' with icon='envelope' %}<span class="visually-hidden">{% translate "Nouvelles" %} · <span data-news-label-count>{{ news_count|default:0 }}</span>; {% translate "Alertes" %} · {% if attention %}{{ attention.count }}{% else %}{{ alert_center.count }}{% endif %}</span><strong data-notification-count{% if not notification_count %} hidden{% endif %}>{{ notification_count }}</strong></a>
     </div>
     <div class="resource-ribbon" aria-label="{% translate 'Les moyens libres de votre maison' %}">
         <span class="resource-value" tabindex="0" title="{% translate 'Mesures libres' %}">{% include 'simulation/nav_icon.html' with icon='grain' %}<strong>{{ view.available_stock }}</strong><span class="resource-caption visually-hidden">{% translate 'Mesures libres' %}</span></span>
@@ -13,3 +14,4 @@
         {% if not view.finished and game.can_advance %}<a class="harvest-link moon-close-link" href="{% url 'game' game.id %}?tab=domain#turn-page">{% translate "Clore la lune…" %}</a>{% elif not view.finished %}<a class="harvest-link" href="{% url 'game' game.id %}?tab=mail&amp;mail=schedule#harvest-accounts" aria-label="{% blocktranslate with moon=view.harvest_moon %}Récolte : lune {{ moon }}{% endblocktranslate %}" title="{% blocktranslate with moon=view.harvest_moon %}Récolte : lune {{ moon }}{% endblocktranslate %}">{% blocktranslate with moon=view.harvest_moon %}Récolte · L{{ moon }}{% endblocktranslate %} </a>{% endif %}
     </div>
 </div>
+{% endwith %}{% endwith %}

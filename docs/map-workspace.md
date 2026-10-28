@@ -281,3 +281,32 @@ pairs and the existing review/seal flow in both languages and without JavaScript
 The Yaara mark leads to the website home; Carte returns to the map. The house name opens reign controls, with Moon review first and a direct header link for authorized manual games. Scheduled start and pause controls remain in the same reign view. News shows the recent Moon and links to the complete report archive; alerts and deadlines remain separate. The existing archive URLs and report anchors continue to work.
 
 Order review presents the cost, timing, local funding and material warnings before sealing. Confirmed orders in the deadlines view offer a direct return to the map. Army preparation labels each city's equipment disclosure explicitly. The city briefing shows total inhabitants with a people icon and distinguishes those present when residents are away; available Fidèles use a military icon. Selected saved connections are drawn as subtle curved dashed routes without changing the road graph.
+
+
+## Post-playtest routes, news and city feedback
+
+All saved public roads remain visible as dark-grey dashed curves. Authorized
+military and convoy commitments follow those same curves: solid red toward an
+enemy city and solid green toward an owned city. Return routes retain their
+authorized destination, including diversions; settled or lost contingents have
+no remaining line. Drafts and sealed departures still respect owned transit
+territory. Movement rules, saved roads and opponent secrecy are unchanged.
+
+The envelope shows unread latest-Moon news plus unresolved alerts. The News and
+Alerts tabs retain separate counts, with unresolved alerts highlighted. Reading
+a letter never resolves its warnings. Automatic read detection observes the
+compact letter heading within the scrolling news pane; an explicit read button
+remains available when observers are unavailable. Read preferences use local
+storage, session storage as fallback and memory for enhanced navigation when
+both are denied. Persistence through a full reload requires browser storage.
+
+City figures have a native explanation of stock/capacity, reservations, levy,
+inhabitants and available troops. Deadline dates and their destination form one
+compact wrapping link per commitment. Target/rules disclosures use restrained
+body-sized links. Target knowledge shows only the latest stored recipient
+observation; older encounters remain in the full archive.
+
+Rejected local orders display their reason within the action sheet while
+retaining editable quantities. Incoming threats and advisory siege warnings do
+not prevent otherwise valid preparation. Successful or repeated manual Moon
+closure returns to the map without an extra flash notice; errors remain visible.

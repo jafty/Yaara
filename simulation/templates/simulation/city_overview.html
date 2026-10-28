@@ -4,12 +4,19 @@
 {% if selected.restricted_fideles %}<p>{% blocktranslate with count=selected.restricted_fideles moon=selected.restricted_until %}{{ count }} Fidèles hérités assurent la défense locale. Départs et secours possibles à partir de la lune {{ moon }}.{% endblocktranslate %}</p>{% endif %}
 
 <section class="city-briefing" aria-label="{% translate 'Situation de la cité' %}">
+    <div class="city-figures">
     <p id="city-briefing-stats" class="city-briefing-stats">{% include 'simulation/nav_icon.html' with icon='people' %}{% blocktranslate with population=selected.population %}{{ population }} habitants{% endblocktranslate %}{% if selected.present_population != selected.population %} · {% blocktranslate with population=selected.present_population %}{{ population }} présents{% endblocktranslate %}{% endif %}</p>
+    <details class="city-stat-help">
+        <summary>{% translate "Comprendre les chiffres" %}</summary>
+        <p>{% translate "Le grenier indique le stock conservé et sa capacité totale. Les Mesures libres restent disponibles après les réservations des ordres scellés ; le prélèvement en préparation ne sera versé qu’à la prochaine récolte." %}</p>
+        <p>{% translate "Les habitants comprennent les Fidèles. Seuls les présents produisent ; les Fidèles disponibles peuvent recevoir un nouvel ordre. Les hommes promis ou déjà en route ne sont pas disponibles." %}</p>
+    </details>
+    </div>
     <div class="city-crew">
         <div class="city-crew-line"><span class="team-status" data-team-state="{% if selected.busy %}occupied{% else %}available{% endif %}">{% include 'simulation/nav_icon.html' with icon='works' %}{% if selected.busy %}{% translate "Équipe occupée" %} :{% else %}{% translate "Équipe libre" %}{% endif %}</span>{% for assignment in selected.crew_assignments %}<span class="city-assignment" data-crew-phase="{{ assignment.phase }}"><a href="?tab=mail&amp;mail=schedule#{{ assignment.anchor }}">{{ assignment.display_name }}</a></span>{% endfor %}</div>
         {% for assignment in selected.crew_assignments %}<small class="city-finish">{% blocktranslate with moon=assignment.finish_moon %}Fin prévue : lune {{ moon }}{% endblocktranslate %}</small>{% endfor %}
     </div>
-    <div class="city-deadlines" data-city-deadlines>
-        <ol>{% for event in city_panel_schedule %}<li><span class="city-deadline-date">{% blocktranslate with v0=event.moon %}Lune {{ v0 }}{% endblocktranslate %}</span><a href="?tab=mail&amp;mail=schedule#{{ event.anchor }}">{{ event.label }}{% if event.detail and event.detail != selected.name %} · {{ event.detail }}{% endif %}</a></li>{% endfor %}</ol>
-    </div>
+    {% if city_panel_schedule %}<div class="city-deadlines" data-city-deadlines>
+        <ol>{% for event in city_panel_schedule %}<li><a href="?tab=mail&amp;mail=schedule#{{ event.anchor }}"><span class="city-deadline-date">{% blocktranslate with v0=event.moon %}Lune {{ v0 }}{% endblocktranslate %}</span><span>{{ event.label }}{% if event.detail and event.detail != selected.name %} · {{ event.detail }}{% endif %}</span></a></li>{% endfor %}</ol>
+    </div>{% endif %}
 </section>

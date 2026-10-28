@@ -85,12 +85,12 @@ def test_archived_capture_identity(variation):
 
 @case(
     "combat-clarity-http",
-    "Owner: Council and archived capture letters disclose attacker and outcome only to their recipient",
+    "Owner: News and archived capture letters disclose attacker and outcome only to their recipient",
 )
 @pytest.mark.integration
 @pytest.mark.usefixtures("test_static_storage")
 @pytest.mark.parametrize("language", ["fr", "en"])
-@pytest.mark.parametrize("tab", ["domain", "letters"])
+@pytest.mark.parametrize("tab", [pytest.param("mail", id="domain"), "letters"])
 def test_capture_http(user, monkeypatch, language, tab):
     from django.test import Client
     from django.urls import reverse
@@ -106,7 +106,7 @@ def test_capture_http(user, monkeypatch, language, tab):
     client = Client()
     client.force_login(user)
     client.cookies["django_language"] = language
-    page = client.get(reverse("game", args=[game.id]), {"tab": tab})
+    page = client.get(reverse("game", args=[game.id]), {"tab": tab, "mail": "chronicle"})
     assert page.status_code == 200
     text = page.content.decode()
     assert (
