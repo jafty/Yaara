@@ -251,3 +251,20 @@ Voir `docs/backlog.fr.md` pour reconnaissance, sièges prolongés, hospice, recr
 Ajout vérifié depuis la base `8d4a22d` de `codex/yaara-deployment`, sans modification des règles ni des résultats. À la fin du règne, le Conseil propose le livre chronologique des lettres conservées et un téléchargement JSON pour analyse. Chaque participant peut lire sa maison ; le propriétaire de la partie peut choisir toutes les maisons après la fin seulement. Ce partage de fin de règne ne modifie pas le secret en cours de partie et ne révèle ni combativité numérique, ni graines, ni tirages internes.
 
 Les nouvelles clôtures conservent les comptes de chaque maison après résolution : cités possédées, population, stocks, prélèvement accumulé, travaux et registre des ordres/expéditions autorisés. Les comptes antérieurs à cet ajout ne sont pas reconstitués ; les lunes manquantes sont indiquées. Les lettres existantes et les comptes finaux restent disponibles. Plusieurs témoignages d’un même combat ne doivent pas être comptés comme plusieurs combats. Le JSON indique son schéma, les versions de règles de la sauvegarde et la couverture des comptes ; il ne constitue pas un journal de rejeu complet du moteur.
+
+
+## Lecture après essai — 28 octobre 2026
+
+Référence de départ : `1ed918bc6c0046d3c496aecffde16135c9e5365c`. Les règles
+de simulation et les sauvegardes restent inchangées. La carte affiche toutes les
+routes publiques en pointillés gris ; les trajets propres suivent leurs courbes,
+en rouge vers une cité ennemie et en vert vers une cité possédée, y compris les
+convois et retours. Aucun trajet adverse caché n’est ajouté.
+
+Le compteur de l’enveloppe additionne nouvelles non lues de la dernière lune et
+alertes non résolues ; lire une lettre ne résout pas une alerte. La connaissance
+d’une cible n’affiche que la dernière observation conservée pour le destinataire,
+les autres restant aux archives. Une menace entrante ou un avertissement de
+réserves de siège ne bloque pas un ordre par ailleurs valide ; un refus de
+préparation est expliqué dans le panneau. Ces descriptions ne constituent pas
+une attestation de déploiement.

@@ -395,6 +395,10 @@ expedition-rejected/too-many-troops
 expedition-rejected/unknown-origin
 expedition-rejected/unknown-target
 expedition-rejected/unreachable-origin
+feedback-city-empty-deadlines
+feedback-city-linked-deadline
+feedback-city-stat-meaning/en
+feedback-city-stat-meaning/fr
 feedback-envelope-total/0-False-en
 feedback-envelope-total/0-False-fr
 feedback-envelope-total/0-True-en

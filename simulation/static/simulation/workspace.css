@@ -206,6 +206,20 @@
   font-size: inherit;
   margin-bottom: 0.5rem;
 }
+.sheet-body .expedition-notes,
+.sheet-body .target-knowledge {
+  margin-block: 0.2rem;
+}
+.sheet-body .expedition-notes > summary,
+.sheet-body .target-knowledge > summary,
+.city-stat-help > summary {
+  display: flex;
+  align-items: center;
+  font-size: 0.875rem;
+  line-height: 1.35;
+  padding-block: 0.25rem;
+  color: var(--muted);
+}
 .sheet-feedback {
   padding: 0.35rem 0.5rem;
   margin-block: 0 0.5rem;
@@ -223,24 +237,40 @@
   font-variant-numeric: tabular-nums;
 }
 .city-briefing {
-  margin: 0 0 0.5rem;
+  margin: 0 0 0.25rem;
 }
+.city-briefing p { margin-block: 0 0.15rem; }
 .city-briefing-stats { display: flex; align-items: center; gap: 0.3rem; margin: 0 0 0.15rem; }
 .city-briefing-stats .nav-icon { width: 1.1rem; height: 1.1rem; color: var(--accent); flex: none; }
+.city-stat-help { margin: 0; }
+.city-stat-help p { color: var(--muted); }
 .city-crew { padding: 0.15rem 0; }
 .city-crew-line { display: flex; flex-wrap: wrap; align-items: center; gap: 0 0.25rem; }
 .city-assignment a { position: relative; display: inline; padding-block: 0; }
 .city-assignment a::before { content: ""; position: absolute; inset: -8px 0; }
 .city-finish { display: block; color: var(--muted); }
-.city-deadlines ol { list-style: none; padding: 0; margin: 0; }
-.city-deadlines li {
+.city-deadlines ol {
   display: grid;
-  grid-template-columns: max-content minmax(0, 1fr);
-  gap: 0.6rem;
-  align-items: baseline;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr));
+  column-gap: 0.6rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
-.city-deadline-date { color: var(--muted); font-variant-numeric: tabular-nums; }
-.city-deadlines a { display: inline-flex; align-items: center; min-height: 44px; }
+.city-deadlines li { margin: 0; }
+.city-deadline-date { color: var(--muted); font-variant-numeric: tabular-nums; font-size: 0.8rem; }
+.city-deadlines a {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 44px;
+  padding-block: 0.15rem;
+  text-decoration: none;
+}
+.city-deadlines a > :last-child {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
 .city-actions {
   display: grid;
   margin: 0.35rem 0 0;
@@ -481,7 +511,7 @@
     margin-bottom: 0.25rem;
   }
   .city-sheet:not([data-focus-action]) .city-actions {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 8rem), 1fr));
     margin-top: 0.15rem;
   }
   .city-sheet:not([data-focus-action]) .city-action {

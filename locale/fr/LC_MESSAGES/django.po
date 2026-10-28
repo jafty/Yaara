@@ -4620,3 +4620,23 @@ msgstr "Carte de Yaara"
 
 msgid "Sélectionnez une cité sur la carte pour voir ses routes et les actions disponibles."
 msgstr "Sélectionnez une cité sur la carte pour voir ses routes et les actions disponibles."
+
+#: simulation/templates/simulation/city_overview.html
+msgid "Comprendre les chiffres"
+msgstr "Comprendre les chiffres"
+
+#: simulation/templates/simulation/city_overview.html
+msgid "Le grenier indique le stock conservé et sa capacité totale. Les Mesures libres restent disponibles après les réservations des ordres scellés ; le prélèvement en préparation ne sera versé qu’à la prochaine récolte."
+msgstr "Le grenier indique le stock conservé et sa capacité totale. Les Mesures libres restent disponibles après les réservations des ordres scellés ; le prélèvement en préparation ne sera versé qu’à la prochaine récolte."
+
+#: simulation/templates/simulation/city_overview.html
+msgid "Les habitants comprennent les Fidèles. Seuls les présents produisent ; les Fidèles disponibles peuvent recevoir un nouvel ordre. Les hommes promis ou déjà en route ne sont pas disponibles."
+msgstr "Les habitants comprennent les Fidèles. Seuls les présents produisent ; les Fidèles disponibles peuvent recevoir un nouvel ordre. Les hommes promis ou déjà en route ne sont pas disponibles."
+
+#: simulation/templates/simulation/map_guide.html
+msgid "Sélectionnez une cité sur la carte pour voir les actions disponibles."
+msgstr "Sélectionnez une cité sur la carte pour voir les actions disponibles."
+
+#: simulation/templates/simulation/map_guide.html
+msgid "Pointillés gris : routes · Trait rouge : vers une cité ennemie · Trait vert : vers une cité de votre domaine"
+msgstr "Pointillés gris : routes · Trait rouge : vers une cité ennemie · Trait vert : vers une cité de votre domaine"

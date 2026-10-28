@@ -31,7 +31,7 @@ def test_local_commitments(user, language, stage):
     response = client.get(url, {"city": "c1"})
     html = response.content.decode()
     assert 'class="city-briefing"' in html
-    assert "data-city-deadlines" in html
+    assert ("data-city-deadlines" in html) == bool(response.context["city_panel_schedule"])
     briefing = html.split('<section class="city-briefing"', 1)[1].split("</section>", 1)[0]
     assert "harvest-accounts" not in briefing
     assert 'id="city-briefing-stats"' in briefing
