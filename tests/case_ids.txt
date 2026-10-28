@@ -1243,6 +1243,10 @@ planning-expandable-sheet/review-en
 planning-expandable-sheet/review-fr
 planning-native-army/en
 planning-native-army/fr
+planning-news-count/en
+planning-news-count/fr
+planning-schedule-no-duplicate-index/en
+planning-schedule-no-duplicate-index/fr
 playability-bot-constrained/no-funds
 playability-bot-constrained/no-targets
 playability-bot-constrained/no-troops

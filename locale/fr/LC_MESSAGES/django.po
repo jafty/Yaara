@@ -4611,3 +4611,6 @@ msgstr "%(population)s habitants"
 #, python-format
 msgid "%(population)s présents"
 msgstr "%(population)s présents"
+
+msgid "Consulter l’équipement"
+msgstr "Consulter l’équipement"

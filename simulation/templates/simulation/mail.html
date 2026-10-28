@@ -5,7 +5,7 @@
         {% translate "Nouvelles du Scribe" as mail_title %}
         {% include 'simulation/context_header.html' with panel_title=mail_title %}
         <nav class="sheet-tabs" aria-label="{% translate 'Nouvelles' %}">
-            <a href="?tab=mail" {% if mail_section == 'news' %}aria-current="page"{% endif %}>{% translate "Nouvelles" %}</a>
+            <a href="?tab=mail" {% if mail_section == 'news' %}aria-current="page"{% endif %}>{% translate "Nouvelles" %} · {{ news_count }}</a>
             <a href="?tab=mail&amp;mail=attention" {% if mail_section == 'attention' %}aria-current="page"{% endif %}>{% translate "Alertes" %} · {{ attention.count }}</a>
             <a href="?tab=mail&amp;mail=schedule" {% if mail_section == 'schedule' %}aria-current="page"{% endif %}>{% translate "Échéances" %}</a>
         </nav>
@@ -18,11 +18,10 @@
             <p class="salutation">{% translate "Monseigneur, ces affaires attendent votre attention." %}</p>
             {% include 'simulation/attention_items.html' %}
         {% elif mail_section == 'schedule' %}
-            <ol class="milestones">{% for event in schedule %}<li><span class="milestone-date">{% blocktranslate with v0=event.moon %}Lune {{ v0 }}{% endblocktranslate %}</span> <a href="#{{ event.anchor }}">{{ event.label }}</a> · {{ event.detail }}</li>{% empty %}<li>{% translate "Aucune échéance en cours." %}</li>{% endfor %}</ol>
             {% include 'simulation/orders_register.html' %}
             {% include 'simulation/active_works.html' %}
             {% include 'simulation/missions.html' %}
-            <section id="harvest-accounts" tabindex="-1"><h2>{% translate "Versement de la récolte" %}</h2>
+            <section id="harvest-accounts" tabindex="-1"><h2>{% translate "Versement de la récolte" %} · {% blocktranslate with v0=view.harvest_moon %}Lune {{ v0 }}{% endblocktranslate %}</h2>
                 {% for city in view.owned_cities %}<p><a href="?tab=map&amp;action=accounts&amp;city={{ city.id }}#city-stocks">{{ city.name }}</a> · {{ city.harvest_forecast }} {% translate "Mesures" %}</p>{% endfor %}
                 {% include 'simulation/ledger_help.html' with topic='forecast' %}
             </section>

@@ -309,8 +309,7 @@ def run_map_journeys():
                 page.locator('#turn-page form[action$="/advance/"] button').click()
                 page.goto(url + "?tab=mail&mail=schedule")
                 expect(page.locator('[data-march-state="outbound"]')).to_have_count(1)
-                page.locator('.milestones a[href^="#mission-"]').first.click()
-                expect(page.locator('.mail-panel p[id^="mission-"]')).to_be_in_viewport()
+                expect(page.locator('.mail-panel p[id^="mission-"]')).to_be_visible()
                 expect(page.locator(".expedition-form")).to_have_count(0)
                 page.goto(url + "?tab=mail&mail=chronicle")
                 if javascript:

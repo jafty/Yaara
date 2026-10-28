@@ -154,7 +154,7 @@ def test_moon_control(user, mode):
 
 @case("map-army-details-label", "Army preparation identifies the equipment details in each city")
 @pytest.mark.parametrize(
-    "language,label", [("fr", "Équipement"), ("en", "Equipment")], ids=["fr", "en"]
+    "language,label", [("fr", "Consulter l’équipement"), ("en", "View equipment")], ids=["fr", "en"]
 )
 def test_army_details_label(user, language, label):
     _, client, url = open_board(user, language)

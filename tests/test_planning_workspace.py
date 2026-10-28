@@ -2,11 +2,13 @@
 
 import re
 from copy import deepcopy
+from uuid import uuid4
 
 import pytest
 from django.urls import reverse
 
 from simulation import engine
+from simulation.models import Report
 from tests.cases import case
 from tests.test_map_workspace import open_board
 
@@ -123,3 +125,37 @@ def test_convoy_fields(user, language):
     for field in ("origin", "target", "cargo"):
         assert f'<label for="convoy-{field}">' in html
     assert 'id="convoy-cargo" name="cargo" min="1" max="500000"' in html
+
+
+@case("planning-news-count", "Owner: the envelope announces recipient news for the latest moon")
+@pytest.mark.parametrize("language", ["fr", "en"])
+def test_news_count(user, language):
+    game, client, url = open_board(user, language)
+    Report.objects.filter(game=game).delete()
+    for recipient, kind, title in [
+        ("p1", "battle", "News"),
+        ("p1", "order", "Décret scellé"),
+        ("p2", "battle", "Private"),
+    ]:
+        Report.objects.create(
+            game=game, recipient=recipient, month=1, kind=kind, title=title, body="Report"
+        )
+    html = client.get(url).content.decode()
+    assert 'data-news-count="1"' in html
+    assert 'data-alert-count="0"' in html
+    mail = client.get(url, {"tab": "mail"}).content.decode()
+    assert 'data-news-count="1"' in mail
+
+
+@case("planning-schedule-no-duplicate-index", "Owner: deadlines show detailed commitments once")
+@pytest.mark.parametrize("language", ["fr", "en"])
+def test_schedule_no_duplicate_index(user, language):
+    game, client, url = open_board(user, language)
+    order_id = str(uuid4())
+    engine.confirm_order(game.state, "p1", {"kind": "irrigation", "cities": ["c1"]}, order_id)
+    game.save()
+    html = client.get(url, {"tab": "mail", "mail": "schedule"}).content.decode()
+    assert 'class="milestones"' not in html
+    assert f'id="order-{order_id}"' in html
+    assert 'id="harvest-accounts"' in html
+    assert ("Lune 12" if language == "fr" else "Moon 12") in html

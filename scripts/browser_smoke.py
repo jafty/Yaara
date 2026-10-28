@@ -308,7 +308,8 @@ with sync_playwright() as playwright:
         news = page.locator(".reign-header .alerts-trigger")
         expect(news).to_have_css("border-top-width", "0px")
         expect(news.locator("strong")).to_have_css("border-top-width", "0px")
-        expect(news.locator(".visually-hidden")).to_have_text("News" if en else "Nouvelles")
+        expect(news.locator(".visually-hidden")).to_contain_text("News" if en else "Nouvelles")
+        expect(news.locator(".visually-hidden")).to_contain_text("Alerts" if en else "Alertes")
         # City actions open a full sheet and retain local resources at every size.
         for width in (1440, 390, 320):
             page.set_viewport_size({"width": width, "height": 844})

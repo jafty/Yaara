@@ -275,9 +275,11 @@ def desk(request, game_id):
     # Reports are immutable per-recipient records; never infer access from current ownership.
     reports = Report.objects.filter(game=game, recipient=actor)
     news_month = view["closed_moon"] or game.state["month"]
+    # The order register already shows reservations; keep receipts in the archive.
+    news = reports.filter(month=news_month).exclude(kind="order", title="Décret scellé")
+    news_count = news.count()
     if tab != "letters" and not (tab == "mail" and mail_section == "chronicle"):
-        # The order register already shows reservations; keep receipts in the archive.
-        reports = reports.filter(month=news_month).exclude(kind="order", title="Décret scellé")
+        reports = news
     constructions = [
         {**work, "city": city["name"], "city_id": city["id"], "city_index": index}
         for city in view["owned_cities"]
@@ -409,6 +411,7 @@ def desk(request, game_id):
             "selected": selected,
             "reports": [report_view(report, state=game.state) for report in reports],
             "news_moon": max(1, news_month),
+            "news_count": news_count,
             "action": action,
             "section_orders": [
                 order

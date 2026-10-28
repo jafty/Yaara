@@ -193,7 +193,7 @@ def test_event_icons(user, kind, icon):
     )
     client = Client()
     client.force_login(user)
-    html = client.get(reverse("game", args=[game.id]), {"tab": "domain"}).content.decode()
+    html = client.get(reverse("game", args=[game.id]), {"tab": "mail"}).content.decode()
     entry = re.search(rf'id="report-{report.pk}".*?</article>', html, re.S).group()
     assert f'data-icon="{icon}"' in entry and 'aria-hidden="true"' in entry
     assert "Visible title" in entry
