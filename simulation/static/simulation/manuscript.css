@@ -1055,9 +1055,7 @@ input[type="number"] {
   container-type: inline-size;
   aspect-ratio: 680 / 500;
   overflow: hidden;
-  background: url("illustrations/map/parchment.webp") center / cover no-repeat,
-    var(--map-paper) url("illustrations/papyrus.webp") center / 32rem repeat;
-  background-blend-mode: soft-light, normal;
+  background: var(--map-paper) url("illustrations/map/yaara-background.jpg") center / 100% 100% no-repeat;
   border: 1px solid #d4c9b7;
 }
 .map-sheet, .territory-layer {

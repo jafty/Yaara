@@ -38,6 +38,8 @@ Schematic frontal manuscript vignettes, regenerated from the fortifications
 illustration with fibrous papyrus texture and plain walls. Flags remain live SVG,
 using existing house emblems and viewer-relative green/red colors. SVG square
 viewports clip each cell without stretching it or showing adjacent cells.
-The map background layers the existing papyrus texture over the decorative terrain.
+`map/yaara-background.jpg` is the owner-supplied map background, displayed in full
+beneath the existing territory, road and city layers. Its coast and terrain are
+decorative and do not change movement rules.
 
 The map frame now preserves its native 680:500 ratio; action sheets cover it rather than squeezing its geography. No source artwork is repainted.

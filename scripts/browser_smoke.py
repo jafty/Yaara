@@ -514,7 +514,7 @@ with sync_playwright() as playwright:
         expect(page.locator(".orders-register")).to_have_count(0)
         page.goto(game_url + "?tab=wars")
         assert page.locator(".map-city").count() == 9
-        illustration_asset(page.locator(".map-frame"), "map/parchment.webp")
+        illustration_asset(page.locator(".map-frame"), "map/yaara-background.jpg")
         assert page.locator(".map-territory").count() == 9
         assert page.locator('[data-map-state="owned"]').count() == 3
         assert page.locator('[data-map-state="reachable"]').count() == 2
