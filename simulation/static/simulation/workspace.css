@@ -251,7 +251,7 @@
   color: var(--accent);
 }
 .city-action-copy { display: grid; gap: 0.15rem; min-width: 0; }
-.city-action-copy strong { font-size: 1rem; font-weight: 600; }
+.city-action-copy strong { font-size: 1rem; font-weight: 600; text-decoration: underline; text-underline-offset: 0.15em; }
 .city-action-secondary .nav-icon, .city-action-secondary .city-action-copy strong { color: var(--muted); }
 .city-action-secondary .city-action-copy strong { font-weight: 500; }
 .city-action-copy small { color: var(--muted); font-size: 0.8rem; line-height: 1.25; }
