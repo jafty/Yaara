@@ -240,9 +240,11 @@
   margin: 0 0 0.25rem;
 }
 .city-briefing p { margin-block: 0 0.15rem; }
+.city-figures { display: flex; flex-wrap: wrap; align-items: center; column-gap: 0.6rem; }
 .city-briefing-stats { display: flex; align-items: center; gap: 0.3rem; margin: 0 0 0.15rem; }
 .city-briefing-stats .nav-icon { width: 1.1rem; height: 1.1rem; color: var(--accent); flex: none; }
 .city-stat-help { margin: 0; }
+.city-stat-help[open] { flex-basis: 100%; }
 .city-stat-help p { color: var(--muted); }
 .city-crew { padding: 0.15rem 0; }
 .city-crew-line { display: flex; flex-wrap: wrap; align-items: center; gap: 0 0.25rem; }
