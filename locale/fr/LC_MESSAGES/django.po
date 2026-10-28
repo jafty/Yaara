@@ -4614,3 +4614,9 @@ msgstr "%(population)s présents"
 
 msgid "Consulter l’équipement"
 msgstr "Consulter l’équipement"
+
+msgid "Carte de Yaara"
+msgstr "Carte de Yaara"
+
+msgid "Sélectionnez une cité sur la carte pour voir ses routes et les actions disponibles."
+msgstr "Sélectionnez une cité sur la carte pour voir ses routes et les actions disponibles."

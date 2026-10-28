@@ -1,5 +1,5 @@
 {% load i18n %}
-<p>{% translate "Choisissez une cité : ses routes apparaissent." %}</p>
+<p class="map-guide-instruction"><strong>{% translate "Sélectionnez une cité sur la carte pour voir ses routes et les actions disponibles." %}</strong></p>
 <dl class="map-guide-key">
     <div><dt><svg class="map-key" viewBox="-22 -24 44 54" aria-hidden="true">{% include 'simulation/map_flag.html' with owned=True owner=None %}</svg>{% translate "Votre domaine" %}</dt><dd>{% translate "Bannière verte : vos cités. Bannière rouge : les cités rivales." %}</dd></div>
     <div><dt class="reachable-key">{% translate "À portée" %}</dt><dd>{% translate "Un nom souligné indique une cité que vos hommes peuvent atteindre." %}</dd></div>

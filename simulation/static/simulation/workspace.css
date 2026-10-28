@@ -510,6 +510,7 @@
     display: none;
   }
 }
+.sheet-body .map-guide-instruction { color: var(--accent); font-size: 1rem; line-height: 1.4; }
 .map-guide-key { margin: 0; }
 .map-guide-key > div { padding-block: 0.4rem; border-bottom: 1px solid var(--rule); }
 .map-guide-key dt { display: flex; align-items: center; gap: 0.4rem; font-weight: 600; }

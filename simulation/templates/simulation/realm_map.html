@@ -3,7 +3,7 @@
     <figcaption id="map-caption" class="visually-hidden">{% translate "Les oasis de Yaara" %}</figcaption>
     <div class="map-frame">
         <svg class="map-sheet" viewBox="0 0 680 500" preserveAspectRatio="xMidYMid meet" aria-labelledby="map-title map-description">
-            <title id="map-title">{% translate "Carte des oasis de Yaara" %}</title>
+            <title id="map-title">{% translate "Carte de Yaara" %}</title>
             <desc id="map-description">{% translate "Les emblèmes identifient les maisons. Bannière verte : votre domaine ; nom souligné : cité à portée ; nom grisé : hors de portée ; bannière pointillée : expédition engagée." %}</desc>
             <g class="map-connections" aria-hidden="true">
                 {% for link in view.links %}<path class="map-connection{% if city_requested and selected.id == link.first.id or city_requested and selected.id == link.second.id %} selected-road{% endif %}" data-first="{{ link.first.id }}" data-second="{{ link.second.id }}" d="{{ link.path }}"/>{% endfor %}

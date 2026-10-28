@@ -48,7 +48,7 @@
         {% if not selected.owned and activity == 'expedition' and selected_target and not selected.engaged and not view.finished and not view.eliminated and not game.paused %}{% include 'simulation/expedition_actions.html' with detached=True %}{% endif %}
     </section>{% else %}
     <section id="map-context" class="context-sheet realm-sheet" aria-labelledby="context-title">
-        <header class="sheet-heading"><div class="sheet-identity"><h1 id="context-title" tabindex="-1">{% if tab == 'domain' %}{% translate "Règne" %}{% else %}{% translate "Carte des oasis de Yaara" %}{% endif %}</h1></div>{% include 'simulation/sheet_expand.html' %}</header>
+        <header class="sheet-heading"><div class="sheet-identity"><h1 id="context-title" tabindex="-1">{% if tab == 'domain' %}{% translate "Règne" %}{% else %}{% translate "Carte de Yaara" %}{% endif %}</h1></div>{% include 'simulation/sheet_expand.html' %}</header>
         <div class="sheet-body">{% if tab == 'domain' %}{% include 'simulation/realm_overview.html' %}{% else %}{% include 'simulation/map_guide.html' %}{% endif %}</div>
     </section>{% endif %}
 </div>
