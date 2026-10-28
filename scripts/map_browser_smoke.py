@@ -104,6 +104,13 @@ def run_map_journeys():
                             getComputedStyle(el).whiteSpace === 'nowrap' && el.getBoundingClientRect().width <= innerWidth
                         """)
                     page.evaluate("document.documentElement.style.fontSize = '100%'")
+                page.set_viewport_size({"width": 360, "height": 586})
+                assert page.locator(".map-frame").evaluate(
+                    "el => Math.abs(el.getBoundingClientRect().width - innerWidth) < 2"
+                )
+                assert page.locator(".city-sheet .sheet-body").evaluate(
+                    "el => el.scrollHeight <= el.clientHeight"
+                )
                 page.set_viewport_size({"width": 1440, "height": 1000})
                 expect(page.locator(".map-connection.selected-road")).to_have_count(3)
                 expect(page.locator("#city-granary")).to_be_visible()

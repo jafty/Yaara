@@ -455,14 +455,29 @@
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: minmax(0, min(55cqh, calc(100cqw * 500 / 680))) minmax(0, 1fr);
   }
+  .city-sheet:not([data-focus-action]) .sheet-heading {
+    padding-block: 0;
+  }
   .city-sheet:not([data-focus-action]) .sheet-body {
-    padding-block: 0.35rem;
+    padding-block: 0.2rem;
   }
   .city-sheet:not([data-focus-action]) .city-briefing {
     margin-bottom: 0.25rem;
   }
   .city-sheet:not([data-focus-action]) .city-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     margin-top: 0.15rem;
+  }
+  .city-sheet:not([data-focus-action]) .city-action {
+    gap: 0.4rem;
+    padding-inline: 0.25rem;
+  }
+  .city-sheet:not([data-focus-action]) .city-action-copy small {
+    display: none;
+  }
+  .city-sheet:not([data-focus-action]) .city-action + .city-action {
+    border-left: 1px solid var(--rule);
+    padding-left: 0.5rem;
   }
   .context-sheet {
     border-left: 0;
