@@ -455,6 +455,9 @@
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: minmax(0, min(55cqh, calc(100cqw * 500 / 680))) minmax(0, 1fr);
   }
+  .map-workspace:has(.city-sheet:not([data-focus-action])) {
+    grid-template-rows: minmax(0, min(42cqh, calc(100cqw * 500 / 680))) minmax(0, 1fr);
+  }
   .context-sheet {
     border-left: 0;
     border-top: 1px solid var(--rule);
