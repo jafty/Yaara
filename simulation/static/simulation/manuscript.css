@@ -1116,11 +1116,7 @@ input[type="number"] {
 }
 .map-city[aria-current] .map-territory,
 .map-city:hover .map-territory,
-.map-city:focus-visible .map-city.territory-owned { color: #426c5d; }
-.map-city.territory-enemy { color: #99584c; }
-.map-territory {
-  pointer-events: auto;
-  vector-effect: non-scaling-stroke;
+.map-city:focus-visible .map-territory {
   fill-opacity: 0.18;
   stroke-opacity: 1;
   stroke-width: 1.8;
