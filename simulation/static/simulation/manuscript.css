@@ -1131,6 +1131,7 @@ input[type="number"] {
 }
 .city-art {
   overflow: hidden;
+  filter: saturate(0.8);
 }
 .city-flag {
   color: var(--navigation-ink);
