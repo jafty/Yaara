@@ -313,10 +313,17 @@ def run_map_journeys():
                 expect(page.locator(".expedition-form")).to_have_count(0)
                 page.goto(url + "?tab=mail&mail=chronicle")
                 if javascript:
-                    button = page.locator("[data-read-report]").first
-                    article_id = button.get_attribute("data-read-report")
-                    button.click()
+                    page.goto(url + "?tab=mail")
+                    news = page.locator(".alerts-trigger")
+                    before = int(news.get_attribute("data-news-count"))
+                    assert before > 0
+                    page.locator('.letter-entry a[href*="mail=chronicle#report-"]').first.click()
+                    expect(news).to_have_attribute("data-news-count", str(before - 1))
+                    article_id = page.url.split("#", 1)[1]
                     page.reload()
+                    expect(page.locator(".alerts-trigger")).to_have_attribute(
+                        "data-news-count", str(before - 1)
+                    )
                     expect(page.locator("#" + article_id)).not_to_have_class("unread-report")
                 page.set_viewport_size({"width": 390, "height": 844})
                 page.goto(url)

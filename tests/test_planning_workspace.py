@@ -142,6 +142,8 @@ def test_news_count(user, language):
         )
     html = client.get(url).content.decode()
     assert 'data-news-count="1"' in html
+    assert 'data-news-ids="' in html
+    assert 'data-mail-key="' in html
     assert 'data-alert-count="0"' in html
     mail = client.get(url, {"tab": "mail"}).content.decode()
     assert 'data-news-count="1"' in mail

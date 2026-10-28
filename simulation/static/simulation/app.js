@@ -464,33 +464,56 @@ function initializePage() {
     layer.append(path);
   }
 
-  // Read receipts are browser-local preferences; reports and unresolved alerts stay untouched.
-  const mailbox = document.querySelector("[data-mail-key]");
-  if (mailbox) {
-    const key = `yaara-read:${mailbox.dataset.mailKey}`;
+  // Read receipts are browser-local preferences; unresolved alerts stay untouched.
+  const badge = document.querySelector(".alerts-trigger[data-mail-key]");
+  if (badge && badge.dataset.newsIds !== undefined) {
+    const key = `yaara-read:${badge.dataset.mailKey}`;
     let read;
     try {
-      read = new Set(JSON.parse(localStorage.getItem(key) || "[]"));
+      const stored = JSON.parse(localStorage.getItem(key) || "[]");
+      read = new Set(Array.isArray(stored) ? stored : []);
     } catch {
       read = new Set();
     }
-    mailbox.querySelectorAll("[data-read-report]").forEach((button) => {
+    const updateCount = () => {
+      const ids = badge.dataset.newsIds.split(",").filter(Boolean);
+      const unread = ids.filter((id) => !read.has(`report-${id}`)).length;
+      const alerts = Number(badge.dataset.alertCount) || 0;
+      badge.dataset.newsCount = String(unread);
+      badge.querySelector("strong").textContent = String(unread + alerts);
+      badge.classList.toggle("has-alerts", unread + alerts > 0);
+      document.querySelectorAll("[data-news-label-count]").forEach((label) => {
+        label.textContent = String(unread);
+      });
+    };
+    const markRead = (id) => {
+      if (!id || !document.getElementById(id)) return;
+      read.add(id);
+      try {
+        localStorage.setItem(key, JSON.stringify([...read]));
+      } catch {
+        /* Optional preference. */
+      }
+      const article = document.getElementById(id);
+      article.classList.remove("unread-report");
+      const button = article.querySelector("[data-read-report]");
+      if (button) button.hidden = true;
+      updateCount();
+    };
+    document.querySelectorAll("[data-read-report]").forEach((button) => {
       const article = document.getElementById(button.dataset.readReport);
-      if (read.has(article.id)) return;
+      if (!article || read.has(article.id)) return;
       article.classList.add("unread-report");
       button.hidden = false;
-      button.addEventListener("click", () => {
-        read.add(article.id);
-        try {
-          localStorage.setItem(key, JSON.stringify([...read]));
-        } catch {
-          /* Optional preference. */
-        }
-        article.classList.remove("unread-report");
-        button.hidden = true;
-      });
+      button.addEventListener("click", () => markRead(article.id));
     });
+    const reportId = decodeURIComponent(location.hash.slice(1));
+    if (reportId.startsWith("report-") && document.querySelector(".mail-panel")) {
+      markRead(reportId);
+    }
+    updateCount();
   }
+
 }
 initializePage();
 

@@ -277,7 +277,8 @@ def desk(request, game_id):
     news_month = view["closed_moon"] or game.state["month"]
     # The order register already shows reservations; keep receipts in the archive.
     news = reports.filter(month=news_month).exclude(kind="order", title="Décret scellé")
-    news_count = news.count()
+    news_ids = list(news.values_list("id", flat=True))
+    news_count = len(news_ids)
     if tab != "letters" and not (tab == "mail" and mail_section == "chronicle"):
         reports = news
     constructions = [
@@ -412,6 +413,7 @@ def desk(request, game_id):
             "reports": [report_view(report, state=game.state) for report in reports],
             "news_moon": max(1, news_month),
             "news_count": news_count,
+            "news_ids": news_ids,
             "action": action,
             "section_orders": [
                 order
