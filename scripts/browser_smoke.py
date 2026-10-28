@@ -942,7 +942,7 @@ with sync_playwright() as playwright:
         plain_forge = plain_page.locator("#work-storage")
         plain_forge.locator('input[value="c1"]').check()
         plain_forge.locator('button[type="submit"]').click()
-        expect(plain_page.locator(".notices")).to_contain_text(
+        expect(plain_page.locator(".sheet-feedback, .notices")).to_contain_text(
             "The granary in Qasr needs" if en else "Le grenier de Qasr manque"
         )
         plain_page.goto(game_url + "?tab=constructions")
@@ -1009,7 +1009,7 @@ with sync_playwright() as playwright:
             "35,000" if en else "35\u202f000"
         )
         page.locator('.primary-action[form="expedition-form"]').click()
-        expect(page.locator(".notices")).to_contain_text("Qasr")
+        expect(page.locator(".sheet-feedback, .notices")).to_contain_text("Qasr")
         expect(page.locator('input[name="men_c1"]')).to_have_value("10")
         assert "action=expedition" in page.url
         empty = page.request.get(empty_url + "state/").json()["view"]
