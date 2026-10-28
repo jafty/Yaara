@@ -31,13 +31,12 @@ colors remain when images are disabled.
 ivory parchment, including central details. Decorative only, with no terrain rule.
 Final imagegen source: `exec-ba2fdf82-6582-4472-b957-4b9e8fcbf244.png`.
 
-`map/settlements.webp`: lossless RGBA 1536×1024 atlas, six 512×512 cells.
-Top row: open settlement, timber palisade, reinforced palace.
-Bottom row: stone walls, legacy earth wall, legacy great enclosure.
-Schematic frontal manuscript vignettes, regenerated from the fortifications
-illustration with fibrous papyrus texture and plain walls. Flags remain live SVG,
-using existing house emblems and viewer-relative green/red colors. SVG square
-viewports clip each cell without stretching it or showing adjacent cells.
+`map/settlements.webp`: transparent 1536×1024 atlas, six 512×512 cells,
+using the owner-supplied October 28 city artwork with the parchment background
+removed. Top row: open settlement, timber palisade, reinforced palace. Bottom
+row: stone walls, legacy earth wall, legacy great enclosure. Live SVG flags show
+ownership. The supplied drawings remain decorative and do not change game rules.
+
 `map/yaara-background.jpg` is the owner-supplied map background, displayed in full
 beneath the existing territory, road and city layers. Its coast and terrain are
 decorative and do not change movement rules.
