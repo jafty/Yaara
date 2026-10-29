@@ -1589,6 +1589,11 @@ def resolve_combats(state, seed, events):
 def return_contingents(state, mission, events):
     """Settle each origin once, preserving detached people until actual arrival."""
     actor = mission["actor"]
+    neighbours = {
+        second if first == mission["target"] else first
+        for first, second in state["links"]
+        if mission["target"] in (first, second)
+    }
     order = next(item for item in state["orders"] if item["id"] == mission["id"])
     if "loot_shares" not in mission:
         mission["loot_shares"] = allocate(mission["loot"], mission["cohorts"])
@@ -1601,8 +1606,11 @@ def return_contingents(state, mission, events):
         city = state["cities"][origin]
         route = mission["return_routes"].get(origin)
         if route is None and city["owner"] != actor and survivors:
-            refuge = mission["refuges"][origin]
-            if refuge and state["cities"][refuge]["owner"] == actor:
+            refuge = next(
+                (key for key in sorted(neighbours) if state["cities"][key]["owner"] == actor),
+                None,
+            )
+            if refuge:
                 mission["return_routes"][origin] = refuge
                 diverted = True
                 report(
@@ -1620,13 +1628,19 @@ def return_contingents(state, mission, events):
                 )
                 continue
         destination = state["cities"][route] if route else city
-        friendly = destination["owner"] == actor
+        friendly = destination["owner"] == actor and (route is None or route in neighbours)
         if not friendly:
             destination = city
+            friendly = destination["owner"] == actor
         if origin in mission["detached_origins"]:
             destination["population"] += survivors
-        if friendly:
-            destination["fideles"] += survivors
+        destination["fideles"] += survivors
+        if (
+            not friendly
+            and tactics.enabled(state)
+            and closing_moon(state) < destination.get("restricted_until", 0)
+        ):
+            destination["restricted_fideles"] = destination.get("restricted_fideles", 0) + survivors
         loot = mission["loot_shares"][origin]
         deposited = (
             min(loot, capacity(destination, state["economy_version"]) - destination["stock"])
@@ -1649,7 +1663,7 @@ def return_contingents(state, mission, events):
                 fate=message("Ils rejoignent les Fidèles de votre maison.")
                 if friendly
                 else message(
-                    "Ils sont démobilisés parmi les habitants, sans rejoindre les Fidèles du nouveau souverain."
+                    "Ils rejoignent les Fidèles du nouveau souverain et restent soumis à l’éventuelle restriction de départ de la cité."
                 ),
                 kept=number(deposited),
                 lost=number(loot - deposited),

@@ -1,5 +1,19 @@
 # Map workspace — October 26, 2026
 
+## October 29: compact works and nearby military refuge
+
+Work-list rows show one next/current building title, a 56px square illustration,
+an adjacent action, and compact effect/cost/duration details. Maximum-level
+buildings retain their effect and their disabled upgrade action. Detailed quotes
+retain the current-to-next transition and all existing checks. Both languages,
+320/390px layouts, 200% text and native no-JavaScript forms remain supported.
+
+For economy-four military returns, a diverted route starts at the attacked city
+and follows one saved road to its friendly neighbouring refuge. It does not show
+a journey from the captured home across the realm. This reflects the owner's
+October 29 rule correction recorded in decisions.md; ordinary returns and
+convoys keep their existing route contracts.
+
 The owner's approval supersedes earlier Council-first and compulsory batch-work
 presentation decisions. No saved rules or reports change. The October 27 follow-up below authorizes map artwork.
 

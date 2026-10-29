@@ -155,7 +155,7 @@ def workspace_context(view, selected=None, activity=None):
                 refuge = item["return_routes"].get(origin)
                 marches.append(
                     {
-                        "origin": cities[origin if refuge else item["target_id"]]
+                        "origin": cities[item["target_id"]]
                         if item["returning"]
                         else cities[origin],
                         "target": cities[refuge or origin]

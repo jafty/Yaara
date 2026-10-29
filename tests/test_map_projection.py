@@ -71,6 +71,7 @@ def test_own_return_projection():
     Then the owned refuge and per-origin arrival state are available only to that owner.
     """
     state = engine.new_state(opponents="passive")
+    state["links"].append(["c1", "c4"])
     engine.confirm_order(
         state, "p1", {"kind": "raid", "target": "c4", "contributions": {"c3": 20}}, "raid"
     )

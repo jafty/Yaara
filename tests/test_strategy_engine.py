@@ -274,7 +274,7 @@ def test_convoy_return(scenario, credited):
 
 @case(
     "strategy-refuge-return",
-    "Prompt J: absent contingents stay with their house or demobilize, never join the enemy army",
+    "Owner: nearby refuge preserves the house; otherwise survivors join their captured home's Faithful",
 )
 @pytest.mark.parametrize(
     "scenario",
@@ -290,9 +290,10 @@ def test_convoy_return(scenario, credited):
 def test_refuge_return(scenario):
     """Given twenty departing Faithful whose origin is affected by {scenario}.
     When their surviving contingent returns after any diversion.
-    Then population is counted once and no returning soldier becomes an available enemy Faithful.
+    Then population is counted once and survivors join a nearby refuge or their original home's Faithful.
     """
     state = realm()
+    state["links"].append(["c2", "c4"])
     if scenario == "isolated-origin":
         state["links"] = [["c1", "c4"]]
     engine.confirm_order(
@@ -318,7 +319,7 @@ def test_refuge_return(scenario):
     engine.advance_month(state, "refuge")
     expected = 8999 if scenario == "death-while-detached" else 9000
     assert sum(city["population"] for city in state["cities"].values()) == expected
-    if scenario in ("friendly-origin", "recaptured-origin"):
+    if scenario in ("friendly-origin", "recaptured-origin", "lost-refuge", "isolated-origin"):
         assert state["cities"]["c1"]["fideles"] == 100
     else:
         assert state["cities"]["c1"]["fideles"] == 80
@@ -373,6 +374,7 @@ def test_mixed_return():
     Then their forty survivors and loot are credited exactly once despite the split return.
     """
     state = realm()
+    state["links"].append(["c2", "c4"])
     engine.confirm_order(
         state,
         "p1",

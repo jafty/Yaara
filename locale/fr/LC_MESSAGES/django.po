@@ -4644,3 +4644,11 @@ msgstr "Pointillés gris : routes · Trait rouge : vers une cité ennemie · Tra
 #: simulation/templates/simulation/map_guide.html
 msgid "Outils : équipe occupée. Sans symbole : équipe libre dans vos cités."
 msgstr "Outils : équipe occupée. Sans symbole : équipe libre dans vos cités."
+
+#: simulation/narration.py
+msgid "Améliore l’attaque et la défense des Fidèles de cette cité et de ses futurs habitants. Les expéditions déjà parties gardent leur équipement."
+msgstr "Améliore l’attaque et la défense des Fidèles de cette cité et de ses futurs habitants. Les expéditions déjà parties gardent leur équipement."
+
+#: simulation/engine.py
+msgid "Ils rejoignent les Fidèles du nouveau souverain et restent soumis à l’éventuelle restriction de départ de la cité."
+msgstr "Ils rejoignent les Fidèles du nouveau souverain et restent soumis à l’éventuelle restriction de départ de la cité."

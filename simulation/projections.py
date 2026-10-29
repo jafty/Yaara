@@ -402,6 +402,7 @@ def player_view(state, actor):
                 reason = error.args[0]
                 if complete:
                     reason = Message("Cet ouvrage est achevé.")
+                    option["benefit"] = work_effect(kind, effective_level(city, family), economy)
                 elif kind == "repair" and not current and economy < 4:
                     reason = Message("Cette cité n’a pas d’enceinte à réparer.")
                 option.update(status="completed" if complete else "unavailable", reason=reason)

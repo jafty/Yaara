@@ -5925,3 +5925,11 @@ msgstr "Grey dashes: roads · Red line: towards an enemy city · Green line: tow
 #: simulation/templates/simulation/map_guide.html
 msgid "Outils : équipe occupée. Sans symbole : équipe libre dans vos cités."
 msgstr "Tools: crew occupied. No symbol: crew available in your cities."
+
+#: simulation/narration.py
+msgid "Améliore l’attaque et la défense des Fidèles de cette cité et de ses futurs habitants. Les expéditions déjà parties gardent leur équipement."
+msgstr "Improves attack and defence for this city's Faithful, including future inhabitants. Expeditions already underway keep their equipment."
+
+#: simulation/engine.py
+msgid "Ils rejoignent les Fidèles du nouveau souverain et restent soumis à l’éventuelle restriction de départ de la cité."
+msgstr "They join the new ruler's Faithful and remain subject to any existing departure restriction in the city."
