@@ -39,6 +39,40 @@ def run_map_journeys():
                 assert abs(canvas["y"] - page.locator(".reign-header").bounding_box()["height"]) < 2
                 expect(page.locator(".map-guide-key")).to_be_visible()
                 expect(page.locator(".map-reference")).to_have_count(0)
+                # The Moon link opens one decision, retaining the map and native POST.
+                for width, height in ((1440, 1000), (390, 740), (320, 640)):
+                    page.set_viewport_size({"width": width, "height": height})
+                    page.locator(".moon-close-link").click()
+                    expect(page.locator(".realm-sheet[data-focus-action]")).to_be_visible()
+                    expect(
+                        page.locator('#turn-page form[action$="/advance/"] button')
+                    ).to_be_in_viewport()
+                    expect(
+                        page.locator(".realm-sheet .standings, .realm-sheet .folio-tools")
+                    ).to_have_count(0)
+                    if width >= 900:
+                        expect(page.locator(".realm-map")).to_be_visible()
+                        expect(page.locator(".reign-header")).to_be_visible()
+                    else:
+                        expect(page.locator(".realm-map")).to_be_hidden()
+                    page.locator(".panel-close").click()
+                    expect(page.locator(".map-guide-key")).to_be_visible()
+                    if javascript:
+                        page.go_back()
+                        expect(page.locator("#turn-page")).to_be_visible()
+                        page.keyboard.press("Escape")
+                        expect(page.locator(".map-guide-key")).to_be_visible()
+                if javascript:
+                    # Desktop restores access after a mobile expansion, keeping its draft/node.
+                    page.locator("[data-sheet-expand]").click()
+                    expect(page.locator(".realm-map")).to_be_hidden()
+                    page.set_viewport_size({"width": 1440, "height": 1000})
+                    expect(page.locator(".realm-map")).to_be_visible()
+                    expect(page.locator("[data-sheet-expand]")).to_have_attribute(
+                        "aria-expanded", "false"
+                    )
+                    assert not page.locator(".realm-map").evaluate("el => el.inert")
+                page.set_viewport_size({"width": 1440, "height": 1000})
                 if javascript:
                     # An already-open tab must reload when the server serves newer assets.
                     page.evaluate("""() => {
@@ -136,8 +170,11 @@ def run_map_journeys():
                     }""")
                 page.locator('.city-actions a[href*="action=works"]').click()
                 page.wait_for_url("**action=works")
-                expect(page.locator(".realm-map")).to_be_hidden()
+                expect(page.locator(".realm-map")).to_be_visible()
+                expect(page.locator(".reign-header")).to_be_visible()
+                expect(page.locator("[data-sheet-expand]")).to_be_hidden()
                 expect(page.locator(".city-resources")).to_be_visible()
+                page.screenshot(path=str(artifacts / f"desktop-works-{language}-{javascript}.png"))
                 assert page.locator('[data-local-work="c1"]').count() > 1
                 expect(page.locator("#city-works")).to_be_in_viewport()
                 if javascript:
@@ -170,6 +207,9 @@ def run_map_journeys():
                     page.set_viewport_size(
                         {"width": width, "height": 1000 if width == 1440 else 844}
                     )
+                    if width >= 900:
+                        expect(page.locator(".realm-map")).to_be_visible()
+                        expect(page.locator(".reign-header")).to_be_visible()
                     for scale in ("100%", "200%"):
                         page.evaluate(
                             "scale => document.documentElement.style.fontSize = scale", scale
@@ -232,8 +272,11 @@ def run_map_journeys():
                 page.goto(url + "?tab=mail&mail=schedule")
                 page.locator(".orders-register button").click()
                 page.goto(url + "?tab=map&city=c1&action=convoy&origin=c1")
-                for width in (390, 320):
+                for width in (1440, 390, 320):
                     page.set_viewport_size({"width": width, "height": 740})
+                    if width >= 900:
+                        expect(page.locator(".realm-map")).to_be_visible()
+                        expect(page.locator(".reign-header")).to_be_visible()
                     fields = page.locator(".convoy-fields :is(input, select)")
                     boxes = [field.bounding_box() for field in fields.all()]
                     assert (
@@ -267,6 +310,11 @@ def run_map_journeys():
                         assert (
                             geometry["height"] > 80 and geometry["scrollWidth"] <= geometry["width"]
                         ), (language, javascript, width, height, scale, geometry)
+                        if width >= 900:
+                            expect(page.locator(".realm-map")).to_be_visible()
+                            expect(page.locator(".reign-header")).to_be_visible()
+                            assert geometry["position"] == "relative"
+                            assert not page.locator(".realm-map").evaluate("el => el.inert")
                         if javascript and geometry["position"] == "absolute":
                             expect(page.locator(".realm-map")).to_have_attribute(
                                 "aria-hidden", "true"
@@ -307,6 +355,14 @@ def run_map_journeys():
                     expect(page.locator(".city-sheet[data-focus-action]")).to_be_visible()
                     expect(page.locator("#men-c1")).to_have_value("10")
                     expect(page.locator("#men-c3")).to_have_value("20")
+                    page.screenshot(path=str(artifacts / f"desktop-army-{language}.png"))
+                    # A second city remains selectable while the army panel is open.
+                    page.locator('.map-city[href*="city=c2"] .map-name').click()
+                    expect(page.locator(".city-actions")).to_be_visible()
+                    page.go_back()
+                    expect(page.locator(".expedition-form")).to_be_visible()
+                    page.locator("#men-c1").fill("10")
+                    page.locator("#men-c3").fill("20")
                     page.set_viewport_size({"width": 390, "height": 740})
                 page.screenshot(
                     path=str(artifacts / f"army-{language}-{javascript}.png"), full_page=True

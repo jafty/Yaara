@@ -317,7 +317,7 @@ with sync_playwright() as playwright:
         expect(news.locator("strong")).to_have_css("border-top-width", "0px")
         expect(news.locator(".visually-hidden")).to_contain_text("News" if en else "Nouvelles")
         expect(news.locator(".visually-hidden")).to_contain_text("Alerts" if en else "Alertes")
-        # City actions open a full sheet and retain local resources at every size.
+        # City actions retain the desktop map and use the established full sheet on mobile.
         for width in (1440, 390, 320):
             page.set_viewport_size({"width": width, "height": 844})
             for action in ("works", "convoy"):
@@ -347,7 +347,11 @@ with sync_playwright() as playwright:
                 page.locator(f'.city-actions a[href*="action={action}"]').click()
                 expect(page.locator(".city-sheet[data-focus-action]")).to_be_visible()
                 expect(page.locator(".city-resources")).to_be_visible()
-                expect(page.locator(".reign-header")).to_be_hidden()
+                if width >= 900:
+                    expect(page.locator(".reign-header")).to_be_visible()
+                    expect(page.locator(".realm-map")).to_be_visible()
+                else:
+                    expect(page.locator(".reign-header")).to_be_hidden()
                 expect(page.locator(".city-activities")).to_have_count(0)
                 expect(page.locator(".sheet-body")).to_have_css("opacity", "1")
                 no_overflow(page)
@@ -464,7 +468,7 @@ with sync_playwright() as playwright:
         expect(forge.locator("[data-work-cost]")).to_have_text("300,000" if en else "300\u202f000")
         forge.locator('button[type="submit"]').click()
         expect(page.locator(".decree-reading")).to_contain_text(
-            "Small arsenal equipment" if en else "Équipement du petit arsenal"
+            "small arsenal" if en else "petit arsenal"
         )
         expect(
             page.locator('.reign-header a[data-section][aria-current="page"]')

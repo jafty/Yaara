@@ -332,6 +332,8 @@ deployment-request-log-private/csrf
 deployment-request-log-private/development-server
 deployment-request-log-private/request
 deployment-request-log-private/worker-error
+desktop-focused-moon-review/en
+desktop-focused-moon-review/fr
 disconnected-origins-must-touch-same-frontier/both-components-touch
 disconnected-origins-must-touch-same-frontier/one-component-touches
 draft-language-switch

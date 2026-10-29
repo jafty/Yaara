@@ -9,10 +9,10 @@ function sizeSheet(expanded) {
   const workspace = document.querySelector(".map-workspace");
   const button = workspace?.querySelector("[data-sheet-expand]");
   if (!button) return;
+  expanded = expanded && matchMedia("(max-width: 899px)").matches;
   sheetExpanded = expanded;
   workspace.classList.toggle("is-expanded", expanded);
   const coversMap =
-    expanded ||
     getComputedStyle(workspace.querySelector(".context-sheet")).position === "absolute";
   const map = workspace.querySelector(".realm-map");
   map.inert = coversMap;
@@ -644,7 +644,7 @@ async function openContext(url, push = true) {
     renderedURL =
       new URL(url, location.href).pathname + new URL(url, location.href).search;
     initializePage();
-    if (enteringAction && !reducedMotion) {
+    if (enteringAction && matchMedia("(max-width: 899px)").matches && !reducedMotion) {
       document.querySelector(".context-sheet")?.animate(
         [{ clipPath: "inset(18% 0 0 0)" }, { clipPath: "inset(0)" }],
         { duration: 180, easing: "ease-out" },
@@ -700,7 +700,7 @@ document.addEventListener("click", (event) => {
   )
     return;
   const tab = url.searchParams.get("tab") || "map";
-  if (!["map", "mail"].includes(tab)) return;
+  if (!["map", "mail", "domain"].includes(tab)) return;
   if (url.search === location.search && url.hash) return;
   event.preventDefault();
   openContext(url.href);

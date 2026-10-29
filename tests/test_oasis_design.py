@@ -96,7 +96,7 @@ def test_sealed_next_closure(council, user, language):
     client.cookies["django_language"] = language
     html = client.get(url, {"tab": "constructions"}).content.decode()
     assert "data-next-closure" not in html
-    assert f"{url}?tab=domain#turn-page" in html
+    assert f"{url}?tab=domain&amp;review=moon#turn-page" in html
     game.refresh_from_db()
     assert game.state == before
     assert game.state["orders"][0]["status"] == "confirmed"

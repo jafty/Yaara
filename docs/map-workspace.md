@@ -334,3 +334,22 @@ The city link announces the busy state to assistive technology; the existing cit
 panel retains the assignment and finish date. Enemy crew activity remains hidden.
 The marker uses the existing authorized `busy` field and does not change rules,
 saved data, map geometry, or city navigation.
+
+
+## October 29 — Desktop planning and focused Moon review
+
+Desktop (900px and wider) retains the equal map/decision workspace for works,
+convoys, army preparation and review. Action sheets stay in their column; the
+header and map remain visible, interactive and unchanged in size. Expansion is
+mobile-only and resets when entering desktop width. Existing mobile overlays,
+forms and return controls remain intact.
+
+The header's manual Moon link opens a focused read-only review within the same
+sheet shell, showing the existing closure explanation and native POST control.
+Reign keeps its full records; the focused review omits standings, onboarding and
+footer utilities. Context navigation includes Reign and preserves Back/Escape.
+
+Before implementation: browser variations cover desktop works/list/detail, army,
+convoy, review, map interaction, mobile expansion then desktop resize, and focused
+Moon review/return/Back at 1440/390/320px, both languages and native fallback.
+HTTP `desktop-focused-moon-review` checks the isolated review and unchanged state.

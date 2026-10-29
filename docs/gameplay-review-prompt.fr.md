@@ -1,5 +1,13 @@
 # Yaara — Référence de jouabilité
 
+## Présentation du 29 octobre 2026 — Bureau et clôture
+
+Préparée depuis `b369e07`. Sur ordinateur (900px et plus), les préparations
+restent à côté de la carte, avec l’en-tête accessible. Le lien de clôture ouvre
+un feuillet dédié aux conséquences et au bouton de confirmation existants.
+Le Règne garde ses comptes complets. Les panneaux mobiles et les règles
+économiques, militaires et calendaires restent inchangés.
+
 ## Révision du 29 octobre 2026 — Retours et chantiers lisibles
 
 Préparée depuis `098fda0`, sans attester un déploiement. La correction explicite
