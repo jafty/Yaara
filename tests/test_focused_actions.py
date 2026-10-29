@@ -110,3 +110,21 @@ def test_repair_verb(user, language):
     html = client.get(url, {"city": "c1", "action": "works"}).content.decode()
     row = re.search(r'<article[^>]*id="local-work-repair".*?</article>', html, re.S).group()
     assert ("<span>Réparer</span>" if language == "fr" else "<span>Repair</span>") in row
+
+
+@case("desktop-focused-moon-review", "Owner: Moon closure opens a focused native review")
+@pytest.mark.parametrize("language", ["fr", "en"])
+def test_focused_moon_review(user, language):
+    game, client, url = open_board(user, language)
+    before = deepcopy(game.state)
+    html = client.get(url, {"tab": "domain", "review": "moon"}).content.decode()
+    sheet = html.split('id="map-context"', 1)[1]
+    assert "data-focus-action" in sheet
+    assert 'id="turn-page"' in sheet
+    assert 'class="panel-close" href="?tab=map"' in sheet
+    assert 'method="post"' in sheet and "/advance/" in sheet
+    assert 'class="standings"' not in sheet
+    assert "data-first-decisions" not in sheet
+    assert "folio-tools" not in sheet
+    game.refresh_from_db()
+    assert game.state == before

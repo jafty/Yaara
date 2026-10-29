@@ -88,7 +88,7 @@ def test_closure_link(user, tab):
     client = Client()
     client.force_login(user)
     html = client.get(reverse("game", args=[game.id]), {"tab": tab, "city": "c1"}).content.decode()
-    assert "?tab=domain#turn-page" in html
+    assert "?tab=domain&amp;review=moon#turn-page" in html
 
 
 @case("audit-start-authorization", "Owner: only the game owner can start its scheduled clock")

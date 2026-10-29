@@ -11,12 +11,6 @@
 .workspace-page > .moon-banner {
   flex: 0 0 auto;
 }
-.workspace-page:has(.is-expanded) > .reign-header,
-.workspace-page:has(.is-expanded) > .moon-banner,
-.workspace-page:has([data-focus-action]) > .reign-header,
-.workspace-page:has([data-focus-action]) > .moon-banner {
-  visibility: hidden;
-}
 .workspace-page > .book {
   position: relative;
   order: 2;
@@ -69,9 +63,7 @@
   overflow-y: auto;
   background: var(--header-paper);
 }
-.workspace-notices:empty,
-.workspace-page:has(.is-expanded) .workspace-notices,
-.workspace-page:has([data-focus-action]) .workspace-notices {
+.workspace-notices:empty {
   display: none;
 }
 .workspace-notices > :not(:empty) {
@@ -89,19 +81,6 @@
   overflow: hidden;
   background: var(--paper);
   border-left: 1px solid var(--rule);
-}
-.map-workspace.is-expanded > .context-sheet,
-.context-sheet[data-focus-action] {
-  position: absolute;
-  inset: calc(100cqh - 100dvh) 0 0;
-  z-index: 6;
-}
-.context-sheet[data-focus-action] .sheet-expand {
-  display: none;
-}
-.map-workspace.is-expanded > .realm-map,
-.map-workspace:has([data-focus-action]) > .realm-map {
-  visibility: hidden;
 }
 .sheet-heading {
   display: flex;
@@ -166,6 +145,10 @@
   text-decoration: none;
   color: var(--ink);
 }
+.sheet-expand {
+  display: none;
+}
+.context-sheet[data-focus-action] .sheet-expand,
 .sheet-expand[hidden] {
   display: none;
 }
@@ -512,6 +495,28 @@
   display: none;
 }
 @media (max-width: 899px) {
+  .workspace-page:has(.is-expanded) > .reign-header,
+  .workspace-page:has(.is-expanded) > .moon-banner,
+  .workspace-page:has([data-focus-action]) > .reign-header,
+  .workspace-page:has([data-focus-action]) > .moon-banner {
+    visibility: hidden;
+  }
+  .map-workspace.is-expanded > .context-sheet,
+  .context-sheet[data-focus-action] {
+    position: absolute;
+    inset: calc(100cqh - 100dvh) 0 0;
+    z-index: 6;
+  }
+  .map-workspace.is-expanded > .realm-map,
+  .map-workspace:has([data-focus-action]) > .realm-map {
+    visibility: hidden;
+  }
+  .workspace-page:has(.is-expanded) .workspace-notices,
+  .workspace-page:has([data-focus-action]) .workspace-notices {
+    display: none;
+  }
+  .sheet-expand { display: grid; }
+
   .map-workspace {
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: minmax(0, min(55cqh, calc(100cqw * 500 / 680))) minmax(0, 1fr);

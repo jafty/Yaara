@@ -59,7 +59,7 @@ def test_navigation(user, tab, active, language):
     assert ("Map" if language == "en" else "Carte") in nav
     ribbon = re.search(r'<div class="resource-ribbon[^"]*".*?</div>', html, re.S).group()
     # Manual closure opens a read-only review; advancing still requires its POST form.
-    assert f'href="{url}?tab=domain#turn-page"' in ribbon
+    assert f'href="{url}?tab=domain&amp;review=moon#turn-page"' in ribbon
     assert ("Close the Moon…" if language == "en" else "Clore la lune…") in ribbon
     assert "<form" not in ribbon
     review = client.get(url, {"tab": "domain"}).content.decode()
