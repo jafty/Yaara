@@ -409,20 +409,26 @@
 }
 .work-row {
   display: grid;
-  grid-template-columns: 88px minmax(0, 1fr);
-  gap: 0.25rem 0.75rem;
+  grid-template-columns: 56px minmax(0, 1fr) auto;
+  gap: 0 0.6rem;
+  padding-block: 0.35rem;
   align-items: start;
 }
 .work-row > .illustration-building {
   grid-column: 1;
-  grid-row: 1 / span 3;
+  grid-row: 1 / span 2;
   width: 100%;
   margin: 0.4rem 0 0;
 }
-.work-row h3,
-.work-row .work-city-details,
-.work-row form {
+.work-row h3 {
   grid-column: 2;
+  grid-row: 1;
+  margin: 0;
+  font-size: 0.95rem;
+}
+.work-row .work-city-details {
+  grid-column: 2 / -1;
+  grid-row: 2;
   min-width: 0;
 }
 .work-row h3 a {
@@ -432,13 +438,20 @@
   text-decoration: none;
 }
 .work-row form {
+  grid-column: 3;
+  grid-row: 1;
   margin: 0;
-  justify-self: start;
+  justify-self: end;
+}
+.work-row .work-benefit {
+  margin: 0 0 0.2rem;
+  line-height: 1.35;
 }
 .work-row .work-facts {
   display: flex;
   flex-wrap: wrap;
   gap: 0.25rem 0.75rem;
+  margin-block: 0.2rem 0;
 }
 
 .sheet-tabs {

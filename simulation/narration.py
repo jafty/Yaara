@@ -223,7 +223,9 @@ def work_effect(kind, level, economy_version=1):
                 "La garnison locale sera mieux protégée contre les captures ; les réserves restent nécessaires pour tenir un siège."
             )
         if kind == "forge":
-            return equipment_labels(economy_version)[level]
+            return message(
+                "Améliore l’attaque et la défense des Fidèles de cette cité et de ses futurs habitants. Les expéditions déjà parties gardent leur équipement.",
+            )
         if kind == "shelter":
             return message(
                 "Seuil de protection : {amount} Mesures, plafonné à 90 % de la récolte accumulée.",

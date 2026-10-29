@@ -1,5 +1,21 @@
 # Yaara — Référence de jouabilité
 
+## Révision du 29 octobre 2026 — Retours et chantiers lisibles
+
+Préparée depuis `098fda0`, sans attester un déploiement. La correction explicite
+du propriétaire s’applique aux retours militaires de l’économie quatre, y compris
+les règnes en cours : seul un voisin routier direct et encore ami de la cité
+attaquée peut servir de refuge. Une cité amie située à deux routes ne suffit pas.
+Sans refuge valable, les survivants rentrent comme Fidèles du maître actuel de
+leur cité d’origine, avec le reliquat de sa restriction de départ, sans prolonger
+celle-ci. Les convois et les économies antérieures gardent leurs règles.
+
+Les effets des forges expliquent leur rôle en attaque et en défense sans chiffre
+de combativité. Les ouvrages achevés gardent leur description. La liste resserre
+les illustrations et les espacements, évite le titre répété et place l’action
+près du nom ; les prix, durées, motifs de refus et commandes natives restent
+accessibles dans les deux langues.
+
 ## Présentation du 27 octobre 2026 — Carte illustrée et navigation fluide
 
 Préparée depuis `d9671c8`. Les cités reprennent le style des illustrations de
@@ -216,7 +232,7 @@ Convoi entre deux cités amies distinctes reliées au scellement et au départ, 
 
 Si destination perdue, retour vers origine encore amie, sinon refuge ami déterminé au départ, avec une lune supplémentaire. Vérification de sa propriété à l’arrivée réelle ; sinon cargaison perdue. Débordement perdu, pas de dépôt doublé après répétition.
 
-La capture d’une origine ne transfère pas ses contingents absents à l’armée ennemie. Ceux-ci sont retirés de la population locale et restent comptés sous leur maison pendant le voyage. Au retour : origine amie, sinon refuge fixé au départ et toujours ami avec une lune supplémentaire. Sans refuge valable à l’arrivée : démobilisation parmi les habitants de l’origine, sans devenir Fidèles ennemis, butin perdu. Chaque contingent est déposé une seule fois, y compris les retours répartis sur plusieurs lunes.
+La capture d’une origine ne transfère pas immédiatement ses contingents absents à l’armée ennemie. Ceux-ci sont retirés de la population locale et restent comptés sous leur maison pendant le voyage. Au retour : origine amie, sinon recherche d’une cité encore amie directement reliée par une route à la cité attaquée, avec une lune supplémentaire. Les cités amies éloignées ne sont pas des refuges. Sans voisin ami, ou si le refuge change de maître avant l’arrivée, les survivants rentrent dans leur cité d’origine comme Fidèles du nouveau souverain ; l’éventuelle restriction de départ encore active s’applique aussi à eux, sans prolonger son échéance. Leur ancien maître perd le butin. Chaque contingent est déposé une seule fois, y compris les retours répartis sur plusieurs lunes. Le choix du refuge des convois et les anciennes économies ne changent pas.
 
 ## Lecture et décisions
 

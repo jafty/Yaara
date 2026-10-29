@@ -1,5 +1,26 @@
 # Implementation decisions
 
+## 2026-10-29 · Nearby military refuge and readable compact works
+
+Prepared from deployment revision `098fda0`; this records the owner's explicit
+correction to economy-four military returns, including existing reigns. A lost
+home permits refuge only in a currently friendly direct road neighbour of the
+attacked city, chosen deterministically at return. Recheck ownership and that
+direct road at actual arrival, including already recorded diversions. If no
+refuge qualifies, survivors return to their original city as its current ruler's
+Faithful. They share any remaining inherited departure restriction without
+extending it. Population is restored once and the former ruler loses their loot.
+This supersedes the military fixed-refuge/demobilization decision below; convoys
+and economies before four retain their existing rules and archived reports stay
+unchanged. For example, a friendly city two roads from the attacked city cannot
+receive a contingent as refuge even if it was connected to the home at departure.
+
+Forge effects explain local attack and defence qualitatively, including future
+inhabitants and unchanged equipment for expeditions already underway. Completed
+buildings retain their effect in work lists. Compact rows use one building title,
+smaller square artwork and an action beside the title; costs, durations, reasons,
+native forms and 44px targets remain available in both languages.
+
 ## 2026-10-27 · Proportional map and focused actions
 
 The owner rejected the compressed map. Preserve 680:500 geometry and overlay

@@ -99,9 +99,10 @@ def test_convoy_curve(phase):
 def test_diverted_return():
     """Given a surviving contingent diverted from its captured origin to an owned refuge.
     When its map route is built after the diversion.
-    Then it starts at the original city and follows saved curves to its actual refuge.
+    Then it starts at the attacked city and follows one saved road to its neighbouring refuge.
     """
     state = engine.new_state(opponents="passive")
+    state["links"].append(["c1", "c4"])
     engine.confirm_order(
         state, "p1", {"kind": "raid", "target": "c4", "contributions": {"c3": 20}}, "raid"
     )
@@ -111,9 +112,9 @@ def test_diverted_return():
     engine.advance_month(state, "diversion")
     _, context = board(state)
     march = context["marches"][0]
-    assert (march["origin"]["id"], march["target"]["id"]) == ("c3", "c1")
+    assert (march["origin"]["id"], march["target"]["id"]) == ("c4", "c1")
     assert march["friendly"]
-    assert march["path"] == "M 275 120 Q 217.00 186.80 135 220"
+    assert march["path"] == "M 440 70 Q 305.50 181.60 135 220"
 
 
 @case("route-return-lost-intermediate", REQ)

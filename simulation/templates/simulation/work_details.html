@@ -1,6 +1,6 @@
 {% load i18n %}
         <div class="work-city-details">
-            <p class="work-transition">{% if brief %}{{ city.work_name|default:city.current_name }}{% else %}{{ city.current_name }}{% if city.work_name %} {% translate "à" %} {{ city.work_name }}{% endif %}{% endif %}</p>{% if city.current_damaged %}{% include 'simulation/damage_state.html' %}{% endif %}
+            {% if not brief %}<p class="work-transition">{{ city.current_name }}{% if city.work_name %} {% translate "à" %} {{ city.work_name }}{% endif %}</p>{% endif %}{% if city.current_damaged %}{% include 'simulation/damage_state.html' %}{% endif %}
             {% if city.benefit %}<p class="work-benefit">{{ city.benefit }}</p>{% endif %}
             {% if city.work_name %}
                 <dl class="work-facts{% if brief %} compact-facts{% endif %}">
