@@ -7,4 +7,5 @@
         {% csrf_token %}<input type="hidden" name="kind" value="{{ work.kind }}"><input type="hidden" name="cities" value="{{ selected.id }}">
         <button class="local-work-submit" type="submit" aria-label="{% if work.repair %}{% translate 'Réparer' %}{% else %}{% translate 'Améliorer' %}{% endif %} · {{ work.label }}" {% if not work.option.available or view.local_funding and work.option.shortfall %}disabled{% endif %}><span>{% if work.repair %}{% translate "Réparer" %}{% else %}{% translate "Améliorer" %}{% endif %}</span></button>
     </form>{% endif %}
+    {% if not brief %}<a class="work-return" href="?tab=map&amp;city={{ selected.id }}&amp;action=works">{% translate "Tous les chantiers" %}</a>{% endif %}
 </article>

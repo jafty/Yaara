@@ -4652,3 +4652,7 @@ msgstr "Améliore l’attaque et la défense des Fidèles de cette cité et de s
 #: simulation/engine.py
 msgid "Ils rejoignent les Fidèles du nouveau souverain et restent soumis à l’éventuelle restriction de départ de la cité."
 msgstr "Ils rejoignent les Fidèles du nouveau souverain et restent soumis à l’éventuelle restriction de départ de la cité."
+
+#: simulation/templates/simulation/map_workspace.html
+msgid "Travaux du domaine"
+msgstr "Travaux du domaine"

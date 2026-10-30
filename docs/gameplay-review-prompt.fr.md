@@ -1,5 +1,14 @@
 # Yaara — Référence de jouabilité
 
+## Présentation du 30 octobre 2026 — Panneaux et panoramas
+
+Préparée depuis `459ad0f`. Sur ordinateur, le feuillet occupe moins de la moitié
+de l’écran et la carte utilise la hauteur disponible lorsque ses proportions
+le permettent. Les panoramas remplissent la colonne de lecture. La vue initiale
+d’une cité possédée reprend son illustration d’identité. Les « Travaux du domaine »
+gardent un retour direct vers la cité ou les chantiers. Aucun changement de règles,
+de coûts, de routes ou de données sauvegardées. Les panneaux mobiles sont conservés.
+
 ## Présentation du 29 octobre 2026 — Bureau et clôture
 
 Préparée depuis `b369e07`. Sur ordinateur (900px et plus), les préparations

@@ -6,8 +6,8 @@ The forge remains unchanged. Report and city illustrations preserve complete
 3:2 atlas scenes; the supplied agriculture, granary, fortifications and siege
 drawings retain their native 3:1 frames. Army preparation also uses a complete
 3:1 panorama. Catalogue tiles and local work rows use
-square crops. Atlas cells remain isolated. City summaries have no decorative
-heading thumbnails. Construction-start news reuses one generic work scene.
+square crops. Atlas cells remain isolated. Owned-city overviews show their existing complete cityscape below the
+compact controls, without decorative heading thumbnails. Construction-start news reuses one generic work scene.
 The experimental AI-widened granary, forge and fortifications were rejected for
 yellow coloration and a less schematic rendering. They are not application assets.
 
@@ -44,3 +44,4 @@ beneath the existing territory, road and city layers. Its coast and terrain are
 decorative and do not change movement rules.
 
 The map frame now preserves its native 680:500 ratio; action sheets cover it rather than squeezing its geography. No source artwork is repainted.
+

@@ -370,3 +370,17 @@ Before implementation: browser variations cover desktop works/list/detail, army,
 convoy, review, map interaction, mobile expansion then desktop resize, and focused
 Moon review/return/Back at 1440/390/320px, both languages and native fallback.
 HTTP `desktop-focused-moon-review` checks the isolated review and unchanged state.
+
+
+## October 30 — Full-width scenes and desktop folios
+
+Prepared from `459ad0f`. Desktop replaces the equal split with a height-led
+proportional map and a remaining-width folio, bounded between 20rem and the
+smaller of 34rem or 40% of the workspace. When a tall viewport or enlarged text
+prevents a height-filling map, it remains proportional and fits its column.
+Columns do not change across contexts. Mobile retains its existing map and overlays.
+Detail and army panoramas fill their content column; list thumbnails remain square.
+Owned-city overview uses its existing decorative city identity; the artwork does
+not assert upgrades. Works are labelled Domain improvements / Travaux du domaine.
+A direct return is shown in the works section and beside the detail preparation
+button, using native links and retaining the city.

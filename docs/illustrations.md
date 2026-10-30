@@ -29,3 +29,9 @@ the viewer's blue-clad force from terracotta opponents, including the defender's
 perspective. Existing forge art, saved game keys and archived report content are
 unchanged. The agriculture family is labelled “Développer l’agriculture” in French
 and “Develop agriculture” in English; physical building levels retain their names.
+
+
+Army preparation now uses the October 30 compromise revision: irregular brown
+linework, moderate pigment wear between the first distressed and second clean
+variants, neutral unsmiling faces and brown skin throughout. Its full 3:1 frame
+is retained. No saved report or city-identity mapping changes.

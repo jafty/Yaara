@@ -35,7 +35,8 @@ def run_map_journeys():
                     expect(road).to_have_css("stroke-dasharray", "5px, 7px")
                 expect(page.locator(".map-marker, .map-inner")).to_have_count(0)
                 canvas = page.locator(".map-workspace > .realm-map").bounding_box()
-                assert canvas["width"] == 720
+                assert canvas["width"] > 1440 * 0.6
+                assert page.locator(".context-sheet").bounding_box()["width"] < 1440 * 0.4
                 assert abs(canvas["y"] - page.locator(".reign-header").bounding_box()["height"]) < 2
                 expect(page.locator(".map-guide-key")).to_be_visible()
                 expect(page.locator(".map-reference")).to_have_count(0)
@@ -143,9 +144,12 @@ def run_map_journeys():
                 assert page.locator(".map-frame").evaluate(
                     "el => Math.abs(el.getBoundingClientRect().width - innerWidth) < 2"
                 )
-                assert page.locator(".city-sheet .sheet-body").evaluate(
-                    "el => el.scrollHeight <= el.clientHeight"
-                )
+                # The full cityscape may scroll below the compact controls.
+                expect(page.locator(".city-actions")).to_be_in_viewport()
+                city_art = page.locator(".illustration-city")
+                city_art.scroll_into_view_if_needed()
+                expect(city_art).to_be_in_viewport()
+                assert city_art.evaluate("el => el.offsetWidth <= el.parentElement.clientWidth")
                 page.set_viewport_size({"width": 1440, "height": 1000})
                 expect(page.locator(".map-connection.selected-road")).to_have_count(3)
                 expect(page.locator("#city-granary")).to_be_visible()
@@ -165,7 +169,7 @@ def run_map_journeys():
                 if javascript:
                     page.evaluate("""() => {
                         window.originalSheet = document.querySelector('.city-sheet');
-                        window.originalArt = document.querySelector('.city-art');
+                        window.originalArt = document.querySelector('.illustration-city');
                         document.querySelector('.sheet-body').scrollTop = 200;
                     }""")
                 page.locator('.city-actions a[href*="action=works"]').click()
@@ -180,7 +184,7 @@ def run_map_journeys():
                 if javascript:
                     assert page.evaluate("""() =>
                         originalSheet === document.querySelector('.city-sheet') &&
-                        originalArt === document.querySelector('.city-art') &&
+                        document.querySelector('.illustration-city') === null &&
                         document.querySelector('.sheet-body').scrollTop === 0 &&
                         getComputedStyle(originalSheet).animationName === 'none'
                     """)
@@ -198,7 +202,10 @@ def run_map_journeys():
                 page.wait_for_url("**action=irrigation**")
                 expect(page.locator('[data-local-work="c1"]')).to_be_visible()
                 expect(page.locator('input[type="checkbox"]')).to_have_count(0)
-                page.locator(".panel-close").click()
+                art = page.locator(".illustration-building-detail").bounding_box()
+                row = page.locator(".local-work-choice").bounding_box()
+                assert abs(art["width"] - row["width"]) < 2
+                page.locator(".local-work-choice .work-return").click()
                 page.wait_for_url("**action=works")
                 expect(page.locator("#city-works")).to_be_visible()
                 page.locator('.local-work-choice a[href*="action=irrigation"]').click()
