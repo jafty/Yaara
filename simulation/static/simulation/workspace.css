@@ -274,6 +274,11 @@
   margin: 0;
   mask-image: none;
 }
+.city-home-hero .illustration::before {
+  top: auto;
+  bottom: 0;
+  transform: none;
+}
 .city-home-hero .sheet-heading {
   position: relative;
   min-height: 4rem;
