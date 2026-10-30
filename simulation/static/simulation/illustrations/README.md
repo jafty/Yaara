@@ -2,14 +2,14 @@
 
 The October 30 narrative artwork follows the owner's naive drawings; see
 [the art direction](../../../../docs/illustrations.md) for palette and provenance.
-The forge remains unchanged. Report and city illustrations preserve complete
-3:2 atlas scenes; the supplied agriculture, granary, fortifications and siege
+Report and city illustrations preserve complete
+3:2 atlas scenes; the supplied agriculture, granary, forge, fortifications and siege
 drawings retain their native 3:1 frames. Army preparation also uses a complete
 3:1 panorama. Catalogue tiles and local work rows use
 square crops. Atlas cells remain isolated. Owned-city home panels show a complete
 panoramic cityscape above their resources and commands. Construction-start news
 reuses one generic work scene.
-The experimental AI-widened granary, forge and fortifications were rejected for
+The experimental AI-widened granary, former forge and fortifications were rejected for
 yellow coloration and a less schematic rendering. They are not application assets.
 
 `deckled-edge.png` is a generated alpha mask for restrained irregular paper edges.
