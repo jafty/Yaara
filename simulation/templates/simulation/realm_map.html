@@ -20,7 +20,7 @@
                     <svg class="territory-layer" viewBox="0 0 680 500" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><path class="map-territory" d="{{ city.territory_path }}"/></svg>
                     <svg class="city-marker" style="--map-x: {{ city.x|unlocalize }}; --map-y: {{ city.y|unlocalize }}" viewBox="-70 -65 140 140" aria-hidden="true">
                         <g class="settlement">
-                            <svg class="city-art" x="-42" y="-42" width="84" height="84" viewBox="{{ city.settlement_viewbox }}" aria-hidden="true"><image href="{% static 'simulation/illustrations/map/settlements.webp' %}" width="1536" height="1024"/></svg>
+                            <svg class="city-art" x="-37" y="-37" width="74" height="74" viewBox="{{ city.settlement_viewbox }}" aria-hidden="true"><image href="{% static 'simulation/illustrations/map/settlements.svg' %}" width="1536" height="1024"/></svg>
                             <g transform="translate(22 -31) scale(.65)">{% include 'simulation/map_flag.html' with owned=city.owned owner=city.owner %}</g>
                         </g>
                         {% if city.owned and city.busy %}<g class="map-team-busy" transform="translate(-52 8)" data-busy-city="{{ city.id }}"><title>{% translate "Équipe occupée" %}</title>{% include 'simulation/map_team.html' %}</g>{% endif %}

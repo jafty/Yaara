@@ -1,5 +1,27 @@
 # Map workspace — October 26, 2026
 
+## October 30: owner-drawn map and settlements
+
+Prepared from deployment revision `2869df7`. Use the reworked background
+`1000063159.jpg`, never the earlier photograph of the paper drawing. Preserve
+the complete supplied background and all six city drawings, their ink and colors.
+The city JPEGs are embedded unchanged in a self-contained SVG atlas; a display
+filter masks their black backdrop without repainting the illustrations. Retain
+the existing six 512px cells and public fortification mapping, including legacy
+saved games. Move only presentation coordinates where needed to clear the coast,
+rivers and central mountain chain; saved geography and roads remain unchanged.
+The owner's visibility follow-up reduces city drawings from 84 to 74 marker units
+while retaining label, flag and touch-target sizes. Full source colors and a light
+ink-colored drop shadow separate the silhouettes from the parchment.
+
+Acceptance: all seven current/legacy wall-level combinations choose their
+existing cells; all three saved networks retain their connections; the northern
+cities sit on land and the southern city clears the mountain chain. Inspect live
+desktop, 390px and 320px maps, including native navigation, selected roads, flag
+states and enlarged text. Run relevant map HTTP cases on disposable PostgreSQL,
+static collection and the complete map browser journey for the asset-format change.
+This revises presentation only; the gameplay reference remains accurate.
+
 ## October 30: agriculture and illustrated army preparation
 
 The construction family formerly labelled “Aménager les canaux” is displayed as

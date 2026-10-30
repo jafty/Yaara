@@ -33,15 +33,27 @@ colors remain when images are disabled.
 ivory parchment, including central details. Decorative only, with no terrain rule.
 Final imagegen source: `exec-ba2fdf82-6582-4472-b957-4b9e8fcbf244.png`.
 
-`map/settlements.webp`: transparent 1536×1024 atlas, six 512×512 cells,
-using the owner-supplied October 28 city artwork with the parchment background
-removed. Top row: open settlement, timber palisade, reinforced palace. Bottom
-row: stone walls, legacy earth wall, legacy great enclosure. Live SVG flags show
-ownership. The supplied drawings remain decorative and do not change game rules.
+`map/settlements.svg`: self-contained 1536×1024 atlas, six 512×512 cells,
+embedding the owner's October 30 JPEGs byte-for-byte. Top row: open settlement
+(`1000063148`), timber palisade (`1000063158`), reinforced palace (`1000063154`).
+Bottom row: stone walls (`1000063156`), legacy earth wall (`1000063152`), legacy
+great enclosure (`1000063150`). The SVG preserves image proportions, aligns the
+city bases, and masks the black JPEG backdrop at display time with an sRGB alpha
+filter; it leaves RGB colors unchanged. Each embedded source has a SHA-256 in
+the SVG comment for provenance. There are no scripts or external resources.
+Live flags retain ownership colors; the previous saturation adjustment is removed
+so the drawings retain their supplied colors. Public wall-level mappings remain
+unchanged, including older saved games.
+The drawings use a compact 74-unit square within each marker (previously 84),
+with a light ink-colored drop shadow inside the cached atlas for contrast.
+Names, flags and hit areas retain their existing sizes.
 
-`map/yaara-background.jpg` is the owner-supplied map background, displayed in full
-beneath the existing territory, road and city layers. Its coast and terrain are
-decorative and do not change movement rules.
+`map/yaara-background.jpg` is an unchanged copy of the owner's reworked
+`1000063159.jpg`, displayed in full beneath the existing territory, road and city
+layers. The earlier photograph (`1000063138.jpg`) is not used. Its coast and
+terrain are decorative and do not change movement rules. Three presentation
+positions move to clear the northern coastline/river and southern mountain chain;
+saved positions, territory polygons and road connections are preserved.
 
 The map frame now preserves its native 680:500 ratio; action sheets cover it rather than squeezing its geography. No source artwork is repainted.
 

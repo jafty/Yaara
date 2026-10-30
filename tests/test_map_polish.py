@@ -24,12 +24,12 @@ def test_organic_layout(user, version):
     cities = response.context["view"]["cities"]
     assert [(c["x"], c["y"]) for c in cities] == [
         (135, 220),
-        (90, 75),
+        (75, 130),
         (275, 120),
-        (440, 70),
+        (420, 130),
         (590, 185),
         (515, 300),
-        (445, 390),
+        (490, 415),
         (260, 435),
         (125, 360),
     ]
@@ -92,6 +92,7 @@ def test_fortification_art(user, economy, level, tile):
     assert city["settlement_viewbox"] == f"{tile % 3 * 512} {tile // 3 * 512} 512 512"
     html = response.content.decode()
     assert html.count('class="city-art"') == 9
+    assert html.count("simulation/illustrations/map/settlements.svg") == 9
     city_links = "".join(re.findall(r'<a class="map-city .*?</a>', html, re.S))
     assert city_links.count('class="city-flag owned-flag"') == 3
     assert city_links.count('class="city-flag enemy-flag"') == 6
