@@ -1,11 +1,13 @@
 # Material and illustration assets
 
-Original narrative images and sprite atlases are unchanged. Report illustrations
-span the reading column; standalone scenes keep their complete 3:2 composition
-and narrative atlas excerpts use centered 2:1 frames. Building details use modest
-3:2 rectangles, while catalogue tiles and local work rows use square crops. Atlas
-cells remain isolated and all source art keeps its native proportions. The owner
-accepts cropping in lists. City summaries have no decorative heading thumbnails.
+The October 30 narrative artwork follows the owner's naive drawings; see
+[the art direction](../../../../docs/illustrations.md) for palette and provenance.
+The forge remains unchanged. Report and city illustrations preserve complete
+3:2 atlas scenes; the supplied agriculture, granary, fortifications and siege
+drawings retain their native 3:1 frames. Army preparation also uses a complete
+3:1 panorama. Catalogue tiles and local work rows use
+square crops. Atlas cells remain isolated. City summaries have no decorative
+heading thumbnails. Construction-start news reuses one generic work scene.
 The experimental AI-widened granary, forge and fortifications were rejected for
 yellow coloration and a less schematic rendering. They are not application assets.
 

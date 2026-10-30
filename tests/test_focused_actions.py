@@ -25,6 +25,9 @@ def test_focused_sheet(user, language, action):
     assert "data-focus-action" in html
     assert 'preserveAspectRatio="none"' not in html
     assert 'preserveAspectRatio="xMidYMid meet"' in html
+    if action == "expedition":
+        assert html.count('class="illustration illustration-army" aria-hidden="true"') == 1
+        assert 'id="expedition-form"' in html
     if action != "expedition":
         close = re.search(r'<a class="panel-close".*?</a>', html, re.S).group()
         assert "city=c1" in close

@@ -1,5 +1,22 @@
 # Map workspace — October 26, 2026
 
+## October 30: agriculture and illustrated army preparation
+
+The construction family formerly labelled “Aménager les canaux” is displayed as
+“Développer l’agriculture” in French and “Develop agriculture” in English. Saved
+action keys, level names, report message identities, costs and effects remain
+unchanged. The physical canal upgrades remain part of agricultural development.
+
+Army preparation includes one modest panoramic scene before its native form,
+shared by the focused map sheet and the legacy expedition page. Its equipment
+follows the owner's soldier drawing, with varied outfits and weapons. The image
+does not replace mission choices, quantities, costs or warnings. An unselected
+expedition page retains its map without an army illustration.
+
+The [folio art direction](illustrations.md) records the supplied 3:1 drawings,
+complete scene frames and shared construction-start news artwork. This changes
+presentation and copy only; the gameplay reference remains accurate.
+
 ## October 29: compact works and nearby military refuge
 
 Work-list rows show one next/current building title, a 56px square illustration,

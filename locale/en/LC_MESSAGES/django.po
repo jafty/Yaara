@@ -651,7 +651,7 @@ msgstr "Superior equipment"
 
 #: simulation/rules.py:138
 msgid "Aménager les canaux"
-msgstr "Build canals"
+msgstr "Develop agriculture"
 
 #: simulation/rules.py:139
 msgid "Agrandir le stockage"

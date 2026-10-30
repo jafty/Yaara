@@ -1,5 +1,6 @@
 {% load i18n l10n %}
 <section class="{% if not inline %}chapter-section {% endif %}decree-form">{% if not inline %}<h2>{{ action.label }}</h2>{% endif %}
+    {% if action.kind == 'expedition' %}{% include 'simulation/illustration.html' with scene='army' %}{% endif %}
     <form method="post" action="{% url 'preview' game.id %}" {% if action.kind == 'expedition' %}id="expedition-form" class="expedition-form" data-local-funding="{{ view.local_funding|yesno:'true,false' }}" data-free-stock="{{ view.available_stock|unlocalize }}"{% elif action.kind != 'equipment' %}data-work-form data-local-funding="{{ view.local_funding|yesno:'true,false' }}" data-free-stock="{{ view.available_stock|unlocalize }}"{% endif %}>
         {% csrf_token %}
         {% if action.kind == 'expedition' %}

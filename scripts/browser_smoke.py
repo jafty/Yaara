@@ -25,18 +25,26 @@ def no_overflow(page):
         box = scene.bounding_box()
         framed = scene.evaluate("el => getComputedStyle(el, '::before').content !== 'none'")
         source = scene.evaluate("el => getComputedStyle(el, '::before').backgroundImage")
-        # Standalone originals keep their complete composition; atlas excerpts are wider.
-        catalogue = scene.evaluate("el => Boolean(el.closest('.work-card'))")
-        building = scene.evaluate("el => el.classList.contains('illustration-building')")
-        building_detail = scene.evaluate(
-            "el => el.classList.contains('illustration-building-detail')"
+        source_ratio = (
+            3
+            if any(
+                filename in source
+                for filename in (
+                    "agriculture.jpg",
+                    "granary.jpg",
+                    "fortifications.jpg",
+                    "siege.jpg",
+                    "army-preparation.jpg",
+                )
+            )
+            else 1.5
         )
+        # Complete scene proportions survive in every frame except square thumbnails.
+        building = scene.evaluate("el => el.classList.contains('illustration-building')")
         if building:
             ratio = 1
-        elif building_detail or not framed or (".jpg" in source and not catalogue):
-            ratio = 1.5
         else:
-            ratio = 2
+            ratio = source_ratio
         assert abs(box["width"] / box["height"] - ratio) < 0.02
         if framed:
             # Never stretch a scene or expose adjacent atlas cells.
@@ -45,7 +53,7 @@ def no_overflow(page):
               return {width: parseFloat(art.width), height: parseFloat(art.height),
                       overflow: getComputedStyle(el).overflow};
             }""")
-            assert abs(geometry["width"] / geometry["height"] - 1.5) < 0.02
+            assert abs(geometry["width"] / geometry["height"] - source_ratio) < 0.02
             assert geometry["overflow"] == "hidden"
     if page.locator(".house-identity").count() and not page.locator(".workspace-page").count():
         scannable_layout(page)
@@ -378,14 +386,14 @@ with sync_playwright() as playwright:
         redesign_reflow(page)
         # A specific work has a native return path to the complete Works list.
         for family, filename in (
-            ("irrigation", "yaara-atlas.png"),
+            ("irrigation", "agriculture.jpg"),
             ("storage", "granary.jpg"),
             ("forge", "forge.jpg"),
             ("walls", "fortifications.jpg"),
             ("watch", "yaara-atlas.png"),
             ("shelter", "yaara-atlas.png"),
             ("transport", "yaara-atlas.png"),
-            ("siege", "yaara-atlas.png"),
+            ("siege", "siege.jpg"),
         ):
             page.goto(game_url + "?tab=constructions&action=" + family)
             illustration_asset(page.locator(".illustration"), filename)
@@ -548,12 +556,12 @@ with sync_playwright() as playwright:
         assert page.locator("[data-local-accounts]").count() == 0
         expect(page.locator("#map-context")).to_contain_text("Sefra")
         city_heading_starts_panel(page)
-        expect(page.locator("#map-context .illustration")).to_have_count(0)
+        expect(page.locator("#map-context .illustration-army")).to_have_count(1)
+        illustration_asset(page.locator("#map-context .illustration-army"), "army-preparation.jpg")
         page.screenshot(path=str(artifacts / f"map-context-desktop-{language}.png"), full_page=True)
         page.locator('input[name="kind"][value="capture"]').check()
         expect(page.locator('input[name="kind"][value="capture"]')).to_be_checked()
-        expect(page.locator("#map-context .illustration")).to_have_count(0)
-        expect(page.locator("#map-context .illustration")).to_have_count(0)
+        expect(page.locator("#map-context .illustration-army")).to_have_count(1)
         redesign_reflow(page)
         page.goto(page.url)
         city_heading_starts_panel(page)
@@ -632,7 +640,7 @@ with sync_playwright() as playwright:
                 page.goto(game_url + "?tab=mail")
                 illustration_asset(
                     page.locator(".illustration-start-army"),
-                    "action-starts.png",
+                    "army-preparation.jpg",
                 )
         page.goto(game_url + "?tab=wars")
         expect(
@@ -673,7 +681,7 @@ with sync_playwright() as playwright:
         )
         expect(page.locator(".letter-entry .illustration-small")).to_have_count(0)
         redesign_reflow(page)
-        illustration_asset(page.locator(".illustration-start-army"), "action-starts.png")
+        illustration_asset(page.locator(".illustration-start-army"), "army-preparation.jpg")
         for letter in page.locator(".letter-entry").all():
             expect(letter.locator(":scope > .illustration")).to_have_count(1)
             image_width = letter.locator(":scope > .illustration").bounding_box()["width"]
@@ -711,7 +719,9 @@ with sync_playwright() as playwright:
                 scene_name,
             )
             scene = page.locator("#action-artwork-check")
-            illustration_asset(scene, "action-starts.png")
+            illustration_asset(
+                scene, "army-preparation.jpg" if family == "army" else "yaara-atlas.png"
+            )
             scene.screenshot(path=str(artifacts / f"{scene_name}-{language}.png"))
             scene.evaluate("el => el.remove()")
         # HTTP cases cover every recipient/outcome; decode all eight CSS assets here.
@@ -959,7 +969,10 @@ with sync_playwright() as playwright:
         plain_page.locator('.map-city[href*="city=c4"] .city-marker').click()
         expect(plain_page.locator("#map-context")).to_contain_text("Sefra")
         city_heading_starts_panel(plain_page)
-        expect(plain_page.locator("#map-context .illustration")).to_have_count(0)
+        expect(plain_page.locator("#map-context .illustration-army")).to_have_count(1)
+        illustration_asset(
+            plain_page.locator("#map-context .illustration-army"), "army-preparation.jpg"
+        )
         note = plain_page.locator(".origin-details").first
         note.locator("summary").focus()
         plain_page.keyboard.press("Enter")

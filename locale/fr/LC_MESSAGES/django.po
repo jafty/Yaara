@@ -115,7 +115,7 @@ msgid "Aller au récit"
 msgstr "Aller au récit"
 
 msgid "Aménager les canaux"
-msgstr "Aménager les canaux"
+msgstr "Développer l’agriculture"
 
 msgid "Aménager les premiers canaux"
 msgstr "Aménager les premiers canaux"

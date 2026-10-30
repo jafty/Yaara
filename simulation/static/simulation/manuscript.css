@@ -1379,7 +1379,7 @@ input[type="number"] {
   width: min(100%, 30rem);
   position: relative;
   overflow: hidden;
-  aspect-ratio: var(--frame-aspect, 2 / 1);
+  aspect-ratio: var(--frame-aspect, 3 / 2);
   margin: 0.5rem auto 1rem;
   mask-image: url("illustrations/deckled-edge.png");
   mask-mode: alpha;
@@ -1390,22 +1390,26 @@ input[type="number"] {
   aspect-ratio: 1;
 }
 .illustration.illustration-building::before {
-  left: -25%;
+  left: var(--thumbnail-left, -25%);
   right: auto;
-  width: 150%;
+  width: var(--thumbnail-width, 150%);
 }
 .illustration.illustration-building-detail {
-  aspect-ratio: 3 / 2;
+  aspect-ratio: var(--frame-aspect, 3 / 2);
 }
 .family-heading > .illustration-building-detail {
   width: min(100%, 240px);
   margin-inline: 0;
 }
+.decree-form > .illustration-army {
+  width: min(100%, 420px);
+  margin: 0 0 0.75rem;
+}
 .illustration::before {
   content: "";
   position: absolute;
   inset: 50% 0 auto;
-  aspect-ratio: 3 / 2;
+  aspect-ratio: var(--scene-aspect, 3 / 2);
   transform: translateY(-50%);
   background-image: var(--scene-image, url("illustrations/yaara-atlas.png"));
   background-size: var(--scene-size, 300% 300%);
@@ -1437,6 +1441,29 @@ input[type="number"] {
 }
 .illustration-storage {
   --scene-image: url("illustrations/granary.jpg");
+}
+.illustration-irrigation,
+.illustration-storage,
+.illustration-walls,
+.illustration-repair,
+.illustration-siege,
+.illustration-army,
+.illustration-raid,
+.illustration-capture,
+.illustration-start-army {
+  --frame-aspect: 3 / 1;
+  --scene-aspect: 3 / 1;
+  --scene-size: 100% 100%;
+  --scene-x: 0;
+  --scene-y: 0;
+  --thumbnail-left: -100%;
+  --thumbnail-width: 300%;
+}
+.illustration-irrigation {
+  --scene-image: url("illustrations/agriculture.jpg");
+}
+.illustration-siege {
+  --scene-image: url("illustrations/siege.jpg");
 }
 .illustration-forge,
 .illustration-equipment {
@@ -1483,10 +1510,6 @@ input[type="number"] {
   --scene-x: 50%;
   --scene-y: 0;
 }
-.illustration-irrigation {
-  --scene-x: 100%;
-  --scene-y: 0;
-}
 .illustration-watch {
   --scene-x: 0;
   --scene-y: 50%;
@@ -1499,10 +1522,6 @@ input[type="number"] {
   --scene-x: 100%;
   --scene-y: 50%;
 }
-.illustration-siege {
-  --scene-x: 0;
-  --scene-y: 100%;
-}
 .illustration-return {
   --scene-x: 50%;
   --scene-y: 100%;
@@ -1511,7 +1530,6 @@ input[type="number"] {
   --scene-x: 100%;
   --scene-y: 100%;
 }
-.illustration-start-army,
 .illustration-start-storage,
 .illustration-start-forge,
 .illustration-start-walls,
@@ -1520,57 +1538,14 @@ input[type="number"] {
 .illustration-start-shelter,
 .illustration-start-transport,
 .illustration-start-siege {
-  --scene-image: url("illustrations/action-starts.png");
-}
-.illustration-start-army,
-.illustration-start-storage,
-.illustration-start-forge {
-  --scene-size: 300% calc(100% * 1024 / 360);
-}
-.illustration-start-walls,
-.illustration-start-irrigation,
-.illustration-start-watch {
-  /* Generated atlas rows meet at source pixels 360 and 690 of 1024. */
-  --scene-size: 300% calc(100% * 1024 / 330);
-  --scene-y: calc(100% * 360 / 694);
-}
-.illustration-start-shelter,
-.illustration-start-transport,
-.illustration-start-siege {
-  --scene-size: 300% calc(100% * 1024 / 334);
+  --scene-image: url("illustrations/yaara-atlas.png");
+  --scene-size: 300% 300%;
+  --scene-x: 0;
+  --scene-y: 0;
 }
 .illustration-start-army {
-  --scene-x: 0;
-  --scene-y: 0;
-}
-.illustration-start-storage {
-  --scene-x: 50%;
-  --scene-y: 0;
-}
-.illustration-start-forge {
-  --scene-x: 100%;
-  --scene-y: 0;
-}
-.illustration-start-walls {
-  --scene-x: 0;
-}
-.illustration-start-irrigation {
-  --scene-x: 50%;
-}
-.illustration-start-watch {
-  --scene-x: 100%;
-}
-.illustration-start-shelter {
-  --scene-x: 0;
-  --scene-y: 100%;
-}
-.illustration-start-transport {
-  --scene-x: 50%;
-  --scene-y: 100%;
-}
-.illustration-start-siege {
-  --scene-x: 100%;
-  --scene-y: 100%;
+  --scene-image: url("illustrations/army-preparation.jpg");
+  --scene-size: 100% 100%;
 }
 .illustration-city {
   --scene-image: url("illustrations/cityscapes.png");

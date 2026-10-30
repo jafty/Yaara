@@ -143,7 +143,7 @@ def test_english_projection(user, game):
     view = response.json()["view"]
     assert view["equipment"] == "Ordinary equipment"
     assert view["work_actions"][0]["kind"] == "irrigation"
-    assert view["work_actions"][0]["label"] == "Build canals"
+    assert view["work_actions"][0]["label"] == "Develop agriculture"
     assert all("stock" not in city for city in view["cities"] if not city["owned"])
 
 

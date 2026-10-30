@@ -27,6 +27,7 @@ def test_current_pages(user, language):
     catalogue = client.get(url, {"tab": "constructions"}).content.decode()
     assert catalogue.count('class="work-card ledger-note"') == 8
     assert catalogue.count('class="illustration ') == 8
+    assert ("Develop agriculture" if language == "en" else "Développer l’agriculture") in catalogue
     assert "work-selection" not in catalogue and 'id="active-works"' not in catalogue
     assert "action=repair" not in catalogue
     family = client.get(url, {"tab": "constructions", "action": "irrigation"})
@@ -35,6 +36,7 @@ def test_current_pages(user, language):
     assert ("Channels and small dikes" if language == "en" else "Rigoles et petites digues") in text
     assert 'class="primary-action work-review" type="submit"' in text
     assert 'class="illustration illustration-irrigation illustration-building-detail"' in text
+    assert ("Develop agriculture" if language == "en" else "Développer l’agriculture") in text
     assert "illustration-irrigation illustration-small" not in text
     preview = client.post(
         reverse("preview", args=[game.id]), {"kind": "irrigation", "cities": ["c1", "c2"]}
@@ -49,7 +51,7 @@ def test_current_pages(user, language):
 
 @case(
     "playability-direct-attack",
-    "Owner GO: a map target directly exposes one native radio-based preparation form",
+    "Owner: a map target exposes a native preparation form with matching army artwork",
 )
 @pytest.mark.parametrize("language", ["fr", "en"])
 @pytest.mark.parametrize("kind", ["raid", "capture"])
@@ -69,7 +71,7 @@ def test_direct_attack(user, language, kind):
     assert 'id="mission-target" value="c4"' in text
     assert '<select name="target"' not in text
     assert "data-expedition-kind" not in text
-    assert 'class="illustration ' not in text
+    assert text.count('class="illustration illustration-army" aria-hidden="true"') == 1
     assert "illustration-expedition" not in text
     assert "illustration-raid" not in text and "illustration-capture" not in text
     assert "1234567" not in text and "2345678" not in text
