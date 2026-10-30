@@ -8,14 +8,16 @@
         {% elif selected.owned and activity %}
             {% translate "Revenir à la cité" as city_return_label %}
             {% with city_return='?tab=map&city='|add:selected.id %}{% include 'simulation/context_header.html' with panel_city=selected panel_return=city_return panel_close_label=city_return_label %}{% endwith %}
-        {% else %}{% include 'simulation/context_header.html' with panel_city=selected %}{% endif %}
+        {% elif selected.owned %}<div class="city-home-hero">
+            {% include 'simulation/illustration.html' with scene='city' variant=selected.id %}
+            {% include 'simulation/context_header.html' with panel_city=selected %}
+        </div>{% else %}{% include 'simulation/context_header.html' with panel_city=selected %}{% endif %}
         {% if selected.owned and activity %}
             {% include "simulation/city_resources.html" %}
 
         {% endif %}
         <div class="sheet-body">
         {% if selected.owned and not activity %}
-            <div class="city-home-panorama">{% include 'simulation/illustration.html' with scene='city' variant=selected.id %}</div>
             {% include 'simulation/city_resources.html' %}
         {% endif %}
         {% if messages %}<div class="sheet-feedback" role="alert">{% for message in messages %}<p class="notice {{ message.tags }}">{{ message }}</p>{% endfor %}</div>{% endif %}
@@ -58,4 +60,5 @@
     </section>{% endif %}
 </div>
 {{ map_graph|json_script:'map-graph' }}
+
 

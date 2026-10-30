@@ -258,17 +258,28 @@
   text-decoration: underline;
   text-underline-offset: 0.15em;
 }
-.city-home-panorama {
-  margin-bottom: 0.4rem;
+.city-home-hero {
+  position: relative;
+  flex: 0 0 auto;
+  overflow: hidden;
 }
-.city-home-panorama .illustration {
+.city-home-hero .illustration {
   --scene-image: url("illustrations/cityscapes-panoramic.svg");
   --frame-aspect: 3 / 1;
   --scene-aspect: 3 / 1;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   margin: 0;
   mask-image: none;
 }
-.city-home-panorama + .city-resources {
+.city-home-hero .sheet-heading {
+  position: relative;
+  min-height: 4rem;
+  background: rgba(246, 240, 226, 0.78);
+}
+.city-home-hero ~ .sheet-body > .city-resources {
   padding-inline: 0;
   margin-bottom: 0.4rem;
 }
@@ -606,4 +617,5 @@
 .map-house h3 { display: flex; align-items: center; gap: 0.4rem; margin: 0; }
 .map-house nav { display: flex; flex-wrap: wrap; gap: 0 0.8rem; }
 .map-house a { display: inline-flex; align-items: center; min-height: 44px; }
+
 
