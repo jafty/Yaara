@@ -9,11 +9,15 @@
             {% translate "Revenir à la cité" as city_return_label %}
             {% with city_return='?tab=map&city='|add:selected.id %}{% include 'simulation/context_header.html' with panel_city=selected panel_return=city_return panel_close_label=city_return_label %}{% endwith %}
         {% else %}{% include 'simulation/context_header.html' with panel_city=selected %}{% endif %}
-        {% if selected.owned %}
+        {% if selected.owned and activity %}
             {% include "simulation/city_resources.html" %}
 
         {% endif %}
         <div class="sheet-body">
+        {% if selected.owned and not activity %}
+            <div class="city-home-panorama">{% include 'simulation/illustration.html' with scene='city' variant=selected.id %}</div>
+            {% include 'simulation/city_resources.html' %}
+        {% endif %}
         {% if messages %}<div class="sheet-feedback" role="alert">{% for message in messages %}<p class="notice {{ message.tags }}">{{ message }}</p>{% endfor %}</div>{% endif %}
         {% if selected.damaged %}<p class="aside-text">{% translate "Ouvrage endommagé" %}</p>{% endif %}
         {% if selected.owned %}
@@ -26,7 +30,6 @@
                         <a class="city-action city-action-primary" href="?tab=map&amp;city={{ selected.id }}&amp;action=works">{% include 'simulation/nav_icon.html' with icon='works' %}<span class="city-action-copy"><strong>{% translate "Constructions" context "city actions" %}</strong><small>{% translate "Améliorer les ouvrages de cette cité." %}</small></span></a>
                         {% if view.strategic_rules and not view.finished and not view.eliminated and not game.paused %}<a class="city-action city-action-secondary" href="?tab=map&amp;city={{ selected.id }}&amp;action=convoy&amp;origin={{ selected.id }}">{% include 'simulation/nav_icon.html' with icon='transport' %}<span class="city-action-copy"><strong>{% translate "Convois" %}</strong><small>{% translate "Déplacer des Mesures entre vos cités." %}</small></span></a>{% endif %}
                     </nav>
-                    {% include 'simulation/illustration.html' with scene='city' variant=selected.id %}
                 {% else %}<section id="city-works" class="city-works" aria-labelledby="works-title">
                     <div class="city-section-heading"><a class="work-return" href="?tab=map&amp;city={{ selected.id }}{% if local_work %}&amp;action=works{% endif %}">{% if local_work %}{% translate "Tous les chantiers" %}{% else %}{% translate "Revenir à la cité" %}{% endif %}</a><h2 id="works-title">{% translate "Travaux du domaine" %}</h2>{% include 'simulation/team_status.html' with city=selected detailed=True %}</div>
                     {% if local_work %}

@@ -1,9 +1,18 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1536" height="1024" viewBox="0 0 1536 1024">
   <title>Owner-drawn Yaara settlements</title>
-  <desc>Six 512px cells. Original JPEG bytes are embedded unchanged, uniformly scaled and baseline-aligned. Only the black backdrop is masked at display time.</desc>
+  <desc>Six 512px cells. Original JPEG bytes are embedded unchanged, uniformly scaled and baseline-aligned. Display filters mask the black backdrop, lighten plaster and strengthen brown ink without changing the embedded JPEGs.</desc>
   <defs>
     <filter id="black-backdrop" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
-      <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  4.252 14.304 1.444 0 -1"/>
+      <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  4.252 14.304 1.444 0 -1" result="cutout"/>
+      <feComponentTransfer in="cutout" result="plaster">
+        <feFuncR type="table" tableValues="0 .2 .4 .9 1"/>
+        <feFuncG type="table" tableValues="0 .19 .5 .92 1"/>
+        <feFuncB type="table" tableValues="0 .18 .7 .95 1"/>
+      </feComponentTransfer>
+      <feMorphology in="plaster" operator="dilate" radius="5" result="rim"/>
+      <feFlood flood-color="#5a3627" result="ink"/>
+      <feComposite in="ink" in2="rim" operator="in" result="outline"/>
+      <feMerge><feMergeNode in="outline"/><feMergeNode in="plaster"/></feMerge>
       <feDropShadow dx="0" dy="4" stdDeviation="2" flood-color="#3e2818" flood-opacity=".32"/>
     </filter>
   </defs>

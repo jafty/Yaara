@@ -258,6 +258,20 @@
   text-decoration: underline;
   text-underline-offset: 0.15em;
 }
+.city-home-panorama {
+  margin-bottom: 0.4rem;
+}
+.city-home-panorama .illustration {
+  --scene-image: url("illustrations/cityscapes-panoramic.svg");
+  --frame-aspect: 3 / 1;
+  --scene-aspect: 3 / 1;
+  margin: 0;
+  mask-image: none;
+}
+.city-home-panorama + .city-resources {
+  padding-inline: 0;
+  margin-bottom: 0.4rem;
+}
 .city-actions {
   display: grid;
   margin: 0.35rem 0 0;

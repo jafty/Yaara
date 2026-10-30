@@ -6,8 +6,9 @@ The forge remains unchanged. Report and city illustrations preserve complete
 3:2 atlas scenes; the supplied agriculture, granary, fortifications and siege
 drawings retain their native 3:1 frames. Army preparation also uses a complete
 3:1 panorama. Catalogue tiles and local work rows use
-square crops. Atlas cells remain isolated. Owned-city overviews show their existing complete cityscape below the
-compact controls, without decorative heading thumbnails. Construction-start news reuses one generic work scene.
+square crops. Atlas cells remain isolated. Owned-city home panels show a complete
+panoramic cityscape above their resources and commands. Construction-start news
+reuses one generic work scene.
 The experimental AI-widened granary, forge and fortifications were rejected for
 yellow coloration and a less schematic rendering. They are not application assets.
 
@@ -39,14 +40,29 @@ embedding the owner's October 30 JPEGs byte-for-byte. Top row: open settlement
 Bottom row: stone walls (`1000063156`), legacy earth wall (`1000063152`), legacy
 great enclosure (`1000063150`). The SVG preserves image proportions, aligns the
 city bases, and masks the black JPEG backdrop at display time with an sRGB alpha
-filter; it leaves RGB colors unchanged. Each embedded source has a SHA-256 in
-the SVG comment for provenance. There are no scripts or external resources.
-Live flags retain ownership colors; the previous saturation adjustment is removed
-so the drawings retain their supplied colors. Public wall-level mappings remain
-unchanged, including older saved games.
+filter. The owner's subsequent contrast correction maps the wall tones to pale
+chalk plaster and strengthens brown ink, with a fine exterior rim, so the cities
+stand apart from the parchment. The palette operation preserves the cutout alpha;
+building interiors remain opaque. Each embedded source has a SHA-256 in the SVG
+comment for provenance. There are no scripts or external resources. Live flags
+retain ownership colors. Public wall-level mappings remain unchanged, including
+older saved games.
 The drawings use a compact 74-unit square within each marker (previously 84),
 with a light ink-colored drop shadow inside the cached atlas for contrast.
 Names, flags and hit areas retain their existing sizes.
+
+`cityscapes-panoramic.svg` supplies complete 3:1 scenes for the top of owned-city
+home panels, in the same nine-city row-major order as `cityscapes.png`. It is a
+self-contained SVG embedding a lossless WebP copy of the reference-guided atlas
+`/workspace/generated_images/exec-1ead8013-0604-492c-8bea-683c346b68d6.png`
+(2172×724); the generation remains preserved at that path. The SVG normalizes the
+slightly uneven generated row boundaries: it trims only empty top sky from row
+one and extends only empty ground below the shorter rows, preserving complete
+figures and buildings without stretching them or leaking adjacent cells.
+Home panoramas use their complete rectangular frame so the paper-edge mask
+cannot clip figures close to the shallow frame's bottom. Home panels display
+the panorama before resources, briefing and commands in the native scroll area.
+Secondary city folios retain the original complete 3:2 atlas.
 
 `map/yaara-background.jpg` is an unchanged copy of the owner's reworked
 `1000063159.jpg`, displayed in full beneath the existing territory, road and city

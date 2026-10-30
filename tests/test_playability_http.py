@@ -118,7 +118,7 @@ def test_city_folio_illustration(user, language, city_id):
 
 @case(
     "layout-city-list-text-only",
-    "Owner panel revision: owned city summaries show their full cityscape with names and links",
+    "Owner panel revision: an owned city's panoramic scene precedes its resources and commands",
 )
 @pytest.mark.parametrize("language", ["fr", "en"])
 @pytest.mark.parametrize(
@@ -139,6 +139,10 @@ def test_city_list_text_only(user, language, actor, city_ids):
         assert 'class="city-resources"' in city
         assert 'class="city-actions"' in city
         assert f'class="illustration illustration-city illustration-city-{city_id}"' in city
+        home = city.split('<div class="sheet-body">', 1)[1]
+        assert home.index('class="city-home-panorama"') < home.index('class="city-resources"')
+        assert home.index('class="city-resources"') < home.index('class="city-briefing"')
+        assert home.index('class="city-briefing"') < home.index('class="city-actions"')
 
 
 @case(

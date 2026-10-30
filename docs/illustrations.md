@@ -22,6 +22,14 @@ panorama at the owner's request. Council reuses the meeting-porch city scene. Ci
 artwork does not assert installed upgrades. The separate map background and
 fortification-marker atlas retain their existing public-information mapping.
 
+Owned-city home panels now use the complete 3:1 scenes in
+`cityscapes-panoramic.svg`, reworked from the nine city identities with the same
+naive ink, architecture, clothes and muted palette. The panorama appears first,
+before resources and commands. Secondary city folios retain their complete 3:2
+scenes. Map-city markers use lighter plaster and stronger brown ink to separate
+their compact silhouettes from the parchment; their embedded source JPEGs and
+public fortification mapping remain unchanged.
+
 Every construction-start news class reuses the generic construction scene in
 the atlas's first cell; army departure reuses army preparation. Retain the news
 and all saved recipient/outcome mappings. The eight battle images distinguish

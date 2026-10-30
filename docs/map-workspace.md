@@ -1,5 +1,23 @@
 # Map workspace — October 26, 2026
 
+## October 30: distinct city silhouettes and panoramic home sheets
+
+The owner's playtest found that beige map-city walls merged with the parchment.
+Keep the compact 74-unit drawings and their original embedded JPEGs, but render
+lighter chalk plaster and darker brown ink, with a fine silhouette rim. The alpha
+key still removes only the black backdrop; city interiors remain opaque. Check
+all six fortification silhouettes against the actual map at desktop, 390px and
+320px sizes.
+
+Owned-city home sheets begin with a complete 3:1 panoramic cityscape, followed
+by resources, briefing and commands. The illustration and home content share
+the native scroll area; action folios retain their fixed resource row. A new
+reference-guided nine-scene panorama atlas preserves each city's identity and
+keeps roofs, figures and animals in the shallow composition. Secondary city
+folios retain their existing complete 3:2 scenes. Verify both languages, native
+navigation, enlarged text and scrolling access to commands. No saved rules or
+recipient information changes; the gameplay reference remains accurate.
+
 ## October 30: owner-drawn map and settlements
 
 Prepared from deployment revision `2869df7`. Use the reworked background

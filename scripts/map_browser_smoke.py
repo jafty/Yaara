@@ -144,12 +144,22 @@ def run_map_journeys():
                 assert page.locator(".map-frame").evaluate(
                     "el => Math.abs(el.getBoundingClientRect().width - innerWidth) < 2"
                 )
-                # The full cityscape may scroll below the compact controls.
-                expect(page.locator(".city-actions")).to_be_in_viewport()
+                # The home panorama leads the scrollable city sheet; commands remain reachable.
                 city_art = page.locator(".illustration-city")
                 city_art.scroll_into_view_if_needed()
                 expect(city_art).to_be_in_viewport()
                 assert city_art.evaluate("el => el.offsetWidth <= el.parentElement.clientWidth")
+                assert "cityscapes-panoramic" in city_art.evaluate(
+                    "el => getComputedStyle(el, '::before').backgroundImage"
+                )
+                art_bounds = city_art.bounding_box()
+                assert abs(art_bounds["width"] / art_bounds["height"] - 3) < 0.02
+                assert (
+                    art_bounds["y"] + art_bounds["height"]
+                    <= page.locator(".city-resources").bounding_box()["y"]
+                )
+                page.locator(".city-actions").scroll_into_view_if_needed()
+                expect(page.locator(".city-actions")).to_be_in_viewport()
                 page.set_viewport_size({"width": 1440, "height": 1000})
                 expect(page.locator(".map-connection.selected-road")).to_have_count(3)
                 expect(page.locator("#city-granary")).to_be_visible()
