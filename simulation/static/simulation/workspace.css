@@ -283,6 +283,10 @@
   position: relative;
   min-height: 4rem;
   background: rgba(246, 240, 226, 0.78);
+  font-weight: 700;
+}
+.city-home-hero .sheet-identity h1 {
+  font-weight: 700;
 }
 .city-home-hero ~ .sheet-body > .city-resources {
   padding-inline: 0;
