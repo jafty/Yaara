@@ -2,12 +2,18 @@
 
 ## October 30: distinct city silhouettes and panoramic home sheets
 
-The owner's playtest found that beige map-city walls merged with the parchment.
-Keep the compact 74-unit drawings and their original embedded JPEGs, but render
-lighter chalk plaster and darker brown ink, with a fine silhouette rim. The alpha
-key still removes only the black backdrop; city interiors remain opaque. Check
-all six fortification silhouettes against the actual map at desktop, 390px and
-320px sizes.
+The owner's playtest found that beige map-city walls merged with the parchment;
+the subsequent channel-by-channel chalk filter made them pink and overexposed.
+Keep the compact 74-unit drawings, six-cell order and public fortification mapping.
+Use the reference-guided color edition with sandy limestone walls, darker muted
+ochre straw roofs, umber timber and restrained shadows beneath the eaves. Darker
+straw remains straw; it does not become red tile. A uniform saturation reduction
+keeps pigments quiet without the former uneven RGB lift or thick silhouette rim.
+The self-contained SVG embeds a lossless WebP with transparent surroundings;
+row offsets retain the original city baselines. The parchment remains unchanged.
+Inspect all six fortification silhouettes over the actual background at desktop,
+390px and 320px sizes. This is decorative artwork only; the gameplay reference
+remains accurate and no game rules, saved roads or player contracts change.
 
 Owned-city home sheets begin with a complete 3:1 panoramic cityscape, followed
 by resources, briefing and commands. The illustration and home content share
@@ -22,9 +28,10 @@ recipient information changes; the gameplay reference remains accurate.
 
 Prepared from deployment revision `2869df7`. Use the reworked background
 `1000063159.jpg`, never the earlier photograph of the paper drawing. Preserve
-the complete supplied background and all six city drawings, their ink and colors.
-The city JPEGs are embedded unchanged in a self-contained SVG atlas; a display
-filter masks their black backdrop without repainting the illustrations. Retain
+the complete supplied background and all six city drawings. At initial import,
+the city JPEGs were embedded unchanged in a self-contained SVG atlas and a display
+filter masked their black backdrop. The sand-and-straw color edition above
+supersedes that palette treatment. Retain
 the existing six 512px cells and public fortification mapping, including legacy
 saved games. Move only presentation coordinates where needed to clear the coast,
 rivers and central mountain chain; saved geography and roads remain unchanged.

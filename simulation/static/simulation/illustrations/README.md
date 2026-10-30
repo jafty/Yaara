@@ -35,20 +35,26 @@ ivory parchment, including central details. Decorative only, with no terrain rul
 Final imagegen source: `exec-ba2fdf82-6582-4472-b957-4b9e8fcbf244.png`.
 
 `map/settlements.svg`: self-contained 1536×1024 atlas, six 512×512 cells,
-embedding the owner's October 30 JPEGs byte-for-byte. Top row: open settlement
+using a reference-guided color edition of the owner's October 30 drawings.
+Top row: open settlement
 (`1000063148`), timber palisade (`1000063158`), reinforced palace (`1000063154`).
 Bottom row: stone walls (`1000063156`), legacy earth wall (`1000063152`), legacy
-great enclosure (`1000063150`). The SVG preserves image proportions, aligns the
-city bases, and masks the black JPEG backdrop at display time with an sRGB alpha
-filter. The owner's subsequent contrast correction maps the wall tones to pale
-chalk plaster and strengthens brown ink, with a fine exterior rim, so the cities
-stand apart from the parchment. The palette operation preserves the cutout alpha;
-building interiors remain opaque. Each embedded source has a SHA-256 in the SVG
-comment for provenance. There are no scripts or external resources. Live flags
+great enclosure (`1000063150`). The current edition replaces the uneven RGB chalk
+filter that caused pink, overexposed walls. Sandy limestone walls, muted ochre
+straw roofs, umber timber and restrained eave shadows distinguish materials at
+map size. Straw roofs are darker than the walls, without becoming red tile.
+The SVG embeds a lossless WebP of imagegen output
+`/workspace/generated_images/exec-231a07ba-963e-4b6f-90cd-f2342a88e190.png`;
+the original generation is preserved there. Uniform sRGB saturation of 0.7
+softens the pigments, and two/30-pixel row offsets restore the source baselines.
+Surroundings remain transparent. Original JPEG source hashes remain in SVG
+comments as reference provenance; their unchanged embedded bytes are retained
+in deployment revision `2c12cd3`. The current WebP has its own SHA-256 comment.
+There are no scripts or external resources. Live flags
 retain ownership colors. Public wall-level mappings remain unchanged, including
 older saved games.
 The drawings use a compact 74-unit square within each marker (previously 84),
-with a light ink-colored drop shadow inside the cached atlas for contrast.
+with a restrained sepia drop shadow inside the cached atlas for contrast.
 Names, flags and hit areas retain their existing sizes.
 
 `cityscapes-panoramic.svg` supplies complete 3:1 scenes for the top of owned-city
@@ -71,5 +77,6 @@ terrain are decorative and do not change movement rules. Three presentation
 positions move to clear the northern coastline/river and southern mountain chain;
 saved positions, territory polygons and road connections are preserved.
 
-The map frame now preserves its native 680:500 ratio; action sheets cover it rather than squeezing its geography. No source artwork is repainted.
+The map frame preserves its native 680:500 ratio; action sheets cover it rather
+than squeezing its geography. The map background remains unchanged.
 
