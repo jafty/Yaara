@@ -32,7 +32,9 @@
   flex: 1 1 auto;
   min-height: 0;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  /* Fit the proportional map to the available height where space permits.
+     Keep a readable folio without allocating half the desktop to it. */
+  grid-template-columns: minmax(0, 1fr) clamp(20rem, calc(100cqw - 100cqh * 680 / 500), min(34rem, 40cqw));
 }
 .map-workspace > .realm-map {
   position: relative;
@@ -327,6 +329,11 @@
 .city-section-heading .crew-assignment {
   flex-basis: 100%;
 }
+.work-return {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
 .local-work-choice {
   position: relative;
   padding: 0.55rem 0;
@@ -387,7 +394,7 @@
 }
 .local-work-submit:disabled { cursor: not-allowed; }
 .local-work-choice > .illustration-building-detail {
-  width: min(100%, 216px);
+  width: 100%;
   margin: 0.25rem 0 0.5rem;
 }
 .work-row {
@@ -585,3 +592,4 @@
 .map-house h3 { display: flex; align-items: center; gap: 0.4rem; margin: 0; }
 .map-house nav { display: flex; flex-wrap: wrap; gap: 0 0.8rem; }
 .map-house a { display: inline-flex; align-items: center; min-height: 44px; }
+

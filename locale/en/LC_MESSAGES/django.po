@@ -5933,3 +5933,7 @@ msgstr "Improves attack and defence for this city's Faithful, including future i
 #: simulation/engine.py
 msgid "Ils rejoignent les Fidèles du nouveau souverain et restent soumis à l’éventuelle restriction de départ de la cité."
 msgstr "They join the new ruler's Faithful and remain subject to any existing departure restriction in the city."
+
+#: simulation/templates/simulation/map_workspace.html
+msgid "Travaux du domaine"
+msgstr "Domain improvements"

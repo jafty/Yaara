@@ -118,7 +118,7 @@ def test_city_folio_illustration(user, language, city_id):
 
 @case(
     "layout-city-list-text-only",
-    "Owner wide-art revision: city summaries keep names and links without decorative thumbnails",
+    "Owner panel revision: owned city summaries show their full cityscape with names and links",
 )
 @pytest.mark.parametrize("language", ["fr", "en"])
 @pytest.mark.parametrize(
@@ -138,7 +138,7 @@ def test_city_list_text_only(user, language, actor, city_ids):
         city = client.get(url, {"tab": "map", "city": city_id}).content.decode()
         assert 'class="city-resources"' in city
         assert 'class="city-actions"' in city
-        assert 'class="illustration illustration-city ' not in city
+        assert f'class="illustration illustration-city illustration-city-{city_id}"' in city
 
 
 @case(

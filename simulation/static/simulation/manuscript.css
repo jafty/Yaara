@@ -1376,7 +1376,7 @@ input[type="number"] {
 
 /* Full-column scenes and native expedition controls. */
 .illustration {
-  width: min(100%, 30rem);
+  width: 100%;
   position: relative;
   overflow: hidden;
   aspect-ratio: var(--frame-aspect, 3 / 2);
@@ -1398,11 +1398,11 @@ input[type="number"] {
   aspect-ratio: var(--frame-aspect, 3 / 2);
 }
 .family-heading > .illustration-building-detail {
-  width: min(100%, 240px);
+  width: 100%;
   margin-inline: 0;
 }
 .decree-form > .illustration-army {
-  width: min(100%, 420px);
+  width: 100%;
   margin: 0 0 0.75rem;
 }
 .illustration::before {
@@ -1739,3 +1739,4 @@ input[type="number"] {
     transition: none;
   }
 }
+
