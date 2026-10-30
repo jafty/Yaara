@@ -45,7 +45,7 @@ def test_military_curve(phase):
         )
         assert march["path"] == road["path"]
     else:
-        assert march["path"] == "M 440 70 Q 363.50 114.80 275 120"
+        assert march["path"] == "M 420 130 Q 346.30 142.40 275 120"
     assert state == before
 
 
@@ -65,7 +65,7 @@ def test_multi_city_return():
     march = context["marches"][0]
     assert march["target"]["id"] == "c1"
     assert march["friendly"]
-    assert march["path"] == ("M 440 70 Q 363.50 114.80 275 120 Q 217.00 186.80 135 220")
+    assert march["path"] == ("M 420 130 Q 346.30 142.40 275 120 Q 217.00 186.80 135 220")
 
 
 @case("route-convoy-curve", REQ)
@@ -114,7 +114,7 @@ def test_diverted_return():
     march = context["marches"][0]
     assert (march["origin"]["id"], march["target"]["id"]) == ("c4", "c1")
     assert march["friendly"]
-    assert march["path"] == "M 440 70 Q 305.50 181.60 135 220"
+    assert march["path"] == "M 420 130 Q 288.30 209.20 135 220"
 
 
 @case("route-return-lost-intermediate", REQ)
@@ -133,7 +133,7 @@ def test_return_lost_intermediate():
     _, context = board(state)
     march = context["marches"][0]
     assert march["friendly"]
-    assert march["path"] == ("M 440 70 Q 363.50 114.80 275 120 Q 217.00 186.80 135 220")
+    assert march["path"] == ("M 420 130 Q 346.30 142.40 275 120 Q 217.00 186.80 135 220")
 
 
 @case("route-settled-contingents", REQ)
@@ -171,7 +171,7 @@ def test_rear_city_launch():
     _, context = board(state)
     march = context["marches"][0]
     assert (march["origin"]["id"], march["target"]["id"]) == ("c3", "c4")
-    assert march["path"] == "M 275 120 Q 363.50 114.80 440 70"
+    assert march["path"] == "M 275 120 Q 346.30 142.40 420 130"
     assert not march["friendly"]
 
 
