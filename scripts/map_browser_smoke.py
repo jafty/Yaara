@@ -144,7 +144,7 @@ def run_map_journeys():
                 assert page.locator(".map-frame").evaluate(
                     "el => Math.abs(el.getBoundingClientRect().width - innerWidth) < 2"
                 )
-                # The home panorama leads the scrollable city sheet; commands remain reachable.
+                # The identity panorama fills the compact heading without stretching its source.
                 city_art = page.locator(".illustration-city")
                 city_art.scroll_into_view_if_needed()
                 expect(city_art).to_be_in_viewport()
@@ -153,7 +153,14 @@ def run_map_journeys():
                     "el => getComputedStyle(el, '::before').backgroundImage"
                 )
                 art_bounds = city_art.bounding_box()
-                assert abs(art_bounds["width"] / art_bounds["height"] - 3) < 0.02
+                source_ratio = city_art.evaluate("""el => {
+                    const source = getComputedStyle(el, '::before');
+                    return parseFloat(source.width) / parseFloat(source.height);
+                }""")
+                assert abs(source_ratio - 3) < 0.02
+                hero_bounds = page.locator(".city-home-hero").bounding_box()
+                assert abs(art_bounds["width"] - hero_bounds["width"]) < 1
+                assert abs(art_bounds["height"] - hero_bounds["height"]) < 1
                 assert (
                     art_bounds["y"] + art_bounds["height"]
                     <= page.locator(".city-resources").bounding_box()["y"]

@@ -138,9 +138,9 @@ def test_city_list_text_only(user, language, actor, city_ids):
         city = client.get(url, {"tab": "map", "city": city_id}).content.decode()
         assert 'class="city-resources"' in city
         assert 'class="city-actions"' in city
-        assert f'class="illustration illustration-city illustration-city-{city_id}"' in city
+        scene = f'class="illustration illustration-city illustration-city-{city_id}"'
+        assert city.index(scene) < city.index('<div class="sheet-body">')
         home = city.split('<div class="sheet-body">', 1)[1]
-        assert home.index('class="city-home-panorama"') < home.index('class="city-resources"')
         assert home.index('class="city-resources"') < home.index('class="city-briefing"')
         assert home.index('class="city-briefing"') < home.index('class="city-actions"')
 

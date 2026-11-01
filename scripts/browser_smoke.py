@@ -32,6 +32,7 @@ def no_overflow(page):
                 for filename in (
                     "agriculture.jpg",
                     "granary.jpg",
+                    "forge.jpg",
                     "fortifications.jpg",
                     "siege.jpg",
                     "army-preparation.jpg",
