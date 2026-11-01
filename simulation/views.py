@@ -227,9 +227,19 @@ def desk(request, game_id):
         city["expedition_charge"] = fees[city["id"]] + city["contribution"] * price["per_person"]
         city["expedition_shortfall"] = max(0, city["expedition_charge"] - city["available_stock"])
         city["expedition_remaining"] = city["available_stock"] - city["expedition_charge"]
-        city["expedition_food"] = max(0, city["present_population"] - city["contribution"]) * 500
+        city["expedition_food"] = (
+            max(
+                0,
+                city["present_population"]
+                + city.get("occupying_fideles", 0)
+                - city["contribution"],
+            )
+            * 500
+        )
         city["expedition_siege_shortfall"] = max(
-            0, city["expedition_food"] - city["expedition_remaining"]
+            0,
+            city["expedition_food"]
+            - (city.get("defense_stock", city["available_stock"]) - city["expedition_charge"]),
         )
     tab = request.GET.get("tab", "map")
     if tab not in (
@@ -317,7 +327,16 @@ def desk(request, game_id):
             for work in view["equipment_work"]
         )
         for mission in view["missions"]:
-            if not mission["returning"]:
+            if mission["occupying"]:
+                milestones.append(
+                    {
+                        "moon": mission["release_month"],
+                        "label": _("Départ automatique de la garnison"),
+                        "detail": mission["target"],
+                        "tab": "wars",
+                    }
+                )
+            elif not mission["returning"]:
                 milestones.append(
                     {
                         "moon": mission["combat_month"],
@@ -629,6 +648,7 @@ def preview_order(request, game_id):
             "siege_food": max(
                 0,
                 own_by_id[city_id]["present_population"]
+                + own_by_id[city_id].get("occupying_fideles", 0)
                 - order.get("contributions", {}).get(city_id, 0),
             )
             * (500 if game.state["rules"] == "V1" else 0),
@@ -637,6 +657,7 @@ def preview_order(request, game_id):
                 max(
                     0,
                     own_by_id[city_id]["present_population"]
+                    + own_by_id[city_id].get("occupying_fideles", 0)
                     - order.get("contributions", {}).get(city_id, 0),
                 )
                 * (500 if game.state["rules"] == "V1" else 0)

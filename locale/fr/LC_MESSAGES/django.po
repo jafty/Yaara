@@ -4656,3 +4656,107 @@ msgstr "Ils rejoignent les Fidèles du nouveau souverain et restent soumis à l�
 #: simulation/templates/simulation/map_workspace.html
 msgid "Travaux du domaine"
 msgstr "Travaux du domaine"
+
+#: simulation/engine.py simulation/projections.py simulation/views.py simulation/cartography.py simulation/templates/simulation
+msgid "L’installation à {city}"
+msgstr "L’installation à {city}"
+
+#: simulation/engine.py simulation/projections.py simulation/views.py simulation/cartography.py simulation/templates/simulation
+msgid "{count} Fidèles restent dans {city} pour assurer son occupation. Ils défendent la cité et repartiront automatiquement à la lune {release} ; leur retour est prévu à la lune {arrival}. Le grenier reste réservé à la défense jusqu’à la lune {release} ; les prélèvements et les travaux déjà commencés continuent."
+msgstr "{count} Fidèles restent dans {city} pour assurer son occupation. Ils défendent la cité et repartiront automatiquement à la lune {release} ; leur retour est prévu à la lune {arrival}. Le grenier reste réservé à la défense jusqu’à la lune {release} ; les prélèvements et les travaux déjà commencés continuent."
+
+#: simulation/engine.py simulation/projections.py simulation/views.py simulation/cartography.py simulation/templates/simulation
+msgid "La cité de {city} est en cours d’installation jusqu’à la lune {moon}. Son grenier reste réservé à sa défense."
+msgstr "La cité de {city} est en cours d’installation jusqu’à la lune {moon}. Son grenier reste réservé à sa défense."
+
+#: simulation/engine.py simulation/projections.py simulation/views.py simulation/cartography.py simulation/templates/simulation
+msgid "La garnison d’occupation se retire"
+msgstr "La garnison d’occupation se retire"
+
+#: simulation/engine.py simulation/projections.py simulation/views.py simulation/cartography.py simulation/templates/simulation
+msgid "La cité est perdue. Les {count} survivants de l’occupation restent fidèles à votre maison et rentrent vers leurs origines. Arrivée prévue : lune {moon}."
+msgstr "La cité est perdue. Les {count} survivants de l’occupation restent fidèles à votre maison et rentrent vers leurs origines. Arrivée prévue : lune {moon}."
+
+#: simulation/engine.py simulation/projections.py simulation/views.py simulation/cartography.py simulation/templates/simulation
+msgid "La relève de {city}"
+msgstr "La relève de {city}"
+
+#: simulation/engine.py simulation/projections.py simulation/views.py simulation/cartography.py simulation/templates/simulation
+msgid "L’installation est achevée. Les {count} Fidèles d’occupation rentrent automatiquement vers leurs origines. Arrivée prévue : lune {moon}."
+msgstr "L’installation est achevée. Les {count} Fidèles d’occupation rentrent automatiquement vers leurs origines. Arrivée prévue : lune {moon}."
+
+#: simulation/engine.py simulation/projections.py simulation/views.py simulation/cartography.py simulation/templates/simulation
+msgid "Assurer l’occupation"
+msgstr "Assurer l’occupation"
+
+#: simulation/engine.py simulation/projections.py simulation/views.py simulation/cartography.py simulation/templates/simulation
+msgid "{p0} Les survivants se répartissent entre le retour et l’occupation automatique de la cité. "
+msgstr "{p0} Les survivants se répartissent entre le retour et l’occupation automatique de la cité. "
+
+#: simulation/engine.py simulation/projections.py simulation/views.py simulation/cartography.py simulation/templates/simulation
+msgid "Départ automatique de la garnison"
+msgstr "Départ automatique de la garnison"
+
+#: simulation/engine.py simulation/projections.py simulation/views.py simulation/cartography.py simulation/templates/simulation
+msgid "Nos expéditions et garnisons"
+msgstr "Nos expéditions et garnisons"
+
+#: simulation/engine.py simulation/projections.py simulation/views.py simulation/cartography.py simulation/templates/simulation
+msgid "En garnison à <strong>%(target)s</strong>, <strong>%(count)s Fidèles</strong> assurent l’occupation. Ils défendent la cité et repartiront automatiquement à la lune <strong>%(release)s</strong>."
+msgstr "En garnison à <strong>%(target)s</strong>, <strong>%(count)s Fidèles</strong> assurent l’occupation. Ils défendent la cité et repartiront automatiquement à la lune <strong>%(release)s</strong>."
+
+#: simulation/engine.py simulation/projections.py simulation/views.py simulation/cartography.py simulation/templates/simulation
+msgid "Consolidation jusqu’à la lune %(moon)s : le grenier reste réservé à la défense. Nouveaux travaux, expéditions et convois sortants reprendront automatiquement à cette lune."
+msgstr "Consolidation jusqu’à la lune %(moon)s : le grenier reste réservé à la défense. Nouveaux travaux, expéditions et convois sortants reprendront automatiquement à cette lune."
+
+#: simulation/engine.py simulation/projections.py simulation/views.py simulation/cartography.py simulation/templates/simulation
+msgid "Détachement d’occupation : %(count)s Fidèles. Ils restent attachés à leurs cités d’origine et défendent cette place sans partir en secours."
+msgstr "Détachement d’occupation : %(count)s Fidèles. Ils restent attachés à leurs cités d’origine et défendent cette place sans partir en secours."
+
+#: simulation/engine.py simulation/projections.py simulation/views.py simulation/cartography.py simulation/templates/simulation
+msgid "Les expéditions rejoignent automatiquement une cité de frontière reliée à la cible. Les contingents doivent pouvoir s’y assembler par vos possessions. Le premier ordre accepté par le serveur réserve la cible jusqu’au combat, pour les raids comme pour les captures. Toute autre confirmation est refusée sans frais ni réservation d’hommes ; une simple relecture ne réserve rien."
+msgstr "Les expéditions rejoignent automatiquement une cité de frontière reliée à la cible. Les contingents doivent pouvoir s’y assembler par vos possessions. Le premier ordre accepté par le serveur réserve la cible jusqu’au combat, pour les raids comme pour les captures. Toute autre confirmation est refusée sans frais ni réservation d’hommes ; une simple relecture ne réserve rien."
+
+#: simulation/engine.py simulation/projections.py simulation/views.py simulation/cartography.py simulation/templates/simulation
+msgid "La moitié des assaillants survivants, arrondie au-dessus, reste aussi en garnison pendant les trois lunes suivant la conquête. Ces hommes défendent la place sans participer aux secours. Leur retour commence automatiquement à la quatrième lune ; les autres survivants rentrent normalement. Les contingents conservent leur équipement et leur cité d’origine."
+msgstr "La moitié des assaillants survivants, arrondie au-dessus, reste aussi en garnison pendant les trois lunes suivant la conquête. Ces hommes défendent la place sans participer aux secours. Leur retour commence automatiquement à la quatrième lune ; les autres survivants rentrent normalement. Les contingents conservent leur équipement et leur cité d’origine."
+
+#: simulation/engine.py simulation/projections.py simulation/views.py simulation/cartography.py simulation/templates/simulation
+msgid "Durant cette consolidation, les stocks de la cité conquise servent à sa défense. Nouveaux travaux, expéditions et convois sortants attendent la quatrième lune. Les chantiers déjà commencés et le prélèvement continuent ; aucune nouvelle connexion n’est nécessaire pour lever ces restrictions."
+msgstr "Durant cette consolidation, les stocks de la cité conquise servent à sa défense. Nouveaux travaux, expéditions et convois sortants attendent la quatrième lune. Les chantiers déjà commencés et le prélèvement continuent ; aucune nouvelle connexion n’est nécessaire pour lever ces restrictions."
+
+#: simulation/engine.py simulation/projections.py simulation/views.py simulation/cartography.py simulation/templates/simulation
+msgid "Si une autre expédition a déjà réservé cette cible, votre confirmation sera refusée sans frais ni réservation d’hommes."
+msgstr "Si une autre expédition a déjà réservé cette cible, votre confirmation sera refusée sans frais ni réservation d’hommes."
+
+#: simulation/engine.py simulation/projections.py simulation/views.py simulation/cartography.py simulation/templates/simulation
+msgid "Après une conquête, la moitié des survivants, arrondie au-dessus, occupera la cité durant les trois lunes suivantes. Son retour commencera automatiquement à la quatrième lune ; les autres survivants rentreront à la date annoncée."
+msgstr "Après une conquête, la moitié des survivants, arrondie au-dessus, occupera la cité durant les trois lunes suivantes. Son retour commencera automatiquement à la quatrième lune ; les autres survivants rentreront à la date annoncée."
+
+#: simulation/engine.py simulation/projections.py simulation/views.py simulation/cartography.py simulation/templates/simulation
+msgid "Consolidation en cours"
+msgstr "Consolidation en cours"
+
+#: simulation/engine.py simulation/projections.py simulation/views.py simulation/cartography.py simulation/templates/simulation
+msgid "Les occupants stationnés dans la cité s’ajoutent aux personnes à ravitailler. Durant la consolidation, le grenier reste utilisable pour le siège même si aucune Mesure n’est libre pour de nouveaux ordres."
+msgstr "Les occupants stationnés dans la cité s’ajoutent aux personnes à ravitailler. Durant la consolidation, le grenier reste utilisable pour le siège même si aucune Mesure n’est libre pour de nouveaux ordres."
+
+#: simulation/templates/simulation/decree_form.html
+msgid "Départs possibles à partir de la lune %(moon)s."
+msgstr "Départs possibles à partir de la lune %(moon)s."
+
+#: simulation/templates/simulation/decree_form.html
+msgid "Réserves pour la défense : %(amount)s Mesures."
+msgstr "Réserves pour la défense : %(amount)s Mesures."
+
+#: simulation/templates/simulation/missions.html
+msgid "Les <strong>%(count)s Fidèles</strong> du détachement de <strong>%(target)s</strong> rentrent vers leurs cités d’origine."
+msgstr "Les <strong>%(count)s Fidèles</strong> du détachement de <strong>%(target)s</strong> rentrent vers leurs cités d’origine."
+
+#: simulation/templates/simulation/help.html
+msgid "Les Mesures représentent les ressources que vous pouvez engager après les besoins courants des foyers et de l’administration : provisions stockées, fournitures et services. Chaque cité possède son grenier : ses comptes affichent son stock, sa capacité et sa part encore disponible. Les fonds promis aux décrets scellés restent dans le stock, mais ne sont plus disponibles."
+msgstr "Les Mesures représentent les ressources que vous pouvez engager après les besoins courants des foyers et de l’administration : provisions stockées, fournitures et services. Chaque cité possède son grenier : ses comptes affichent son stock, sa capacité et sa part encore disponible. Les fonds promis aux décrets scellés restent dans le stock, mais ne sont plus disponibles."
+
+#: simulation/templates/simulation/help.html
+msgid "Les besoins ordinaires de la cour sont inclus dans cette abstraction : aucun retrait supplémentaire n’est appliqué chaque lune. Le forfait de 500 Mesures par personne présente couvre un mois de siège dans ce jeu, sans représenter toute la consommation de la population."
+msgstr "Les besoins ordinaires de la cour sont inclus dans cette abstraction : aucun retrait supplémentaire n’est appliqué chaque lune. Le forfait de 500 Mesures par personne présente couvre un mois de siège dans ce jeu, sans représenter toute la consommation de la population."

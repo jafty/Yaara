@@ -1,4 +1,5 @@
 {% load i18n %}
+{% include 'simulation/consolidation_status.html' %}
 {% if selected.forecast_overflow %}<p class="reserve-warning">{% blocktranslate with amount=selected.forecast_overflow moon=view.harvest_moon %}Débordement possible : {{ amount }} Mesures à la récolte de lune {{ moon }}.{% endblocktranslate %}</p>{% endif %}
 {% if selected.siege_shortfall %}<p class="reserve-warning">{% translate "Réserves de siège insuffisantes" %} · {{ selected.siege_shortfall }} {% translate "Mesures" %}</p>{% endif %}
 {% if selected.restricted_fideles %}<p>{% blocktranslate with count=selected.restricted_fideles moon=selected.restricted_until %}{{ count }} Fidèles hérités assurent la défense locale. Départs et secours possibles à partir de la lune {{ moon }}.{% endblocktranslate %}</p>{% endif %}

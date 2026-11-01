@@ -141,6 +141,8 @@ def workspace_context(view, selected=None, activity=None):
                     }
                 )
     for item in view["missions"]:
+        if item["occupying"]:
+            continue
         origins = (
             item["origins"]
             if item["returning"] or not item["launch_city"]
@@ -269,7 +271,16 @@ def schedule(view):
             }
         )
     for mission in view["missions"]:
-        if not mission["returning"]:
+        if mission["occupying"]:
+            events.append(
+                {
+                    "moon": mission["release_month"],
+                    "label": _("Départ automatique de la garnison"),
+                    "detail": mission["target"],
+                    "anchor": "mission-" + mission["id"],
+                }
+            )
+        elif not mission["returning"]:
             events.append(
                 {
                     "moon": mission["combat_month"],

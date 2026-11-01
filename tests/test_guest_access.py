@@ -38,7 +38,7 @@ def test_guest_preset(guest):
     assert guest.game.mode == "manual" and guest.game.deadline is None
     assert guest.game.state["config"]["reign_months"] == 120
     assert guest.game.state["economy_version"] == 4
-    assert guest.game.state["strategy_version"] == 2
+    assert guest.game.state["strategy_version"] == 3
     assert sum(city["stock"] for city in guest.game.state["cities"].values()) == 8_100_000
     assert list(guest.game.memberships.values_list("actor", flat=True)) == ["p1"]
     assert not guest.user.has_usable_password()

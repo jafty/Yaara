@@ -147,6 +147,10 @@ CITY_FIELDS = (
     "deaths",
     "restricted_fideles",
     "restricted_until",
+    "consolidating",
+    "consolidation_until",
+    "occupying_fideles",
+    "defense_stock",
     "works",
 )
 BUILDING_FIELDS = ("kind", "level", "effective_level", "damaged", "finish_moon")

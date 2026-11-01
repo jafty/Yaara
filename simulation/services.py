@@ -101,7 +101,7 @@ def create_game(
     forge_version=2,
     map_version=3,
     economy_version=4,
-    strategy_version=2,
+    strategy_version=3,
 ):
     from .guest_services import require_registered
 

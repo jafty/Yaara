@@ -1,0 +1,3 @@
+{% load i18n %}
+{% if selected.consolidating %}<p class="marginal-note" data-consolidation-city="{{ selected.id }}">{% blocktranslate with moon=selected.consolidation_until %}Consolidation jusqu’à la lune {{ moon }} : le grenier reste réservé à la défense. Nouveaux travaux, expéditions et convois sortants reprendront automatiquement à cette lune.{% endblocktranslate %}</p>{% endif %}
+{% if selected.occupying_fideles %}<p>{% blocktranslate with count=selected.occupying_fideles %}Détachement d’occupation : {{ count }} Fidèles. Ils restent attachés à leurs cités d’origine et défendent cette place sans partir en secours.{% endblocktranslate %}</p>{% endif %}

@@ -285,6 +285,7 @@ CURRENT_EQUIPMENT_LABELS = [
 ]
 ACTION_LABELS.update(
     {
+        "occupation": message("Assurer l’occupation"),
         "watch": message("Organiser la surveillance"),
         "shelter": message("Protéger les récoltes"),
         "transport": message("Développer le transport"),

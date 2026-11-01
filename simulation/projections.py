@@ -90,6 +90,7 @@ FRONTIER_TERRITORIES = (
 
 def player_view(state, actor):
     economy = state.get("economy_version", 1)
+    consolidation_rules = state.get("strategy_version", 1) >= 3
     closed = closed_moon(state)
     upcoming = closing_moon(state)
     dating = max(1, closed if state["status"] == "finished" else upcoming)
@@ -137,6 +138,7 @@ def player_view(state, actor):
                 public["raid_available_moon"] = 0
         if public["owned"]:
             away = engine.absent(state, city["id"])
+            defense_stock = city["stock"] - funds[city["id"]]
             public.update(
                 {
                     "population": city["population"],
@@ -195,12 +197,26 @@ def player_view(state, actor):
                         )
                     public["incoming_warnings"].append(detail)
                 public["engaged"] = bool(public["incoming_warnings"])
-            public["siege_food"] = (city["population"] - away) * (
+            occupiers = 0
+            if consolidation_rules:
+                occupiers = sum(
+                    sum(mission["cohorts"].values())
+                    for mission in engine.occupation_missions(state, city["id"])
+                )
+                public.update(
+                    consolidating=engine.consolidating(state, city),
+                    consolidation_until=city.get("consolidation_until", 0),
+                    occupying_fideles=occupiers,
+                    defense_stock=defense_stock,
+                )
+                if public["consolidating"]:
+                    public["available_stock"] = 0
+            public["siege_food"] = (city["population"] - away + occupiers) * (
                 500 if state["rules"] == "V1" else 0
             )
-            public["siege_shortfall"] = max(0, public["siege_food"] - public["available_stock"])
+            public["siege_shortfall"] = max(0, public["siege_food"] - defense_stock)
             public["siege_months"] = (
-                public["available_stock"] // public["siege_food"] if public["siege_food"] else 0
+                defense_stock // public["siege_food"] if public["siege_food"] else 0
             )
             public["frontier"] = any(
                 city["id"] in edge
@@ -333,6 +349,8 @@ def player_view(state, actor):
             "return_month": mission["return_month"],
             "loot": mission["loot"],
             "returning": mission["status"] == "returning",
+            "occupying": mission["status"] == "occupying",
+            "release_month": mission.get("release_month"),
         }
         for mission in state["expeditions"]
         if mission["actor"] == actor and mission["status"] != "completed"
@@ -523,6 +541,7 @@ def player_view(state, actor):
         "seasonal_raids": economy >= 3,
         "strategic_rules": economy >= 4,
         "frontier_rules": tactics.enabled(state),
+        "consolidation_rules": consolidation_rules,
         "free_teams": sum(not city["busy"] for city in owned),
         "next_free_team_moon": min(
             (city["team_free_moon"] for city in owned if city["busy"]), default=None
@@ -534,7 +553,9 @@ def player_view(state, actor):
                 "destinations": sorted(
                     engine.connected_component(state, city["id"]) - {city["id"]}
                 ),
-                "available": not any(
+                "consolidating": city.get("consolidating", False),
+                "available": not city.get("consolidating", False)
+                and not any(
                     order["kind"] == "convoy"
                     and order.get("origin") == city["id"]
                     and order["status"] in ("confirmed", "active", "returning")

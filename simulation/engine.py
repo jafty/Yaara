@@ -61,13 +61,13 @@ def new_state(
     forge_version=2,
     map_version=3,
     economy_version=4,
-    strategy_version=2,
+    strategy_version=3,
 ):
     rule_family(version)
     if (
         reign_months not in (24, 60, 120, 240)
         or opponents not in ("active", "passive")
-        or strategy_version not in (1, 2)
+        or strategy_version not in (1, 2, 3)
     ):
         raise RuleError(message("La configuration de cette partie est invalide."))
     cities = {}
@@ -136,6 +136,33 @@ def new_state(
 
 def owned_cities(state, actor):
     return [city for city in state["cities"].values() if city["owner"] == actor]
+
+
+def consolidating(state, city):
+    return tactics.consolidation_enabled(state) and closing_moon(state) < city.get(
+        "consolidation_until", 0
+    )
+
+
+def occupation_missions(state, city_id):
+    return [
+        mission
+        for mission in state["expeditions"]
+        if mission["kind"] == "occupation"
+        and mission["status"] == "occupying"
+        and mission["target"] == city_id
+    ]
+
+
+def require_consolidated(state, city):
+    if consolidating(state, city):
+        raise RuleError(
+            message(
+                "La cité de {city} est en cours d’installation jusqu’à la lune {moon}. Son grenier reste réservé à sa défense.",
+                city=city["name"],
+                moon=city["consolidation_until"],
+            )
+        )
 
 
 def restricted_fideles(state, city):
@@ -261,6 +288,7 @@ def ensure_actor(state, actor):
 
 
 def work_spec(state, city, kind):
+    require_consolidated(state, city)
     rules = rule_family(state["rules"])
     prices = work_prices(state.get("economy_version", 1))
     if kind not in prices:
@@ -362,6 +390,7 @@ def prepare_order(state, actor, spec, order_id):
         origin, target, cargo = spec.get("origin"), spec.get("target"), spec.get("cargo")
         if origin not in available or target not in available or origin == target:
             raise RuleError(message("Choisissez deux cités distinctes de votre maison."))
+        require_consolidated(state, state["cities"][origin])
         if target not in connected_component(state, origin):
             raise RuleError(message("Le convoi exige un chemin entièrement amical."))
         if isinstance(cargo, bool) or not isinstance(cargo, int) or not 1 <= cargo <= 500_000:
@@ -414,6 +443,7 @@ def prepare_order(state, actor, spec, order_id):
                         "Cette communauté ne peut rejoindre cette frontière par nos possessions."
                     )
                 )
+            require_consolidated(state, state["cities"][city_id])
             if count > deployable_fideles(state, city_id) - people[city_id]:
                 raise RuleError(
                     message("Certains de ces hommes sont déjà promis à une autre expédition.")
@@ -496,6 +526,16 @@ def confirm_order(state, actor, spec, order_id):
             raise RuleError(message("Cet identifiant de confirmation est déjà utilisé."))
         return existing
     order = prepare_order(state, actor, spec, order_id)
+    if (
+        tactics.consolidation_enabled(state)
+        and spec.get("kind") in ("raid", "capture")
+        and spec.get("target") in active_targets(state)
+    ):
+        raise RuleError(
+            message(
+                "Une autre expédition est déjà engagée vers cette cité. Aucun moyen n’a été réservé."
+            )
+        )
     state["orders"].append(order)
     return order
 
@@ -933,6 +973,82 @@ def lose_attackers(state, mission, dead, priority):
             military_deaths(state, origin, count)
 
 
+def start_occupation(state, mission, target, events, priority):
+    survivors = sum(mission["cohorts"].values())
+    count = (survivors + 1) // 2
+    cohorts = allocate(count, mission["cohorts"], priority)
+    detachment = deepcopy(mission)
+    detachment.update(
+        id=mission["id"] + ":occupation",
+        order_id=mission["id"],
+        kind="occupation",
+        status="occupying",
+        cohorts=cohorts,
+        release_month=state["month"] + 4,
+        return_month=state["month"] + 5,
+        loot=0,
+    )
+    for origin, count_from_origin in cohorts.items():
+        mission["cohorts"][origin] -= count_from_origin
+    state["expeditions"].append(detachment)
+    target["consolidation_until"] = state["month"] + 4
+    report(
+        events,
+        mission["actor"],
+        "occupation",
+        message("L’installation à {city}", city=target["name"]),
+        message(
+            "{count} Fidèles restent dans {city} pour assurer son occupation. Ils défendent la cité et repartiront automatiquement à la lune {release} ; leur retour est prévu à la lune {arrival}. Le grenier reste réservé à la défense jusqu’à la lune {release} ; les prélèvements et les travaux déjà commencés continuent.",
+            count=count,
+            city=target["name"],
+            release=detachment["release_month"],
+            arrival=detachment["return_month"],
+        ),
+        city_id=target["id"],
+    )
+
+
+def release_occupations(state, events):
+    for mission in state["expeditions"]:
+        if mission["status"] == "occupying" and mission["release_month"] <= state["month"]:
+            mission["status"] = "returning"
+            report(
+                events,
+                mission["actor"],
+                "occupation",
+                message("La relève de {city}", city=state["cities"][mission["target"]]["name"]),
+                message(
+                    "L’installation est achevée. Les {count} Fidèles d’occupation rentrent automatiquement vers leurs origines. Arrivée prévue : lune {moon}.",
+                    count=sum(mission["cohorts"].values()),
+                    moon=mission["return_month"],
+                ),
+                city_id=mission["target"],
+            )
+
+
+def retreat_occupations(state, city_id, events):
+    for mission in occupation_missions(state, city_id):
+        mission["status"] = "returning"
+        mission["return_month"] = state["month"] + 1
+        report(
+            events,
+            mission["actor"],
+            "occupation",
+            message("La garnison d’occupation se retire"),
+            message(
+                "La cité est perdue. Les {count} survivants de l’occupation restent fidèles à votre maison et rentrent vers leurs origines. Arrivée prévue : lune {moon}.",
+                count=sum(mission["cohorts"].values()),
+                moon=mission["return_month"],
+            ),
+            city_id=city_id,
+        )
+
+
+def lose_occupation_defenders(state, occupations, casualties, priority):
+    for occupation in occupations:
+        lose_attackers(state, occupation, casualties[occupation["id"]], priority)
+
+
 def observation(enemy_count, own_survivors, equipment, economy_version=1):
     if own_survivors == 0:
         return message("Aucun survivant ne peut décrire les forces adverses.")
@@ -1155,6 +1271,10 @@ def resolve_combats(state, seed, events):
         attackers = sum(mission["cohorts"].values())
         defender_equipment = city_equipment(state, target)
         defense_combativity = equipment_values(state.get("economy_version", 1))[defender_equipment]
+        occupations = occupation_missions(state, target["id"])
+        occupation_weights = {m["id"]: sum(m["cohorts"].values()) for m in occupations}
+        stationed = sum(occupation_weights.values())
+        stationed_strength = sum(mission_strength(m) for m in occupations)
         attack_strength = mission_strength(mission)
         cohort_values = set(mission.get("cohort_equipment", {}).values())
         attacker_equipment = (
@@ -1185,18 +1305,41 @@ def resolve_combats(state, seed, events):
                 )
             )
             audit["encounters"][mission["id"]] = fraction
-            encountered = max(1, target["fideles"] * fraction // 100) if target["fideles"] else 0
+            garrison = target["fideles"] + stationed
+            encountered = max(1, garrison * fraction // 100) if garrison else 0
+            engaged = allocate(encountered, {"local": target["fideles"], **occupation_weights})
+            defense_strength = engaged["local"] * defense_combativity + sum(
+                Fraction(engaged[m["id"]] * mission_strength(m), occupation_weights[m["id"]])
+                for m in occupations
+                if occupation_weights[m["id"]]
+            )
+            if stationed:
+                equipment = {defense_combativity} if engaged["local"] else set()
+                for occupation in occupations:
+                    if engaged[occupation["id"]]:
+                        equipment.update(
+                            occupation["cohort_equipment"][origin]
+                            for origin, count in occupation["cohorts"].items()
+                            if count
+                        )
+                defender_equipment = (
+                    "mixed"
+                    if len(equipment) > 1
+                    else equipment_values(state.get("economy_version", 1)).index(
+                        next(iter(equipment))
+                    )
+                )
             if strategic:
                 draw = random_stream(seed, state["month"], f"raid-effects:{mission['id']}")
                 intercepted = (
-                    attack_strength < encountered * defense_combativity * Fraction(3, 4)
+                    attack_strength < defense_strength * Fraction(3, 4)
                     and draw.randrange(100) < [10, 20, 30][watch]
                 )
                 result = strategic_raid_result(
                     attackers,
                     attack_strength,
                     encountered,
-                    encountered * defense_combativity,
+                    defense_strength,
                     target["tax"],
                     [200_000, 400_000, 800_000][effective_level(target, "shelter")],
                     intercepted,
@@ -1216,8 +1359,10 @@ def resolve_combats(state, seed, events):
                     else None,
                 )
             lose_attackers(state, mission, result.attacker_losses, priority)
-            lose_local_fideles(state, target, result.defender_losses)
-            military_deaths(state, target["id"], result.defender_losses)
+            raid_losses = allocate(result.defender_losses, engaged)
+            lose_local_fideles(state, target, raid_losses["local"])
+            military_deaths(state, target["id"], raid_losses["local"])
+            lose_occupation_defenders(state, occupations, raid_losses, priority)
             seasonal = state.get("economy_version", 1) >= 3
             target["tax" if seasonal else "stock"] -= result.stolen + result.destroyed
             mission["loot"] = result.stolen
@@ -1228,7 +1373,7 @@ def resolve_combats(state, seed, events):
                     state,
                     target,
                     attackers - result.attacker_losses,
-                    encountered - result.defender_losses,
+                    engaged["local"] - raid_losses["local"],
                     result,
                     draw,
                     relief_away=sum(
@@ -1392,6 +1537,12 @@ def resolve_combats(state, seed, events):
         encountered_equipment = {item["combativity"] for item in support}
         if local:
             encountered_equipment.add(defense_combativity)
+        for occupation in occupations:
+            encountered_equipment.update(
+                occupation["cohort_equipment"][origin]
+                for origin, count in occupation["cohorts"].items()
+                if count
+            )
         if encountered_equipment:
             defender_equipment = (
                 "mixed"
@@ -1402,7 +1553,7 @@ def resolve_combats(state, seed, events):
             )
         reinforcement = sum(item["count"] for item in support)
         relief_strength = sum(item["count"] * item["combativity"] for item in support)
-        field = local * defense_combativity + relief_strength
+        field = local * defense_combativity + stationed_strength + relief_strength
         reduction = (
             siege_reduction(mission) if state.get("economy_version", 1) >= 3 else Fraction(0)
         )
@@ -1413,9 +1564,11 @@ def resolve_combats(state, seed, events):
             state.get("economy_version", 1),
             integrity=target.get("integrity", 100),
         )
-        fortified = local * defense_combativity * wall + relief_strength
+        fortified = (local * defense_combativity + stationed_strength) * wall + relief_strength
         exported = sum(item["count"] for item in relief if item["origin"] == target["id"])
-        present_population = target["population"] - absent(state, target["id"]) - exported
+        present_population = (
+            target["population"] - absent(state, target["id"]) - exported + stationed
+        )
         result = capture_result(
             rule_family(state["rules"]),
             attack_strength,
@@ -1425,13 +1578,25 @@ def resolve_combats(state, seed, events):
             present_population,
             economy_version=state.get("economy_version", 1),
         )
-        attacker_dead = losses(attackers, result.attacker_rate)
-        defender_dead = losses(local + reinforcement, result.defender_rate)
+        attacker_rate = result.attacker_rate
+        if (
+            tactics.consolidation_enabled(state)
+            and state["config"].get("experimental_active_walls", False)
+            and result.outcome == "held"
+        ):
+            attacker_rate += Fraction(target["walls"], 100)
+        attacker_dead = losses(attackers, attacker_rate)
+        defender_dead = losses(local + stationed + reinforcement, result.defender_rate)
         lose_attackers(state, mission, attacker_dead, priority)
-        weights = {target["id"]: local, **{item["origin"]: item["count"] for item in support}}
+        weights = {
+            target["id"]: local,
+            **{item["origin"]: item["count"] for item in support},
+            **occupation_weights,
+        }
         split = allocate(defender_dead, weights, priority)
         lose_local_fideles(state, target, split[target["id"]])
         military_deaths(state, target["id"], split[target["id"]])
+        lose_occupation_defenders(state, occupations, split, priority)
         for item in support:
             dead = split[item["origin"]]
             item["count"] -= dead
@@ -1456,17 +1621,24 @@ def resolve_combats(state, seed, events):
                 "noncombat_deaths": civilian_dead,
                 "food_used": result.food_used,
             }
+            if attacker_rate != result.attacker_rate:
+                audit["outcomes"][mission["id"]]["active_wall_losses"] = attacker_dead - losses(
+                    attackers, result.attacker_rate
+                )
             target["integrity"] = integrity_after_combat(
                 target["integrity"], result.outcome, reduction
             )
             target["damaged"] = target["integrity"] != 100
         if result.captured:
+            retreat_occupations(state, target["id"], events)
             if strategic:
                 detach_absent_contingents(state, target["id"])
             target["owner"] = actor
             if tactics.enabled(state):
                 target["restricted_fideles"] = target["fideles"]
                 target["restricted_until"] = state["month"] + 4
+            if tactics.consolidation_enabled(state):
+                start_occupation(state, mission, target, events, priority)
             if (
                 rule_family(state["rules"]).siege
                 and result.outcome == "assault"
@@ -1508,11 +1680,13 @@ def resolve_combats(state, seed, events):
             "battle",
             message("{p0} à {p1}", p0=OUTCOME_LABELS[result.outcome], p1=target["name"]),
             message(
-                "{p0} Les survivants repartent vers leurs origines ; ils y rejoindront les présents à la date annoncée. ",
+                "{p0} Les survivants se répartissent entre le retour et l’occupation automatique de la cité. "
+                if result.captured and tactics.consolidation_enabled(state)
+                else "{p0} Les survivants repartent vers leurs origines ; ils y rejoindront les présents à la date annoncée. ",
                 p0=military_losses(attacker_dead),
             )
             + observation(
-                local + reinforcement,
+                local + stationed + reinforcement,
                 attackers - attacker_dead,
                 defender_equipment,
                 state.get("economy_version", 1),
@@ -1530,7 +1704,7 @@ def resolve_combats(state, seed, events):
             scene=f"offensive-capture-{scene_outcome}",
             city_id=target["id"] if strategic else None,
             observation=observation(
-                local + reinforcement,
+                local + stationed + reinforcement,
                 attackers - attacker_dead,
                 defender_equipment,
                 state.get("economy_version", 1),
@@ -1560,7 +1734,7 @@ def resolve_combats(state, seed, events):
             )
             + observation(
                 attackers,
-                local + reinforcement - defender_dead,
+                local + stationed + reinforcement - defender_dead,
                 attacker_equipment,
                 state.get("economy_version", 1),
             )
@@ -1571,9 +1745,9 @@ def resolve_combats(state, seed, events):
                 )
                 + message(
                     " Nos survivants sont au nombre de {count}. ",
-                    count=local + reinforcement - defender_dead,
+                    count=local + stationed + reinforcement - defender_dead,
                 )
-                + observed_losses(attacker_dead, local + reinforcement - defender_dead)
+                + observed_losses(attacker_dead, local + stationed + reinforcement - defender_dead)
                 if strategic
                 else ""
             ),
@@ -1594,7 +1768,8 @@ def return_contingents(state, mission, events):
         for first, second in state["links"]
         if mission["target"] in (first, second)
     }
-    order = next(item for item in state["orders"] if item["id"] == mission["id"])
+    order_id = mission.get("order_id", mission["id"])
+    order = next(item for item in state["orders"] if item["id"] == order_id)
     if "loot_shares" not in mission:
         mission["loot_shares"] = allocate(mission["loot"], mission["cohorts"])
         mission["return_routes"] = {}
@@ -1690,12 +1865,21 @@ def return_contingents(state, mission, events):
             ),
         )
     mission["loot"] = 0
-    mission["status"] = order["status"] = "completed"
+    mission["status"] = "completed"
+    if all(
+        other["status"] == "completed"
+        for other in state["expeditions"]
+        if other.get("order_id", other["id"]) == order_id
+    ):
+        order["status"] = "completed"
 
 
 def return_expeditions(state, events):
     for mission in state["expeditions"]:
-        if mission["status"] == "completed" or mission["return_month"] > state["month"]:
+        if (
+            mission["status"] in ("completed", "occupying")
+            or mission["return_month"] > state["month"]
+        ):
             continue
         if state.get("economy_version", 1) >= 4:
             return_contingents(state, mission, events)
@@ -1863,7 +2047,9 @@ def assert_invariants(state):
         for order in state["orders"]
         if order["kind"] in ("raid", "capture") and order["status"] in ("confirmed", "active")
     ]
-    assert tactics.enabled(state) or len(active) == len(set(active)), "Duplicate target engagement"
+    assert not tactics.exclusive_targets(state) or len(active) == len(set(active)), (
+        "Duplicate target engagement"
+    )
     work_slots = [
         work["city"] for work in state["works"] if work["status"] == "active" and work.get("city")
     ]
@@ -1885,6 +2071,7 @@ def advance_month(state, seed):
     annual_economy(state, events)
     depart_orders(state, events)
     finish_works(state, events)
+    release_occupations(state, events)
     if tactics.enabled(state):
         detect_departures(state, events)
     audit = resolve_combats(state, seed, events)

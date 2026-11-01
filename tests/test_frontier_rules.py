@@ -68,13 +68,13 @@ def test_positive_forces(values):
         field_result(*values)
 
 
-@case("frontier-defaults", REQ)
+@case("frontier-defaults", "Approved November 1 plan: new games use strategy three")
 def test_defaults():
     """Given a request for a current new game.
     When the native aggregate is created.
     Then the saved strategy marker selects the approved frontier rules.
     """
-    assert engine.new_state()["strategy_version"] == 2
+    assert engine.new_state()["strategy_version"] == 3
     assert engine.new_state(economy_version=3)["strategy_version"] == 1
 
 

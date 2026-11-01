@@ -1,5 +1,80 @@
 # Yaara — Référence de jouabilité
 
+## Révision du 1er novembre 2026 — Conquête et consolidation
+
+Préparée depuis `fd6890b` de `codex/yaara-deployment`, sans attester un
+déploiement. Les nouveaux règnes de l’économie quatre enregistrent
+`strategy_version=3`. Les sauvegardes stratégiques 1/2 conservent leurs règles,
+leurs ordres déjà admis et leurs rapports. La version trois conserve le siège
+résolu en une lune, les tarifs, les prélèvements et les formules de raid.
+
+**Une cible militaire à la fois :** seule la confirmation finale réserve une
+cité pour un raid ou une capture. Le premier scellement validé dans la
+transaction de partie l’emporte ; toute autre combinaison raid/capture, y
+compris de la même maison, est refusée sans réserver d’hommes ni de fonds et
+sans frais fixes ou variables. Les préparations et relectures ne réservent
+rien, même lorsqu’une autre expédition a déjà engagé la cible. Une livraison
+répétée du même sceau retrouve d’abord son ordre existant ; elle ne constitue
+pas un nouveau concurrent. Une annulation ou invalidation libère la cible,
+ainsi que la résolution du combat : retours et occupation ne prolongent pas
+ce verrou. Aucun ordre n’est mis en attente ni redirigé automatiquement.
+
+**Exception explicite au secret :** les cartes, formulaires, devis et révisions
+visibles d’une autre maison ne dévoilent pas les engagements secrets. Au seul
+scellement final, le refus peut révéler qu’une expédition engage déjà cette
+cité. Il ne révèle ni son auteur, ni son type, ni ses effectifs, ni son calendrier,
+ni son identifiant. Le répit agricole reste privé et vérifié à l’arrivée selon
+les règles conservées ; il ne bloque pas le scellement.
+
+**Consolidation après capture en N :** la moitié des assaillants survivants,
+arrondie au-dessus et répartie entre origines, reste dans la cité conquise.
+L’autre moitié suit le retour normal en N+1. La garde d’occupation y reste en
+N+1, N+2 et N+3, commence son retour en N+4 et rejoint son origine en N+5,
+sous réserve des détours de refuge existants. Elle conserve sa maison, son
+équipement de départ et son origine ; elle ne devient pas une nouvelle
+population locale. Elle défend sur place, avec les murs, sans rejoindre
+offensive ni secours. Ses morts sont retirés de son contingent et de sa
+population d’origine, ou du groupe déjà détaché de cette origine. Une reprise
+ennemie met immédiatement fin au stationnement : les survivants commencent
+leur retour pour la lune suivante, avec les vérifications de refuge habituelles.
+
+La cité conquise ne peut sceller de nouveaux travaux, y compris réparations,
+expéditions ou convois sortants avant N+4. Les ouvrages déjà en cours,
+l’accumulation du prélèvement, les récoltes et les arrivées continuent. Les
+stocks ne peuvent pas être exportés pendant cette consolidation ; ils restent
+utilisables pour la résistance au siège. Les Fidèles locaux hérités gardent
+leur restriction antérieure jusqu’à N+4 ; ils restent distincts de la garde
+venue avec les conquérants et des recrues ultérieures.
+
+Exemple : capture en lune 10 avec 79 survivants → 40 gardes restent, 39 hommes
+suivent leur retour en 11. La cité peut de nouveau sceller des ordres en 14 ;
+les 40 gardes ne sont attendus à leur origine qu’en 15, s’ils ont survécu et si
+leur route de retour le permet. Une nouvelle capture reste possible durant
+la consolidation : le verrou de la tentative précédente est déjà libéré.
+
+**Économie maintenue :** les Mesures représentent les moyens disponibles
+après les obligations ordinaires du domaine. Aucune nouvelle ponction de
+cour ni réduction du prélèvement n’est appliquée. Le siège coûte toujours
+500 Mesures par personne physiquement présente, garde d’occupation comprise ;
+aucun entretien alimentaire de paix n’est ajouté. Redditions et pénuries
+n’endommagent pas automatiquement les murs : les réparations suivent les
+dommages réellement causés par le mode de capture.
+
+**Expérience distincte :** `config.experimental_active_walls` permet uniquement
+aux évaluations hors ligne de comparer une attrition offensive de siège tenu
+de 2/3/4/5 % selon les murs 0/I/II/III. Ce drapeau est désactivé dans les règles
+ordinaires et n’est pas proposé aux joueurs. Les pertes défensives, prix et
+besoins alimentaires ne changent pas dans cette expérience. Son résultat ne
+constitue pas une décision de déploiement. Classement global, nouveaux revenus,
+nouvelles familles d’ouvrages et sièges prolongés restent différés.
+
+Le livre compact conserve aussi les champs propres déjà enregistrés
+`consolidating`, `consolidation_until`, `occupying_fideles` et `defense_stock`,
+dans les changements de cité et les comptes finaux. Le schéma compact reste
+en version un : ces champs sont facultatifs, sans reconstitution ni valeurs
+inventées pour les anciennes observations. Les comptes ennemis et données de
+combat privées ne sont pas ajoutés à un livre personnel.
+
 ## Présentation du 30 octobre 2026 — Panneaux et panoramas
 
 Préparée depuis `459ad0f`. Sur ordinateur, le feuillet occupe moins de la moitié
@@ -140,7 +215,7 @@ Ces capacités ne démontrent pas l’équilibre des parties humaines.
 
 ## Révision du 24 octobre 2026 — Frontières, surveillance et intégration
 
-Implémentation préparée depuis `dbcba62` de `codex/yaara-deployment`. Cette section remplace, pour les nouvelles parties `strategy_version=2`, les descriptions historiques de réservation exclusive et de signalement gratuit ci-dessous. Elle n’atteste pas un déploiement Railway. Les sauvegardes sans marqueur stratégique, ou marquées 1, conservent leurs règles ; l’économie, les prix, les revenus et les dates des raids restent inchangés.
+Implémentation préparée depuis `dbcba62` de `codex/yaara-deployment`. Cette section décrit les sauvegardes `strategy_version=2`, qui conservent l’admission non exclusive et les comportements ci-dessous. Pour les nouvelles parties stratégiques trois, la révision du 1er novembre remplace cette seule admission et ajoute la consolidation. Elle n’atteste pas un déploiement Railway. Les sauvegardes sans marqueur stratégique, ou marquées 1, conservent leurs règles ; l’économie, les prix, les revenus et les dates des raids restent inchangés.
 
 **Après une conquête en N**, les Fidèles locaux hérités assurent la défense, sans participer aux départs offensifs ni aux secours durant N+1, N+2 et N+3. Ils deviennent disponibles en N+4. Les contingents amis revenant de voyage et les nouvelles recrues ne sont pas ajoutés à ce contingent hérité. Les pertes locales réduisent proportionnellement les effectifs libres et restreints ; les morts en voyage ne réduisent pas le contingent local restreint. Une nouvelle conquête réinitialise la période pour les Fidèles alors présents. Les comptes propres affichent l’effectif concerné et sa lune de disponibilité. Aucun malus fiscal ou de classement n’est introduit.
 
@@ -172,7 +247,7 @@ Révision du 22 octobre 2026 : préparation stratégique, raids, sièges, convoi
 
 Synchroniser ce document et `docs/decisions.md` avec chaque changement des règles. Le dossier `design-source.fr.md` conserve l’intention historique. La discussion jointe n’est pas un rejeu des anciennes parties.
 
-Les nouvelles parties utilisent `economy_version=4`, forges locales, carte à douze routes et calendrier ouvrant la lune 1. Les sauvegardes précédentes conservent leurs réserves, tarifs, murs, combats, ordres acceptés et rapports. L’économie 3 conserve notamment les raids saisonniers et murs ×1/2/4/7 ; les économies 1/2 gardent leurs raids sur stocks et versement annuel avant combats. Les marqueurs V0/V1 sont internes, sans sélecteur public. Aucune conversion automatique d’une partie en cours.
+Les nouvelles parties utilisent `economy_version=4` et `strategy_version=3`, forges locales, carte à douze routes et calendrier ouvrant la lune 1. Les sauvegardes précédentes conservent leurs réserves, tarifs, murs, combats, ordres acceptés et rapports. Les stratégies 1/2 n’acquièrent ni consolidation nouvelle ni changement d’admission. L’économie 3 conserve notamment les raids saisonniers et murs ×1/2/4/7 ; les économies 1/2 gardent leurs raids sur stocks et versement annuel avant combats. Les marqueurs V0/V1 sont internes, sans sélecteur public. Aucune conversion automatique d’une partie en cours.
 
 ## Cadre et ressources
 
@@ -180,7 +255,7 @@ Trois maisons possèdent trois cités chacune ; solo contre deux adversaires act
 
 Chaque cité commence avec 1 000 habitants dont 100 Fidèles, **900 000 Mesures**, prélèvement nul, capacité 2 400 000. Les anciennes économies commencent toujours à 600 000. L’augmentation laisse financer les rigoles (300 k) et un raid de 30 hommes (35 k) avec 565 k encore en réserve, sans garantir deux mois de ravitaillement. Chaque cité finance ses travaux ; chaque origine finance ses hommes et sa part proportionnelle du forfait, répartie en mesures entières par la méthode des plus grands restes. Les convois permettent un transfert différé, jamais un financement implicite.
 
-Rendement par habitant présent : 100 / 115 / 130 / 200 Mesures par lune. Absents non producteurs. Prélèvement accumulé indisponible avant les clôtures 12, 24, etc. ; surplus sans place perdu. Croissance annuelle de 0,5 %, arrondie au-dessous ; renouvellement des Fidèles parmi les habitants existants plafonné à 1 % de population et à l’écart au contingent cible de 10 %.
+Rendement disponible par habitant présent, après obligations ordinaires du domaine : 100 / 115 / 130 / 200 Mesures par lune. Il ne représente pas l’intégralité des récoltes et dépenses privées des habitants. Absents non producteurs. Prélèvement accumulé indisponible avant les clôtures 12, 24, etc. ; surplus sans place perdu. Croissance annuelle de 0,5 %, arrondie au-dessous ; renouvellement des Fidèles parmi les habitants existants plafonné à 1 % de population et à l’écart au contingent cible de 10 %.
 
 Clôture : prélèvement, départs, achèvements, combats, versement annuel éventuel et croissance, retours militaires, arrivées des convois, résultat. Un raid de lune 12 réduit la récolte avant versement. Un convoi arrivant ce mois ne nourrit pas le siège déjà résolu. Préparer ou relire ne réserve rien ; sceller réserve les moyens existants, la clôture les dépense. Annulation avant départ selon les règles de la sauvegarde.
 
@@ -201,11 +276,11 @@ Une équipe par cité, partagée entre construction et réparation et réservée
 
 Départ d’un chantier N, durée trois lunes : achèvement N+3, premier prélèvement amélioré N+4 pour l’irrigation. Un achèvement après la fin configurée est refusé ; l’égalité est autorisée mais un premier effet économique trop tardif est signalé. La prévision de récolte conserve le nombre actuel de présents et le rendement actuel : elle exclut mouvements, pertes et effets futurs des travaux.
 
-Arsenal, transport et siège de chaque contingent figés au départ. Transport calculé sur les survivants ; réduction du bonus des murs pondérée par les forces des contingents. Seuls les défenseurs locaux bénéficient des murs. La combativité numérique reste absente des projections et du navigateur.
+Arsenal, transport et siège de chaque contingent figés au départ. Transport calculé sur les survivants ; réduction du bonus des murs pondérée par les forces des contingents. Les défenseurs locaux, ainsi que la garde d’occupation en stratégie trois, bénéficient des murs ; les secours n’en bénéficient pas. La combativité numérique reste absente des projections et du navigateur.
 
 ## Raids
 
-Minimum 20 Fidèles ; prix **5 000 + 1 000 × effectif**. Départ N, combat N+1, retour N+2. Une cible engagée est réservée jusqu’au combat. Deux cités ennemies initialement à portée, une de chaque maison rivale.
+Minimum 20 Fidèles ; prix **5 000 + 1 000 × effectif**. Départ N, combat N+1, retour N+2. En stratégie trois, une cible engagée est réservée au scellement jusqu’au combat ; la stratégie deux conserve les cibles non exclusives. Deux cités ennemies initialement à portée, une de chaque maison rivale.
 
 Soit A assaillants, D défenseurs rencontrés, E=min(A,D) et R le rapport de force équipé. L’arrondi des décès est au plus proche, demi-entier au-dessus.
 
@@ -260,6 +335,10 @@ Le Conseil indique frontières accessibles, expéditions engagées, travaux/rés
 Les nouveaux rapports relient leur cité, décrivent précisément les pertes propres et qualitativement les pertes adverses : aucune, quelques (1–4), sensibles (5–14), lourdes (15–29), très lourdes (30+). Sous dix témoins : observation non fiable. Observations datées issues uniquement des lettres du destinataire ; aucun rafraîchissement depuis les comptes ennemis. Les observations de forces et d’équipement gardent leurs seuils de témoins existants. Les lettres anciennes ne sont pas réécrites.
 
 ## Ouvertures humaines vérifiées
+
+Les exemples historiques de cette section ont été établis avant la stratégie
+trois. Leur faisabilité et leurs dates ne sont pas transposées à la nouvelle
+admission exclusive ni à la consolidation sans vérification spécifique.
 
 Les tests `test_strategy_openings.py` décrivent des plans fixes réalisables, sans supposer un comportement de bot. Deux armées alternées de 150, réparties 50/50/50, assiègent en lunes 2 et 4 : sans réaction, 900 k ne suffisent pas, capture en 4 pour 700 k de frais. Un convoi lancé après le premier combat, en lune 3, arrive en 5 et ne sauve pas la cité. Un convoi préventif de 500 k lancé en lune 1 arrive en 3 et fait tenir la seconde tentative. Ces ouvertures rendent l’anticipation importante ; une alerte « un mois » n’est pas une garantie contre les tentatives suivantes.
 

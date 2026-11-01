@@ -1,5 +1,57 @@
 # Implementation decisions
 
+## 2026-11-01 · Exclusive final admission and conquest consolidation
+
+Prepared from deployment revision `fd6890b`. New economy-four games use
+`strategy_version=3`; saved strategy one/two, their accepted orders and archived
+reports keep their existing rules. The approved package preserves one-Moon
+siege resolution, the 500-Measure supply requirement, raid prices and formulas,
+levies, ordinary construction and the territorial victory conditions. Levies
+represent disposable resources after routine obligations; no new court drain
+or historically asserted overhead percentage is introduced.
+
+Only final military confirmation acquires the target. Serialize admission on
+the existing game transaction: first successful seal wins for every raid/capture
+combination, including two orders from one house. Reject competitors before
+reserving funds or people, with no fixed or variable fee. Quote/review remains
+read-only and does not acquire or disclose the lock. Resolve idempotent receipts
+before testing occupancy, including cancelled receipts. Cancellation, departure
+invalidation and combat release the lock; return and occupation do not retain
+it. No automatic queue or retargeting is added.
+
+The generic busy-target refusal at final confirmation is the owner's explicit
+exception to hidden-order non-disclosure. It may establish that a target is
+engaged, but never by whom, with what mission or forces, or on which schedule.
+Map/form/preview projections and another house's visible revision do not expose
+hidden engagements. Village respite remains private and has its existing
+arrival-time consequences.
+
+Capture in N stations half the victorious survivors, rounded up and allocated
+proportionally across origins, in the conquered city through N+1/N+2/N+3. Other
+survivors follow their usual N+1 return. Guards begin their ordinary return in
+N+4 and arrive in N+5, subject to existing refuge delays and checks. They retain
+their house, origin and frozen equipment; they defend with the city's walls but
+cannot deploy or provide relief. They are not added again to local population.
+Their losses reduce their original population or its detached pool. Recapture
+immediately sends surviving hostile guards home for the following Moon under
+existing return/refuge rules.
+
+The conquered city cannot initiate works, including repair, military departures
+or outgoing resource convoys until N+4. Existing works, tax accrual, harvest and
+incoming convoys continue; treasury stocks remain available for siege defence.
+Inherited local Faithful retain their separate three-Moon deployment/relief
+restriction. Occupiers add to the physically present siege mouths; there is no
+new peacetime upkeep. Existing outcome-dependent damage remains authoritative:
+neither peaceful submission nor shortage automatically damages walls.
+
+The offline-only strategy-three `config.experimental_active_walls` flag compares
+held-siege attacker attrition of 2/3/4/5% at walls 0/I/II/III. Ordinary games leave
+it disabled; no player toggle or default wall rebalance is introduced. Ranking,
+new building families, sustained sieges and economic retuning remain deferred.
+Real PostgreSQL races and stale previews test target admission, while native
+cases cover occupation, death/return accounting and old-rule compatibility.
+These checks establish behavior, not strategic balance or production status.
+
 ## 2026-10-29 · Nearby military refuge and readable compact works
 
 Prepared from deployment revision `098fda0`; this records the owner's explicit

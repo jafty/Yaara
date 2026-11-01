@@ -201,8 +201,13 @@ function initializePage() {
       rows.forEach((row, index) => {
         const chargeForOrigin = fees[index] + counts[index] * price.per_person;
         const remainingStock = Number(row.dataset.freeStock) - chargeForOrigin;
+        const defenseStock =
+          Number(row.dataset.defenseStock || row.dataset.freeStock) - chargeForOrigin;
         const need =
-          Math.max(0, Number(row.dataset.present) - counts[index]) * 500;
+          Math.max(
+            0,
+            Number(row.dataset.present) + Number(row.dataset.occupiers || 0) - counts[index],
+          ) * 500;
         const reserves = row.querySelector(".origin-reserves");
         if (reserves) {
           reserves.textContent = interpolate(
@@ -216,7 +221,7 @@ function initializePage() {
             true,
           );
           row.querySelector("[data-origin-warning]").textContent =
-            remainingStock < need
+            defenseStock < need
               ? gettext(
                   "Attention : moins d’un mois de réserves de siège après ce départ.",
                 )

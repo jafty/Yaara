@@ -9,6 +9,14 @@ def enabled(state):
     return state.get("strategy_version", 1) >= 2
 
 
+def consolidation_enabled(state):
+    return state.get("strategy_version", 1) >= 3
+
+
+def exclusive_targets(state):
+    return state.get("strategy_version", 1) != 2
+
+
 def field_result(first_count, first_strength, second_count, second_strength):
     if min(first_count, first_strength, second_count, second_strength) <= 0:
         raise ValueError("Field forces must be positive")
